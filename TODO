@@ -1,0 +1,5 @@
+# TODO
+
+* Change output format. From matrix to list.
+* Callbacks for printing partial info
+* Directory configuration

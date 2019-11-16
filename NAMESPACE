@@ -1,0 +1,13 @@
+exportPattern("^[[:alpha:]]+")
+importFrom("stats", "as.dist", "cor", "rbinom", "runif")
+#@import parallel #For parallelization of individual solutions
+#@import doParallel
+#@import cba #for subset of matrix distance
+#@import cluster
+#@import survival
+
+#@import nsga2R #For nsgaII
+#@import gpuR #For GPU usage
+#@import matchingR #For solving gale-shapley algorithm (stable marriage problem)
+##require(Biobase)
+#@import caret
