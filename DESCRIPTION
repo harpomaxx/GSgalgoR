@@ -10,3 +10,5 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: cluster, doParallel, foreach, gpuR, matchingR, nsga2R, survival, amap
+URL: https://github.com/harpomaxx/galgo
+BugReports: https://github.com/harpomaxx/galgo/issues
