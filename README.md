@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of galgo is  the Identification and Study of Prognostic Gene Expression Signatures in Cancer
+A multi-objective optimization algorithm for disease subtype discovery based on a  non-dominated sorting genetic algorithm. The galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic algorithms for feature selection and optimal number of clusters determination to find features that maximize the survival difference between subtypes while keeping cluster consistency high.
 
 ## Installation
 
@@ -23,14 +23,12 @@ This is a basic example which shows how to find gene Expression signatures for t
 library(galgo)
 
 ## basic example code
-load("/home/galgo/galgo/Data/RNA_LUAD_all.rda")
-downl=names(esets)
+rna_luad<-use_rna_luad()
 
-trainSet=esets[["TCGA"]]
-prob_matrix= exprs(trainSet)
-clinical=pData(trainSet)
-OS=survival::Surv(time=clinical$time,event=clinical$status)
-chrom_length= nrow(prob_matrix)   #length of chromosome
+prm <- rna_luad$prm 
+clinical <- rna_luda$clinical
+OS <- survival::Surv(time=clinical$time,event=clinical$status)
+chrom_length <- nrow(prob_matrix)   #length of chromosome
 
 galgo::search_ges(generations = 10, population = 30,prob_matrix = prob_matrix, chrom_length = nrow(prob_matrix),OS=OS)
 
