@@ -8,6 +8,7 @@ calculate_distance_pearson_gpu <- function(x) {
         sx <- sqrt(x2 - mx2)
         pDist <- ((gpuR::crossprod(x, x) / nrow(x)) - (mx %o% mx)) / sx %o% sx
         # pDist=gpuR::cov(x)/sx%o%sx
+        pDist <- as.matrix(pDist)
         as.dist(1 - pDist)
  }
 calculate_distance_spearman_gpu <- function(x) {
@@ -17,6 +18,7 @@ calculate_distance_spearman_gpu <- function(x) {
         mx2 <- mx^2
         sx <- sqrt(x2 - mx2)
         pDist <- ((gpuR::crossprod(x, x) / nrow(x)) - (mx %o% mx)) / sx %o% sx
+        pDist <- as.matrix(pDist)
         # pDist=gpuR::cov(x)/sx%o%sx
         as.dist(1 - pDist)
 }
@@ -27,15 +29,18 @@ calculate_distance_uncentered_gpu <- function(x) {
         a1 <- gpuR::tcrossprod(mgpu, mgpu)
         a2 <- mgpu^2 %*% d2
         pDist <- a1 / sqrt(gpuR::tcrossprod(a2, a2))
+        pDist <- as.matrix(pDist)
         as.dist(1 - pDist)
 }
 calculate_distance_euclidean_gpu <- function(x) {
         mgpu <- gpuR::vclMatrix(t(x))
-        d <- suppressWarnings(gpuR::distance(mgpu, mgpu, method = "euclidean"))
-        as.dist(d)
+        pDist <- suppressWarnings(gpuR::distance(mgpu, mgpu, method = "euclidean"))
+        pDist <- as.matrix(pDist)
+        as.dist(pDist)
       }
 
 calculate_distance_pearson_cpu<- function(x) {
+      pDist <- as.matrix(x)
       amap::Dist(x, method = "correlation")
     }
 
