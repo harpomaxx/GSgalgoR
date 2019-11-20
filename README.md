@@ -35,4 +35,14 @@ chrom_length= nrow(prob_matrix)   #length of chromosome
 galgo::search_ges(generations = 10, population = 30,prob_matrix = prob_matrix, chrom_length = nrow(prob_matrix),OS=OS)
 
 ```
+## GPU support
 
+By default galgo runs some portions of its code in GPU, provided by the gpuR pacckage. Before installing gpuR, the opencl backend should be configured. 
+
+In linux systems install lastest nvidia cuda drivers and the opencl backend.
+
+```
+       apt-get install nvidia-418 nvidia-opencl-icd-418 libcuda1-418
+       apt-get install opencl-headers  ocl-icd-opencl-dev
+       
+```

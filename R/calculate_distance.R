@@ -35,7 +35,7 @@ calculate_distance_euclidean_gpu <- function(x) {
         as.dist(d)
       }
 
-calculate_distance_correlation <- function(x) {
+calculate_distance_pearson_cpu<- function(x) {
       amap::Dist(x, method = "correlation")
     }
 
@@ -45,7 +45,7 @@ select_distance <- function(distancetype = "pearson", GPU = TRUE ) {
   if (GPU == FALSE ) {
     computingtype <- "using CPU computing"
     print(computingtype)
-    calculate_distance <- calculate_distance_correlation
+    calculate_distance <- calculate_distance_pearson_cpu
 
   } else {
     computingtype <- "using GPU computing"
