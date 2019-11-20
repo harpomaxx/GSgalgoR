@@ -88,7 +88,7 @@ ArrayTest <- function(flds, Data) {
 
 
 subDist <- function(flds, D) {
-    sub <- cba::subset(D, -flds)
+    sub <- subset(D, -flds)
 }
 
 alloc2 <- function(C) {
@@ -333,7 +333,7 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
 
 
     Fit2 <- foreach::foreach(i = 1:nrow(X), .packages = reqpkgs, .combine = rbind) %dopar% {
-     # devtools::load_all() # required for package devel
+     #devtools::load_all() # required for package devel
       crossvalidation(prob_matrix, flds, X[i, ], k[i], OS = OS, distance = calculate_distance, nCV, period)
     }
 
