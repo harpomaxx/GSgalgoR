@@ -276,7 +276,7 @@ pen <- function(x) {
 search_ges <- function(population = 30, # Number of individuals to evaluate
                        generations = 2, # Number of generations
                        nCV = 5, # Number of crossvalidations for function "crossvalidation"
-                       usegpu = TRUE, # to use gpuR
+                       usegpu = FALSE, # to use gpuR
                        distancetype = "pearson", # Options are: "pearson","uncentered","spearman","euclidean"
                        TournamentSize = 2,
                        period = 1825,
@@ -327,13 +327,11 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
     if (usegpu == TRUE ){
       # TODO: add validation for opencl machine. if not fallback to CPU.
       reqpkgs <- c(reqpkgs,"gpuR")
-    }else{
-      reqpkgs <- c(reqpkgs,"amap")
     }
 
 
     Fit2 <- foreach::foreach(i = 1:nrow(X), .packages = reqpkgs, .combine = rbind) %dopar% {
-     #devtools::load_all() # required for package devel
+      #devtools::load_all() # required for package devel
       crossvalidation(prob_matrix, flds, X[i, ], k[i], OS = OS, distance = calculate_distance, nCV, period)
     }
 

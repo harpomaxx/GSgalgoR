@@ -26,7 +26,7 @@ library(galgo)
 rna_luad<-use_rna_luad()
 
 prm <- rna_luad$prm 
-clinical <- rna_luda$clinical
+clinical <- rna_luad$clinical
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
 chrom_length <- nrow(prob_matrix)   #length of chromosome
 

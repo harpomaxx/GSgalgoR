@@ -39,19 +39,66 @@ calculate_distance_euclidean_gpu <- function(x) {
         as.dist(pDist)
       }
 
-calculate_distance_pearson_cpu<- function(x) {
-      pDist <- as.matrix(x)
-      amap::Dist(x, method = "correlation")
-    }
 
-select_distance <- function(distancetype = "pearson", GPU = TRUE ) {
+calculate_distance_pearson_cpu <-function(x){
+    print("pearson....")
+    mx=base::colMeans(x)
+    x2=base::colMeans(x^2)
+    mx2=mx^2
+    sx=sqrt(x2-mx2)
+    pDist=((base::crossprod(x,x)/nrow(x))-(mx %o% mx))/sx%o%sx
+    as.dist(1-pDist)
+}
+
+
+calculate_distance_spearman_cpu <- function(x){
+    x=apply(x,2,rank)
+    mx=colMeans(x)
+    x2=colMeans(x^2)
+    mx2=mx^2
+    sx=sqrt(x2-mx2)
+    pDist=((crossprod(x,x)/nrow(x))-(mx %o% mx))/sx%o%sx
+    as.dist(1-pDist)
+}
+
+
+calculate_distance_uncentered_cpu <- function(x){
+    mgpu=t(x)
+    d2= matrix(1,ncol=1,nrow=dim(mgpu)[2])
+    a1=tcrossprod(mgpu,mgpu)
+    a2= mgpu^2 %*% d2
+    pDist= a1/ sqrt(tcrossprod(a2,a2))
+    as.dist(1-pDist)
+}
+
+calculate_distance_euclidean_cpu<-function(x){
+    d=stats::dist(t(x),method="euclidean")
+}
+
+
+
+select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
   distancetype <- match.arg(distancetype, c("pearson", "uncentered", "euclidean", "spearman"))
 
-  if (GPU == FALSE ) {
+  if (usegpu == FALSE ) {
     computingtype <- "using CPU computing"
     print(computingtype)
-    calculate_distance <- calculate_distance_pearson_cpu
+    # Centered pearson distance
+    if (distancetype == "pearson") {
+     print("pearson")
+      calculate_distance <- calculate_distance_pearson_cpu
+    }
+    # Spearman distance
+    if (distancetype == "spearman") {
+      calculate_distance <- calculate_distance_spearman_cpu
+    }
 
+    if (distancetype == "uncentered") {
+      calculate_distance <- calculate_distance_uncentered_cpu
+    }
+    if (distancetype == "euclidean") {
+      calculate_distance <- calculate_distance_euclidean_cpu
+    }
   } else {
     computingtype <- "using GPU computing"
     print(computingtype)
@@ -69,9 +116,9 @@ select_distance <- function(distancetype = "pearson", GPU = TRUE ) {
     }
     if (distancetype == "euclidean") {
      calculate_distance <- calculate_distance_euclidean_gpu
+    }
   }
   calculate_distance
-  }
 }
 
 
