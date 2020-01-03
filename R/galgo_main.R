@@ -282,8 +282,29 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
                        period = 1825,
                        OS, #OS=Surv(time=clinical$time,event=clinical$status)
                        chrom_length,
-                       prob_matrix
+                       prob_matrix,
+                       res_dir="results/",
+                       save_pop_partial_callback=base_save_pop_partial_callback,
+                       save_pop_final_callback=base_save_pop_final_callback,
+                       report_callback=base_report_callback,
+                       start_gen_callback=base_start_gen_callback,
+                       end_gen_callback=base_end_gen_callback,
+                       verbose=2
                        ) {
+
+  if (verbose == 0){
+    report_callback = default_callback
+    start_gen_callback = default_callback
+    end_gen_callback = default_callback
+  }
+
+  if (verbose == 1){
+    report_callback = no_report_callback
+    start_gen_callback = default_callback
+    end_gen_callback = default_callback
+
+  }
+
 
   # Support for parallel computing.
   cluster <- parallel::makeCluster(parallel::detectCores() - 1) # convention to leave 1 core for OS
@@ -305,6 +326,10 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
 
   ##### Main loop.
   for (g in 1:generations) {
+    # Output for the generation callback
+    environment(start_gen_callback)<-environment()
+    start_gen_callback()
+
     start_time <- Sys.time() # Measures generation time
 
     # 2.Calculate the fitness f(x) of each chromosome x in the population.
@@ -319,19 +344,19 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
 
     flds <- createFolds(1:ncol(prob_matrix), k = nCV)
 
-    # Calculate Fitnes 1 (silhouette) and 2 (Survival differences).
     `%dopar%` <- foreach::`%dopar%`
     `%do%` <- foreach::`%do%`
-    reqpkgs <- c("cluster","cba", "survival", "matchingR","galgo")
-    #reqpkgs <- c("cluster","cba", "survival", "matchingR")
+    #reqpkgs <- c("cluster","cba", "survival", "matchingR","galgo")
+    reqpkgs <- c("cluster","cba", "survival", "matchingR")
     if (usegpu == TRUE ){
       # TODO: add validation for opencl machine. if not fallback to CPU.
       reqpkgs <- c(reqpkgs,"gpuR")
     }
 
 
+    # Calculate Fitnes 1 (silhouette) and 2 (Survival differences).
     Fit2 <- foreach::foreach(i = 1:nrow(X), .packages = reqpkgs, .combine = rbind) %dopar% {
-      #devtools::load_all() # required for package devel
+      devtools::load_all() # required for package devel
       crossvalidation(prob_matrix, flds, X[i, ], k[i], OS = OS, distance = calculate_distance, nCV, period)
     }
 
@@ -355,9 +380,10 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
 
       X1 <- cbind(X1, CrowD) # data.frame with solution vector, number of clusters, ranking and crowding distance.
 
-      # Output for the generation.
-      print(paste0("Generation ", g, " Non-dominated solutions:"))
-      print(X1[X1[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
+      # Output for the generation callback
+      environment(report_callback)<-environment()
+      report_callback()
+
 
       # Save parent generation.
       Xold <- X
@@ -393,9 +419,12 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
 
       PARETO[[g]] <- X1[, (chrom_length + 2):(chrom_length + 3)] # Saves the fitnes of the solutions of the current generation
 
-      # Output for the generation.
-      print(paste0("Generation ", g, " Non-dominated solutions:"))
-      print(X1[X1[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
+      # Output for the generation callback
+      environment(report_callback)<-environment()
+      report_callback()
+
+      #print(paste0("Generation ", g, " Non-dominated solutions:"))
+      #print(X1[X1[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
 
       Xold <- X1[, 1:chrom_length]
       Nclustold <- X1[, "k"]
@@ -406,18 +435,71 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
     }
 
     # 5.Go to step 2
-    end_time <- Sys.time()
-    t <- end_time - start_time
-    print(t)
+
     gc()
-    # Save partial results.
-    if (g %% 2 == 0) {
-      colnames(X1)[1:(ncol(X1) - 5)] <- rownames(prob_matrix)
-      output <- list(Solutions = X1, ParetoFront = PARETO)
-      filename <- paste0(g, ".rda")
-      save(file = filename, output)
-    }
+    environment(base_save_pop_callback)<-environment()
+    environment(save_pop_partial_callback)<-environment()
+    save_pop_partial_callback(res_dir)
+
+    environment(end_gen_callback)<-environment()
+    end_gen_callback()
   }
 
   parallel::stopCluster(cluster)
+  environment(base_save_pop_callback)<-environment()
+  environment(save_pop_final_callback)<-environment()
+  save_pop_final_callback(res_dir)
+}
+# Callback functions
+# Save  population
+base_save_pop_callback <- function(directory="results/",prefix){
+  #environment(base_save_pop_callback)<-environment()
+  if (!dir.exists(directory))
+    dir.create(directory)
+  colnames(X1)[1:(ncol(X1) - 5)] <- rownames(prob_matrix)
+  output <- list(Solutions = X1, ParetoFront = PARETO)
+  filename <- paste0(directory,prefix, ".rda")
+  save(file = filename, output)
+}
+# Save partial population (every 2 generations)
+base_save_pop_partial_callback <- function(directory="results/"){
+  if (!dir.exists(directory))
+      dir.create(directory)
+  if (g %% 2 == 0){
+    environment(base_save_pop_callback)<-environment()
+    base_save_pop_callback(directory,prefix=g)
+  }
+}
+
+base_save_pop_final_callback <- function(directory="results/"){
+  if (!dir.exists(directory))
+    dir.create(directory)
+  environment(base_save_pop_callback)<-environment()
+  base_save_pop_callback(directory,prefix="final")
+  print(paste0("final population saved in final.rda"))
+}
+# Print basic info per generation
+base_report_callback <- function(){
+  print(paste0("Generation ", g, " Non-dominated solutions:"))
+  print(X1[X1[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
+  #print(Sys.time()- start_time)
+}
+
+no_report_callback <- function(){
+  if(g%%5==0)
+    cat("*")
+  else
+    cat(".")
+}
+
+base_start_gen_callback <- function(){
+  start_time <- Sys.time()
+}
+
+base_end_gen_callback <- function(){
+  print(Sys.time()- start_time)
+}
+
+default_callback <- function(){
+
 }
