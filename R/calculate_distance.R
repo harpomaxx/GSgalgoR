@@ -81,11 +81,9 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
   distancetype <- match.arg(distancetype, c("pearson", "uncentered", "euclidean", "spearman"))
 
   if (usegpu == FALSE ) {
-    computingtype <- "using CPU computing"
-    print(computingtype)
+    computingtype <- "Using CPU for computing"
     # Centered pearson distance
     if (distancetype == "pearson") {
-     print("pearson")
       calculate_distance <- calculate_distance_pearson_cpu
     }
     # Spearman distance
@@ -100,8 +98,7 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
       calculate_distance <- calculate_distance_euclidean_cpu
     }
   } else {
-    computingtype <- "using GPU computing"
-    print(computingtype)
+    computingtype <- "Using GPU for computing"
     # Centered pearson distance
     if (distancetype == "pearson") {
      calculate_distance <- calculate_distance_pearson_gpu
@@ -118,6 +115,7 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
      calculate_distance <- calculate_distance_euclidean_gpu
     }
   }
+  print(paste(computingtype,distancetype,"distance"))
   calculate_distance
 }
 
