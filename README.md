@@ -20,7 +20,7 @@ This is a basic example which shows how to find gene Expression signatures for t
 
 ``` r
 
-library(galgo)
+library(galgoR)
 
 ## basic example code
 rna_luad<-use_rna_luad()
@@ -35,7 +35,7 @@ galgo::search_ges(generations = 10, population = 30,prob_matrix = prm, chrom_len
 ```
 ## GPU support
 
-By default galgo runs some portions of its code in GPU, provided by the gpuR pacckage. Before installing gpuR, the opencl backend should be configured. 
+By default galgo runs some portions of its code in GPU, provided by the gpuR package. Before installing gpuR, the opencl backend should be configured. 
 
 In linux systems install lastest nvidia cuda drivers and the opencl backend.
 
