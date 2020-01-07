@@ -346,8 +346,8 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
 
     `%dopar%` <- foreach::`%dopar%`
     `%do%` <- foreach::`%do%`
-    #reqpkgs <- c("cluster","cba", "survival", "matchingR","galgo")
-    reqpkgs <- c("cluster","cba", "survival", "matchingR")
+    reqpkgs <- c("cluster","cba", "survival", "matchingR","galgo")
+    #reqpkgs <- c("cluster","cba", "survival", "matchingR")
     if (usegpu == TRUE ){
       # TODO: add validation for opencl machine. if not fallback to CPU.
       reqpkgs <- c(reqpkgs,"gpuR")
@@ -356,7 +356,7 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
 
     # Calculate Fitnes 1 (silhouette) and 2 (Survival differences).
     Fit2 <- foreach::foreach(i = 1:nrow(X), .packages = reqpkgs, .combine = rbind) %dopar% {
-      devtools::load_all() # required for package devel
+      #devtools::load_all() # required for package devel
       crossvalidation(prob_matrix, flds, X[i, ], k[i], OS = OS, distance = calculate_distance, nCV, period)
     }
 
