@@ -503,3 +503,43 @@ base_end_gen_callback <- function(){
 default_callback <- function(){
 
 }
+ 
+          
+
+#CONVERT OUTPUT TO LIST
+
+toList=function(output){
+  if(!is(output,"galgo.Obj")){stop("object must be of class 'galgo.Obj'")}
+  OUTPUT= list()
+  Genes= colnames(output$Solutions)[1:(ncol(output$Solutions)-5)]
+  for(i in 1:nrow(output$Solutions)){
+    Sol= paste("Solution",i,sep=".")
+    OUTPUT[[Sol]]= list()
+    OUTPUT[[Sol]][["Genes"]]= Genes[as.logical(output$Solutions[i,1:length(Genes)])]
+    OUTPUT[[Sol]]["k"]= output$Solutions[i,"k"]
+    OUTPUT[[Sol]]["SC.Fit"]= output$Solutions[i,length(Genes)+2]
+    OUTPUT[[Sol]]["Surv.Fit"]= output$Solutions[i,length(Genes)+3]
+    OUTPUT[[Sol]]["rank"]= output$Solutions[i,"rnkIndex"]
+    OUTPUT[[Sol]]["CrowD"]= output$Solutions[i,"CrowD"]
+    }
+  return(OUTPUT)  
+}
+
+
+#CONVERT OUTPUT TO DATA.FRAME
+
+toDataFrame= function(output){
+  if(!is(output,"galgo.Obj")){stop("object must be of class 'galgo.Obj'")}
+  Genes= colnames(output$Solutions)[1:(ncol(output$Solutions)-5)]
+  ListGenes=list()
+  for(i in 1:nrow(output$Solutions)){
+    ListGenes[[i]]= list()
+    ListGenes[[i]]= Genes[as.logical(output$Solutions[i,1:length(Genes)])]
+  }
+
+  OUTPUT= data.frame(Genes=  I(ListGenes),k=output$Solutions[,"k"],SC.Fit= output$Solutions[,nrow(prob_matrix)+2],Surv.Fit= output$Solutions[,nrow(prob_matrix)+3],Rank= output$Solutions[,"rnkIndex"],CrowD= output$Solutions[,"CrowD"])
+  return(OUTPUT)
+
+}
+
+    
