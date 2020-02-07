@@ -461,7 +461,7 @@ base_save_pop_callback <- function(directory="results/",prefix){
   output <- list(Solutions = X1, ParetoFront = PARETO)
   filename <- paste0(directory,prefix, ".rda")
   save(file = filename, output)
-  class(output)= "galgo.Obj"
+  class(output)<- "galgo.Obj"
   return(output)
 }
 # Save partial population (every 2 generations)
@@ -483,6 +483,8 @@ base_save_pop_final_callback <- function(directory="results/"){
   environment(base_save_pop_callback)<-environment()
   base_save_pop_callback(directory,prefix="final")
   print(paste0("final population saved in final.rda"))
+  class(output)<- "galgo.Obj"
+  return(output)
 }
 # Print basic info per generation
 base_report_callback <- function(){
