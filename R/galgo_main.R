@@ -470,9 +470,9 @@ base_save_pop_partial_callback <- function(directory="results/"){
     environment(base_save_pop_callback)<-environment()
     base_save_pop_callback(directory,prefix=g)
   }
-  output <- list(Solutions = X1, ParetoFront = PARETO)
-  class(output)= "galgo.Obj"
-  return(output)
+  #output <- list(Solutions = X1, ParetoFront = PARETO)
+  #class(output)= "galgo.Obj"
+  #return(output)
 }
 
 base_save_pop_final_callback <- function(directory="results/"){
