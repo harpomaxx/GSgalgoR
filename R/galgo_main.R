@@ -346,7 +346,7 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
 
     `%dopar%` <- foreach::`%dopar%`
     `%do%` <- foreach::`%do%`
-    reqpkgs <- c("cluster","cba", "survival", "matchingR","galgo")
+    reqpkgs <- c("cluster","cba", "survival", "matchingR","galgoR")
     #reqpkgs <- c("cluster","cba", "survival", "matchingR")
     if (usegpu == TRUE ){
       # TODO: add validation for opencl machine. if not fallback to CPU.
