@@ -452,12 +452,12 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
 }
 # Callback functions
 # Save  population
+output <- list(Solutions = X1, ParetoFront = PARETO)                    
 base_save_pop_callback <- function(directory="results/",prefix){
   #environment(base_save_pop_callback)<-environment()
   if (!dir.exists(directory))
     dir.create(directory)
   colnames(X1)[1:(ncol(X1) - 5)] <- rownames(prob_matrix)
-  output <- list(Solutions = X1, ParetoFront = PARETO)
   filename <- paste0(directory,prefix, ".rda")
   save(file = filename, output)
 }
