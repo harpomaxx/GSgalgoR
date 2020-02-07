@@ -461,6 +461,8 @@ base_save_pop_callback <- function(directory="results/",prefix){
   output <- list(Solutions = X1, ParetoFront = PARETO)
   filename <- paste0(directory,prefix, ".rda")
   save(file = filename, output)
+  class(output)= "galgo.Obj"
+  return(output)
 }
 # Save partial population (every 2 generations)
 base_save_pop_partial_callback <- function(directory="results/"){
