@@ -2,13 +2,17 @@
 #'
 #' @param y a vector of outcomes
 #' @param k an integer for the number of folds
-#' @param list logical - should the results be in a list (TRUE), were each element of the list has the position of the outcomes included in said fold, or as a vector where each element is assigned to a given fold 
+#' @param list logical - should the results be in a list (TRUE) or in a vector
 #' @param returnTrain a logical. When true, the values returned are the sample positions correspondingto the data used during training. This argument only works in conjunction withlist = TRUE
 #'
-#' @return
+#' @return if list=TRUE, it returns a list with k elements were each element of the list has the position of the outcomes included in said fold, if list=FALSE the function returns a vector where each outcome is assigned to a given fold from 1 to k 
 #' @export
 #'
 #' @examples
+#' y= rnorm(100,5,2) # A vector of outcomes
+#' k= 5 #Number of folds
+#' createFolds(y,k=k,list=TRUE)
+
 createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 {
   if (class(y)[1] == "Surv")
