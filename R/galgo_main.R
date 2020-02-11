@@ -1,9 +1,9 @@
-#' Title
+#' createFolds splits the data into k groups to perform cross-validation
 #'
-#' @param y
-#' @param k
-#' @param list
-#' @param returnTrain
+#' @param y a vector of outcomes
+#' @param k an integer for the number of folds
+#' @param list logical - should the results be in a list (TRUE), were each element of the list has the position of the outcomes included in said fold, or as a vector where each element is assigned to a given fold 
+#' @param returnTrain a logical. When true, the values returned are the sample positions correspondingto the data used during training. This argument only works in conjunction withlist = TRUE
 #'
 #' @return
 #' @export
