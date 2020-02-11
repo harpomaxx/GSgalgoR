@@ -1,5 +1,13 @@
 # Distance type used in the algorithm
 # distancetype <- "pearson" # Options are: "pearson","uncentered" (cosine),"spearman","euclidean"
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_distance_pearson_gpu <- function(x) {
         x <- gpuR::vclMatrix(x)
         mx <- gpuR::colMeans(x)
@@ -11,6 +19,14 @@ calculate_distance_pearson_gpu <- function(x) {
         pDist <- as.matrix(pDist)
         as.dist(1 - pDist)
  }
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_distance_spearman_gpu <- function(x) {
         x <- gpuR::vclMatrix(x)
         mx <- gpuR::colMeans(x)
@@ -23,6 +39,14 @@ calculate_distance_spearman_gpu <- function(x) {
         as.dist(1 - pDist)
 }
 
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_distance_uncentered_gpu <- function(x) {
         mgpu <- gpuR::vclMatrix(t(x))
         d2 <- gpuR::vclMatrix(1, ncol = 1, nrow = dim(mgpu)[2])
@@ -32,6 +56,14 @@ calculate_distance_uncentered_gpu <- function(x) {
         pDist <- as.matrix(pDist)
         as.dist(1 - pDist)
 }
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_distance_euclidean_gpu <- function(x) {
         mgpu <- gpuR::vclMatrix(t(x))
         pDist <- suppressWarnings(gpuR::distance(mgpu, mgpu, method = "euclidean"))
@@ -40,6 +72,14 @@ calculate_distance_euclidean_gpu <- function(x) {
       }
 
 
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_distance_pearson_cpu <-function(x){
     print("pearson....")
     mx=base::colMeans(x)
@@ -51,6 +91,14 @@ calculate_distance_pearson_cpu <-function(x){
 }
 
 
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_distance_spearman_cpu <- function(x){
     x=apply(x,2,rank)
     mx=colMeans(x)
@@ -62,6 +110,14 @@ calculate_distance_spearman_cpu <- function(x){
 }
 
 
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_distance_uncentered_cpu <- function(x){
     mgpu=t(x)
     d2= matrix(1,ncol=1,nrow=dim(mgpu)[2])
@@ -71,12 +127,29 @@ calculate_distance_uncentered_cpu <- function(x){
     as.dist(1-pDist)
 }
 
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_distance_euclidean_cpu<-function(x){
     d=stats::dist(t(x),method="euclidean")
 }
 
 
 
+#' Title
+#'
+#' @param distancetype
+#' @param usegpu
+#'
+#' @return
+#' @export
+#'
+#' @examples
 select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
   distancetype <- match.arg(distancetype, c("pearson", "uncentered", "euclidean", "spearman"))
 
@@ -120,25 +193,59 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
 }
 
 
-# Given the distance to the centroids classify the samples
+#' Title
+#' Given the distance to the centroids classify the samples
+#'
+#' @param data
+#' @param centroid
+#' @param method
+#'
+#' @return
+#' @export
+#'
+#' @examples
 classify <- function(data, centroid, method = "pearson") {
     R <- stats::cor(data, centroid, method = method)
     scores <- apply(R, 1, which.max)
 }
 
 
-# To use partition around medioids (PAM), This is the default for the the current aplication
+#' Title
+#' To use partition around medioids (PAM), This is the default for the the current aplication
+#' @param c
+#' @param k
+#'
+#' @return
+#' @export
+#'
+#' @examples
 cluster_algorithm <- function(c, k) {
   return(list(cluster = cluster::pam(c, k, cluster.only = TRUE, diss = TRUE, do.swap = TRUE, keep.diss = FALSE, keep.data = FALSE, pamonce = 2)))
 }
 
-
-# cosine similarity
+#' Title
+#' cosine similarity
+#'
+#' @param a
+#' @param b
+#'
+#' @return
+#' @export
+#'
+#' @examples
 cosine <- function(a, b) {
   a %*% b / sqrt(a %*% a * b %*% b)
 } # Calculates the cosine distance between two solutions to estimate the mutational rate
 
-# Function to calculate the centroids of different groups (classes)
+#' Title
+#' Function to calculate the centroids of different groups (classes)
+#' @param data
+#' @param class
+#'
+#' @return
+#' @export
+#'
+#' @examples
 kcentroid <- function(data, class) {
   L <- list()
   c <- unique(unlist(class))

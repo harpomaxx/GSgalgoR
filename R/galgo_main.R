@@ -1,4 +1,14 @@
-
+#' Title
+#'
+#' @param y
+#' @param k
+#' @param list
+#' @param returnTrain
+#'
+#' @return
+#' @export
+#'
+#' @examples
 createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 {
   if (class(y)[1] == "Surv")
@@ -44,14 +54,29 @@ createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 }
 
 
-# harmonic mean tends to be robust with high outlayers (robust for overfitting)
-# with high penalty on small values
+#' Title
+#' harmonic mean tends to be robust with high outlayers (robust for overfitting)
+#' with high penalty on small values
+#'
+#' @param a
+#'
+#' @return
+#' @export
+#'
+#' @examples
 hmean <- function(a) {
   1 / mean(1 / a)
 }
 
-
-# Fitness by RMST (Restricted Mean Survival Time, https://www.bmj.com/content/357/bmj.j2250)
+#' Title
+#' Fitness by RMST (Restricted Mean Survival Time, https://www.bmj.com/content/357/bmj.j2250)
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 cDist <- function(x) { # ad-hoc function, x is the RMST
   d <- x[order(x)]
   l <- length(d) - 1
@@ -63,6 +88,16 @@ cDist <- function(x) { # ad-hoc function, x is the RMST
   return(hmean(dif) * l)
 }
 
+#' Title
+#'
+#' @param OS
+#' @param clustclass
+#' @param period
+#'
+#' @return
+#' @export
+#'
+#' @examples
 fitness <- function(OS, clustclass,period) {
   score <- tryCatch(
     {
@@ -76,21 +111,56 @@ fitness <- function(OS, clustclass,period) {
   return(score)
 }
 
-## Functions to vectorize crossvalidation
+## Helpers Functions to vectorize crossvalidation
 
+#' Title
+#'
+#' @param flds
+#' @param Data
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ArrayTrain <- function(flds, Data) {
   trainData <- Data[, -flds]
 }
 
+#' Title
+#'
+#' @param flds
+#' @param Data
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ArrayTest <- function(flds, Data) {
   testData <- Data[, flds]
 }
 
 
+#' Title
+#'
+#' @param flds
+#' @param D
+#'
+#' @return
+#' @export
+#'
+#' @examples
 subDist <- function(flds, D) {
     sub <- subset(D, -flds)
 }
 
+#' Title
+#'
+#' @param C
+#'
+#' @return
+#' @export
+#'
+#' @examples
 alloc2 <- function(C) {
   Ct <- t(C)
   ord <- matchingR::galeShapley.marriageMarket(C, Ct)
@@ -98,17 +168,40 @@ alloc2 <- function(C) {
 }
 
 
+#' Title
+#'
+#' @param C
+#' @param ord
+#'
+#' @return
+#' @export
+#'
+#' @examples
 reord <- function(C, ord) {
   C <- C[, ord]
 }
 
+#' Title
+#'
+#'crossvalidation function based on: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3105299/
+#' Data is the expression matrix
+#' flds is a list with the indexes to partition the data in n different folds
+#' indv is the solution to test, namely, a binary vector to subset the genes to test
+#' The function returns two fitness: fit1 (the mean silhouette) and fit2 (the ad-hoc function to estimate the differences between curves)
 
-# crossvalidation function based on: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3105299/
-# Data is the expression matrix
-# flds is a list with the indexes to partition the data in n different folds
-# indv is the solution to test, namely, a binary vector to subset the genes to test
-# The function returns two fitness: fit1 (the mean silhouette) and fit2 (the ad-hoc function to estimate the differences between curves)
-
+#' @param Data
+#' @param flds
+#' @param indv
+#' @param k
+#' @param OS
+#' @param distance
+#' @param nCV
+#' @param period
+#'
+#' @return
+#' @export
+#'
+#' @examples
 crossvalidation <- function(Data, flds, indv, k, OS, distance,nCV,period) {
   Data <- Data[indv, ]
   D <- distance(Data)
@@ -131,16 +224,35 @@ crossvalidation <- function(Data, flds, indv, k, OS, distance,nCV,period) {
   return(c(fit1, fit2))
 }
 
-# Minimum number of genes to use in a solution (A constraint for the algorithm)
-#minGenes <- function(x) {
+#' Title
+#' Minimum number of genes to use in a solution (A constraint for the algorithm)
+#'
+#' @param x
+#' @param chrom_length
+#'
+#' @return
+#' @export
+#'
+#' @examples
 minGenes <- function(x,chrom_length) {
   sum(x) >= 10 & sum(x) < chrom_length
 }
 
-# http://ictactjournals.in/paper/IJSC_V6_I1_paper_4_pp_1083_1092.pdf
-# Multiple point crossover
-# a and b is solution 1 and 2 respectively (binary vectors)
-# n is the number of cut points
+#' Title
+#'
+#' http://ictactjournals.in/paper/IJSC_V6_I1_paper_4_pp_1083_1092.pdf
+#' Multiple point crossover
+#' a and b is solution 1 and 2 respectively (binary vectors)
+#' n is the number of cut points
+#'
+#' @param a
+#' @param b
+#' @param n
+#'
+#' @return
+#' @export
+#'
+#' @examples
 kcrossover <- function(a, b, n) {
   if (length(a) != length(b)) {
     stop("vectors of unequal length")
@@ -170,7 +282,16 @@ kcrossover <- function(a, b, n) {
   return(list(achild, bchild))
 }
 
-# Uniformcrossover
+#' Title
+#' Uniformcrossover
+#'
+#' @param a
+#' @param b
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ucrossover <- function(a, b) {
   if (length(a) != length(b)) {
     stop("vectors of unequal length")
@@ -186,9 +307,16 @@ ucrossover <- function(a, b) {
   return(list(achild, bchild))
 }
 
-# Asymmetric mutation operator:
-# Analysis of an Asymmetric Mutation Operator; Jansen et al.
-
+#' Title
+#' Asymmetric mutation operator:
+#' Analysis of an Asymmetric Mutation Operator; Jansen et al.
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 asMut <- function(x) {
   chrom_length <- length(x)
   res <- x
@@ -206,7 +334,18 @@ asMut <- function(x) {
 }
 
 
-# Offspring creation
+#' Title
+#' Offspring creation
+#'
+#' @param X1
+#' @param chrom_length
+#' @param population
+#' @param TournamentSize
+#'
+#' @return
+#' @export
+#'
+#' @examples
 offspring <- function(X1, chrom_length, population, TournamentSize) {
   New <- matrix(NA, ncol = chrom_length, nrow = population) # Create empty matrix to add new individuals
   NewK <- matrix(NA, nrow = 1, ncol = population) # same for cluster chromosome
@@ -267,12 +406,42 @@ offspring <- function(X1, chrom_length, population, TournamentSize) {
   return(list(New = New, NewK = NewK))
 }
 
+#' Title
+#'Penalize Fitness2 function according the number of genes
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
 pen <- function(x) {
   1 / (1 + (x / 500)^2)
-} # Penalize Fitness2 function according the number of genes
+}
 
-
-
+#' Title
+#'
+#' @param population
+#' @param generations
+#' @param nCV
+#' @param usegpu
+#' @param distancetype
+#' @param TournamentSize
+#' @param period
+#' @param OS
+#' @param chrom_length
+#' @param prob_matrix
+#' @param res_dir
+#' @param save_pop_partial_callback
+#' @param save_pop_final_callback
+#' @param report_callback
+#' @param start_gen_callback
+#' @param end_gen_callback
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
 search_ges <- function(population = 30, # Number of individuals to evaluate
                        generations = 2, # Number of generations
                        nCV = 5, # Number of crossvalidations for function "crossvalidation"
@@ -450,13 +619,22 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
   environment(save_pop_final_callback)<-environment()
   save_pop_final_callback(res_dir)
 }
-# Callback functions
-# Save  population
-           
+
+#' Title
+#' Base callback functions
+#' Save  population
+#'
+#' @param directory
+#' @param prefix
+#'
+#' @return
+#' @export
+#'
+#' @examples
 base_save_pop_callback <- function(directory="results/",prefix){
   #environment(base_save_pop_callback)<-environment()
   if (!dir.exists(directory))
-    dir.create(directory)         
+    dir.create(directory)
   colnames(X1)[1:(ncol(X1) - 5)] <- rownames(prob_matrix)
   output <- list(Solutions = X1, ParetoFront = PARETO)
   filename <- paste0(directory,prefix, ".rda")
@@ -464,7 +642,15 @@ base_save_pop_callback <- function(directory="results/",prefix){
   class(output)<- "galgo.Obj"
   return(output)
 }
-# Save partial population (every 2 generations)
+
+#' Title
+#' Save partial population (every 2 generations)
+#' @param directory
+#'
+#' @return
+#' @export
+#'
+#' @examples
 base_save_pop_partial_callback <- function(directory="results/"){
   if (!dir.exists(directory))
       dir.create(directory)
@@ -475,6 +661,14 @@ base_save_pop_partial_callback <- function(directory="results/"){
 
 }
 
+#' Title
+#'
+#' @param directory
+#'
+#' @return
+#' @export
+#'
+#' @examples
 base_save_pop_final_callback <- function(directory="results/"){
   if (!dir.exists(directory))
     dir.create(directory)
@@ -484,13 +678,26 @@ base_save_pop_final_callback <- function(directory="results/"){
   class(output)<- "galgo.Obj"
   return(output)
 }
-# Print basic info per generation
+
+#' Title
+#' Print basic info per generation
+#'
+#' @return
+#' @export
+#'
+#' @examples
 base_report_callback <- function(){
   print(paste0("Generation ", g, " Non-dominated solutions:"))
   print(X1[X1[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
   #print(Sys.time()- start_time)
 }
 
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
 no_report_callback <- function(){
   if(g%%5==0)
     cat("*")
@@ -498,54 +705,86 @@ no_report_callback <- function(){
     cat(".")
 }
 
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
 base_start_gen_callback <- function(){
   start_time <- Sys.time()
 }
 
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
 base_end_gen_callback <- function(){
   print(Sys.time()- start_time)
 }
 
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
 default_callback <- function(){
 
 }
- 
-          
 
-#CONVERT OUTPUT TO LIST
+#' Title
+#' CONVERT OUTPUT TO LIST
+#'
+#' @param output
+#'
+#' @return
+#' @export
+#'
+#' @examples
 
-toList=function(output){
-  if(!is(output,"galgo.Obj")){stop("object must be of class 'galgo.Obj'")}
-  OUTPUT= list()
-  Genes= colnames(output$Solutions)[1:(ncol(output$Solutions)-5)]
-  for(i in 1:nrow(output$Solutions)){
-    Sol= paste("Solution",i,sep=".")
-    OUTPUT[[Sol]]= list()
-    OUTPUT[[Sol]][["Genes"]]= Genes[as.logical(output$Solutions[i,1:length(Genes)])]
-    OUTPUT[[Sol]]["k"]= output$Solutions[i,"k"]
-    OUTPUT[[Sol]]["SC.Fit"]= output$Solutions[i,length(Genes)+2]
-    OUTPUT[[Sol]]["Surv.Fit"]= output$Solutions[i,length(Genes)+3]
-    OUTPUT[[Sol]]["rank"]= output$Solutions[i,"rnkIndex"]
-    OUTPUT[[Sol]]["CrowD"]= output$Solutions[i,"CrowD"]
-    }
-  return(OUTPUT)  
+toList <- function(output) {
+  if (!is(output, "galgo.Obj")) {
+    stop("object must be of class 'galgo.Obj'")
+  }
+  OUTPUT <- list()
+  Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
+  for (i in 1:nrow(output$Solutions)) {
+    Sol <- paste("Solution", i, sep = ".")
+    OUTPUT[[Sol]] <- list()
+    OUTPUT[[Sol]][["Genes"]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
+    OUTPUT[[Sol]]["k"] <- output$Solutions[i, "k"]
+    OUTPUT[[Sol]]["SC.Fit"] <- output$Solutions[i, length(Genes) + 2]
+    OUTPUT[[Sol]]["Surv.Fit"] <- output$Solutions[i, length(Genes) + 3]
+    OUTPUT[[Sol]]["rank"] <- output$Solutions[i, "rnkIndex"]
+    OUTPUT[[Sol]]["CrowD"] <- output$Solutions[i, "CrowD"]
+  }
+  return(OUTPUT)
 }
 
-
-#CONVERT OUTPUT TO DATA.FRAME
-
-toDataFrame= function(output){
-  if(!is(output,"galgo.Obj")){stop("object must be of class 'galgo.Obj'")}
-  Genes= colnames(output$Solutions)[1:(ncol(output$Solutions)-5)]
-  ListGenes=list()
-  for(i in 1:nrow(output$Solutions)){
-    ListGenes[[i]]= list()
-    ListGenes[[i]]= Genes[as.logical(output$Solutions[i,1:length(Genes)])]
+#' Title
+#' CONVERT OUTPUT TO DATA.FRAME
+#' @param output
+#'
+#' @return
+#' @export
+#'
+#' @examples
+toDataFrame <- function(output) {
+  if (!is(output, "galgo.Obj")) {
+    stop("object must be of class 'galgo.Obj'")
+  }
+  Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
+  ListGenes <- list()
+  for (i in 1:nrow(output$Solutions)) {
+    ListGenes[[i]] <- list()
+    ListGenes[[i]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
   }
 
-  OUTPUT= data.frame(Genes=  I(ListGenes),k=output$Solutions[,"k"],SC.Fit= output$Solutions[,nrow(prob_matrix)+2],Surv.Fit= output$Solutions[,nrow(prob_matrix)+3],Rank= output$Solutions[,"rnkIndex"],CrowD= output$Solutions[,"CrowD"])
+  OUTPUT <- data.frame(Genes = I(ListGenes), k = output$Solutions[, "k"], SC.Fit = output$Solutions[, nrow(prob_matrix) + 2], Surv.Fit = output$Solutions[, nrow(prob_matrix) + 3], Rank = output$Solutions[, "rnkIndex"], CrowD = output$Solutions[, "CrowD"])
   return(OUTPUT)
-
 }
 
-    
+
