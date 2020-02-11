@@ -1,14 +1,18 @@
-#' Title
+#' createFolds splits the data into k groups to perform cross-validation
 #'
-#' @param y
-#' @param k
-#' @param list
-#' @param returnTrain
+#' @param y a vector of outcomes
+#' @param k an integer for the number of folds
+#' @param list logical - should the results be in a list (TRUE) or in a vector
+#' @param returnTrain a logical. When true, the values returned are the sample positions correspondingto the data used during training. This argument only works in conjunction withlist = TRUE
 #'
-#' @return
+#' @return if list=TRUE, it returns a list with k elements were each element of the list has the position of the outcomes included in said fold, if list=FALSE the function returns a vector where each outcome is assigned to a given fold from 1 to k 
 #' @export
 #'
 #' @examples
+#' y= rnorm(100,5,2) # A vector of outcomes
+#' k= 5 #Number of folds
+#' createFolds(y,k=k,list=TRUE)
+
 createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 {
   if (class(y)[1] == "Surv")
@@ -54,30 +58,36 @@ createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 }
 
 
-#' Title
-#' harmonic mean tends to be robust with high outlayers (robust for overfitting)
-#' with high penalty on small values
+#' Harmonic mean
+#' The harmonic mean can be expressed as the reciprocal of the arithmetic mean of the reciprocals of a given set of observations.  Since the harmonic mean of a list of numbers tends strongly toward the least elements of the list, it tends (compared to the arithmetic mean) to mitigate the impact of large outliers and aggravate the impact of small ones. 
+#' 
 #'
-#' @param a
+#' @param a a vector of numbers
 #'
-#' @return
+#' @return the harmonic mean of the values in a is computed, as a numeric vector of length one
 #' @export
 #'
 #' @examples
+#' x= rnorm(5,2,1) #five random numbers from the normal distribution
+#' x= c(x,20) #add outlier
+#' hmean(x)                    
+                   
 hmean <- function(a) {
   1 / mean(1 / a)
 }
 
-#' Title
-#' Fitness by RMST (Restricted Mean Survival Time, https://www.bmj.com/content/357/bmj.j2250)
+#' Restricted Mean Survival distance between groups
 #'
-#' @param x
+#' @param x A numeric vector of length > 1 
 #'
-#' @return
+#' @return A numeric vector of length 1. The function computes the Harmonic mean of the differences between consecutive groups multiplied by the number of comparisons                    
+#' This function is used inside 'fitness' function.
 #' @export
 #'
 #' @examples
-cDist <- function(x) { # ad-hoc function, x is the RMST
+#' V <- c(4.5,3,7,11)
+#' cDist(V)                   
+cDist <- function(x) {
   d <- x[order(x)]
   l <- length(d) - 1
   c <- c(0, 1)
@@ -88,20 +98,29 @@ cDist <- function(x) { # ad-hoc function, x is the RMST
   return(hmean(dif) * l)
 }
 
-#' Title
+                    
+                    
+                    
+#' Survival fitness function using the Restricted Mean Survival Time (RMST) of each group
 #'
-#' @param OS
-#' @param clustclass
-#' @param period
-#'
-#' @return
+#' @param OS a survival object with survival data of the patients evaluated
+#' @param clustclass a numeric vector with the group label for each patient
+#' @param period a number representing the period of time to evaluate in the RMST calculation
+#'                     
+#' @return The function computes the Harmonic mean of the differences between Restricted Mean Survival Time (RMST) of consecutive survival curves multiplied by the number of comparisons                    
+#' Restricted Mean Survival Time: https://www.bmj.com/content/357/bmj.j2250
 #' @export
 #'
 #' @examples
+#' rna_luad<-use_rna_luad()
+#' clinical <- rna_luad$clinical
+#' OS <- survival::Surv(time=clinical$time,event=clinical$status)
+#' fitness(OS,clustclass= clinical$Wilk.Subtype, 1825)                    
+                    
 fitness <- function(OS, clustclass,period) {
   score <- tryCatch(
     {
-      t <- survival:::survmean(survival::survfit(OS ~ clustclass), rmean = period)[[1]][, "*rmean"] # This function calculates the RMST (comes from package Survival)
+      t <- survival:::survmean(survival::survfit(OS ~ clustclass), rmean = period)[[1]][, "*rmean"] # This function calculates the RMST (comes from package survival)
       cDist(t)
     },
     error = function(e) {
