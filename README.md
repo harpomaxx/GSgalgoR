@@ -28,9 +28,8 @@ rna_luad<-use_rna_luad()
 prm <- rna_luad$prm 
 clinical <- rna_luad$clinical
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
-chrom_length <- nrow(prm)   #length of chromosome
 
-galgoR::search_ges(generations = 10, population = 30,prob_matrix = prm, chrom_length = nrow(prm),OS=OS)
+galgoR::search_ges(generations = 10, population = 30,prob_matrix = prm, OS=OS)
 
 ```
 ## GPU support
