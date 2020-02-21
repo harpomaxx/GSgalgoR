@@ -469,7 +469,6 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
                        TournamentSize = 2,
                        period = 1825,
                        OS, #OS=Surv(time=clinical$time,event=clinical$status)
-                       chrom_length,
                        prob_matrix,
                        res_dir="results/",
                        save_pop_partial_callback=base_save_pop_partial_callback,
@@ -500,6 +499,7 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
   calculate_distance <- select_distance(distancetype, usegpu)
   # Empty list to save the solutions.
   PARETO <- list()
+  chrom_length <- nrow(prob_matrix) 
   # 1. Create random population of solutions.
 
   # Creating random clusters from 2-10.
