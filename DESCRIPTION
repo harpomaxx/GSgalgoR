@@ -16,3 +16,4 @@ Imports: cluster, doParallel, foreach, matchingR, nsga2R, survival, cba
 Suggests: gpuR
 URL: https://github.com/harpomaxx/galgo
 BugReports: https://github.com/harpomaxx/galgo/issues
+RoxygenNote: 6.1.1
