@@ -5,7 +5,7 @@
 #' @param list logical - should the results be in a list (TRUE) or in a vector
 #' @param returnTrain a logical. When true, the values returned are the sample positions correspondingto the data used during training. This argument only works in conjunction withlist = TRUE
 #'
-#' @return if list=TRUE, it returns a list with k elements were each element of the list has the position of the outcomes included in said fold, if list=FALSE the function returns a vector where each outcome is assigned to a given fold from 1 to k 
+#' @return if list=TRUE, it returns a list with k elements were each element of the list has the position of the outcomes included in said fold, if list=FALSE the function returns a vector where each outcome is assigned to a given fold from 1 to k
 #' @export
 #'
 #' @examples
@@ -59,8 +59,8 @@ createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 
 
 #' Harmonic mean
-#' The harmonic mean can be expressed as the reciprocal of the arithmetic mean of the reciprocals of a given set of observations.  Since the harmonic mean of a list of numbers tends strongly toward the least elements of the list, it tends (compared to the arithmetic mean) to mitigate the impact of large outliers and aggravate the impact of small ones. 
-#' 
+#' The harmonic mean can be expressed as the reciprocal of the arithmetic mean of the reciprocals of a given set of observations.  Since the harmonic mean of a list of numbers tends strongly toward the least elements of the list, it tends (compared to the arithmetic mean) to mitigate the impact of large outliers and aggravate the impact of small ones.
+#'
 #'
 #' @param a a vector of numbers
 #'
@@ -70,23 +70,23 @@ createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 #' @examples
 #' x= rnorm(5,2,1) #five random numbers from the normal distribution
 #' x= c(x,20) #add outlier
-#' hmean(x)                    
-                   
+#' hmean(x)
+
 hmean <- function(a) {
   1 / mean(1 / a)
 }
 
 #' Restricted Mean Survival distance between groups
 #'
-#' @param x A numeric vector of length > 1 
+#' @param x A numeric vector of length > 1
 #'
-#' @return A numeric vector of length 1. The function computes the Harmonic mean of the differences between consecutive groups multiplied by the number of comparisons                    
+#' @return A numeric vector of length 1. The function computes the Harmonic mean of the differences between consecutive groups multiplied by the number of comparisons
 #' This function is used inside 'fitness' function.
 #' @export
 #'
 #' @examples
 #' V <- c(4.5,3,7,11)
-#' cDist(V)                   
+#' cDist(V)
 cDist <- function(x) {
   d <- x[order(x)]
   l <- length(d) - 1
@@ -98,16 +98,16 @@ cDist <- function(x) {
   return(hmean(dif) * l)
 }
 
-                    
-                    
-                    
+
+
+
 #' Survival fitness function using the Restricted Mean Survival Time (RMST) of each group
 #'
 #' @param OS a survival object with survival data of the patients evaluated
 #' @param clustclass a numeric vector with the group label for each patient
 #' @param period a number representing the period of time to evaluate in the RMST calculation
-#'                     
-#' @return The function computes the Harmonic mean of the differences between Restricted Mean Survival Time (RMST) of consecutive survival curves multiplied by the number of comparisons                    
+#'
+#' @return The function computes the Harmonic mean of the differences between Restricted Mean Survival Time (RMST) of consecutive survival curves multiplied by the number of comparisons
 #' Restricted Mean Survival Time: https://www.bmj.com/content/357/bmj.j2250
 #' @export
 #'
@@ -115,8 +115,8 @@ cDist <- function(x) {
 #' rna_luad<-use_rna_luad()
 #' clinical <- rna_luad$clinical
 #' OS <- survival::Surv(time=clinical$time,event=clinical$status)
-#' fitness(OS,clustclass= clinical$Wilk.Subtype, 1825)                    
-                    
+#' fitness(OS,clustclass= clinical$Wilk.Subtype, 1825)
+
 fitness <- function(OS, clustclass,period) {
   score <- tryCatch(
     {
@@ -437,6 +437,219 @@ pen <- function(x) {
   1 / (1 + (x / 500)^2)
 }
 
+
+#' Title
+#' Base callback function
+#' Save  population
+#'
+#' @param directory
+#' @param prefix
+#' @param generation
+#' @param pop_pool
+#' @param pareto
+#' @param prob_matrix
+#' @param current_time
+#'
+#' @return an objet of class galgo
+#' @export
+#'
+#' @examples
+base_save_pop_callback <- function(directory="results/",prefix,generation,pop_pool,pareto,prob_matrix,current_time){
+  if (!dir.exists(directory))
+    dir.create(directory)
+  colnames(pop_pool)[1:(ncol(pop_pool) - 5)] <- rownames(prob_matrix)
+  output <- list(Solutions = pop_pool, ParetoFront = pareto)
+  filename <- paste0(directory,prefix, ".rda")
+  save(file = filename, output)
+  class(output)<- "galgo.Obj"
+  return(output)
+}
+
+#' Title
+#' Save partial population (every 2 generations)
+#'
+#' @param directory
+#' @param generation
+#' @param pop_pool
+#' @param pareto
+#' @param prob_matrix
+#' @param current_time
+#'
+#' @return
+#' @export
+#'
+#' @examples
+base_save_pop_partial_callback <- function(directory="results/",generation,pop_pool,pareto,prob_matrix,current_time){
+  if (!dir.exists(directory))
+      dir.create(directory)
+  if (generation %% 2 == 0){
+    base_save_pop_callback(directory,prefix=generation,generation,pop_pool,pareto,prob_matrix,current_time)
+  }
+
+}
+
+#' Title
+#'
+#' @param directory
+#' @param generation
+#' @param pop_pool
+#' @param pareto
+#' @param prob_matrix
+#' @param current_time
+#'
+#' @return
+#' @export
+#'
+#' @examples
+base_save_pop_final_callback <- function(directory="results/",generation,pop_pool,pareto,prob_matrix,current_time){
+  if (!dir.exists(directory))
+    dir.create(directory)
+  #environment(base_save_pop_callback)<-environment()
+  output<- base_save_pop_callback(directory,prefix="final",generation,pop_pool,pareto,prob_matrix,current_time)
+  print(paste0("final population saved in final.rda"))
+  class(output)<- "galgo.Obj"
+  return(output)
+}
+
+#' Title
+#' Print basic info per generation
+#'
+#' @param generation
+#' @param pop_pool
+#' @param pareto
+#' @param prob_matrix
+#' @param current_time
+#'
+#' @return
+#' @export
+#'
+#' @examples
+base_report_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time){
+  chrom_length <- nrow(prob_matrix)
+  print(paste0("Generation ", generation, " Non-dominated solutions:"))
+  print(pop_pool[pop_pool[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
+  #print(Sys.time()- start_time)
+}
+
+#' Title
+#'
+#' @param generation
+#' @param pop_pool
+#' @param pareto
+#' @param prob_matrix
+#' @param current_time
+#'
+#' @return
+#' @export
+#'
+#' @examples
+no_report_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time){
+  if(generation%%5==0)
+    cat("*")
+  else
+    cat(".")
+}
+
+#' Title
+#'
+#' @param generation
+#' @param pop_pool
+#' @param pareto
+#' @param prob_matrix
+#' @param current_time
+#'
+#' @return
+#' @export
+#'
+#' @examples
+base_start_gen_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time){
+  #start_time <- Sys.time()
+}
+
+#' Title
+#'
+#' @param generation
+#' @param pop_pool
+#' @param pareto
+#' @param prob_matrix
+#' @param current_time
+#'
+#' @return
+#' @export
+#'
+#' @examples
+base_end_gen_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time){
+  #print(Sys.time()- start_time)
+}
+
+#' Title
+#'
+#' @param generation
+#' @param pop_pool
+#' @param pareto
+#' @param prob_matrix
+#' @param current_time
+#'
+#' @return
+#' @export
+#'
+#' @examples
+default_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time){
+
+}
+
+#' Title
+#' CONVERT OUTPUT TO LIST
+#'
+#' @param output
+#'
+#' @return
+#' @export
+#'
+#' @examples
+
+toList <- function(output) {
+  if (!methods::is(output, "galgo.Obj")) {
+    stop("object must be of class 'galgo.Obj'")
+  }
+  OUTPUT <- list()
+  Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
+  for (i in 1:nrow(output$Solutions)) {
+    Sol <- paste("Solution", i, sep = ".")
+    OUTPUT[[Sol]] <- list()
+    OUTPUT[[Sol]][["Genes"]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
+    OUTPUT[[Sol]]["k"] <- output$Solutions[i, "k"]
+    OUTPUT[[Sol]]["SC.Fit"] <- output$Solutions[i, length(Genes) + 2]
+    OUTPUT[[Sol]]["Surv.Fit"] <- output$Solutions[i, length(Genes) + 3]
+    OUTPUT[[Sol]]["rank"] <- output$Solutions[i, "rnkIndex"]
+    OUTPUT[[Sol]]["CrowD"] <- output$Solutions[i, "CrowD"]
+  }
+  return(OUTPUT)
+}
+
+#' Title
+#' CONVERT OUTPUT TO DATA.FRAME
+#' @param output
+#'
+#' @return
+#' @export
+#'
+#' @examples
+toDataFrame <- function(output) {
+  if (!methods::is(output, "galgo.Obj")) {
+    stop("object must be of class 'galgo.Obj'")
+  }
+  Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
+  ListGenes <- list()
+  for (i in 1:nrow(output$Solutions)) {
+    ListGenes[[i]] <- list()
+    ListGenes[[i]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
+  }
+
+  OUTPUT <- data.frame(Genes = I(ListGenes), k = output$Solutions[, "k"], SC.Fit = output$Solutions[, nrow(prob_matrix) + 2], Surv.Fit = output$Solutions[, nrow(prob_matrix) + 3], Rank = output$Solutions[, "rnkIndex"], CrowD = output$Solutions[, "CrowD"])
+  return(OUTPUT)
+}
+
 #' Title
 #'
 #' @param population
@@ -477,7 +690,7 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
                        start_gen_callback=base_start_gen_callback,
                        end_gen_callback=base_end_gen_callback,
                        verbose=2
-                       ) {
+) {
 
   if (verbose == 0){
     report_callback = default_callback
@@ -499,7 +712,7 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
   calculate_distance <- select_distance(distancetype, usegpu)
   # Empty list to save the solutions.
   PARETO <- list()
-  chrom_length <- nrow(prob_matrix) 
+  chrom_length <- nrow(prob_matrix)
   # 1. Create random population of solutions.
 
   # Creating random clusters from 2-10.
@@ -515,6 +728,7 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
   ##### Main loop.
   for (g in 1:generations) {
     # Output for the generation callback
+    callback_data <- list()
     environment(start_gen_callback)<-environment()
     start_gen_callback()
 
@@ -569,8 +783,8 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
       X1 <- cbind(X1, CrowD) # data.frame with solution vector, number of clusters, ranking and crowding distance.
 
       # Output for the generation callback
-      environment(report_callback)<-environment()
-      report_callback()
+      #environment(report_callback)<-environment()
+      report_callback(generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
 
 
       # Save parent generation.
@@ -608,8 +822,8 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
       PARETO[[g]] <- X1[, (chrom_length + 2):(chrom_length + 3)] # Saves the fitnes of the solutions of the current generation
 
       # Output for the generation callback
-      environment(report_callback)<-environment()
-      report_callback()
+      #environment(report_callback)<-environment()
+      report_callback(generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
 
       #print(paste0("Generation ", g, " Non-dominated solutions:"))
       #print(X1[X1[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
@@ -625,185 +839,17 @@ search_ges <- function(population = 30, # Number of individuals to evaluate
     # 5.Go to step 2
 
     gc()
-    environment(base_save_pop_callback)<-environment()
-    environment(save_pop_partial_callback)<-environment()
-    save_pop_partial_callback(res_dir)
+    #environment(base_save_pop_callback)<-environment()
+    #environment(save_pop_partial_callback)<-environment()
+    save_pop_partial_callback(res_dir,generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
 
-    environment(end_gen_callback)<-environment()
-    end_gen_callback()
+    #environment(end_gen_callback)<-environment()
+    end_gen_callback(generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
   }
 
   parallel::stopCluster(cluster)
-  environment(base_save_pop_callback)<-environment()
-  environment(save_pop_final_callback)<-environment()
-  save_pop_final_callback(res_dir)
-}
-
-#' Title
-#' Base callback functions
-#' Save  population
-#'
-#' @param directory
-#' @param prefix
-#'
-#' @return
-#' @export
-#'
-#' @examples
-base_save_pop_callback <- function(directory="results/",prefix){
   #environment(base_save_pop_callback)<-environment()
-  if (!dir.exists(directory))
-    dir.create(directory)
-  colnames(X1)[1:(ncol(X1) - 5)] <- rownames(prob_matrix)
-  output <- list(Solutions = X1, ParetoFront = PARETO)
-  filename <- paste0(directory,prefix, ".rda")
-  save(file = filename, output)
-  class(output)<- "galgo.Obj"
-  return(output)
+  #environment(save_pop_final_callback)<-environment()
+  save_pop_final_callback(res_dir,generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
 }
-
-#' Title
-#' Save partial population (every 2 generations)
-#' @param directory
-#'
-#' @return
-#' @export
-#'
-#' @examples
-base_save_pop_partial_callback <- function(directory="results/"){
-  if (!dir.exists(directory))
-      dir.create(directory)
-  if (g %% 2 == 0){
-    environment(base_save_pop_callback)<-environment()
-    base_save_pop_callback(directory,prefix=g)
-  }
-
-}
-
-#' Title
-#'
-#' @param directory
-#'
-#' @return
-#' @export
-#'
-#' @examples
-base_save_pop_final_callback <- function(directory="results/"){
-  if (!dir.exists(directory))
-    dir.create(directory)
-  environment(base_save_pop_callback)<-environment()
-  output<- base_save_pop_callback(directory,prefix="final")
-  print(paste0("final population saved in final.rda"))
-  class(output)<- "galgo.Obj"
-  return(output)
-}
-
-#' Title
-#' Print basic info per generation
-#'
-#' @return
-#' @export
-#'
-#' @examples
-base_report_callback <- function(){
-  print(paste0("Generation ", g, " Non-dominated solutions:"))
-  print(X1[X1[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
-  #print(Sys.time()- start_time)
-}
-
-#' Title
-#'
-#' @return
-#' @export
-#'
-#' @examples
-no_report_callback <- function(){
-  if(g%%5==0)
-    cat("*")
-  else
-    cat(".")
-}
-
-#' Title
-#'
-#' @return
-#' @export
-#'
-#' @examples
-base_start_gen_callback <- function(){
-  start_time <- Sys.time()
-}
-
-#' Title
-#'
-#' @return
-#' @export
-#'
-#' @examples
-base_end_gen_callback <- function(){
-  print(Sys.time()- start_time)
-}
-
-#' Title
-#'
-#' @return
-#' @export
-#'
-#' @examples
-default_callback <- function(){
-
-}
-
-#' Title
-#' CONVERT OUTPUT TO LIST
-#'
-#' @param output
-#'
-#' @return
-#' @export
-#'
-#' @examples
-
-toList <- function(output) {
-  if (!is(output, "galgo.Obj")) {
-    stop("object must be of class 'galgo.Obj'")
-  }
-  OUTPUT <- list()
-  Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
-  for (i in 1:nrow(output$Solutions)) {
-    Sol <- paste("Solution", i, sep = ".")
-    OUTPUT[[Sol]] <- list()
-    OUTPUT[[Sol]][["Genes"]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
-    OUTPUT[[Sol]]["k"] <- output$Solutions[i, "k"]
-    OUTPUT[[Sol]]["SC.Fit"] <- output$Solutions[i, length(Genes) + 2]
-    OUTPUT[[Sol]]["Surv.Fit"] <- output$Solutions[i, length(Genes) + 3]
-    OUTPUT[[Sol]]["rank"] <- output$Solutions[i, "rnkIndex"]
-    OUTPUT[[Sol]]["CrowD"] <- output$Solutions[i, "CrowD"]
-  }
-  return(OUTPUT)
-}
-
-#' Title
-#' CONVERT OUTPUT TO DATA.FRAME
-#' @param output
-#'
-#' @return
-#' @export
-#'
-#' @examples
-toDataFrame <- function(output) {
-  if (!is(output, "galgo.Obj")) {
-    stop("object must be of class 'galgo.Obj'")
-  }
-  Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
-  ListGenes <- list()
-  for (i in 1:nrow(output$Solutions)) {
-    ListGenes[[i]] <- list()
-    ListGenes[[i]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
-  }
-
-  OUTPUT <- data.frame(Genes = I(ListGenes), k = output$Solutions[, "k"], SC.Fit = output$Solutions[, nrow(prob_matrix) + 2], Surv.Fit = output$Solutions[, nrow(prob_matrix) + 3], Rank = output$Solutions[, "rnkIndex"], CrowD = output$Solutions[, "CrowD"])
-  return(OUTPUT)
-}
-
 
