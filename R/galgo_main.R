@@ -674,7 +674,7 @@ toDataFrame <- function(output) {
 #' @export
 #'
 #' @examples
-search_ges <- function(population = 30, # Number of individuals to evaluate
+galgo <- function(population = 30, # Number of individuals to evaluate
                        generations = 2, # Number of generations
                        nCV = 5, # Number of crossvalidations for function "crossvalidation"
                        usegpu = FALSE, # to use gpuR
