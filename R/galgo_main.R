@@ -636,17 +636,18 @@ toList <- function(output) {
 #'
 #' @examples
 toDataFrame <- function(output) {
-  if (!methods::is(output, "galgo.Obj")) {
-    stop("object must be of class 'galgo.Obj'")
-  }
-  Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
-  ListGenes <- list()
-  for (i in 1:nrow(output$Solutions)) {
-    ListGenes[[i]] <- list()
-    ListGenes[[i]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
-  }
-
-  OUTPUT <- data.frame(Genes = I(ListGenes), k = output$Solutions[, "k"], SC.Fit = output$Solutions[, nrow(prob_matrix) + 2], Surv.Fit = output$Solutions[, nrow(prob_matrix) + 3], Rank = output$Solutions[, "rnkIndex"], CrowD = output$Solutions[, "CrowD"])
+    if (!methods::is(output, "galgo.Obj")) {
+        stop("object must be of class 'galgo.Obj'")
+    }
+    Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
+    ListGenes <- list()
+    for (i in 1:nrow(output$Solutions)) {
+        ListGenes[[i]] <- list()
+        ListGenes[[i]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
+    }
+    
+    OUTPUT <- data.frame(Genes = I(ListGenes), k = output$Solutions[, "k"], SC.Fit = output$Solutions[, ncol(output$Solutions) - 3], Surv.Fit = output$Solutions[, ncol(output$Solutions) - 2], Rank = output$Solutions[, "rnkIndex"], CrowD = output$Solutions[, "CrowD"])
+  rownames(OUTPUT) <- paste("Solutions", 1:nrow(output$Solutions) ,sep=".")
   return(OUTPUT)
 }
 
