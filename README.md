@@ -16,7 +16,7 @@ devtools::install_github("https://github.com/harpomaxx/galgo")
 
 Example
 -------
-This is a basic example which shows how to find gene Expression signatures for the LUAD Dataset
+This is a basic example which shows how to find gene Expression signatures for a reduced Lung adenocarcinoma Dataset
 
 ``` r
 
