@@ -29,7 +29,7 @@ prm <- rna_luad$prm
 clinical <- rna_luad$clinical
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
 
-galgoR::search_ges(generations = 10, population = 30,prob_matrix = prm, OS=OS)
+galgoR::galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
 
 ```
 ## GPU support
