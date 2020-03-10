@@ -1,5 +1,5 @@
 
-galgoR <img src="vignettes/galgoR-logo.jpeg" align="right" alt="" width="120" />
+galgoR <img src="vignettes/GalgoR.png" align="right" alt="" width="120" />
 ================================================================================
 <!-- badges: start -->
 <!-- badges: end -->
