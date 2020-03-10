@@ -62,7 +62,7 @@ createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 #' The harmonic mean can be expressed as the reciprocal of the arithmetic mean of the reciprocals of a given set of observations.  Since the harmonic mean of a list of numbers tends strongly toward the least elements of the list, it tends (compared to the arithmetic mean) to mitigate the impact of large outliers and aggravate the impact of small ones.
 #'
 #'
-#' @param a a vector of numbers
+#' @param a vector of numbers
 #'
 #' @return the harmonic mean of the values in a is computed, as a numeric vector of length one
 #' @export
@@ -651,30 +651,44 @@ toDataFrame <- function(output) {
   return(OUTPUT)
 }
 
-#' Title
+#' Galgo main function
 #'
-#' @param population
-#' @param generations
-#' @param nCV
-#' @param usegpu
-#' @param distancetype
-#' @param TournamentSize
-#' @param period
-#' @param OS
-#' @param chrom_length
-#' @param prob_matrix
-#' @param res_dir
-#' @param save_pop_partial_callback
-#' @param save_pop_final_callback
-#' @param report_callback
-#' @param start_gen_callback
-#' @param end_gen_callback
-#' @param verbose
+#' 'galgo' accepts an expression matrix and a survival object to find robust gene expression signatures related to a given outcome
+#'                   
+#' @param population  a number indicating the number of solutions in the population of solutions that will be evolved 
+#' @param generations a number indicating the number of iterations of the galgo algorithm
+#' @param nCV number of cross-validation sets
+#' @param usegpu logical default FALSE, set to TRUE if you wish to use gpu computing (gpuR package must be properly installed and loaded)
+#' @param distancetype character, it can be "pearson" (centered pearson), "uncentered" (uncentered pearson), "spearman" or "euclidean"
+#' @param TournamentSize a number indicating the size of the tournaments for the selection procedure
+#' @param period a number indicating the outcome period to evaluate the RMST
+#' @param OS a survival object (see 'Surv' function from the 'survival' package)
+#' @param prob_matrix a matrix or data.frame. Must be an expression matrix with features in rows and samples in columns
+#' @param res_dir a character indicating where to save the intermediate and final output of the algorithm
+#' @param save_pop_partial_callback optional callback function between iterations
+#' @param save_pop_final_callback optional callback function for the last iteration
+#' @param report_callback optional callback function
+#' @param start_gen_callback optional callback function for the beginning of the run
+#' @param end_gen_callback optional callback function for the end of the run
+#' @param verbose ?
 #'
-#' @return
+#' @return an object of type 'galgo.Obj' that corresponds to a list with the elements $Solutions and $ParetoFront. $Solutions is a l x (n + 5) matrix where n is the number of features evaluated and l is the number of solutions obtained.
+#' The submatrix l x n is a binary matrix where each row represents the chromosome of an evolved solution from the solution population where each feature can be present (1) or absent (0). Column n +1 represent the  k number of clusters for each solutions. Column n+2 to n+5 shows the SC Fitness and Survival Fitness values, the solution rank and the crowding distance of the solution in the final pareto front respectevely.
+#' For easier interpretation of the 'galgo.Obj', the output can be reshaped using the 'toList' and 'toDataFrame' functions     
+#'                    
 #' @export
 #'
 #' @examples
+#' rna_luad<-use_rna_luad()
+#'
+#' prm <- rna_luad$prm 
+#' clinical <- rna_luad$clinical
+#' OS <- survival::Surv(time=clinical$time,event=clinical$status)
+#' output <- galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
+#' outputDF <- toDataFrame(output)
+    
+                    
+                    
 galgo <- function(population = 30, # Number of individuals to evaluate
                        generations = 2, # Number of generations
                        nCV = 5, # Number of crossvalidations for function "crossvalidation"
