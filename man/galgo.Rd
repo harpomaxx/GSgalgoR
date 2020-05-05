@@ -57,21 +57,22 @@ galgo(
 \item{verbose}{?}
 }
 \value{
-an object of type 'galgo.Obj' that corresponds to a list with the elements $Solutions and $ParetoFront. $Solutions is a l x (n + 5) matrix where n is the number of features evaluated and l is the number of solutions obtained.
-The submatrix l x n is a binary matrix where each row represents the chromosome of an evolved solution from the solution population where each feature can be present (1) or absent (0). Column n +1 represent the  k number of clusters for each solutions. Column n+2 to n+5 shows the SC Fitness and Survival Fitness values, the solution rank and the crowding distance of the solution in the final pareto front respectevely.
-For easier interpretation of the 'galgo.Obj', the output can be reshaped using the 'toList' and 'toDataFrame' functions
+an object of type \code{'galgo.Obj'} that corresponds to a list with the elements \code{$Solutions} and \code{$ParetoFront}. \code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number of features evaluated and \eqn{l} is the number of solutions obtained.
+The submatrix \eqn{l x n} is a binary matrix where each row represents the chromosome of an evolved solution from the solution population, where each feature can be present (1) or absent (0) in the solution. Column \eqn{n +1} represent the  \eqn{k} number of clusters for each solutions. Column \eqn{n+2} to \eqn{n+5} shows the SC Fitness and Survival Fitness values, the solution rank, and the crowding distance of the solution in the final pareto front respectevely.
+For easier interpretation of the \code{'galgo.Obj'}, the output can be reshaped using the \code{\link[galgoR:toList]{toList}} and \code{\link[galgoR:toDataFrame]{toDataFrame}} functions
 }
 \description{
 'galgo' accepts an expression matrix and a survival object to find robust gene expression signatures related to a given outcome
 }
 \examples{
 rna_luad<-use_rna_luad()
-
-prm <- rna_luad$prm
-clinical <- rna_luad$clinical
+library(Biobase)
+prm <- exprs(rna_luad$TCGA)
+clinical <- pData(rna_luad$TCGA)
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
 output <- galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
 outputDF <- toDataFrame(output)
+outputList <- toList(output)
 }
 \author{
 Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}

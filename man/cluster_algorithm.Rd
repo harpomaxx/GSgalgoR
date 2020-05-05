@@ -2,18 +2,36 @@
 % Please edit documentation in R/calculate_distance.R
 \name{cluster_algorithm}
 \alias{cluster_algorithm}
-\title{Title
-To use partition around medioids (PAM), This is the default for the the current aplication}
+\title{
+Wrapper function to perform partition around medioids (PAM) for GalgoR}
+\description{
+In \code{galgoR}, the partition around medioids (PAM) algotithm is the default clustering process used under the evolutionary process.
+}
 \usage{
 cluster_algorithm(c, k)
 }
 \arguments{
-\item{k}{}
+\item{c}{a dissimilarity matix object of type \code{'dist'}}
+\item{k}{positive integer specifying the number of clusters, less than the number of observations}
 }
 \value{
-
+Returns a \code{'list'} with the value \code{'$cluster'} which contains the cluster assignment of each of the samples evaluated
 }
-\description{
-Title
-To use partition around medioids (PAM), This is the default for the the current aplication
+\details{
+The function runs the \code{\link[cluster:pam]{pam}} function of the \code{'cluster'} package with options \code{cluster.only =TRUE}, \code{diss = TRUE}, \code{do.swap=TRUE}, \code{keep.diss=FALSE}, \code{keep.data = FALSE}, \code{pamonce= 2}
+}
+\examples{
+rna_luad<-use_rna_luad()
+library(Biobase)
+prm <- exprs(rna_luad$TCGA)
+Dist= calculate_distance_pearson_cpu(prm)
+k=4
+Pam= cluster_algorithm(Dist,k)
+table(Pam$cluster)
+}
+
+\references{
+Reynolds, A., Richards, G., de la Iglesia, B. and Rayward-Smith, V. (1992) Clustering rules: A comparison of partitioning and hierarchical clustering algorithms; Journal of Mathematical Modelling and Algorithms 5, 475--504. 10.1007/s10852-005-9022-1.
+
+Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, \url{(https://arxiv.org/abs/1810.05691)}.
 }

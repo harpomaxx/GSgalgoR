@@ -2,18 +2,38 @@
 % Please edit documentation in R/galgo_main.R
 \name{toDataFrame}
 \alias{toDataFrame}
-\title{Title
-CONVERT OUTPUT TO DATA.FRAME}
+\title{ Convert galgo.Obj to data.frame
+}
+\description{
+The current function transforms a \code{galgo.Obj} to a \code{data.frame}
+}
 \usage{
 toDataFrame(output)
 }
 \arguments{
-\item{output}{}
+\item{output}{An object of class \code{galgo.Obj}}
 }
 \value{
-
+The current function reestructurates a \code{galgo.Obj} to a more easy to understand an use \code{data.frame}. The output \code{data.frame} has \eqn{ m x n} dimensions, were the rownames (\eqn{m}) are the solutions obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm. The columns has the following structure:
+\enumerate{
+  \item \strong{Genes}: The features included in each solution in form of a \code{list}
+  \item \strong{k}: The number of partitions found in that solution
+  \item \strong{SC.Fit}: The average silhouette coefficient of the partitions found
+  \item \strong{Surv.Fit}: The survival fitnes value
+  \item \strong{Rank}: The solution rank
+  \item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
 }
-\description{
-Title
-CONVERT OUTPUT TO DATA.FRAME
+}
+\examples{
+rna_luad<-use_rna_luad()
+library(Biobase)
+prm <- exprs(rna_luad$TCGA)
+clinical <- pData(rna_luad$TCGA)
+OS <- survival::Surv(time=clinical$time,event=clinical$status)
+output <- galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
+outputDF <- toDataFrame(output)
+}
+
+\author{
+Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 }

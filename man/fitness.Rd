@@ -14,15 +14,20 @@ fitness(OS, clustclass, period)
 \item{period}{a number representing the period of time to evaluate in the RMST calculation}
 }
 \value{
-The function computes the Harmonic mean of the differences between Restricted Mean Survival Time (RMST) of consecutive survival curves multiplied by the number of comparisons
-Restricted Mean Survival Time: https://www.bmj.com/content/357/bmj.j2250
+The function computes the Harmonic mean of the differences between Restricted Mean Survival Time (RMST) of consecutive survival curves multiplied by the number of comparisons.
 }
 \description{
-Survival fitness function using the Restricted Mean Survival Time (RMST) of each group
+Survival fitness function using the Restricted Mean Survival Time (RMST) of each group as proposed by \emph{Dehbi & Royston et al. (2017)}.
 }
 \examples{
 rna_luad<-use_rna_luad()
-clinical <- rna_luad$clinical
+library(Biobase)
+clinical <- pData(rna_luad$TCGA)
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
 fitness(OS,clustclass= clinical$Wilk.Subtype, 1825)
+}
+\references{
+
+Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life expectancy difference and life expectancy ratio: two measures of treatment effects in randomised trials with non-proportional hazards BMJ 2017; 357 :j2250 \url{https://www.bmj.com/content/357/bmj.j2250}
+
 }

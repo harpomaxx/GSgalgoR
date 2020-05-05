@@ -2,7 +2,10 @@
 % Please edit documentation in R/galgo_main.R
 \name{cDist}
 \alias{cDist}
-\title{Restricted Mean Survival distance between groups}
+\title{Harmonic mean of the distance between consecutive groups}
+\description{
+Implements the harmonic mean of the distance between consecutive groups multiplied by the number of comparisons: \eqn{ cDist = [n/ (1/x1-x2 + 1/x2-x3 + 1/x3-x4 +...1/xn-1 - xn)] * n-1} }
+
 \usage{
 cDist(x)
 }
@@ -10,13 +13,12 @@ cDist(x)
 \item{x}{A numeric vector of length > 1}
 }
 \value{
-A numeric vector of length 1. The function computes the Harmonic mean of the differences between consecutive groups multiplied by the number of comparisons
-This function is used inside 'fitness' function.
+The function computes the harmonic mean of the differences between consecutive groups multiplied by the number of comparisons and returns a positive number.
+This function is used inside \code{fitness} function.
 }
-\description{
-Restricted Mean Survival distance between groups
-}
+
+
 \examples{
-V <- c(4.5,3,7,11)
-cDist(V)
+x <- c(4.5,3,7,11)
+cDist(x)
 }

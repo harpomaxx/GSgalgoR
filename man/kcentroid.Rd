@@ -2,18 +2,27 @@
 % Please edit documentation in R/calculate_distance.R
 \name{kcentroid}
 \alias{kcentroid}
-\title{Title
+\title{
 Function to calculate the centroids of different groups (classes)}
 \usage{
 kcentroid(data, class)
 }
 \arguments{
-\item{class}{}
+\item{data}{a scaled gene expression \code{matrix} or \code{data.frame} with samples as columns and features as rows}
+\item{class}{a vector with the samples classes}
 }
 \value{
-
+returns a \code{data.frame} with the estimated prototypic centroids for each class with the features names as rownames
 }
 \description{
-Title
-Function to calculate the centroids of different groups (classes)
+This function calculates the mean value for each feature of each class to calculate the prototypic centroids of the different groups
+}
+\examples{
+rna_luad<-use_rna_luad()
+library(Biobase)
+prm <- exprs(rna_luad$TCGA)
+Dist= calculate_distance_pearson_cpu(prm)
+k=4
+Pam= cluster_algorithm(Dist,k)$cluster
+centroids <- kcentroid(prm,Pam)
 }

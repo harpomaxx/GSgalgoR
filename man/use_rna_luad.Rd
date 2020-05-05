@@ -2,13 +2,42 @@
 % Please edit documentation in R/install_data.R
 \name{use_rna_luad}
 \alias{use_rna_luad}
-\title{Title}
+\title{Download a toy dataset to test galgoR}
+\description{
+The current function downloads two reduced lung adenocarcinoma gene expression datasets (TCGA lung adenocarcinoma project and GEO GSE68465 datasets) to test \code{\link[galgoR:galgo]{galgoR}}. It also contains the Wilkerson's centroids to perform lung adenocarcinoma sample classification.
+}
 \usage{
 use_rna_luad()
 }
 \value{
-
+The output of the function is a \code{list} with two \code{\link[ExpressionSets]{ExpressionSets}} with the scaled gene expression and clinical data from TCGA lung adenocarcinoma and \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465}{GEO GSE68465} datasets.It also contains the Wilkerson's centroids extracted from \url{http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip} to perform sample classification into "Bronchoid", "Magnoid" and "Squamoid" subtypes.
 }
-\description{
-Title
+\examples{
+rna_luad=use_rna_luad()
+library(Biobase)
+TCGA= rna_luad$TCGA #Access TCGA dataset
+rna_luad$GSE68465 #Access GSE68465 dataset
+
+#To access gene expression data
+TCGA_expr= exprs(TCGA)
+
+#To access feature data
+TCGA_features<- fData(TCGA)
+
+#To access clinical data
+TCGA_clinic <- pData(TCGA)
+
+#To get wilkerson centroids
+rna_luad$WilkCentroids
+}
+
+\references{
+
+- Shedden, K., Taylor, J., Enkemann, S. et al. Gene expression–based survival prediction in lung adenocarcinoma: a multi-site, blinded validation study. Nat Med 14, 822-827 (2008). \url{https://doi.org/10.1038/nm.1790}
+
+- Collisson, E., Campbell, J., Brooks, A. et al. Comprehensive molecular profiling of lung adenocarcinoma. Nature 511, 543-550 (2014). \url{https://doi.org/10.1038/nature13385}
+
+- Matthew D. Wilkerson, Xiaoying Yin, Katherine A. Hoadley, Yufeng Liu, Michele C. Hayward, Christopher R. Cabanski, Kenneth Muldrew, C. Ryan Miller, Scott H. Randell, Mark A. Socinski, Alden M. Parsons, William K. Funkhouser, Carrie B. Lee, Patrick J. Roberts, Leigh Thorne, Philip S. Bernard, Charles M. Perou and D. Neil Hayes. Clin Cancer Res October 1 2010 (16) (19) 4864-4875 \url{https://doi.org/10.1158/1078-0432.CCR-10-0199}
+
+- Wilkerson MD, Yin X, Walter V, Zhao N, Cabanski CR, Hayward MC, et al. (2012) Differential Pathogenesis of Lung Adenocarcinoma Subtypes Involving Sequence Mutations, Copy Number, Chromosomal Instability, and Methylation. PLoS ONE 7(5): e36530. \url{https://doi.org/10.1371/journal.pone.0036530}
 }

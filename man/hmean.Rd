@@ -2,23 +2,22 @@
 % Please edit documentation in R/galgo_main.R
 \name{hmean}
 \alias{hmean}
-\title{Harmonic mean
-The harmonic mean can be expressed as the reciprocal of the arithmetic mean of the reciprocals of a given set of observations.  Since the harmonic mean of a list of numbers tends strongly toward the least elements of the list, it tends (compared to the arithmetic mean) to mitigate the impact of large outliers and aggravate the impact of small ones.}
+\title{Function to calculate the harmonic mean
+}
+\description{
+The harmonic mean can be expressed as the reciprocal of the arithmetic mean of the reciprocals of a given set of observations.  Since the harmonic mean of a list of numbers tends strongly toward the least elements of the list, it tends (compared to the arithmetic mean) to mitigate the impact of large outliers and aggravate the impact of small ones.
+}
 \usage{
 hmean(a)
 }
 \arguments{
-\item{a}{vector of numbers}
+\item{a}{a numeric vector of length > 1}
 }
 \value{
-the harmonic mean of the values in a is computed, as a numeric vector of length one
-}
-\description{
-Harmonic mean
-The harmonic mean can be expressed as the reciprocal of the arithmetic mean of the reciprocals of a given set of observations.  Since the harmonic mean of a list of numbers tends strongly toward the least elements of the list, it tends (compared to the arithmetic mean) to mitigate the impact of large outliers and aggravate the impact of small ones.
+returns the harmonic mean of the values in \code{a}
 }
 \examples{
-x= rnorm(5,2,1) #five random numbers from the normal distribution
+x= rnorm(5,0,1) #five random numbers from the normal distribution
 x= c(x,20) #add outlier
 hmean(x)
 }
