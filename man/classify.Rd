@@ -2,24 +2,23 @@
 % Please edit documentation in R/calculate_distance.R
 \name{classify}
 \alias{classify}
-\title{
-Distance to centroid classifier}
-\description{
-Given an \eqn{n x m} matrix of centroids, where \eqn{m} are the prototypic centroids with \eqn{n} features, classify new samples according to the distance to the centroids.
-}
+\title{Distance to centroid classifier}
 \usage{
 classify(data, centroid, method = "pearson")
 }
 \arguments{
-\item{data}{ a \code{data.frame} of dimensions \eqn{n x p} with the samples to classify, were \eqn{n} are the same set of features as in the centroids}
-\item{centroid}{ a \code{data.frame} of dimensions \eqn{n x m}, where each column is a prototypic centroid to classify the samples}
+\item{data}{a \code{data.frame} of dimensions \eqn{n x p} with the samples to classify, were \eqn{n} are the same set of features as in the centroids}
+
+\item{centroid}{a \code{data.frame} of dimensions \eqn{n x m}, where each column is a prototypic centroid to classify the samples}
+
 \item{method}{Character string indicating which method to use to calculate distance to centroid. Options are \code{"pearson"} (default), \code{"kendall"}, or \code{"spearman"}}
 }
 \value{
 Returns a numeric vector of length \eqn{p} with the class assigned to each sample according to the shortest distance to centroid
 }
-
-
+\description{
+Given an \eqn{n x m} matrix of centroids, where \eqn{m} are the prototypic centroids with \eqn{n} features, classify new samples according to the distance to the centroids.
+}
 \examples{
 rna_luad<-use_rna_luad()
 library(Biobase)
@@ -34,10 +33,9 @@ rownames(prm)<- fData(rna_luad$TCGA)$gene
 centroids<- rna_luad$WilkCentroids
 
 #Extract features from both data.frames
-inBoth=Reduce(intersect, list(rownames(prm),rownames(centroids)))
+inBoth<- Reduce(intersect, list(rownames(prm),rownames(centroids)))
 
 #Classify samples
-Wilk.Class= classify(prm[inBoth,],centroids[inBoth,])
+Wilk.Class<- classify(prm[inBoth,],centroids[inBoth,])
 table(Wilk.Class)
-
 }

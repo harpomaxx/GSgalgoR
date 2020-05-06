@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588780506414.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "6257B97E",
+    "lastKnownWriteTime" : 1588776376,
+    "last_content_update" : 1588776376,
+    "path" : "~/GitHub/galgo/man/toDataFrame.Rd",
+    "project_path" : "man/toDataFrame.Rd",
+    "properties" : {
+        "cursorPosition" : "9,49",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_doc"
+}

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588779147541.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3296075640",
+    "id" : "B0312572",
+    "lastKnownWriteTime" : 1588780500,
+    "last_content_update" : 1588780500831,
+    "path" : "~/GitHub/galgo/man/cluster_algorithm.Rd",
+    "project_path" : "man/cluster_algorithm.Rd",
+    "properties" : {
+        "cursorPosition" : "31,12",
+        "scrollLine" : "24"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_doc"
+}

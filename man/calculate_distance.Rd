@@ -2,42 +2,41 @@
 % Please edit documentation in R/calculate_distance.R
 \name{calculate_distance}
 \alias{calculate_distance}
-\alias{select_distance}
 \alias{calculate_distance_pearson_gpu}
-\alias{calculate_distance_pearson_cpu}
-\alias{calculate_distance_uncentered_gpu}
-\alias{calculate_distance_uncentered_cpu}
-\alias{calculate_distance_spearmman_gpu}
-\alias{calculate_distance_spearman_cpu}
-\alias{calculate_distance_euclidean_gpu}
-\alias{calculate_distance_euclidean_cpu}
 \alias{calculate_distance_spearman_gpu}
-\title{Functions to calculate distance matrices using cpu or gpu computing}
+\alias{calculate_distance_uncentered_gpu}
+\alias{calculate_distance_euclidean_gpu}
+\alias{calculate_distance_pearson_cpu}
+\alias{calculate_distance_spearman_cpu}
+\alias{calculate_distance_uncentered_cpu}
+\alias{calculate_distance_euclidean_cpu}
+\alias{select_distance}
+\title{calculate_distance}
 \usage{
-select_distance(distancetype = "pearson", usegpu = TRUE)
-
 calculate_distance_pearson_gpu(x)
-
-calculate_distance_pearson_cpu(x)
-
-calculate_distance_uncentered_gpu(x)
-
-calculate_distance_uncentered_cpu(x)
 
 calculate_distance_spearman_gpu(x)
 
-calculate_distance_spearman_cpu(x)
+calculate_distance_uncentered_gpu(x)
 
 calculate_distance_euclidean_gpu(x)
 
+calculate_distance_pearson_cpu(x)
+
+calculate_distance_spearman_cpu(x)
+
+calculate_distance_uncentered_cpu(x)
+
 calculate_distance_euclidean_cpu(x)
+
+select_distance(distancetype = "pearson", usegpu = TRUE)
 }
 \arguments{
-\item{distancetype}{a character that can be either "pearson", "uncentered", "spearman" or "euclidean"}
-
-\item{usegpu}{logical TRUE or FALSE}
-
 \item{x}{an expression matrix with features as rows and samples as columns}
+
+\item{distancetype}{a \code{character} that can be either \code{'pearson'}, \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}}
+
+\item{usegpu}{\code{logical} \code{TRUE} or \code{FALSE}}
 }
 \value{
 \code{select_distance(distancetype, usegpu)} assigns global function calculate_distance according to the parameters specified
@@ -75,4 +74,7 @@ calculate_distance_spearman_gpu(prm)
 calculate_distance_spearman_cpu(prm)
 calculate_distance_euclidean_gpu(prm)
 calculate_distance_euclidean_cpu(prm)
+}
+\author{
+Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 }

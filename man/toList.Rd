@@ -3,9 +3,6 @@
 \name{toList}
 \alias{toList}
 \title{Convert galgo.Obj to list}
-\description{
-The current function transforms a \code{galgo.Obj} to a \code{list}
-}
 \usage{
 toList(output)
 }
@@ -17,13 +14,16 @@ The current function restructurates a \code{galgo.Obj} to a more easy to underst
 
 Basically this output is a list of lists, where each element of the output is named after the solution's name (\code{solution.n}, where \code{n} is the number assigned to that solution), and inside of it, it has all the constituents for that given solution with the following structure:
 \enumerate{
-  \item \strong{output$solution.n$Genes}: A vector of the features included in the solution
-  \item \strong{output$solution.n$k}: The number of partitions found in that solution
-  \item \strong{output$solution.n$SC.Fit}: The average silhouette coefficient of the partitions found
-  \item \strong{output$solution.n$Surv.Fit}: The survival fitnes value
-  \item \strong{output$solution.n$Rank}: The solution rank
-  \item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
+\item \strong{output$solution.n$Genes}: A vector of the features included in the solution
+\item \strong{output$solution.n$k}: The number of partitions found in that solution
+\item \strong{output$solution.n$SC.Fit}: The average silhouette coefficient of the partitions found
+\item \strong{output$solution.n$Surv.Fit}: The survival fitnes value
+\item \strong{output$solution.n$Rank}: The solution rank
+\item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
 }
+}
+\description{
+The current function transforms a \code{galgo.Obj} to a \code{list}
 }
 \examples{
 rna_luad<-use_rna_luad()

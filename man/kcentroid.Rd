@@ -2,13 +2,13 @@
 % Please edit documentation in R/calculate_distance.R
 \name{kcentroid}
 \alias{kcentroid}
-\title{
-Function to calculate the centroids of different groups (classes)}
+\title{Function to calculate the centroids of different groups (classes)}
 \usage{
 kcentroid(data, class)
 }
 \arguments{
 \item{data}{a scaled gene expression \code{matrix} or \code{data.frame} with samples as columns and features as rows}
+
 \item{class}{a vector with the samples classes}
 }
 \value{

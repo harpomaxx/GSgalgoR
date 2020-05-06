@@ -7,7 +7,7 @@
 fitness(OS, clustclass, period)
 }
 \arguments{
-\item{OS}{a survival object with survival data of the patients evaluated}
+\item{OS}{a \code{survival} object with survival data of the patients evaluated}
 
 \item{clustclass}{a numeric vector with the group label for each patient}
 
@@ -27,7 +27,8 @@ OS <- survival::Surv(time=clinical$time,event=clinical$status)
 fitness(OS,clustclass= clinical$Wilk.Subtype, 1825)
 }
 \references{
-
 Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life expectancy difference and life expectancy ratio: two measures of treatment effects in randomised trials with non-proportional hazards BMJ 2017; 357 :j2250 \url{https://www.bmj.com/content/357/bmj.j2250}
-
+}
+\author{
+Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 }

@@ -67,7 +67,7 @@ createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 #'
 #' @return returns the harmonic mean of the values in \code{a}
 #' @export
-#' @noRd
+#'
 #' @examples
 #' x= rnorm(5,0,1) #five random numbers from the normal distribution
 #' x= c(x,20) #add outlier
@@ -85,7 +85,7 @@ hmean <- function(a) {
 #'
 #' @return The function computes the harmonic mean of the differences between consecutive groups multiplied by the number of comparisons and returns a positive number. This function is used inside \code{fitness} function.
 #' @export
-#' @noRd
+#'
 #' @examples
 #' V <- c(4.5,3,7,11)
 #' cDist(V)
@@ -211,7 +211,7 @@ reord <- function(C, ord) {
   C <- C[, ord]
 }
 
-#' Survival crossvalidation
+#' Title
 #'
 #'crossvalidation function based on: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3105299/
 #' Data is the expression matrix

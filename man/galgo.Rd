@@ -2,26 +2,16 @@
 % Please edit documentation in R/galgo_main.R
 \name{galgo}
 \alias{galgo}
-\title{Galgo main function}
+\title{GalgoR main function}
 \usage{
-galgo(
-  population = 30,
-  generations = 2,
-  nCV = 5,
-  usegpu = FALSE,
-  distancetype = "pearson",
-  TournamentSize = 2,
-  period = 1825,
-  OS,
-  prob_matrix,
-  res_dir = "results/",
+galgo(population = 30, generations = 2, nCV = 5, usegpu = FALSE,
+  distancetype = "pearson", TournamentSize = 2, period = 1825, OS,
+  prob_matrix, res_dir = "results/",
   save_pop_partial_callback = base_save_pop_partial_callback,
   save_pop_final_callback = base_save_pop_final_callback,
   report_callback = base_report_callback,
   start_gen_callback = base_start_gen_callback,
-  end_gen_callback = base_end_gen_callback,
-  verbose = 2
-)
+  end_gen_callback = base_end_gen_callback, verbose = 2)
 }
 \arguments{
 \item{population}{a number indicating the number of solutions in the population of solutions that will be evolved}
@@ -30,19 +20,17 @@ galgo(
 
 \item{nCV}{number of cross-validation sets}
 
-\item{usegpu}{logical default FALSE, set to TRUE if you wish to use gpu computing (gpuR package must be properly installed and loaded)}
+\item{usegpu}{\code{logical} default to \code{FALSE}, set to \code{TRUE} if you wish to use gpu computing (\code{\link[gpuR]{gpuR}} package must be properly installed and loaded)}
 
-\item{distancetype}{character, it can be "pearson" (centered pearson), "uncentered" (uncentered pearson), "spearman" or "euclidean"}
+\item{distancetype}{character, it can be \code{'pearson'} (centered pearson), \code{'uncentered'} (uncentered pearson), \code{'spearman'} or \code{'euclidean'}}
 
 \item{TournamentSize}{a number indicating the size of the tournaments for the selection procedure}
 
 \item{period}{a number indicating the outcome period to evaluate the RMST}
 
-\item{OS}{a survival object (see 'Surv' function from the 'survival' package)}
+\item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns}
 
-\item{prob_matrix}{a matrix or data.frame. Must be an expression matrix with features in rows and samples in columns}
-
-\item{res_dir}{a character indicating where to save the intermediate and final output of the algorithm}
+\item{res_dir}{a \code{character} string indicating where to save the intermediate and final output of the algorithm}
 
 \item{save_pop_partial_callback}{optional callback function between iterations}
 
@@ -54,7 +42,7 @@ galgo(
 
 \item{end_gen_callback}{optional callback function for the end of the run}
 
-\item{verbose}{?}
+\item{verbose}{}
 }
 \value{
 an object of type \code{'galgo.Obj'} that corresponds to a list with the elements \code{$Solutions} and \code{$ParetoFront}. \code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number of features evaluated and \eqn{l} is the number of solutions obtained.
@@ -62,7 +50,7 @@ The submatrix \eqn{l x n} is a binary matrix where each row represents the chrom
 For easier interpretation of the \code{'galgo.Obj'}, the output can be reshaped using the \code{\link[galgoR:toList]{toList}} and \code{\link[galgoR:toDataFrame]{toDataFrame}} functions
 }
 \description{
-'galgo' accepts an expression matrix and a survival object to find robust gene expression signatures related to a given outcome
+\code{\link[galgoR:galgo]{galgo}} accepts an expression matrix and a survival object to find robust gene expression signatures related to a given outcome
 }
 \examples{
 rna_luad<-use_rna_luad()
