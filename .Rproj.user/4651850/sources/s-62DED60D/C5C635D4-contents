@@ -1,3 +1,28 @@
+#' @title GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types.
+#'
+#' @description This package was devoloped to provide a simple to use set of functions to use the galgo algorithm. A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm.
+#'
+#' Different statistical and machine learning approaches have long been used to identify gene expression/molecular signatures with prognostic potential in different cancer types. Nonetheless, the molecular classification of tumors is a difficult task and the results obtained via the current statistical methods are highly dependent on the features analyzed, the number of possible tumor subtypes under consideration, and the underlying assumptions made about the data. In addition, some cancer types are still lacking prognostic signatures and/or of subtype-specific predictors which are continually needed to further dissect tumor biology. In order to identify specific molecular phenotypes to develop precision medicine strategies we present Galgo: A multi-objective optimization process based on a non-dominated sorting genetic algorithm that combines the advantages of clustering methods for grouping heterogeneous omics data and the exploratory properties of genetic algorithms (GA) in order to find features that maximize the survival difference between subtypes while keeping high cluster consistency.
+#'
+#' \tabular{ll}{ Package: \tab galgoR\cr Type: \tab Package\cr
+#' Version: \tab 1.0.0\cr Date: \tab 2020-05-06 \cr License: \tab GPL-3\cr
+#' Copyright: \tab (c) 2020 Martin E. Guerrero-Gimenez.\cr URL: \tab
+#' \url{http://www.github.com/harpomaxx/galgoR}\cr LazyLoad: \tab yes\cr
+#' }
+#'
+#'
+#' @note Ideally, \pkg{galgoR} works faster using \pkg{gpuR} by C. Determan that provides wrappers functions for OpenCL
+#' programming.
+#' @author
+#' Martin E. Guerrero-Gimenez \email{mguerrero@@mendoza-conicet.gob.ar}
+#'
+#' Maintainer: Carlos A. Catania \email{harpomaxx@@gmail.com }
+#' @docType package
+#' @name galgoR-package
+#' @aliases galgoR-package galgoR
+NULL
+
+
 #' createFolds splits the data into k groups to perform cross-validation
 #'
 #' @param y a vector of outcomes
@@ -67,7 +92,7 @@ createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 #'
 #' @return returns the harmonic mean of the values in \code{a}
 #' @export
-#'
+#' @noRd
 #' @examples
 #' x= rnorm(5,0,1) #five random numbers from the normal distribution
 #' x= c(x,20) #add outlier
@@ -85,7 +110,7 @@ hmean <- function(a) {
 #'
 #' @return The function computes the harmonic mean of the differences between consecutive groups multiplied by the number of comparisons and returns a positive number. This function is used inside \code{fitness} function.
 #' @export
-#'
+#' @noRd
 #' @examples
 #' V <- c(4.5,3,7,11)
 #' cDist(V)
@@ -211,7 +236,7 @@ reord <- function(C, ord) {
   C <- C[, ord]
 }
 
-#' Title
+#' Survival crossvalidation
 #'
 #'crossvalidation function based on: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3105299/
 #' Data is the expression matrix

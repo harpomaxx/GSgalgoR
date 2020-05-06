@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588784211387.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "874860787",
+    "id" : "76EC2769",
+    "lastKnownWriteTime" : 1588784367,
+    "last_content_update" : 1588784367148,
+    "path" : "~/GitHub/galgo/man/galgoR-package.Rd",
+    "project_path" : "man/galgoR-package.Rd",
+    "properties" : {
+        "cursorPosition" : "0,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_doc"
+}
