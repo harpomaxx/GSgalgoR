@@ -62,9 +62,8 @@ Functions to calculate distance matrices using cpu or gpu computing
 }
 \examples{
 rna_luad<-use_rna_luad()
-library(Biobase)
-prm <- exprs(rna_luad$TCGA)
-select_distance(distancetype= "pearson", usegpu=TRUE) #Will select the calculate_distance_pearson_gpu() function to calculate the distance matrix
+prm <- rna_luad$TCGA$expression_matrix
+select_distance(distancetype= "pearson", usegpu=FALSE) #Will select the calculate_distance_pearson_cpu() function to calculate the distance matrix
 calculate_distance(prm)
 calculate_distance_pearson_gpu(prm)
 calculate_distance_pearson_cpu(prm)

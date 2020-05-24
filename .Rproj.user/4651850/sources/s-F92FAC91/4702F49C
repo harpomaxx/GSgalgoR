@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588774858367.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3498243537",
+    "id" : "4702F49C",
+    "lastKnownWriteTime" : 1590289945,
+    "last_content_update" : 1590289945137,
+    "path" : "~/GitHub/galgo/R/calculate_distance.R",
+    "project_path" : "R/calculate_distance.R",
+    "properties" : {
+        "cursorPosition" : "32,56",
+        "scrollLine" : "26"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

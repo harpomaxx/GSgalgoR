@@ -21,13 +21,12 @@ Given an \eqn{n x m} matrix of centroids, where \eqn{m} are the prototypic centr
 }
 \examples{
 rna_luad<-use_rna_luad()
-library(Biobase)
 
 #The expression of the toy datasets are already scaled
-prm <- exprs(rna_luad$TCGA)
+prm <- rna_luad$TCGA$expression_matrix
 
 #We change the rownames to be gene Symbol insted of Gene Id.
-rownames(prm)<- fData(rna_luad$TCGA)$gene
+rownames(prm)<- rna_luad$TCGA$feature_data$gene
 
 #Wilkerson's centroids
 centroids<- rna_luad$WilkCentroids

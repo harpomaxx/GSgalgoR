@@ -2,7 +2,7 @@
 #'
 #' The current function downloads two reduced lung adenocarcinoma gene expression datasets (TCGA lung adenocarcinoma project and GEO GSE68465 datasets) to test \code{\link[galgoR:galgo]{galgoR}}. It also contains the Wilkerson's centroids to perform lung adenocarcinoma sample classification.
 #'
-#' @return The dataset gets downloaded in the \code{./data} folder of \code{galgoR} package. The output of the function is a \code{list} with two \code{\link[ExpressionSets]{ExpressionSets}} with the scaled gene expression and clinical data from TCGA lung adenocarcinoma and \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465}{GEO GSE68465} datasets.It also contains the Wilkerson's centroids extracted from \url{http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip} to perform sample classification into "Bronchoid", "Magnoid" and "Squamoid" subtypes.
+#' @return The dataset gets downloaded in the \code{./data} folder of \code{galgoR} package. The output of the function is a \code{list} with two \code{lists} with the scaled gene expression and clinical data from TCGA lung adenocarcinoma and \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465}{GEO GSE68465} datasets.It also contains the Wilkerson's centroids extracted from \url{http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip} to perform sample classification into "Bronchoid", "Magnoid" and "Squamoid" subtypes.
 #' @export
 #' @references
 #' \itemize{
@@ -12,27 +12,26 @@
 #'   \item Wilkerson MD, Yin X, Walter V, Zhao N, Cabanski CR, Hayward MC, et al. (2012) Differential Pathogenesis of Lung Adenocarcinoma Subtypes Involving Sequence Mutations, Copy Number, Chromosomal Instability, and Methylation. PLoS ONE 7(5): e36530. \url{https://doi.org/10.1371/journal.pone.0036530}
 #' }
 #' @examples
-#' rna_luad=use_rna_luad()
-#' library(Biobase)
-#' TCGA= rna_luad$TCGA #Access TCGA dataset
-#' rna_luad$GSE68465 #Access GSE68465 dataset
+#' rna_luad<- use_rna_luad()
+#' TCGA<- rna_luad$TCGA #Access TCGA dataset
+#' GSE68465<- rna_luad$GSE68465 #Access GSE68465 dataset
 #'
 #' #To access gene expression data
-#' TCGA_expr= exprs(TCGA)
+#' TCGA_expr<- TCGA$expression_data
 #'
 #' #To access feature data
-#' TCGA_features<- fData(TCGA)
+#' TCGA_features<- TCGA$feature_data
 #'
 #' #To access clinical data
-#' TCGA_clinic <- pData(TCGA)
+#' TCGA_clinic <- TCGA$pheno_data
 #'
 #' #To get wilkerson centroids
-#' rna_luad$WilkCentroids
+#' WilkCentroids <- rna_luad$WilkCentroids
 
 use_rna_luad <- function(){
   dest_dir <- paste(find.package("galgoR"),"/data",sep="")
   dest_file <- paste(dest_dir,"/luad_data.rds",sep="")
   if (! file.exists(dest_file))
-      utils::download.file("https://github.com/harpomaxx/galgo/raw/0aaa1f070715b2dea541eb1a80691c982e49984f/data/luad_data.rds",dest_file)
+      utils::download.file("https://github.com/harpomaxx/galgo/raw/0aaa1f070715b2dea541eb1a80691c982e49984f/inst/extdata/luad_data.rds",dest_file)
   data<-readRDS(dest_file)
 }

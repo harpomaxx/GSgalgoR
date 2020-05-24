@@ -21,8 +21,7 @@ Survival fitness function using the Restricted Mean Survival Time (RMST) of each
 }
 \examples{
 rna_luad<-use_rna_luad()
-library(Biobase)
-clinical <- pData(rna_luad$TCGA)
+clinical <- rna_luad$TCGA$pheno_data
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
 fitness(OS,clustclass= clinical$Wilk.Subtype, 1825)
 }

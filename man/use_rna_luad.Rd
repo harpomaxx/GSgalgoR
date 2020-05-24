@@ -7,28 +7,27 @@
 use_rna_luad()
 }
 \value{
-The dataset gets downloaded in the \code{./data} folder of \code{galgoR} package. The output of the function is a \code{list} with two \code{\link[ExpressionSets]{ExpressionSets}} with the scaled gene expression and clinical data from TCGA lung adenocarcinoma and \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465}{GEO GSE68465} datasets.It also contains the Wilkerson's centroids extracted from \url{http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip} to perform sample classification into "Bronchoid", "Magnoid" and "Squamoid" subtypes.
+The dataset gets downloaded in the \code{./data} folder of \code{galgoR} package. The output of the function is a \code{list} with two \code{lists} with the scaled gene expression and clinical data from TCGA lung adenocarcinoma and \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465}{GEO GSE68465} datasets.It also contains the Wilkerson's centroids extracted from \url{http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip} to perform sample classification into "Bronchoid", "Magnoid" and "Squamoid" subtypes.
 }
 \description{
 The current function downloads two reduced lung adenocarcinoma gene expression datasets (TCGA lung adenocarcinoma project and GEO GSE68465 datasets) to test \code{\link[galgoR:galgo]{galgoR}}. It also contains the Wilkerson's centroids to perform lung adenocarcinoma sample classification.
 }
 \examples{
-rna_luad=use_rna_luad()
-library(Biobase)
-TCGA= rna_luad$TCGA #Access TCGA dataset
-rna_luad$GSE68465 #Access GSE68465 dataset
+rna_luad<- use_rna_luad()
+TCGA<- rna_luad$TCGA #Access TCGA dataset
+GSE68465<- rna_luad$GSE68465 #Access GSE68465 dataset
 
 #To access gene expression data
-TCGA_expr= exprs(TCGA)
+TCGA_expr<- TCGA$expression_data
 
 #To access feature data
-TCGA_features<- fData(TCGA)
+TCGA_features<- TCGA$feature_data
 
 #To access clinical data
-TCGA_clinic <- pData(TCGA)
+TCGA_clinic <- TCGA$pheno_data
 
 #To get wilkerson centroids
-rna_luad$WilkCentroids
+WilkCentroids <- rna_luad$WilkCentroids
 }
 \references{
 \itemize{

@@ -9,5 +9,4 @@ importFrom("stats", "as.dist", "cor", "rbinom", "runif")
 #@import nsga2R #For nsgaII
 #@import gpuR #For GPU usage
 #@import matchingR #For solving gale-shapley algorithm (stable marriage problem)
-##require(Biobase)
 #@import caret

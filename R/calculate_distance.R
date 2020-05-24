@@ -29,9 +29,8 @@
 #' @name calculate_distance
 #' @examples
 #' rna_luad<-use_rna_luad()
-#' library(Biobase)
-#' prm <- exprs(rna_luad$TCGA)
-#' select_distance(distancetype= "pearson", usegpu=TRUE) #Will select the calculate_distance_pearson_gpu() function to calculate the distance matrix
+#' prm <- rna_luad$TCGA$expression_matrix
+#' select_distance(distancetype= "pearson", usegpu=FALSE) #Will select the calculate_distance_pearson_cpu() function to calculate the distance matrix
 #' calculate_distance(prm)
 #' calculate_distance_pearson_gpu(prm)
 #' calculate_distance_pearson_cpu(prm)
@@ -165,7 +164,8 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
     }
   }
   print(paste(computingtype,distancetype,"distance"))
-  calculate_distance
+  assign("calculate_distance",calculate_distance,envir=.GlobalEnv)
+  return(invisible(calculate_distance))
 }
 
 
@@ -182,13 +182,12 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
 #'
 #' @examples
 #' rna_luad<-use_rna_luad()
-#' library(Biobase)
 #'
 #' #The expression of the toy datasets are already scaled
-#' prm <- exprs(rna_luad$TCGA)
+#' prm <- rna_luad$TCGA$expression_matrix
 #'
 #' #We change the rownames to be gene Symbol insted of Gene Id.
-#' rownames(prm)<- fData(rna_luad$TCGA)$gene
+#' rownames(prm)<- rna_luad$TCGA$feature_data$gene
 #'
 #' #Wilkerson's centroids
 #' centroids<- rna_luad$WilkCentroids
@@ -224,8 +223,7 @@ classify <- function(data, centroid, method = "pearson") {
 #' @noRd
 #' @examples
 #' rna_luad<-use_rna_luad()
-#'library(Biobase)
-#'prm <- exprs(rna_luad$TCGA)
+#' prm <- rna_luad$TCGA$expression_matrix
 #'Dist= calculate_distance_pearson_cpu(prm)
 #'k=4
 #'Pam= cluster_algorithm(Dist,k)
@@ -270,8 +268,7 @@ cosine <- function(a, b) {
 #'
 #' @examples
 #' rna_luad<-use_rna_luad()
-#' library(Biobase)
-#' prm <- exprs(rna_luad$TCGA)
+#' prm <- rna_luad$TCGA$expression_matrix
 #' Dist= calculate_distance_pearson_cpu(prm)
 #' k=4
 #' Pam= cluster_algorithm(Dist,k)$cluster
