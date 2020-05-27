@@ -1,0 +1,172 @@
+---
+title: Incidencia de EMC luego de cirugia de facoemulsificacion en la poblacion hospitalaria
+  de la Provincia de San Juan
+author: "Emilio Panero & Martin Guerrero"
+date: "12 de mayo de 2020"
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load&tidy, echo=FALSE, include=FALSE}
+setwd("D:/Users/Marti/Desktop/Col_Emilio")
+Table= read.table("Datos.txt",sep="\t",header=TRUE,stringsAsFactors = TRUE,row.names=1)
+Table$porcentual =Table$porcentual*100
+Table$EMC= "No"
+Table$EMC[Table$porcentual> 30] = "Clinicamente significativo"
+Table$EMC[Table$porcentual> 15 & Table$porcentual < 30]  = "Clinicamente no significativo"
+Table$EMC =as.factor(Table$EMC)
+Table$Grupo_Edad= "<65"
+Table$Grupo_Edad[Table$Edad>=65]= ">=65"
+Table$Grupo_Edad=as.factor(Table$Grupo_Edad)
+library(table1)
+library(ggpubr)
+library(reshape2)
+
+
+
+```
+## Resumen
+
+La principal causa de disminucion visual posoperatoria, en la cirugia de catarata, es el edema macular cistoide; que se define como la presencia de liquido intrarretinal y/o subrretinal asociado a un incremento del espesor macular. Para conocer la incidencia de esta patologia en nuestro medio es que se plantea la realizacion del presente estudio, en el que se incluyeron todos los pacientes adultos operados de cirugia de catarata en el periodo de noviembre 2019 a febrero 2020, tanto en el Hospital Dr. Guillermo Rawson, como en el Hospital Dr. Marcial Quiroga. Se le realizaron mediciones del espesor macular mediante tomografia de coherencia optica (OCT) antes del procedimiento quirurgico y entre 4 a 6 semanas luego de la misma para determinar la aparicion del edema y determinar la incidencia de esta patologia en nuestro medio.
+
+## Tabla 1
+```{r tabla1, echo=FALSE}
+label(Table$OJO_Operado)       <- "Ojo operado"
+label(Table$Tipo_de_Cx)       <- "Tipo de cirugia"
+label(Table$Espesor_Macular_um_1)     <- "Espesor macular pre-operatorio"
+label(Table$Espesor_Macular_um_2)     <- "Espesor macular post-operatorio"
+label(Table$DIFERENCIA)     <- "Difrencia de espesor post y pre"
+label(Table$Ruptura_Capsular)     <- "Ruptura capsular"
+
+units(Table$Espesor_Macular_um_1)       <- "um"
+units(Table$Espesor_Macular_um_2)       <- "um"
+
+table1(~Edad +Sexo+OJO_Operado +Tipo_de_Cx +Espesor_Macular_um_1+ Espesor_Macular_um_2 + DIFERENCIA + Ruptura_Capsular +EMC |Diabetes ,data=Table)
+
+```
+
+###Tabla1 Alternativa
+En este caso la informacion es dividida segun si los pacientes presentaron EMC o no
+
+```{r tabla_Diab, echo=FALSE}
+table1(~Grupo_Edad +Sexo+OJO_Operado +Tipo_de_Cx +Espesor_Macular_um_1+ Espesor_Macular_um_2 + DIFERENCIA + Ruptura_Capsular+ Diabetes  |EMC ,data=Table)
+```
+
+###Tabla1 Alternativa 2
+En este caso la informacion es dividida segun si los pacientes presentaron Diabetes (Si o no) y EMC (si o no)
+
+```{r tabla_Diab_EMC, echo=FALSE}
+table1(~Grupo_Edad +Sexo+OJO_Operado +Tipo_de_Cx +Espesor_Macular_um_1+ Espesor_Macular_um_2 + DIFERENCIA + Ruptura_Capsular  |Diabetes*EMC ,data=Table)
+```
+
+
+##Incidencias de EMC estratificadas
+Calcular la incidencia cruda del EMC en la poblacion estudiada (general y estratificada por sexo, edad, ojo y presencia de diabetes)
+
+### Incidencia de EMC ajustada segun presencia de diabetes
+```{r inc_EMC_Diab ,echo=FALSE}
+table1(~EMC | Diabetes,data=Table)
+```
+
+### Incidencia de EMC ajustada segun presencia de diabetes y sexo
+```{r inc_EMC_Diab_Sex ,echo=FALSE}
+table1(~EMC | Diabetes*Sexo,data=Table)
+```
+
+### Incidencia de EMC ajustada segun presencia de diabetes y grupo etario
+```{r inc_EMC_Diab_age ,echo=FALSE}
+table1(~EMC | Diabetes*Grupo_Edad,data=Table)
+```
+
+### Incidencia de EMC ajustada segun presencia de diabetes y ojo afectado
+```{r inc_EMC_Diab_eye ,echo=FALSE}
+table1(~EMC | Diabetes*OJO_Operado,data=Table)
+```
+
+## Espesor macular pre y post cirugia
+
+```{r historgramas, echo=FALSE}
+hist(Table$Espesor_Macular_um_1, main= "Distribucion del espesor macular \n pre-cirugia",xlim=c(100,600),xlab= "Espesor macular (um)") #Normal
+hist(Table$Espesor_Macular_um_2,main= "Distribucion del espesor macular \n post-cirugia",xlim=c(100,600),xlab= "Espesor macular (um)") #Normal
+hist(Table$DIFERENCIA,main = "Diferencia en el espesor macular post vs pre",xlab="Diferencia en micrometros") #Not normal
+```
+
+###Test estadisticos
+Para evaluar si hay diferencias en el espesor macular se utilizo el test de suma de rangos de Wilcoxon para muestras pareadas 
+
+```{r espesor_wilc,echo=FALSE}
+wilcox.test(Table$Espesor_Macular_um_1, Table$Espesor_Macular_um_2, paired = TRUE, alternative = "two.sided")
+```
+
+Comparando el espesor macular de los pacientes pre vs post cirugia, se puede observar que existe un aumento significativo en el espesor de la macula luego de la cirugia (p-value = 4.285e-06)
+
+```{r espesor_plot, echo=FALSE, warning= FALSE}
+pd <- data.frame(Table$Espesor_Macular_um_1, Table$Espesor_Macular_um_2,Table$Diabetes)
+colnames(pd)=c("Pre","Post","Diabetes")
+ggpaired(pd, cond1 = "Pre", cond2 = "Post",
+         color = "condition", palette = "jco",line.color = "lightgray", line.size = 0.1,title= "Espesor macular pre y post cirugia",ylab= "Espesor macular (um)",xlab= "cirugia")
+
+```
+
+## Diferencias de espesor macular entre diabeticos y no diabeticos en pre y post cirugia
+
+```{r Espesor_diab_cirg, echo=FALSE, warning= FALSE}
+Table2= Table
+colnames(Table2)[7]="Pre"
+colnames(Table2)[8]= "Post"
+Table2= melt(Table2[,c("Pre", "Post","Diabetes")])
+
+ggplot(data=Table2,aes(x=variable,y=value,fill=Diabetes))+ geom_boxplot() +theme_bw() + xlab("Cirugia") + ylab("Espesor macular (um)")+ ggtitle("Diferencias de espesor macular \n entre diabeticos y no diabeticos en pre y post cirugia")
+```
+
+### Test estadisticos
+Diferencias del espesor macular pre y post en ambas poblaciones. 
+Para este caso se usa un test de student sobre las diferencias de espesor en las condiciones
+
+```{r espesor_macular_test, echo=FALSE, warning=FALSE}
+t.test(Table$Espesor_Macular_um_1[Table$Diabetes=="No"], Table$Espesor_Macular_um_1[Table$Diabetes=="Si"], paired = FALSE, alternative = "two.sided")
+
+t.test(Table$Espesor_Macular_um_2[Table$Diabetes=="No"], Table$Espesor_Macular_um_2[Table$Diabetes=="Si"], paired = FALSE, alternative = "two.sided")
+```
+
+Comparando el espesor macular de la poblacion diabetica con la no diabetica, previo a la cirugia la media de espesor macular en la poblacion no diabetica fue de 263.6 um y la de la poblacion diabetica fue de 271.19 um no hayandose diferencias significativas entre ambos grupos previo a la cirugia (p-value 0.1151). Sin embargo, post-cirugia, las diferecnias fueron de 269.99 y 316.94 um, siendo estas diferencias estadisticamente significativas (p-value 0.0024)
+
+
+## Incidencia (riesgo) de EMC entre diabeticos y no diabeticos luego de la cirugia
+Para evaluar estas diferencias utilizaremos un Test de Fisher.
+
+```{r incidencia_emc, echo=FALSE,warning= FALSE}
+Table3= Table[Table$EMC != "Clinicamente no significativo",]
+Table3$EMC= as.factor(as.character(Table3$EMC))
+Table3$EMC <- factor(Table3$EMC, levels = c("No", "Clinicamente significativo"))
+table1(~Diabetes | EMC,data=Table3)
+```
+
+La incidencia (riesgo) de EMC en los diabeticos fue de 22.5% vs 2.5% en los no diabeticos
+
+```{r incidencia_emc_fisher , echo=FALSE,warning=FALSE}
+fisher.test(table(Table3$Diabetes,Table3$EMC),alternative="two.sided")
+```
+
+El odd-ratio de padecer EMC entre diabeticos y no diabeticos es de 10.72 [IC95%  2.38 - 66.61 ], diferencia estadisticamente significativa (p-value 0.00042) 
+
+## Incidencia (riesgo) de Ruptura capsular entre diabeticos y no diabeticos luego de la cirugia
+Para evaluar estas diferencias utilizaremos un Test de Fisher.
+
+```{r incidencia_rc, echo=FALSE,warning= FALSE}
+table1(~Diabetes | Ruptura_Capsular,data=Table)
+```
+
+La incidencia (riesgo) de ruptura capsular en los diabeticos fue de 8.3% vs 5% en los no diabeticos.
+
+```{r incidencia_rc_fisher , echo=FALSE,warning=FALSE}
+fisher.test(table(Table$Diabetes,Table$Ruptura_Capsular),alternative="two.sided")
+```
+
+El odd-ratio de padecer ruptura capsular entre diabeticos y no diabeticos es de 1.71 [IC95%  0.26 - 8.52 ], diferencia estadisticamente no significativa (p-value 0.43) 

@@ -5,7 +5,7 @@
 #' @param distancetype a \code{character} that can be either \code{'pearson'}, \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}
 #' @param usegpu \code{logical} \code{TRUE} or \code{FALSE}
 #' @param x an expression matrix with features as rows and samples as columns
-#'
+#' @export
 #' @return
 #' \code{select_distance(distancetype, usegpu)} assigns global function calculate_distance according to the parameters specified
 #'

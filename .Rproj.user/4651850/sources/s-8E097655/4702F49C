@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3498243537",
+    "hash" : "0",
     "id" : "4702F49C",
-    "lastKnownWriteTime" : 1590289945,
-    "last_content_update" : 1590289945137,
+    "lastKnownWriteTime" : 1590295902,
+    "last_content_update" : 1590295902,
     "path" : "~/GitHub/galgo/R/calculate_distance.R",
     "project_path" : "R/calculate_distance.R",
     "properties" : {
-        "cursorPosition" : "32,56",
-        "scrollLine" : "26"
+        "cursorPosition" : "7,2",
+        "scrollLine" : "0"
     },
     "relative_order" : 1,
     "source_on_save" : false,

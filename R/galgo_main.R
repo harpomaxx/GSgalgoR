@@ -202,7 +202,7 @@ ArrayTest <- function(flds, Data) {
 #' @examples
 #' @noRd
 subDist <- function(flds, D) {
-    sub <- subset(D, -flds)
+  sub <- subset(D, -flds)
 }
 
 #' Title
@@ -525,7 +525,7 @@ base_save_pop_callback <- function(directory="results/",prefix,generation,pop_po
 #' @noRd
 base_save_pop_partial_callback <- function(directory="results/",generation,pop_pool,pareto,prob_matrix,current_time){
   if (!dir.exists(directory))
-      dir.create(directory)
+    dir.create(directory)
   if (generation %% 2 == 0){
     base_save_pop_callback(directory,prefix=generation,generation,pop_pool,pareto,prob_matrix,current_time)
   }
@@ -722,17 +722,17 @@ toList <- function(output) {
 #'output <- galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
 #'outputDF <- toDataFrame(output)
 toDataFrame <- function(output) {
-    if (!methods::is(output, "galgo.Obj")) {
-        stop("object must be of class 'galgo.Obj'")
-    }
-    Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
-    ListGenes <- list()
-    for (i in 1:nrow(output$Solutions)) {
-        ListGenes[[i]] <- list()
-        ListGenes[[i]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
-    }
+  if (!methods::is(output, "galgo.Obj")) {
+    stop("object must be of class 'galgo.Obj'")
+  }
+  Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
+  ListGenes <- list()
+  for (i in 1:nrow(output$Solutions)) {
+    ListGenes[[i]] <- list()
+    ListGenes[[i]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
+  }
 
-    OUTPUT <- data.frame(Genes = I(ListGenes), k = output$Solutions[, "k"], SC.Fit = output$Solutions[, ncol(output$Solutions) - 3], Surv.Fit = output$Solutions[, ncol(output$Solutions) - 2], Rank = output$Solutions[, "rnkIndex"], CrowD = output$Solutions[, "CrowD"])
+  OUTPUT <- data.frame(Genes = I(ListGenes), k = output$Solutions[, "k"], SC.Fit = output$Solutions[, ncol(output$Solutions) - 3], Surv.Fit = output$Solutions[, ncol(output$Solutions) - 2], Rank = output$Solutions[, "rnkIndex"], CrowD = output$Solutions[, "CrowD"])
   rownames(OUTPUT) <- paste("Solutions", 1:nrow(output$Solutions) ,sep=".")
   return(OUTPUT)
 }
@@ -778,21 +778,21 @@ toDataFrame <- function(output) {
 
 
 galgo <- function(population = 30, # Number of individuals to evaluate
-                       generations = 2, # Number of generations
-                       nCV = 5, # Number of crossvalidations for function "crossvalidation"
-                       usegpu = FALSE, # to use gpuR
-                       distancetype = "pearson", # Options are: "pearson","uncentered","spearman","euclidean"
-                       TournamentSize = 2,
-                       period = 1825,
-                       OS, #OS=Surv(time=clinical$time,event=clinical$status)
-                       prob_matrix,
-                       res_dir="results/",
-                       save_pop_partial_callback=base_save_pop_partial_callback,
-                       save_pop_final_callback=base_save_pop_final_callback,
-                       report_callback=base_report_callback,
-                       start_gen_callback=base_start_gen_callback,
-                       end_gen_callback=base_end_gen_callback,
-                       verbose=2
+                  generations = 2, # Number of generations
+                  nCV = 5, # Number of crossvalidations for function "crossvalidation"
+                  usegpu = FALSE, # to use gpuR
+                  distancetype = "pearson", # Options are: "pearson","uncentered","spearman","euclidean"
+                  TournamentSize = 2,
+                  period = 1825,
+                  OS, #OS=Surv(time=clinical$time,event=clinical$status)
+                  prob_matrix,
+                  res_dir="results/",
+                  save_pop_partial_callback=base_save_pop_partial_callback,
+                  save_pop_final_callback=base_save_pop_final_callback,
+                  report_callback=base_report_callback,
+                  start_gen_callback=base_start_gen_callback,
+                  end_gen_callback=base_end_gen_callback,
+                  verbose=2
 ) {
 
   if (verbose == 0){
@@ -955,4 +955,3 @@ galgo <- function(population = 30, # Number of individuals to evaluate
   #environment(save_pop_final_callback)<-environment()
   save_pop_final_callback(res_dir,generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
 }
-

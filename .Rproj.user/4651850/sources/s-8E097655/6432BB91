@@ -1,19 +1,19 @@
 {
     "collab_server" : "",
     "contents" : "",
-    "created" : 1590282633723.000,
-    "dirty" : true,
+    "created" : 1590294435298.000,
+    "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
-    "id" : "99824681",
-    "lastKnownWriteTime" : 1590282780,
-    "last_content_update" : 1590290327372,
+    "id" : "6432BB91",
+    "lastKnownWriteTime" : 1590547868,
+    "last_content_update" : 1590547868870,
     "path" : "~/GitHub/galgo/R/galgo_main.R",
     "project_path" : "R/galgo_main.R",
     "properties" : {
-        "cursorPosition" : "675,77",
-        "scrollLine" : "670"
+        "cursorPosition" : "957,0",
+        "scrollLine" : "945"
     },
     "relative_order" : 4,
     "source_on_save" : false,

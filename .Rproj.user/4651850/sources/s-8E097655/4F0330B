@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3040644571",
+    "hash" : "0",
     "id" : "4F0330B",
     "lastKnownWriteTime" : 1590293377,
     "last_content_update" : 1590293377447,
     "path" : "~/GitHub/galgo/R/install_data.R",
     "project_path" : "R/install_data.R",
     "properties" : {
-        "cursorPosition" : "34,78",
-        "scrollLine" : "25"
+        "cursorPosition" : "14,0",
+        "scrollLine" : "0"
     },
     "relative_order" : 2,
     "source_on_save" : false,
