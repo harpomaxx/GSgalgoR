@@ -7,13 +7,13 @@
     "folds" : "",
     "hash" : "0",
     "id" : "6432BB91",
-    "lastKnownWriteTime" : 1590547868,
-    "last_content_update" : 1590547868870,
+    "lastKnownWriteTime" : 1590609502,
+    "last_content_update" : 1590609502168,
     "path" : "~/GitHub/galgo/R/galgo_main.R",
     "project_path" : "R/galgo_main.R",
     "properties" : {
-        "cursorPosition" : "741,3",
-        "scrollLine" : "733"
+        "cursorPosition" : "25,12",
+        "scrollLine" : "19"
     },
     "relative_order" : 4,
     "source_on_save" : false,

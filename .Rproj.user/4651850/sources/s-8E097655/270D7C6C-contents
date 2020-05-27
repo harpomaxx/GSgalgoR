@@ -53,13 +53,13 @@ library(galgoR)
 
 ## Examples datasets
 
-To standardize the structure of genomic data, we use the ExpressionSet !LINK! structure for the examples given in this guide. The 'expressionSet' objects can hold different types of data in a single structure but in this case we opted for using a simplified format to facilitate the example to those not familiar with the Biobase !LINK! package. The ExpressionSet objects are formed mainly by:
+To standardize the structure of genomic data, we use the [ExpressionSet](https://www.bioconductor.org/packages/release/bioc/html/Biobase.html) structure for the examples given in this guide. The `ExpressionSet` objects can hold different types of data in a single structure but in this case we opted for using a simplified format to facilitate the example to those not familiar with the [Biobase](https://www.bioconductor.org/packages/release/bioc/html/Biobase.html) package. The `ExpressionSet` objects are formed mainly by:
 
 - A matrix of genetic expression, usually derived from microarray or RNAseq experiments. 
 - Phenotypic data, where we find information on the samples (condition, status, treatment, survival, and other covariates). 
 - Finally, these objects can also contain Annotations and feature Meta-data.
 
-To start testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets (TCGA and GSE68465), that can be download using the function use_rna_luad(). Aditionally, It also contains the Wilkerson's centroids to perform lung adenocarcinoma sample classification. 
+To start testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets ([TCGA](https://gdc.cancer.gov/about-data/publications/luad_2014) and [GSE68465](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465)), that can be download using the function use_rna_luad(). Aditionally, It also contains the [Wilkerson's centroids](http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip) to perform lung adenocarcinoma sample classification. 
  
 ```{r example}
  rna_luad<- use_rna_luad()
@@ -80,7 +80,7 @@ To start testing galgoR, the package contains two reduced lung adenocarcinoma ge
 ```
 
 
-# Example
+# Examples
 
 ## Loading data 
 
@@ -89,7 +89,7 @@ To start testing galgoR, the package contains two reduced lung adenocarcinoma ge
 rna_luad <- use_rna_luad()
 ```
 
-We will also load the 'survival' library
+We will also load the `survival` library
 
 ```{r survlibrary}
 library(survival)
@@ -149,11 +149,18 @@ output <- galgoR::galgo(generations = generations,
                         distancetype = distancetype,
                         TournamentSize = TournamentSize, 
                         period = period)
+
+print(class(output))
 ```
 
+```{r load_run, echo= FALSE, eval=TRUE}
+load("./results/final.rda")
+output<-galgo.Obj(Solutions = output$Solutions, ParetoFront= output$ParetoFront)
+print(class(output))
+```
 ### galgo Object
 
-The output of the galgo() function is an object of type 'galgo.Obj' that corresponds to a list with the elements:
+The output of the galgo() function is an object of type 'galgo.Obj' that two slots with the elements:
 
 - Solutions 
 - ParetoFront.
@@ -213,11 +220,9 @@ outputDF <- toDataFrame(output)
 Pareto-optimal front  
 
 ```{r}
-resultdir<- "./results/"
-file <- paste0( resultdir, generations,".rda")
-load(file)
-X1 <- output$Solutions
-PARETO <- output$ParetoFront
+
+X1 <- output@Solutions
+PARETO <- output@ParetoFront
 dots <- do.call(rbind,PARETO)
 chrom_length<- nrow(TCGA_expr)
 

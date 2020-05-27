@@ -23,6 +23,20 @@
 NULL
 
 
+galgo.Obj <- setClass(
+  # Set the name for the class
+  "galgo.Obj",
+
+  # Define the slots
+  slots = c(
+    Solutions = "matrix",
+    ParetoFront = "list"
+  )
+  )
+
+
+
+
 #' createFolds splits the data into k groups to perform cross-validation
 #'
 #' @param y a vector of outcomes
@@ -502,9 +516,9 @@ base_save_pop_callback <- function(directory="results/",prefix,generation,pop_po
     dir.create(directory)
   colnames(pop_pool)[1:(ncol(pop_pool) - 5)] <- rownames(prob_matrix)
   output <- list(Solutions = pop_pool, ParetoFront = pareto)
+  output <- galgo.Obj(Solutions= output$Solutions, ParetoFront= output$ParetoFront)
   filename <- paste0(directory,prefix, ".rda")
   save(file = filename, output)
-  class(output)<- "galgo.Obj"
   return(output)
 }
 
@@ -552,7 +566,6 @@ base_save_pop_final_callback <- function(directory="results/",generation,pop_poo
   #environment(base_save_pop_callback)<-environment()
   output<- base_save_pop_callback(directory,prefix="final",generation,pop_pool,pareto,prob_matrix,current_time)
   print(paste0("final population saved in final.rda"))
-  class(output)<- "galgo.Obj"
   return(output)
 }
 
@@ -681,16 +694,16 @@ toList <- function(output) {
     stop("object must be of class 'galgo.Obj'")
   }
   OUTPUT <- list()
-  Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
-  for (i in 1:nrow(output$Solutions)) {
+  Genes <- colnames(output@Solutions)[1:(ncol(output@Solutions) - 5)]
+  for (i in 1:nrow(output@Solutions)) {
     Sol <- paste("Solution", i, sep = ".")
     OUTPUT[[Sol]] <- list()
-    OUTPUT[[Sol]][["Genes"]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
-    OUTPUT[[Sol]]["k"] <- output$Solutions[i, "k"]
-    OUTPUT[[Sol]]["SC.Fit"] <- output$Solutions[i, length(Genes) + 2]
-    OUTPUT[[Sol]]["Surv.Fit"] <- output$Solutions[i, length(Genes) + 3]
-    OUTPUT[[Sol]]["rank"] <- output$Solutions[i, "rnkIndex"]
-    OUTPUT[[Sol]]["CrowD"] <- output$Solutions[i, "CrowD"]
+    OUTPUT[[Sol]][["Genes"]] <- Genes[as.logical(output@Solutions[i, 1:length(Genes)])]
+    OUTPUT[[Sol]]["k"] <- output@Solutions[i, "k"]
+    OUTPUT[[Sol]]["SC.Fit"] <- output@Solutions[i, length(Genes) + 2]
+    OUTPUT[[Sol]]["Surv.Fit"] <- output@Solutions[i, length(Genes) + 3]
+    OUTPUT[[Sol]]["rank"] <- output@Solutions[i, "rnkIndex"]
+    OUTPUT[[Sol]]["CrowD"] <- output@Solutions[i, "CrowD"]
   }
   return(OUTPUT)
 }
@@ -725,15 +738,15 @@ toDataFrame <- function(output) {
   if (!methods::is(output, "galgo.Obj")) {
     stop("object must be of class 'galgo.Obj'")
   }
-  Genes <- colnames(output$Solutions)[1:(ncol(output$Solutions) - 5)]
+  Genes <- colnames(output@Solutions)[1:(ncol(output@Solutions) - 5)]
   ListGenes <- list()
-  for (i in 1:nrow(output$Solutions)) {
+  for (i in 1:nrow(output@Solutions)) {
     ListGenes[[i]] <- list()
-    ListGenes[[i]] <- Genes[as.logical(output$Solutions[i, 1:length(Genes)])]
+    ListGenes[[i]] <- Genes[as.logical(output@Solutions[i, 1:length(Genes)])]
   }
 
-  OUTPUT <- data.frame(Genes = I(ListGenes), k = output$Solutions[, "k"], SC.Fit = output$Solutions[, ncol(output$Solutions) - 3], Surv.Fit = output$Solutions[, ncol(output$Solutions) - 2], Rank = output$Solutions[, "rnkIndex"], CrowD = output$Solutions[, "CrowD"])
-  rownames(OUTPUT) <- paste("Solutions", 1:nrow(output$Solutions) ,sep=".")
+  OUTPUT <- data.frame(Genes = I(ListGenes), k = output@Solutions[, "k"], SC.Fit = output@Solutions[, ncol(output@Solutions) - 3], Surv.Fit = output@Solutions[, ncol(output@Solutions) - 2], Rank = output@Solutions[, "rnkIndex"], CrowD = output@Solutions[, "CrowD"])
+  rownames(OUTPUT) <- paste("Solutions", 1:nrow(output@Solutions) ,sep=".")
   return(OUTPUT)
 }
 
