@@ -114,8 +114,8 @@ The principal parameters are:
 - period: a number indicating the outcome period to evaluate the RMST
 
 ```{r parameters}
-population <- 150              
-generations <-10 # For testing reasons it is set to a low number but ideally should be above 100            
+population <- 15 # For testing reasons it is set to a low number but ideally should be above 100            
+generations <-10 # For testing reasons it is set to a low number but ideally should be above 150            
 nCV <- 5                      
 distancetype <- "pearson"     
 TournamentSize <- 2
@@ -132,19 +132,19 @@ TCGA_expr <- rna_luad$TCGA$expression_matrix
 
 ### Survival Object
 
-The 'surv' object is created by the Surv() function of the survival package. This uses phenotypic data that are contained in the TCGA dataset.  
+The 'OS' object is created by the Surv() function of the survival package. This uses phenotypic data that are contained in the TCGA dataset.  
 
 ```{r Surv}
 TCGA_clinic <- rna_luad$TCGA$pheno_data
 
-surv <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
+OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 ```
 
 ```{r galgo_run}
 output <- galgoR::galgo(generations = generations, 
                         population = population, 
                         prob_matrix = TCGA_expr, 
-                        OS = surv,
+                        OS = OS,
                         nCV = nCV, 
                         distancetype = distancetype,
                         TournamentSize = TournamentSize, 
@@ -213,11 +213,13 @@ outputDF <- toDataFrame(output)
 Pareto-optimal front  
 
 ```{r}
+resultdir<- "./results/"
 file <- paste0( resultdir, generations,".rda")
 load(file)
 X1 <- output$Solutions
 PARETO <- output$ParetoFront
 dots <- do.call(rbind,PARETO)
+chrom_length<- nrow(TCGA_expr)
 
 rownames(X1) <- paste("result",1:nrow(X1),sep=".")
 ```
@@ -374,7 +376,7 @@ Select best performing solutions for each number of partitions (k) according to 
 
 ```{r}
 
-RESULT<- non.dominated.summary(output=output,Surv=train_surv, data= train_expression, distancetype =distancetype, usegpu= usegpu )
+RESULT<- non.dominated.summary(output=output,OS=train_surv, prob_matrix= train_expression, distancetype =distancetype, usegpu= usegpu )
 
 
 best_sol=NULL
@@ -407,10 +409,10 @@ OS_test=Surv(time=clinical_test$time,event=clinical_test$status)
 
 ```{r}
 
-train_classes<- classify.multiple(data=train_expression,centroid.list= CentroidsList, distancetype = distancetype)
+train_classes<- classify.multiple(prob_matrix=train_expression,centroid.list= CentroidsList, distancetype = distancetype)
 
 
-test_classes<- classify.multiple(data=test_expression,centroid.list= CentroidsList, distancetype = distancetype)
+test_classes<- classify.multiple(prob_matrix=test_expression,centroid.list= CentroidsList, distancetype = distancetype)
 
 ```
 
@@ -424,7 +426,7 @@ Prediction.models<- list()
 
 for(i in best_sol){
   
-  Surv<- train_surv
+  OS<- train_surv
   predicted_class<- as.factor(train_classes[,i])
   predicted_classdf <- as.data.frame(predicted_class)
   colnames(predicted_classdf)<- i
@@ -509,7 +511,7 @@ tumortotal1 <- surv_fit(surv_formula1,data=test_clinic)
 tumortotal1diff <- survdiff(surv_formula1)
 tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, lower.tail = FALSE) 
 
-surv_formula2 <- as.formula("Surv(test_clinic$time,test_clinic$status)~ Wilk.Class_GSE68465")
+surv_formula2 <- as.formula("Surv(test_clinic$time,test_clinic$status)~ Wilk.Class_test")
 tumortotal2 <- surv_fit(surv_formula2,data=test_clinic)
 tumortotal2diff <- survdiff(surv_formula2)
 tumortotal2pval<- pchisq(tumortotal1diff$chisq, length(tumortotal2diff$n) - 1, lower.tail = FALSE) 

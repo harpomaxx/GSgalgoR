@@ -7,13 +7,14 @@
     "folds" : "",
     "hash" : "0",
     "id" : "83297585",
-    "lastKnownWriteTime" : 1590503789,
-    "last_content_update" : 1590503789263,
+    "lastKnownWriteTime" : 1590588983,
+    "last_content_update" : 1590588983751,
     "path" : "~/GitHub/galgo/R/results_functions.R",
     "project_path" : "R/results_functions.R",
     "properties" : {
-        "cursorPosition" : "48,4",
-        "scrollLine" : "46",
+        "cursorPosition" : "153,0",
+        "docOutlineVisible" : "1",
+        "scrollLine" : "152",
         "tempName" : "Untitled1"
     },
     "relative_order" : 6,
