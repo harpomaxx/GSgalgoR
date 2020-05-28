@@ -24,9 +24,8 @@ library(galgoR)
 
 ## basic example code
 rna_luad<-use_rna_luad()
-library(Biobase)
-prm <- exprs(rna_luad$TCGA)
-clinical <- pData(rna_luad$TCGA)
+prm <- rna_luad$TCGA$expression_matrix
+clinical <-rna_luad$TCGA$pheno_data
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
 
 galgoR::galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
