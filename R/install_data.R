@@ -34,6 +34,6 @@ use_rna_luad <- function(){
       dir.create(dest_dir,recursive=TRUE)
   dest_file <- paste(dest_dir,"luad_data.rds",sep="")
   if (! file.exists(dest_file))
-      utils::download.file("https://bit.ly/luad_data_galgo",dest_file)
+      utils::download.file("https://bit.ly/luad_data_galgo",dest_file, mode="wb")
   data<-readRDS(dest_file)
 }

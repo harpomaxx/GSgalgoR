@@ -7,7 +7,7 @@
 #' \tabular{ll}{ Package: \tab galgoR\cr Type: \tab Package\cr
 #' Version: \tab 1.0.0\cr Date: \tab 2020-05-06 \cr License: \tab GPL-3\cr
 #' Copyright: \tab (c) 2020 Martin E. Guerrero-Gimenez.\cr URL: \tab
-#' \url{http://www.github.com/harpomaxx/galgoR}\cr LazyLoad: \tab yes\cr
+#' \url{https://www.github.com/harpomaxx/galgo}\cr LazyLoad: \tab yes\cr
 #' }
 #'
 #'
@@ -687,9 +687,9 @@ base_save_pop_callback <- function(directory="results/",prefix,generation,pop_po
 #'
 #' @examples
 #' @noRd
-base_save_pop_partial_callback <- function(directory="results/",generation,pop_pool,pareto,prob_matrix,current_time){
+base_save_pop_partial_callback <- function(directory="~/galgoR/results/",generation,pop_pool,pareto,prob_matrix,current_time){
   if (!dir.exists(directory))
-    dir.create(directory)
+    dir.create(directory,recursive = TRUE)
   if (generation %% 2 == 0){
     base_save_pop_callback(directory,prefix=generation,generation,pop_pool,pareto,prob_matrix,current_time)
   }
@@ -832,11 +832,14 @@ default_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
-#'rna_luad<-use_rna_luad()
-#'prm <-rna_luad$TCGA$expression_matrix
-#'clinical <- rna_luad$TCGA$pheno_data
-#'OS <- survival::Surv(time=clinical$time,event=clinical$status)
-#'output <- galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
+#'#Load data
+#'rna_luad <- use_rna_luad()
+#'TCGA_expr <- rna_luad$TCGA$expression_matrix
+#'TCGA_clinic <- rna_luad$TCGA$pheno_data
+#'OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
+#'
+#'#Run galgo
+#'output <- galgoR::galgo(generations = 5 ,population = 10, prob_matrix = TCGA_expr, OS = OS)
 #'outputList <- toList(output)
 
 toList <- function(output) {
@@ -877,12 +880,15 @@ toList <- function(output) {
 #'
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
-#' @examples
-#' rna_luad<-use_rna_luad()
-#'prm <- rna_luad$TCGA$expression_matrix
-#'clinical <- rna_luad$TCGA$pheno_data
-#'OS <- survival::Surv(time=clinical$time,event=clinical$status)
-#'output <- galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
+#'@examples
+#'#Load data
+#'rna_luad <- use_rna_luad()
+#'TCGA_expr <- rna_luad$TCGA$expression_matrix
+#'TCGA_clinic <- rna_luad$TCGA$pheno_data
+#'OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
+#'
+#'#Run galgo
+#'output <- galgoR::galgo(generations = 5 ,population = 10, prob_matrix = TCGA_expr, OS = OS)
 #'outputDF <- toDataFrame(output)
 toDataFrame <- function(output) {
   if (!methods::is(output, "galgo.Obj")) {
@@ -930,15 +936,19 @@ toDataFrame <- function(output) {
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
-#' options(mc.cores=2)
-#' rna_luad<-use_rna_luad()
-#' prm <- rna_luad$TCGA$expression_matrix
-#' clinical <- rna_luad$TCGA$pheno_data
-#' OS <- survival::Surv(time=clinical$time,event=clinical$status)
-#' output <- galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
+#' #Load data
+#' rna_luad <- use_rna_luad()
+#' TCGA_expr <- rna_luad$TCGA$expression_matrix
+#' TCGA_clinic <- rna_luad$TCGA$pheno_data
+#' OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
+#'
+#' #Run galgo
+#' output <- galgoR::galgo(generations = 5 ,population = 10, prob_matrix = TCGA_expr, OS = OS)
 #' outputDF <- toDataFrame(output)
 #' outputList <- toList(output)
-
+#'
+#'
+#'
 
 
 galgo <- function(population = 30, # Number of individuals to evaluate
@@ -974,7 +984,15 @@ galgo <- function(population = 30, # Number of individuals to evaluate
 
 
   # Support for parallel computing.
-  cluster <- parallel::makeCluster(parallel::detectCores() - 1) # convention to leave 1 core for OS
+  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+  if (nzchar(chk) && chk == "TRUE") {
+    # use 2 cores in CRAN/Travis/AppVeyor
+    num_workers <- 3L
+  } else {
+    # use all cores in devtools::test()
+    num_workers <- parallel::detectCores()
+  }
+  cluster <- parallel::makeCluster(num_workers - 1) # convention to leave 1 core for OS
   doParallel::registerDoParallel(cluster)
   calculate_distance <- select_distance(distancetype, usegpu)
   # Empty list to save the solutions.

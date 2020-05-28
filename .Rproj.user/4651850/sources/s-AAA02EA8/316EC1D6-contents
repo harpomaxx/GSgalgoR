@@ -1,15 +1,23 @@
 ---
 title: "GalgoR user Guide"
-author: 
-- name: "Martin E. Guerrero-Gimenez & Juan Manuel Fernandez-Muñoz"
+author:
+- name: "Martin E. Guerrero-Gimenez"
   affiliation: 
   - "Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza, Argentina."
+  - "Institute of Biochemistry and Biotechnology, Medical School, National University of Cuyo, Mendoza, Argentina."
+  email: "mguerrero@mendoza-conicet.gob.ar "
+- name: "Juan Manuel Fernandez-Muñoz"
+  affiliation: 
+  - "Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza, Argentina."
+  - "Institute of Biochemistry and Biotechnology, Medical School, National University of Cuyo, Mendoza, Argentina."
+- name: "Carlos A. Catania"
+  affiliation: "Engineering School, National University of Cuyo, Mendoza, Argentina."
   package: "galgoR"
 abstract: >
   We report a novel method to identify specific transcriptomic phenotypes based on an elitist non-dominated sorting genetic algorithm that combines the advantages of clustering methods and the exploratory properties of genetic algorithms to discover biologically and clinically relevant molecular subtypes in different cancers.
 date: "`r Sys.Date()`"
 output: 
-    BiocStyle::html_document
+    html_document
 vignette: >
     %\VignetteIndexEntry{Vignette Title}
     %\VignetteEngine{knitr::rmarkdown}
@@ -20,7 +28,9 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval=FALSE
+  eval=FALSE,
+  warning=FALSE,
+  message = FALSE
 )
 ```
 
@@ -53,13 +63,13 @@ library(galgoR)
 
 ## Examples datasets
 
-To standardize the structure of genomic data, we use the ExpressionSet !LINK! structure for the examples given in this guide. The 'expressionSet' objects can hold different types of data in a single structure but in this case we opted for using a simplified format to facilitate the example to those not familiar with the Biobase !LINK! package. The ExpressionSet objects are formed mainly by:
+To standardize the structure of genomic data, we use the [ExpressionSet](https://www.bioconductor.org/packages/release/bioc/html/Biobase.html) structure for the examples given in this guide. The `ExpressionSet` objects can hold different types of data in a single structure but in this case we opted for using a simplified format to facilitate the example to those not familiar with the [Biobase](https://www.bioconductor.org/packages/release/bioc/html/Biobase.html) package. The `ExpressionSet` objects are formed mainly by:
 
 - A matrix of genetic expression, usually derived from microarray or RNAseq experiments. 
 - Phenotypic data, where we find information on the samples (condition, status, treatment, survival, and other covariates). 
 - Finally, these objects can also contain Annotations and feature Meta-data.
 
-To start testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets (TCGA and GSE68465), that can be download using the function use_rna_luad(). Aditionally, It also contains the Wilkerson's centroids to perform lung adenocarcinoma sample classification. 
+To start testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets ([TCGA](https://gdc.cancer.gov/about-data/publications/luad_2014) and [GSE68465](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465)), that can be download using the function use_rna_luad(). Aditionally, It also contains the [Wilkerson's centroids](http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip) to perform lung adenocarcinoma sample classification. 
  
 ```{r example}
  rna_luad<- use_rna_luad()
@@ -80,7 +90,7 @@ To start testing galgoR, the package contains two reduced lung adenocarcinoma ge
 ```
 
 
-# Example
+# Examples
 
 ## Loading data 
 
@@ -89,9 +99,9 @@ To start testing galgoR, the package contains two reduced lung adenocarcinoma ge
 rna_luad <- use_rna_luad()
 ```
 
-We will also load the 'survival' library
+We will also load the `survival` library
 
-```{r survlibrary}
+```{r survlibrary, eval=TRUE}
 library(survival)
 ```
 
@@ -114,8 +124,8 @@ The principal parameters are:
 - period: a number indicating the outcome period to evaluate the RMST
 
 ```{r parameters}
-population <- 150              
-generations <-10 # For testing reasons it is set to a low number but ideally should be above 100            
+population <- 30 # For testing reasons it is set to a low number but ideally should be above 100            
+generations <-15 # For testing reasons it is set to a low number but ideally should be above 150            
 nCV <- 5                      
 distancetype <- "pearson"     
 TournamentSize <- 2
@@ -132,28 +142,37 @@ TCGA_expr <- rna_luad$TCGA$expression_matrix
 
 ### Survival Object
 
-The 'surv' object is created by the Surv() function of the survival package. This uses phenotypic data that are contained in the TCGA dataset.  
+The 'OS' object is created by the Surv() function of the survival package. This uses phenotypic data that are contained in the TCGA dataset.  
 
 ```{r Surv}
 TCGA_clinic <- rna_luad$TCGA$pheno_data
 
-surv <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
+OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 ```
+
+### Run Galgo algorithm
 
 ```{r galgo_run}
 output <- galgoR::galgo(generations = generations, 
                         population = population, 
-                        data = TCGA_expr, 
-                        Surv = surv,
+                        prob_matrix = TCGA_expr, 
+                        OS = OS,
                         nCV = nCV, 
                         distancetype = distancetype,
                         TournamentSize = TournamentSize, 
                         period = period)
+
+print(class(output))
 ```
 
-### galgo Object
+```{r load_run, echo= FALSE, eval=TRUE}
+library(galgoR)
+load("./results/final_1.rda")
+print(class(output))
+```
+### Galgo Object
 
-The output of the galgo() function is an object of type 'galgo.Obj' that corresponds to a list with the elements:
+The output of the galgo() function is an object of type 'galgo.Obj' that has two slots with the elements:
 
 - Solutions 
 - ParetoFront.
@@ -176,7 +195,7 @@ Is a list of length equal to the number of generations run in the algorithm. Eac
 
 For easier interpretation of the 'galgo.Obj', the output can be transformed to a List or to a DataFrame objects.
 
-#### toList() function
+## toList() function
 
 This function restructurates a galgo.Obj to a more easy to understand an use list. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type list has a length equals to the number of solutions obtained by the galgo algorithm.
 
@@ -189,11 +208,18 @@ Basically this output is a list of lists, where each element of the output is na
 - solution.n$Rank: The solution rank
 - CrowD: The solution crowding distance related to the rest of the solutions
 
-```{r toList}
+```{r toList, eval= TRUE}
 outputList <- toList(output)
+head(names(outputList))
 ```
 
-#### toDataFrame() function
+To evaluate the structure of the first solution we can run:
+
+```{r example_1, eval=TRUE}
+outputList[["Solution.1"]]
+```
+
+## toDataFrame() function
 
 The current function reestructurates a galgo.Obj to a more easy to understand an use data.frame. The output data.frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:
 
@@ -204,41 +230,37 @@ The current function reestructurates a galgo.Obj to a more easy to understand an
 - Rank: The solution rank
 - CrowD: The solution crowding distance related to the rest of the solutions
 
-```{r toDataFrame}
+```{r toDataFrame, eval= TRUE}
 outputDF <- toDataFrame(output)
+head(outputDF)
 ```
 
-# Figures
+## plot_pareto()
 
-Pareto-optimal front  
+Once we obtain the `galgo.obj` from the output of `galgo()` we can plot the obtained Pareto front and see how it evolved trough the tested number of generations
 
-```{r}
-file <- paste0( resultdir, generations,".rda")
-load(file)
-X1 <- output$Solutions
-PARETO <- output$ParetoFront
-dots <- do.call(rbind,PARETO)
-
-rownames(X1) <- paste("result",1:nrow(X1),sep=".")
+```{r plot_pareto, eval=FALSE}
+plot_pareto(output)
 ```
-```{r, fig.show='hold'}
-plot(dots, pch = 20, col = "steelblue", alpha = 0.5)
-lines(X1[names(which(X1[order(X1[,(chrom_length+2)]),"rnkIndex"]==1)),(chrom_length+2):(chrom_length+3)],col="black", lwd=3, lty=3)
-```
+```{r echo=FALSE,eval=TRUE, out.width='100%'}
+knitr::include_graphics('./images/pareto1.jpg')
 
+```
 
 # Case study
 
-data about lung cancer and lung classifiers
+Lung adenocarcinoma (LUAD) is one of the most common types of cancer and, to date, still presents high mortality rates. Currently, numerous molecular alteration for this type of cancer are well known but, unlike breast cancer, very few transcriptomic signatures have been developed for this type of cancer. In this regards, [Wilkerson's et al.](https://pubmed.ncbi.nlm.nih.gov/22590557/) have proposed a transcriptomic classification into three different LUAD molecular subtypes (Bronchioid, Magnoid, and Squamoid) which recapitulates naturally-occurring gene expression patterns that encompass different functional pathways and patient outcomes.
 
 ## Data Preprocessing
 
-Explain preprocessing
+To evaluate Galgo's performance along with Wilkerson's classification, we used two already scaled and reduced lung adenocarcinoma gene expression datasets included in the package ([TCGA](https://gdc.cancer.gov/about-data/publications/luad_2014) and [GSE68465](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465)) that can be download using the function use_rna_luad(). Aditionally, It also contains the [Wilkerson's centroids](http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip) to perform lung adenocarcinoma sample classification. 
+[Wilkerson's centroids](http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip) were used to classify samples according to their corresponding molecular subtype.
 
 ## Lung adenocarcinoma classification
 
+The scaled expression values of each patient are compared with the prototypical centroids using Pearson's correlation coefficient and the closest centroid to each patient is used to assign the corresponding labels.
 
-```{r load_sets}
+```{r load_sets, eval=TRUE}
 rna_luad<-use_rna_luad()
 
 #The expression of the toy datasets are already scaled
@@ -274,11 +296,11 @@ table(Wilk.Class_test)
 
 ```
 
-## Evaluate patient survival according to Wilkerson subtypes
+Once the patients are classified according to their closest centroids, we can now evaluate the survival curves for the different types in each of the datasets
 
-Insert text here
+### Survival of TCGA patients
 
-```{r}
+```{r wilk_surv_TCGA, eval=TRUE}
 library(survival)
 library(survminer)
 library(ggplot2)
@@ -294,9 +316,9 @@ tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, l
 
 ```
 
-## For GSE68465 dataset 
+### Survival of GSE68465 patients 
 
-```{r}
+```{r wilk_surv_GSE, eval=TRUE}
 
 
 surv_formula <- as.formula("Surv(test_clinic$time,test_clinic$status)~ Wilk.Class_test")
@@ -311,11 +333,11 @@ tumortotal2pval<- pchisq(tumortotal2diff$chisq, length(tumortotal2diff$n) - 1, l
 
 ## Find lung adenocarcinoma gene signatures with GalgoR
 
-Write something
+Now we run Galgo to find cohessive and clinically meaningful signatures for LUAD using TCGA data as training set and GSE68465 data as test set
 
 ### Set configuration parameters
 
-```{r case_params}
+```{r case_params, eval=TRUE}
 population <- 100              
 generations <-150             
 nCV <- 5                      
@@ -329,26 +351,35 @@ Run Galgo on the training set
 
 ```{r}
 
-output= galgoR::galgo(generations = generations, population = population,data = train_expression, Surv=train_surv,usegpu=usegpu,nCV= nCV,
-                      distancetype=distancetype, TournamentSize=TournamentSize, period=period)
+output= galgoR::galgo(generations = generations, population = population,prob_matrix = train_expression, OS=train_surv,usegpu=usegpu,nCV= nCV, distancetype=distancetype, TournamentSize=TournamentSize, period=period)
+
+```
+```{r load_run2, echo= FALSE, eval=TRUE}
+library(galgoR)
+load("./results/final_2.rda")
+print(class(output))
+```
+## Analyzing Galgo results
+
+### Pareto front
+
+```{r pareto_2}
+plot_pareto(output)
+```
+
+```{r echo=FALSE,eval=TRUE, out.width='100%'}
+knitr::include_graphics('./images/pareto2.jpg')
 
 ```
 
-### Analyzing the results
+### Summary of the results
 
-Pareto front
-
-```{r}
-
-```
-
-Summary of the results
-
-```{r}
+```{r, summary_results, eval=TRUE}
 
 output_df<- toDataFrame(output)
 
 NonDom_solutions<- output_df[output_df$Rank==1,]
+
 # N of non-dominated solutions 
 nrow(NonDom_solutions)
 
@@ -366,35 +397,40 @@ range(NonDom_solutions$Surv.Fit)
 
 ```
 
-Select best performing solutions for each number of partitions (k) according to C.Index
+###Select best performing solutions
 
-```{r}
+Now we select the best performing solutions for each number of partitions (k) according to C.Index
 
-RESULT<- non.dominated.summary(output=output,Surv=train_surv, data= train_expression, distancetype =distancetype, usegpu= usegpu )
+```{r best_perform, eval=FALSE}
+
+RESULT<- non.dominated.summary(output=output,OS=train_surv, prob_matrix= train_expression, distancetype =distancetype, usegpu= usegpu )
 
 
 best_sol=NULL
   for(i in unique(RESULT$k)){
   best_sol=c(best_sol,RESULT[RESULT$k==i,"solution"][which.max(RESULT[RESULT$k==i,"C.Index"])])
-    }
+  }
+
+print(best_sol)
   
 ```
 
-create prototypic centroids
+### Create prototypic centroids
 
+Now we create the prototypic centroids of the selected solutions
 
 ```{r}
   CentroidsList <- create.centroids(output, solution.names = best_sol, train.set = train_expression)
 ```
 
 
-### Define test set
+## Test Galgo signatures in a test set
 
-Write something
+We will test the Galgo signatures found with the TCGA training set in an independent test set
 
 ```{r}
 testSet=rna_luad$GSE68465
-data_test= testSet$expression_matrix
+prob_matrix_test= testSet$expression_matrix
 clinical_test=testSet$pheno_data
 OS_test=Surv(time=clinical_test$time,event=clinical_test$status)
 ```
@@ -403,14 +439,14 @@ OS_test=Surv(time=clinical_test$time,event=clinical_test$status)
 
 ```{r}
 
-train_classes<- classify.multiple(data=train_expression,centroid.list= CentroidsList, distancetype = distancetype)
+train_classes<- classify.multiple(prob_matrix=train_expression,centroid.list= CentroidsList, distancetype = distancetype)
 
 
-test_classes<- classify.multiple(data=test_expression,centroid.list= CentroidsList, distancetype = distancetype)
+test_classes<- classify.multiple(prob_matrix=test_expression,centroid.list= CentroidsList, distancetype = distancetype)
 
 ```
 
-# Calculate train and test set C.Index
+## Calculate train and test set C.Index
 
  To calculate the train and test C.Index, the risk coefficients are calculated for each subclass in the training set and are then used to predict the risk of the different groups in the test set. This is particularly important for signatures with high number of partitions, were the survival differences of different groups might overlap and change their relative order, which is of great importance in the C.Index calculation.
  
@@ -420,7 +456,7 @@ Prediction.models<- list()
 
 for(i in best_sol){
   
-  Surv<- train_surv
+  OS<- train_surv
   predicted_class<- as.factor(train_classes[,i])
   predicted_classdf <- as.data.frame(predicted_class)
   colnames(predicted_classdf)<- i
@@ -434,7 +470,7 @@ Prediction.models[[i]]<- coxsimple
 }
 
 ```
-Calculate C.Index for training and test set using the prediction models of the training set
+### Calculate C.Index for training and test set using the prediction models of the training set
 
 ```{r}
 
@@ -464,6 +500,8 @@ C.indexes[i,"test_CI"]<- CI_test
 print(C.indexes)
 
 best_signature<- best_sol[which.max(C.indexes$test_CI)]
+
+print(best_signature)
 ```
 
 We test best galgo signature with training and test sets
@@ -505,7 +543,7 @@ tumortotal1 <- surv_fit(surv_formula1,data=test_clinic)
 tumortotal1diff <- survdiff(surv_formula1)
 tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, lower.tail = FALSE) 
 
-surv_formula2 <- as.formula("Surv(test_clinic$time,test_clinic$status)~ Wilk.Class_GSE68465")
+surv_formula2 <- as.formula("Surv(test_clinic$time,test_clinic$status)~ Wilk.Class_test")
 tumortotal2 <- surv_fit(surv_formula2,data=test_clinic)
 tumortotal2diff <- survdiff(surv_formula2)
 tumortotal2pval<- pchisq(tumortotal1diff$chisq, length(tumortotal2diff$n) - 1, lower.tail = FALSE) 
@@ -523,6 +561,6 @@ tumortotal2pval<- pchisq(tumortotal1diff$chisq, length(tumortotal2diff$n) - 1, l
 
 # Session info
 
-```{r}
+```{r sess_info, eval=TRUE}
 sessionInfo()
 ```

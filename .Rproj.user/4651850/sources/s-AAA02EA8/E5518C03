@@ -1,21 +1,21 @@
 {
     "collab_server" : "",
     "contents" : "",
-    "created" : 1590635004590.000,
+    "created" : 1590678797567.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
-    "id" : "D9FC0A6F",
-    "lastKnownWriteTime" : 1590634367,
-    "last_content_update" : 1590634367,
+    "hash" : "3329344362",
+    "id" : "E5518C03",
+    "lastKnownWriteTime" : 1590678817,
+    "last_content_update" : 1590678817355,
     "path" : "~/GitHub/galgo/R/install_data.R",
     "project_path" : "R/install_data.R",
     "properties" : {
-        "cursorPosition" : "37,6",
-        "scrollLine" : "25"
+        "cursorPosition" : "36,79",
+        "scrollLine" : "24"
     },
-    "relative_order" : 7,
+    "relative_order" : 5,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "r_source"
