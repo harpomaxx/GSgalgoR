@@ -23,9 +23,9 @@ The function runs the \code{\link[cluster:pam]{pam}} function of the \code{'clus
 \examples{
 rna_luad<-use_rna_luad()
 prm <- rna_luad$TCGA$expression_matrix
-Dist= calculate_distance_pearson_cpu(prm)
-k=4
-Pam= cluster_algorithm(Dist,k)
+Dist <- calculate_distance_pearson_cpu(prm)
+k <- 4
+Pam <- cluster_algorithm(Dist,k)
 table(Pam$cluster)
 }
 \references{

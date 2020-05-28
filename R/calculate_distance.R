@@ -50,7 +50,7 @@ calculate_distance_pearson_gpu <- function(x) {
  }
 
 #' @rdname calculate_distance
-#' @export
+#'
 calculate_distance_spearman_gpu <- function(x) {
         x <- gpuR::vclMatrix(x)
         mx <- gpuR::colMeans(x)
@@ -228,9 +228,9 @@ classify <- function(data, centroid, method = "pearson") {
 #' @examples
 #' rna_luad<-use_rna_luad()
 #' prm <- rna_luad$TCGA$expression_matrix
-#'Dist= calculate_distance_pearson_cpu(prm)
-#'k=4
-#'Pam= cluster_algorithm(Dist,k)
+#'Dist <- calculate_distance_pearson_cpu(prm)
+#'k <- 4
+#'Pam <- cluster_algorithm(Dist,k)
 #'table(Pam$cluster)
 
 cluster_algorithm <- function(c, k) {
@@ -249,12 +249,12 @@ cluster_algorithm <- function(c, k) {
 #' @return In practice, the function can return numeric values from -1 to 1 according the vector orientations, where a cosine similarity of 1 implies same orientation of the vectors while -1 imply vector of oposing directions. In the binary application, values range from 0 to 1, where 0 are totally discordant vectors while 1 are identical binary vectors.
 #' @export
 #' @examples
-#' solution1= c(1,0,0,1,0,0,1)
-#' solution2= solution1
-#' r=cosine(solution1, solution2)
+#' solution1 <- c(1,0,0,1,0,0,1)
+#' solution2 <- solution1
+#' r <- cosine(solution1, solution2)
 #' #the cosine similarity (r) equals 1
-#' solution2= abs(solution1-1)
-#' r2=cosine(solution1, solution2)
+#' solution2 <- abs(solution1-1)
+#' r2<- cosine(solution1, solution2)
 #' #the cosine similarity (r2) equals 0
 
 cosine <- function(a, b) {
@@ -273,9 +273,9 @@ cosine <- function(a, b) {
 #' @examples
 #' rna_luad<-use_rna_luad()
 #' prm <- rna_luad$TCGA$expression_matrix
-#' Dist= calculate_distance_pearson_cpu(prm)
-#' k=4
-#' Pam= cluster_algorithm(Dist,k)$cluster
+#' Dist <- calculate_distance_pearson_cpu(prm)
+#' k <- 4
+#' Pam <- cluster_algorithm(Dist,k)$cluster
 #' centroids <- kcentroid(prm,Pam)
 
 kcentroid <- function(data, class) {
