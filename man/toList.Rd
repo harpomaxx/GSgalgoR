@@ -17,7 +17,7 @@ Basically this output is a list of lists, where each element of the output is na
 \item \strong{output$solution.n$Genes}: A vector of the features included in the solution
 \item \strong{output$solution.n$k}: The number of partitions found in that solution
 \item \strong{output$solution.n$SC.Fit}: The average silhouette coefficient of the partitions found
-\item \strong{output$solution.n$Surv.Fit}: The survival fitnes value
+\item \strong{output$solution.n$Surv.Fit}: The survival fitness value
 \item \strong{output$solution.n$Rank}: The solution rank
 \item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
 }

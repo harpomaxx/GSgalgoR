@@ -7,7 +7,7 @@
 cluster_algorithm(c, k)
 }
 \arguments{
-\item{c}{a dissimilarity matix object of type \code{'dist'}}
+\item{c}{a dissimilarity matrix object of type \code{'dist'}}
 
 \item{k}{positive integer specifying the number of clusters, less than the number of observations}
 }
@@ -15,7 +15,7 @@ cluster_algorithm(c, k)
 Returns a \code{'list'} with the value \code{'$cluster'} which contains the cluster assignment of each of the samples evaluated
 }
 \description{
-In \code{galgoR}, the partition around medioids (PAM) algotithm is the default clustering process used under the evolutionary process.
+In \code{galgoR}, the partition around medioids (PAM) algorithm is the default clustering process used under the evolutionary process.
 }
 \details{
 The function runs the \code{\link[cluster:pam]{pam}} function of the \code{'cluster'} package with options \code{cluster.only =TRUE}, \code{diss = TRUE}, \code{do.swap=TRUE}, \code{keep.diss=FALSE}, \code{keep.data = FALSE}, \code{pamonce= 2}

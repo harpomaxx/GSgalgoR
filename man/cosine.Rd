@@ -14,7 +14,7 @@ In practice, the function can return numeric values from -1 to 1 according the v
 }
 \description{
 Cosine similarity is a metric of similarity between two non-zero vectors of an inner product space that measures the cosine of the angle between them.
-Two vectors with the same orientation have a cosine similarity of 1, if they are perpendicular they have a similarity of 0, and if they have oposing directions the cosine similarity is -1, independent of their magnitude.
+Two vectors with the same orientation have a cosine similarity of 1, if they are perpendicular they have a similarity of 0, and if they have opposing directions the cosine similarity is -1, independent of their magnitude.
 One advantage of cosine similarity is its low-complexity, especially for sparse vectors where only the non-zero dimensions need to be considered, which is a common case in \code{galgoR}.
 Other names of cosine similarity are Otuska-Orchini similarity when it is applied to binary data, which is the case for \code{galgoR}, where individual solutions represented as strings of 0 and 1 are compared with this metric.
 }

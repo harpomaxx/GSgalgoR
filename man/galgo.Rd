@@ -4,14 +4,24 @@
 \alias{galgo}
 \title{GalgoR main function}
 \usage{
-galgo(population = 30, generations = 2, nCV = 5, usegpu = FALSE,
-  distancetype = "pearson", TournamentSize = 2, period = 1825, OS,
-  prob_matrix, res_dir = "results/",
+galgo(
+  population = 30,
+  generations = 2,
+  nCV = 5,
+  usegpu = FALSE,
+  distancetype = "pearson",
+  TournamentSize = 2,
+  period = 1825,
+  OS,
+  prob_matrix,
+  res_dir = "results/",
   save_pop_partial_callback = base_save_pop_partial_callback,
   save_pop_final_callback = base_save_pop_final_callback,
   report_callback = base_report_callback,
   start_gen_callback = base_start_gen_callback,
-  end_gen_callback = base_end_gen_callback, verbose = 2)
+  end_gen_callback = base_end_gen_callback,
+  verbose = 2
+)
 }
 \arguments{
 \item{population}{a number indicating the number of solutions in the population of solutions that will be evolved}
@@ -48,7 +58,7 @@ galgo(population = 30, generations = 2, nCV = 5, usegpu = FALSE,
 }
 \value{
 an object of type \code{'galgo.Obj'} that corresponds to a list with the elements \code{$Solutions} and \code{$ParetoFront}. \code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number of features evaluated and \eqn{l} is the number of solutions obtained.
-The submatrix \eqn{l x n} is a binary matrix where each row represents the chromosome of an evolved solution from the solution population, where each feature can be present (1) or absent (0) in the solution. Column \eqn{n +1} represent the  \eqn{k} number of clusters for each solutions. Column \eqn{n+2} to \eqn{n+5} shows the SC Fitness and Survival Fitness values, the solution rank, and the crowding distance of the solution in the final pareto front respectevely.
+The submatrix \eqn{l x n} is a binary matrix where each row represents the chromosome of an evolved solution from the solution population, where each feature can be present (1) or absent (0) in the solution. Column \eqn{n +1} represent the  \eqn{k} number of clusters for each solutions. Column \eqn{n+2} to \eqn{n+5} shows the SC Fitness and Survival Fitness values, the solution rank, and the crowding distance of the solution in the final pareto front respectively.
 For easier interpretation of the \code{'galgo.Obj'}, the output can be reshaped using the \code{\link[galgoR:toList]{toList}} and \code{\link[galgoR:toDataFrame]{toDataFrame}} functions
 }
 \description{

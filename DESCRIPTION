@@ -16,6 +16,5 @@ Imports: cluster, doParallel, foreach, matchingR, nsga2R, survival, cba, stats, 
 Suggests: gpuR, knitr, rmarkdown, ggplot2
 URL: https://github.com/harpomaxx/galgo
 BugReports: https://github.com/harpomaxx/galgo/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
-

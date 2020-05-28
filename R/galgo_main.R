@@ -1,6 +1,6 @@
 #' @title GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types.
 #'
-#' @description This package was devoloped to provide a simple to use set of functions to use the galgo algorithm. A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm.
+#' @description This package was developed to provide a simple to use set of functions to use the galgo algorithm. A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm.
 #'
 #' Different statistical and machine learning approaches have long been used to identify gene expression/molecular signatures with prognostic potential in different cancer types. Nonetheless, the molecular classification of tumors is a difficult task and the results obtained via the current statistical methods are highly dependent on the features analyzed, the number of possible tumor subtypes under consideration, and the underlying assumptions made about the data. In addition, some cancer types are still lacking prognostic signatures and/or of subtype-specific predictors which are continually needed to further dissect tumor biology. In order to identify specific molecular phenotypes to develop precision medicine strategies we present Galgo: A multi-objective optimization process based on a non-dominated sorting genetic algorithm that combines the advantages of clustering methods for grouping heterogeneous omics data and the exploratory properties of genetic algorithms (GA) in order to find features that maximize the survival difference between subtypes while keeping high cluster consistency.
 #'
@@ -29,7 +29,7 @@ NULL
 #' @slot Solutions matrix.
 #' @slot ParetoFront list.
 #'
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -314,7 +314,7 @@ cDist <- function(x) {
 #'
 #' @return The function computes the Harmonic mean of the differences between Restricted Mean Survival Time (RMST) of consecutive survival curves multiplied by the number of comparisons.
 #'
-#' @references Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life expectancy difference and life expectancy ratio: two measures of treatment effects in randomised trials with non-proportional hazards BMJ 2017; 357 :j2250 \url{https://www.bmj.com/content/357/bmj.j2250}
+#' @references Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life expectancy difference and life expectancy ratio: two measures of treatment effects in randomized trials with non-proportional hazards BMJ 2017; 357 :j2250 \url{https://www.bmj.com/content/357/bmj.j2250}
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #' @export
 #'
@@ -824,7 +824,7 @@ default_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time
 #'\item \strong{output$solution.n$Genes}: A vector of the features included in the solution
 #'\item \strong{output$solution.n$k}: The number of partitions found in that solution
 #'\item \strong{output$solution.n$SC.Fit}: The average silhouette coefficient of the partitions found
-#'\item \strong{output$solution.n$Surv.Fit}: The survival fitnes value
+#'\item \strong{output$solution.n$Surv.Fit}: The survival fitness value
 #'\item \strong{output$solution.n$Rank}: The solution rank
 #'\item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
 #'}
@@ -867,12 +867,12 @@ toList <- function(output) {
 #'
 #' @param output An object of class \code{galgo.Obj}
 #'
-#' @return The current function reestructurates a \code{galgo.Obj} to a more easy to understand an use \code{data.frame}. The output \code{data.frame} has \eqn{ m x n} dimensions, were the rownames (\eqn{m}) are the solutions obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm. The columns has the following structure:
+#' @return The current function restructurates a \code{galgo.Obj} to a more easy to understand an use \code{data.frame}. The output \code{data.frame} has \eqn{ m x n} dimensions, were the rownames (\eqn{m}) are the solutions obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm. The columns has the following structure:
 #'\enumerate{
 #'  \item \strong{Genes}: The features included in each solution in form of a \code{list}
 #'  \item \strong{k}: The number of partitions found in that solution
 #'  \item \strong{SC.Fit}: The average silhouette coefficient of the partitions found
-#'  \item \strong{Surv.Fit}: The survival fitnes value
+#'  \item \strong{Surv.Fit}: The survival fitness value
 #'  \item \strong{Rank}: The solution rank
 #'  \item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
 #'}
@@ -928,7 +928,7 @@ toDataFrame <- function(output) {
 #' @param verbose select the level of information printed during galgo execution
 #'
 #' @return an object of type \code{'galgo.Obj'} that corresponds to a list with the elements \code{$Solutions} and \code{$ParetoFront}. \code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number of features evaluated and \eqn{l} is the number of solutions obtained.
-#' The submatrix \eqn{l x n} is a binary matrix where each row represents the chromosome of an evolved solution from the solution population, where each feature can be present (1) or absent (0) in the solution. Column \eqn{n +1} represent the  \eqn{k} number of clusters for each solutions. Column \eqn{n+2} to \eqn{n+5} shows the SC Fitness and Survival Fitness values, the solution rank, and the crowding distance of the solution in the final pareto front respectevely.
+#' The submatrix \eqn{l x n} is a binary matrix where each row represents the chromosome of an evolved solution from the solution population, where each feature can be present (1) or absent (0) in the solution. Column \eqn{n +1} represent the  \eqn{k} number of clusters for each solutions. Column \eqn{n+2} to \eqn{n+5} shows the SC Fitness and Survival Fitness values, the solution rank, and the crowding distance of the solution in the final pareto front respectively.
 #' For easier interpretation of the \code{'galgo.Obj'}, the output can be reshaped using the \code{\link[galgoR:toList]{toList}} and \code{\link[galgoR:toDataFrame]{toDataFrame}} functions
 #'
 #' @export
@@ -1041,7 +1041,7 @@ galgo <- function(population = 30, # Number of individuals to evaluate
     }
 
 
-    # Calculate Fitnes 1 (silhouette) and 2 (Survival differences).
+    # Calculate Fitness 1 (silhouette) and 2 (Survival differences).
     Fit2 <- foreach::foreach(i = 1:nrow(X), .packages = reqpkgs, .combine = rbind) %dopar% {
       #devtools::load_all() # required for package devel
       crossvalidation(prob_matrix, flds, X[i, ], k[i], OS = OS, distance = calculate_distance, nCV, period)
@@ -1051,7 +1051,7 @@ galgo <- function(population = 30, # Number of individuals to evaluate
     Fit2[, 1] <- (Fit2[, 1] * pen(rowSums(X)))
 
     if (g == 1) {
-      PARETO[[g]] <- Fit2 # Saves the fitnes of the solutions of the current generation.
+      PARETO[[g]] <- Fit2 # Saves the fitness of the solutions of the current generation.
       ranking <- nsga2R::fastNonDominatedSorting(Fit2 * -1) # NonDominatedSorting from package nsga2R. -1 multiplication to alter the sign of the fitness (function sorts from min to max).
       rnkIndex <- integer(n)
       i <- 1
@@ -1104,7 +1104,7 @@ galgo <- function(population = 30, # Number of individuals to evaluate
       O <- order(X1[, "rnkIndex"], X1[, "CrowD"] * -1)[1:population]
       X1 <- X1[O, ]
 
-      PARETO[[g]] <- X1[, (chrom_length + 2):(chrom_length + 3)] # Saves the fitnes of the solutions of the current generation
+      PARETO[[g]] <- X1[, (chrom_length + 2):(chrom_length + 3)] # Saves the fitness of the solutions of the current generation
 
       # Output for the generation callback
       #environment(report_callback)<-environment()

@@ -26,7 +26,7 @@ OS <- survival::Surv(time=clinical$time,event=clinical$status)
 fitness(OS,clustclass= clinical$Wilk.Subtype, 1825)
 }
 \references{
-Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life expectancy difference and life expectancy ratio: two measures of treatment effects in randomised trials with non-proportional hazards BMJ 2017; 357 :j2250 \url{https://www.bmj.com/content/357/bmj.j2250}
+Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life expectancy difference and life expectancy ratio: two measures of treatment effects in randomized trials with non-proportional hazards BMJ 2017; 357 :j2250 \url{https://www.bmj.com/content/357/bmj.j2250}
 }
 \author{
 Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}

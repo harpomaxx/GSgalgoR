@@ -33,9 +33,9 @@ galgoR::galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
 ```
 ## GPU support
 
-Galgo is able to fasten its exectution using GPU computing utilizing the [gpuR package](https://cran.r-project.org/package=gpuR "gpuR R package") . Before installing [gpuR](https://cran.r-project.org/package=gpuR "gpuR R package"), the opencl backend should be configured. 
+Galgo is able to fasten its execution using GPU computing utilizing the [gpuR package](https://cran.r-project.org/package=gpuR "gpuR R package") . Before installing [gpuR](https://cran.r-project.org/package=gpuR "gpuR R package"), the opencl backend should be configured. 
 
-In linux systems install lastest nvidia cuda drivers and the opencl backend.
+In linux systems install latest nvidia cuda drivers and the opencl backend.
 
 ```
        apt-get install nvidia-418 nvidia-opencl-icd-418 libcuda1-418

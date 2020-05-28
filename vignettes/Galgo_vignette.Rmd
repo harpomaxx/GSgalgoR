@@ -19,7 +19,7 @@ date: "`r Sys.Date()`"
 output: 
     html_document
 vignette: >
-    %\VignetteIndexEntry{Vignette Title}
+    %\VignetteIndexEntry{GalgoR user Guide}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}  
 ---
@@ -37,7 +37,7 @@ knitr::opts_chunk$set(
 
 # Overview
 
-In the new era of omics data, precision medicine has become the new paradigm of cancer treatment. Amongst all available omics techniques, gene expression profiling, in particular, has been increasingly used to classify tumor subtypes with different biological behavior. 
+In the new era of omics data, precision medicine has become the new paradigm of cancer treatment. Among all available omics techniques, gene expression profiling, in particular, has been increasingly used to classify tumor subtypes with different biological behavior. 
 Cancer subtype discovery is usually approached from two possible perspectives:
 
 -	Using the molecular data alone with unsupervised techniques such as clustering analysis.
@@ -50,7 +50,7 @@ To overcome these issues, we combined the advantages of clustering methods for g
 
 In the galgoR package, the NSGA-II framework was used for finding multiple Pareto-optimal solutions to classify patients according to their gene expression patterns. Basically, NSGA-II starts with a population of competing individuals which are evaluated under a set of fitness functions that estimate the survival differences and cohesiveness of the different transcriptomic groups. Then, solutions are ranked and sorted according to their non-domination level which will affect the way they are chosen to be submitted to the so-called "evolutionary operators" such as crossover and mutation. Once a set of well-suited solutions are selected and reproduced, a new offspring of individuals composed of a mixture of the "genetic information" of the parents is obtained. Parents and offspring are pooled and the best-ranked solutions are selected and passed to the next generation which will start over the same process again.
 
-# Instalation
+# Installation
 
 ## galgoR library 
 
@@ -69,7 +69,7 @@ To standardize the structure of genomic data, we use the [ExpressionSet](https:/
 - Phenotypic data, where we find information on the samples (condition, status, treatment, survival, and other covariates). 
 - Finally, these objects can also contain Annotations and feature Meta-data.
 
-To start testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets ([TCGA](https://gdc.cancer.gov/about-data/publications/luad_2014) and [GSE68465](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465)), that can be download using the function use_rna_luad(). Aditionally, It also contains the [Wilkerson's centroids](http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip) to perform lung adenocarcinoma sample classification. 
+To start testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets ([TCGA](https://gdc.cancer.gov/about-data/publications/luad_2014) and [GSE68465](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465)), that can be download using the function use_rna_luad(). Additionally, It also contains the [Wilkerson's centroids](http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip) to perform lung adenocarcinoma sample classification. 
  
 ```{r example}
  rna_luad<- use_rna_luad()
@@ -221,7 +221,7 @@ outputList[["Solution.1"]]
 
 ## toDataFrame() function
 
-The current function reestructurates a galgo.Obj to a more easy to understand an use data.frame. The output data.frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:
+The current function restructurates a galgo.Obj to a more easy to understand an use data.frame. The output data.frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:
 
 - Genes: The features included in each solution in form of a list
 - k: The number of partitions found in that solution
@@ -249,7 +249,7 @@ knitr::include_graphics('./images/pareto1.jpg')
 
 # Case study
 
-Lung adenocarcinoma (LUAD) is one of the most common types of cancer and, to date, still presents high mortality rates. Currently, numerous molecular alteration for this type of cancer are well known but, unlike breast cancer, very few transcriptomic signatures have been developed for this type of cancer. In this regards, [Wilkerson's et al.](https://pubmed.ncbi.nlm.nih.gov/22590557/) have proposed a transcriptomic classification into three different LUAD molecular subtypes (Bronchioid, Magnoid, and Squamoid) which recapitulates naturally-occurring gene expression patterns that encompass different functional pathways and patient outcomes.
+Lung adenocarcinoma (LUAD) is one of the most common types of cancer and, to date, still presents high mortality rates. Currently, numerous molecular alteration for this type of cancer are well known but, unlike breast cancer, very few transcriptomic signatures have been developed for this type of cancer. In this regards, [Wilkerson's et al.](https://pubmed.ncbi.nlm.nih.gov/22590557/) have proposed a transcriptomic classification into three different LUAD molecular subtypes (Bronchoid, Magnoid, and Squamoid) which recapitulates naturally-occurring gene expression patterns that encompass different functional pathways and patient outcomes.
 
 ## Data Preprocessing
 
@@ -333,7 +333,7 @@ tumortotal2pval<- pchisq(tumortotal2diff$chisq, length(tumortotal2diff$n) - 1, l
 
 ## Find lung adenocarcinoma gene signatures with GalgoR
 
-Now we run Galgo to find cohessive and clinically meaningful signatures for LUAD using TCGA data as training set and GSE68465 data as test set
+Now we run Galgo to find cohesive and clinically meaningful signatures for LUAD using TCGA data as training set and GSE68465 data as test set
 
 ### Set configuration parameters
 
