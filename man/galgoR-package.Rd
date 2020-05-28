@@ -13,7 +13,7 @@ Different statistical and machine learning approaches have long been used to ide
 \tabular{ll}{ Package: \tab galgoR\cr Type: \tab Package\cr
 Version: \tab 1.0.0\cr Date: \tab 2020-05-06 \cr License: \tab GPL-3\cr
 Copyright: \tab (c) 2020 Martin E. Guerrero-Gimenez.\cr URL: \tab
-\url{http://www.github.com/harpomaxx/galgoR}\cr LazyLoad: \tab yes\cr
+\url{https://www.github.com/harpomaxx/galgo}\cr LazyLoad: \tab yes\cr
 }
 }
 \note{

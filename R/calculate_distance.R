@@ -31,16 +31,8 @@
 #' rna_luad<-use_rna_luad()
 #' prm <- rna_luad$TCGA$expression_matrix
 #' #Will select the calculate_distance_pearson_cpu() function to calculate the distance matrix
-#' select_distance(distancetype= "pearson", usegpu=FALSE)
+#' calculate_distance<-select_distance(distancetype= "pearson", usegpu=FALSE)
 #' calculate_distance(prm)
-#' calculate_distance_pearson_gpu(prm)
-#' calculate_distance_pearson_cpu(prm)
-#' calculate_distance_uncentered_gpu(prm)
-#' calculate_distance_uncentered_cpu(prm)
-#' calculate_distance_spearman_gpu(prm)
-#' calculate_distance_spearman_cpu(prm)
-#' calculate_distance_euclidean_gpu(prm)
-#' calculate_distance_euclidean_cpu(prm)
 NULL
 
 #' @rdname calculate_distance
@@ -174,8 +166,10 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
     }
   }
   print(paste(computingtype,distancetype,"distance"))
-  assign("calculate_distance",calculate_distance,envir=.GlobalEnv)
-  return(invisible(calculate_distance))
+  #assign("calculate_distance",calculate_distance,envir=.GlobalEnv)
+  #return(invisible(calculate_distance))
+  return(calculate_distance)
+
 }
 
 

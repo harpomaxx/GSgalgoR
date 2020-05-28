@@ -4,7 +4,8 @@
 \alias{create_centroids}
 \title{Create Centroids}
 \usage{
-create_centroids(output, solution.names, train.set)
+create_centroids(output, solution.names, train.set,
+  distancetype = "pearson", usegpu = FALSE)
 }
 \arguments{
 \item{output}{@param output An object of class \code{galgo.Obj}}
@@ -12,6 +13,10 @@ create_centroids(output, solution.names, train.set)
 \item{solution.names}{A \code{character} vector with the names of the solutions for which the centroids are to be calculated}
 
 \item{train.set}{a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns}
+
+\item{distancetype}{a \code{character} that can be either \code{'pearson'}, \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}}
+
+\item{usegpu}{\code{logical} \code{TRUE} or \code{FALSE}}
 }
 \value{
 Returns a list with the centroid matrix for each of the solutions in \code{solution.names}, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature
@@ -20,17 +25,19 @@ Returns a list with the centroid matrix for each of the solutions in \code{solut
 This functions create the signature centroids estimated from the GalgoR output and the expression matrix of the training sets.
 }
 \examples{
-#Load data
+# Load data
 rna_luad <- use_rna_luad()
 TCGA_expr <- rna_luad$TCGA$expression_matrix
 TCGA_clinic <- rna_luad$TCGA$pheno_data
-OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
+OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 
-#Run galgo
-output <- galgoR::galgo(generations = 5 ,population = 10, prob_matrix = TCGA_expr, OS = OS)
-RESULTS <- non_dominated_summary(output=output,OS=OS,
-                                 prob_matrix= TCGA_expr,
-                                 distancetype ="pearson",
-                                 usegpu= FALSE)
-CentroidsList<- create_centroids(output,RESULTS$solution,train.set= TCGA_expr)
+# Run galgo
+output <- galgoR::galgo(generations = 5, population = 10, prob_matrix = TCGA_expr, OS = OS)
+RESULTS <- non_dominated_summary(
+  output = output, OS = OS,
+  prob_matrix = TCGA_expr,
+  distancetype = "pearson",
+  usegpu = FALSE
+)
+CentroidsList <- create_centroids(output, RESULTS$solution, train.set = TCGA_expr)
 }

@@ -64,16 +64,8 @@ Functions to calculate distance matrices using cpu or gpu computing
 rna_luad<-use_rna_luad()
 prm <- rna_luad$TCGA$expression_matrix
 #Will select the calculate_distance_pearson_cpu() function to calculate the distance matrix
-select_distance(distancetype= "pearson", usegpu=FALSE)
+calculate_distance<-select_distance(distancetype= "pearson", usegpu=FALSE)
 calculate_distance(prm)
-calculate_distance_pearson_gpu(prm)
-calculate_distance_pearson_cpu(prm)
-calculate_distance_uncentered_gpu(prm)
-calculate_distance_uncentered_cpu(prm)
-calculate_distance_spearman_gpu(prm)
-calculate_distance_spearman_cpu(prm)
-calculate_distance_euclidean_gpu(prm)
-calculate_distance_euclidean_cpu(prm)
 }
 \author{
 Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
