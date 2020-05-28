@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590708173429.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3874563762",
+    "id" : "C20E45F3",
+    "lastKnownWriteTime" : 1588774692,
+    "last_content_update" : 1588774692,
+    "path" : "~/GitHub/galgo_2/vignettes/Galgo_vignette.Rmd",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

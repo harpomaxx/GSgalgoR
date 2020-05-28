@@ -15,18 +15,20 @@ author:
     Argentina.
   - Institute of Biochemistry and Biotechnology, Medical School, National University
     of Cuyo, Mendoza, Argentina.
-  name: Juan Manuel Fernandez-MuÃ±oz
+  name: Juan Manuel Fernandez-Muñoz
 - affiliation: Engineering School, National University of Cuyo, Mendoza, Argentina.
   name: Carlos A. Catania
   package: galgoR
 date: "`r Sys.Date()`"
-output:
-  pdf_document: default
-  html_document: default
-abstract: |
+output: 
+    html_document
+vignette: >
+    %\VignetteIndexEntry{GalgoR user Guide}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+    
+abstract: >
   We report a novel method to identify specific transcriptomic phenotypes based on an elitist non-dominated sorting genetic algorithm that combines the advantages of clustering methods and the exploratory properties of genetic algorithms to discover biologically and clinically relevant molecular subtypes in different cancers.
-vignette: "%\\VignetteIndexEntry{GalgoR user Guide} %\\VignetteEngine{knitr::rmarkdown}
-  %\\VignetteEncoding{UTF-8}  \n"
 ---
 
 ```{r setup, include = FALSE}

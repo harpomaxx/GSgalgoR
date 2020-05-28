@@ -5,16 +5,16 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "2072155110",
     "id" : "316EC1D6",
-    "lastKnownWriteTime" : 1590707717,
-    "last_content_update" : 1590707717212,
+    "lastKnownWriteTime" : 1590708874,
+    "last_content_update" : 1590708874142,
     "path" : "~/GitHub/galgo/vignettes/Galgo_vignette.Rmd",
     "project_path" : "vignettes/Galgo_vignette.Rmd",
     "properties" : {
-        "cursorPosition" : "567,2",
+        "cursorPosition" : "30,327",
         "docOutlineVisible" : "1",
-        "scrollLine" : "559"
+        "scrollLine" : "22"
     },
     "relative_order" : 3,
     "source_on_save" : false,
