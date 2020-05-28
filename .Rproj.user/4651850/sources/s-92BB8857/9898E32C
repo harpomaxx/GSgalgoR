@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590698193369.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "9898E32C",
+    "lastKnownWriteTime" : 1590698528,
+    "last_content_update" : 1590698528654,
+    "path" : "~/GitHub/galgo/R/results_functions.R",
+    "project_path" : "R/results_functions.R",
+    "properties" : {
+        "cursorPosition" : "202,2",
+        "docOutlineVisible" : "1",
+        "scrollLine" : "198",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
