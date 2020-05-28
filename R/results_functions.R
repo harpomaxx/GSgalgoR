@@ -218,8 +218,8 @@ plot_pareto<- function(output){
   output_df<- output_df[order(output_df$SC.Fit),]
 
   PlotPareto<- ggplot2::ggplot(PARETO,ggplot2::aes(x=SC.Fit,y=Surv.Fit,colour=Gen))+ggplot2::geom_point() + ggplot2::theme_bw()
-  #PlotPareto <- PlotPareto+ ggplot2::geom_point(ggplot2::aes(x=SC.Fit,y=Surv.Fit),colour="black",size=2,output_df)+ggplot2::geom_line(ggplot2::aes(x=SC.Fit,y=Surv.Fit),colour="black",output_df)
-  #PlotPareto<- PlotPareto + ggplot2::ggtitle("Galgo run Pareto front")
+  PlotPareto <- PlotPareto+ ggplot2::geom_point(ggplot2::aes(x=SC.Fit,y=Surv.Fit),colour="black",size=2,output_df)+ggplot2::geom_line(ggplot2::aes(x=SC.Fit,y=Surv.Fit),colour="black",output_df)
+  PlotPareto<- PlotPareto + ggplot2::ggtitle("Galgo run Pareto front")
   print(PlotPareto)
 }
 

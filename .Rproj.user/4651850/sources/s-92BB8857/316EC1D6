@@ -7,13 +7,14 @@
     "folds" : "",
     "hash" : "0",
     "id" : "316EC1D6",
-    "lastKnownWriteTime" : 1590695614,
-    "last_content_update" : 1590695614,
+    "lastKnownWriteTime" : 1590707717,
+    "last_content_update" : 1590707717212,
     "path" : "~/GitHub/galgo/vignettes/Galgo_vignette.Rmd",
     "project_path" : "vignettes/Galgo_vignette.Rmd",
     "properties" : {
-        "cursorPosition" : "566,0",
-        "scrollLine" : "0"
+        "cursorPosition" : "567,2",
+        "docOutlineVisible" : "1",
+        "scrollLine" : "559"
     },
     "relative_order" : 3,
     "source_on_save" : false,

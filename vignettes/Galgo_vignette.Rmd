@@ -1,27 +1,32 @@
 ---
 title: "GalgoR user Guide"
 author:
-- name: "Martin E. Guerrero-Gimenez"
-  affiliation: 
-  - "Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza, Argentina."
-  - "Institute of Biochemistry and Biotechnology, Medical School, National University of Cuyo, Mendoza, Argentina."
-  email: "mguerrero@mendoza-conicet.gob.ar "
-- name: "Juan Manuel Fernandez-Muñoz"
-  affiliation: 
-  - "Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza, Argentina."
-  - "Institute of Biochemistry and Biotechnology, Medical School, National University of Cuyo, Mendoza, Argentina."
-- name: "Carlos A. Catania"
-  affiliation: "Engineering School, National University of Cuyo, Mendoza, Argentina."
-  package: "galgoR"
-abstract: >
-  We report a novel method to identify specific transcriptomic phenotypes based on an elitist non-dominated sorting genetic algorithm that combines the advantages of clustering methods and the exploratory properties of genetic algorithms to discover biologically and clinically relevant molecular subtypes in different cancers.
+- affiliation:
+  - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo
+    (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza,
+    Argentina.
+  - Institute of Biochemistry and Biotechnology, Medical School, National University
+    of Cuyo, Mendoza, Argentina.
+  email: 'mguerrero@mendoza-conicet.gob.ar '
+  name: Martin E. Guerrero-Gimenez
+- affiliation:
+  - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo
+    (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza,
+    Argentina.
+  - Institute of Biochemistry and Biotechnology, Medical School, National University
+    of Cuyo, Mendoza, Argentina.
+  name: Juan Manuel Fernandez-MuÃ±oz
+- affiliation: Engineering School, National University of Cuyo, Mendoza, Argentina.
+  name: Carlos A. Catania
+  package: galgoR
 date: "`r Sys.Date()`"
-output: 
-    html_document
-vignette: >
-    %\VignetteIndexEntry{GalgoR user Guide}
-    %\VignetteEngine{knitr::rmarkdown}
-    %\VignetteEncoding{UTF-8}  
+output:
+  pdf_document: default
+  html_document: default
+abstract: |
+  We report a novel method to identify specific transcriptomic phenotypes based on an elitist non-dominated sorting genetic algorithm that combines the advantages of clustering methods and the exploratory properties of genetic algorithms to discover biologically and clinically relevant molecular subtypes in different cancers.
+vignette: "%\\VignetteIndexEntry{GalgoR user Guide} %\\VignetteEngine{knitr::rmarkdown}
+  %\\VignetteEncoding{UTF-8}  \n"
 ---
 
 ```{r setup, include = FALSE}
@@ -167,7 +172,7 @@ print(class(output))
 
 ```{r load_run, echo= FALSE, eval=TRUE}
 library(galgoR)
-load("./results/final_1.rda")
+load("../inst/extdata/results/final_1.rda")
 print(class(output))
 ```
 ### Galgo Object
@@ -243,7 +248,7 @@ Once we obtain the `galgo.obj` from the output of `galgo()` we can plot the obta
 plot_pareto(output)
 ```
 ```{r echo=FALSE,eval=TRUE, out.width='100%'}
-knitr::include_graphics('./images/pareto1.jpg')
+knitr::include_graphics('../inst/extdata/images/pareto1.jpg')
 
 ```
 
@@ -300,7 +305,7 @@ Once the patients are classified according to their closest centroids, we can no
 
 ### Survival of TCGA patients
 
-```{r wilk_surv_TCGA, eval=TRUE}
+```{r wilk_surv_TCGA, eval=FALSE}
 library(survival)
 library(survminer)
 library(ggplot2)
@@ -315,10 +320,14 @@ tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, l
   print(p)
 
 ```
+```{r echo=FALSE,eval=TRUE, out.width='100%'}
+knitr::include_graphics('../inst/extdata/images/TCGA_wilk.jpg')
+
+```
 
 ### Survival of GSE68465 patients 
 
-```{r wilk_surv_GSE, eval=TRUE}
+```{r wilk_surv_GSE, eval=FALSE}
 
 
 surv_formula <- as.formula("Surv(test_clinic$time,test_clinic$status)~ Wilk.Class_test")
@@ -330,6 +339,10 @@ tumortotal2pval<- pchisq(tumortotal2diff$chisq, length(tumortotal2diff$n) - 1, l
   print(p)
 
 ```
+```{r echo=FALSE,eval=TRUE, out.width='100%'}
+knitr::include_graphics('../inst/extdata/images/GSE_wilk.jpg')
+
+```
 
 ## Find lung adenocarcinoma gene signatures with GalgoR
 
@@ -338,8 +351,8 @@ Now we run Galgo to find cohesive and clinically meaningful signatures for LUAD 
 ### Set configuration parameters
 
 ```{r case_params, eval=TRUE}
-population <- 100              
-generations <-150             
+population <- 150              
+generations <-50             
 nCV <- 5                      
 distancetype <- "pearson"     
 TournamentSize <- 2
@@ -349,14 +362,14 @@ usegpu <- TRUE
 
 Run Galgo on the training set
 
-```{r}
+```{r galgo_train}
 
 output= galgoR::galgo(generations = generations, population = population,prob_matrix = train_expression, OS=train_surv,usegpu=usegpu,nCV= nCV, distancetype=distancetype, TournamentSize=TournamentSize, period=period)
 
 ```
 ```{r load_run2, echo= FALSE, eval=TRUE}
 library(galgoR)
-load("./results/final_2.rda")
+load("../inst/extdata/results/final_2.rda")
 print(class(output))
 ```
 ## Analyzing Galgo results
@@ -368,7 +381,7 @@ plot_pareto(output)
 ```
 
 ```{r echo=FALSE,eval=TRUE, out.width='100%'}
-knitr::include_graphics('./images/pareto2.jpg')
+knitr::include_graphics('../inst/extdata/images/pareto2.jpg')
 
 ```
 
@@ -403,7 +416,7 @@ Now we select the best performing solutions for each number of partitions (k) ac
 
 ```{r best_perform, eval=FALSE}
 
-RESULT<- non.dominated.summary(output=output,OS=train_surv, prob_matrix= train_expression, distancetype =distancetype, usegpu= usegpu )
+RESULT<- non_dominated_summary(output=output,OS=train_surv, prob_matrix= train_expression, distancetype =distancetype, usegpu= usegpu )
 
 
 best_sol=NULL
@@ -412,15 +425,15 @@ best_sol=NULL
   }
 
 print(best_sol)
-  
+# [1] "Solutions.1" "Solutions.7" "Solutions.3" "Solutions.9"   
 ```
 
 ### Create prototypic centroids
 
 Now we create the prototypic centroids of the selected solutions
 
-```{r}
-  CentroidsList <- create.centroids(output, solution.names = best_sol, train.set = train_expression)
+```{r centroid_list}
+  CentroidsList <- create_centroids(output, solution.names = best_sol, train.set = train_expression)
 ```
 
 
@@ -428,29 +441,29 @@ Now we create the prototypic centroids of the selected solutions
 
 We will test the Galgo signatures found with the TCGA training set in an independent test set
 
-```{r}
+```{r test}
 testSet=rna_luad$GSE68465
 prob_matrix_test= testSet$expression_matrix
 clinical_test=testSet$pheno_data
 OS_test=Surv(time=clinical_test$time,event=clinical_test$status)
 ```
 
-### Test galgoR subtypes in GSE68465 (test) dataset
+### Classify train and test  set into galgoR subtypes 
 
-```{r}
+```{r class}
 
-train_classes<- classify.multiple(prob_matrix=train_expression,centroid.list= CentroidsList, distancetype = distancetype)
+train_classes<- classify_multiple(prob_matrix=train_expression,centroid.list= CentroidsList, distancetype = distancetype)
 
 
-test_classes<- classify.multiple(prob_matrix=test_expression,centroid.list= CentroidsList, distancetype = distancetype)
+test_classes<- classify_multiple(prob_matrix=test_expression,centroid.list= CentroidsList, distancetype = distancetype)
 
 ```
 
-## Calculate train and test set C.Index
+### Calculate train and test set C.Index
 
  To calculate the train and test C.Index, the risk coefficients are calculated for each subclass in the training set and are then used to predict the risk of the different groups in the test set. This is particularly important for signatures with high number of partitions, were the survival differences of different groups might overlap and change their relative order, which is of great importance in the C.Index calculation.
  
-``` {r}
+``` {r pred_model}
 
 Prediction.models<- list()
 
@@ -461,7 +474,7 @@ for(i in best_sol){
   predicted_classdf <- as.data.frame(predicted_class)
   colnames(predicted_classdf)<- i
   
-  surv_formula <- as.formula(paste0("Surv~ ",i))
+  surv_formula <- as.formula(paste0("OS~ ",i))
   coxsimple=coxph(surv_formula,data=predicted_classdf)
 
 
@@ -472,7 +485,7 @@ Prediction.models[[i]]<- coxsimple
 ```
 ### Calculate C.Index for training and test set using the prediction models of the training set
 
-```{r}
+```{r cindex}
 
 C.indexes<- data.frame(train_CI=rep(NA,length(best_sol)),test_CI=rep(NA,length(best_sol)))
 rownames(C.indexes)<- best_sol
@@ -482,7 +495,7 @@ for(i in best_sol){
 predicted_class_train<- as.factor(train_classes[,i])
     predicted_class_train_df <- as.data.frame(predicted_class_train)
     colnames(predicted_class_train_df)<- i
-    
+ 
 CI_train<- concordance.index(predict(Prediction.models[[i]],predicted_class_train_df),surv.time=train_surv[,1],surv.event=train_surv[,2],outx=FALSE)$c.index
 
 C.indexes[i,"train_CI"]<- CI_train
@@ -490,7 +503,8 @@ C.indexes[i,"train_CI"]<- CI_train
 predicted_class_test<- as.factor(test_classes[,i])
     predicted_class_test_df <- as.data.frame(predicted_class_test)
     colnames(predicted_class_test_df)<- i
-    
+ 
+
 CI_test<- concordance.index(predict(Prediction.models[[i]],predicted_class_test_df),surv.time=test_surv[,1],surv.event=test_surv[,2],outx=FALSE)$c.index
 
 C.indexes[i,"test_CI"]<- CI_test
@@ -499,11 +513,20 @@ C.indexes[i,"test_CI"]<- CI_test
 
 print(C.indexes)
 
+#             train_CI   test_CI
+#Solutions.1 0.6079561 0.5685536
+#Solutions.7 0.6034458 0.6025023
+#Solutions.3 0.6147336 0.6060875
+#Solutions.9 0.6024516 0.5916318
+
+
 best_signature<- best_sol[which.max(C.indexes$test_CI)]
 
 print(best_signature)
+# "Solutions.3"
 ```
 
+### Evaluate prediction survival of Galgo signatures
 We test best galgo signature with training and test sets
 
 ```{r}
@@ -517,6 +540,10 @@ tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, l
 
   p<-ggsurvplot(tumortotal1,data=train_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="TCGA Lung adenocarcinoma \n Galgo subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,1825),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
   print(p)
+
+```
+```{r echo=FALSE,eval=TRUE, out.width='100%'}
+knitr::include_graphics('../inst/extdata/images/TCGA_galgo.jpg')
 
 ```
 
@@ -533,8 +560,14 @@ tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, l
   print(p)
 
 ```
+```{r echo=FALSE,eval=TRUE, out.width='100%'}
+knitr::include_graphics('../inst/extdata/images/GSE_galgo.jpg')
 
-Compare Wilkerson classification vs Galgo classification in the GSE68465 dataset
+```
+
+## Comparison of Galgo vs Wilkerson classifiers
+Compare Wilkerson classification vs Galgo classification in the GSE68465 (test) dataset
+
 ```{r}
 
 
@@ -559,6 +592,10 @@ tumortotal2pval<- pchisq(tumortotal1diff$chisq, length(tumortotal2diff$n) - 1, l
 
 ```
 
+```{r echo=FALSE,eval=TRUE, out.width='100%'}
+knitr::include_graphics('../inst/extdata/images/GSE_galgovswilk.jpg')
+
+```
 # Session info
 
 ```{r sess_info, eval=TRUE}
