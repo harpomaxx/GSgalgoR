@@ -16,14 +16,13 @@
 #'
 #' @examples
 #' #Load data
-#' options(mc.cores=2)
 #' rna_luad <- use_rna_luad()
 #' TCGA_expr <- rna_luad$TCGA$expression_matrix
 #' TCGA_clinic <- rna_luad$TCGA$pheno_data
 #' OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #' #Run galgo
-#' output <- galgoR::galgo(generations = 10,population = 20, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 5 ,population = 10, prob_matrix = TCGA_expr, OS = OS)
 #' non_dominated_summary(output=output,OS=OS,
 #'                       prob_matrix= TCGA_expr,
 #'                       distancetype ="pearson",
@@ -95,15 +94,14 @@ non_dominated_summary <- function(output,prob_matrix, OS, distancetype= "pearson
 #' @export
 #'
 #' @examples
-#' #' #Load data
-#' options(mc.cores=2)
+#' #Load data
 #' rna_luad <- use_rna_luad()
 #' TCGA_expr <- rna_luad$TCGA$expression_matrix
 #' TCGA_clinic <- rna_luad$TCGA$pheno_data
 #' OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #' #Run galgo
-#' output <- galgoR::galgo(generations = 10,population = 20, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 5 ,population = 10, prob_matrix = TCGA_expr, OS = OS)
 #' RESULTS <- non_dominated_summary(output=output,OS=OS,
 #'                                  prob_matrix= TCGA_expr,
 #'                                  distancetype ="pearson",
@@ -143,14 +141,13 @@ create_centroids<- function(output,solution.names,train.set){
 #'
 #' @examples
 #' #Load data
-#' options(mc.cores=2)
 #' rna_luad <- use_rna_luad()
 #' TCGA_expr <- rna_luad$TCGA$expression_matrix
 #' TCGA_clinic <- rna_luad$TCGA$pheno_data
 #' OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #' #Run galgo
-#' output <- galgoR::galgo(generations = 10,population = 20, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 5,population = 10, prob_matrix = TCGA_expr, OS = OS)
 #' RESULTS<- non_dominated_summary(output=output,OS=OS,
 #'                                 prob_matrix= TCGA_expr,
 #'                                 distancetype ="pearson",

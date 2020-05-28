@@ -29,8 +29,7 @@
 #' WilkCentroids <- rna_luad$WilkCentroids
 
 use_rna_luad <- function(){
-  #dest_dir <- paste(find.package("galgoR"),"/inst/extdata",sep="")
-  dest_dir <- paste("~/.galgoR/data/",sep="")
+  dest_dir <- paste("~/galgoR/data/",sep="")
   if (!dir.exists(dest_dir))
       dir.create(dest_dir,recursive=TRUE)
   dest_file <- paste(dest_dir,"luad_data.rds",sep="")

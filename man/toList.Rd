@@ -26,11 +26,14 @@ Basically this output is a list of lists, where each element of the output is na
 The current function transforms a \code{galgo.Obj} to a \code{list}
 }
 \examples{
-rna_luad<-use_rna_luad()
-prm <-rna_luad$TCGA$expression_matrix
-clinical <- rna_luad$TCGA$pheno_data
-OS <- survival::Surv(time=clinical$time,event=clinical$status)
-output <- galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)
+#Load data
+rna_luad <- use_rna_luad()
+TCGA_expr <- rna_luad$TCGA$expression_matrix
+TCGA_clinic <- rna_luad$TCGA$pheno_data
+OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
+
+#Run galgo
+output <- galgoR::galgo(generations = 5 ,population = 10, prob_matrix = TCGA_expr, OS = OS)
 outputList <- toList(output)
 }
 \author{
