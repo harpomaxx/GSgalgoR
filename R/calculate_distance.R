@@ -5,7 +5,7 @@
 #' @param distancetype a \code{character} that can be either \code{'pearson'}, \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}
 #' @param usegpu \code{logical} \code{TRUE} or \code{FALSE}
 #' @param x an expression matrix with features as rows and samples as columns
-#' @export
+#'
 #' @return
 #' \code{select_distance(distancetype, usegpu)} assigns global function calculate_distance according to the parameters specified
 #'
@@ -30,7 +30,8 @@
 #' @examples
 #' rna_luad<-use_rna_luad()
 #' prm <- rna_luad$TCGA$expression_matrix
-#' select_distance(distancetype= "pearson", usegpu=FALSE) #Will select the calculate_distance_pearson_cpu() function to calculate the distance matrix
+#' #Will select the calculate_distance_pearson_cpu() function to calculate the distance matrix
+#' select_distance(distancetype= "pearson", usegpu=FALSE)
 #' calculate_distance(prm)
 #' calculate_distance_pearson_gpu(prm)
 #' calculate_distance_pearson_cpu(prm)
@@ -43,6 +44,7 @@
 NULL
 
 #' @rdname calculate_distance
+#' @export
 calculate_distance_pearson_gpu <- function(x) {
         x <- gpuR::vclMatrix(x)
         mx <- gpuR::colMeans(x)
@@ -52,10 +54,11 @@ calculate_distance_pearson_gpu <- function(x) {
         pDist <- ((gpuR::crossprod(x, x) / nrow(x)) - (mx %o% mx)) / sx %o% sx
         # pDist=gpuR::cov(x)/sx%o%sx
         pDist <- as.matrix(pDist)
-        as.dist(1 - pDist)
+        stats::as.dist(1 - pDist)
  }
 
 #' @rdname calculate_distance
+#' @export
 calculate_distance_spearman_gpu <- function(x) {
         x <- gpuR::vclMatrix(x)
         mx <- gpuR::colMeans(x)
@@ -65,10 +68,11 @@ calculate_distance_spearman_gpu <- function(x) {
         pDist <- ((gpuR::crossprod(x, x) / nrow(x)) - (mx %o% mx)) / sx %o% sx
         pDist <- as.matrix(pDist)
         # pDist=gpuR::cov(x)/sx%o%sx
-        as.dist(1 - pDist)
+        stats::as.dist(1 - pDist)
 }
 
 #' @rdname calculate_distance
+#' @export
 calculate_distance_uncentered_gpu <- function(x) {
         mgpu <- gpuR::vclMatrix(t(x))
         d2 <- gpuR::vclMatrix(1, ncol = 1, nrow = dim(mgpu)[2])
@@ -76,18 +80,20 @@ calculate_distance_uncentered_gpu <- function(x) {
         a2 <- mgpu^2 %*% d2
         pDist <- a1 / sqrt(gpuR::tcrossprod(a2, a2))
         pDist <- as.matrix(pDist)
-        as.dist(1 - pDist)
+        stats::as.dist(1 - pDist)
 }
 
 #' @rdname calculate_distance
+#' @export
 calculate_distance_euclidean_gpu <- function(x) {
         mgpu <- gpuR::vclMatrix(t(x))
         pDist <- suppressWarnings(gpuR::distance(mgpu, mgpu, method = "euclidean"))
         pDist <- as.matrix(pDist)
-        as.dist(pDist)
+        stats::as.dist(pDist)
       }
 
 #' @rdname calculate_distance
+#' @export
 calculate_distance_pearson_cpu <-function(x){
     print("pearson....")
     mx=base::colMeans(x)
@@ -95,10 +101,11 @@ calculate_distance_pearson_cpu <-function(x){
     mx2=mx^2
     sx=sqrt(x2-mx2)
     pDist=((base::crossprod(x,x)/nrow(x))-(mx %o% mx))/sx%o%sx
-    as.dist(1-pDist)
+    stats::as.dist(1-pDist)
 }
 
 #' @rdname calculate_distance
+#' @export
 calculate_distance_spearman_cpu <- function(x){
     x=apply(x,2,rank)
     mx=colMeans(x)
@@ -106,25 +113,28 @@ calculate_distance_spearman_cpu <- function(x){
     mx2=mx^2
     sx=sqrt(x2-mx2)
     pDist=((crossprod(x,x)/nrow(x))-(mx %o% mx))/sx%o%sx
-    as.dist(1-pDist)
+    stats::as.dist(1-pDist)
 }
 
 #' @rdname calculate_distance
+#' @export
 calculate_distance_uncentered_cpu <- function(x){
     mgpu=t(x)
     d2= matrix(1,ncol=1,nrow=dim(mgpu)[2])
     a1=tcrossprod(mgpu,mgpu)
     a2= mgpu^2 %*% d2
     pDist= a1/ sqrt(tcrossprod(a2,a2))
-    as.dist(1-pDist)
+    stats::as.dist(1-pDist)
 }
 
 #' @rdname calculate_distance
+#' @export
 calculate_distance_euclidean_cpu<-function(x){
     d=stats::dist(t(x),method="euclidean")
 }
 
 #' @rdname calculate_distance
+#' @export
 select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
   distancetype <- match.arg(distancetype, c("pearson", "uncentered", "euclidean", "spearman"))
 
@@ -219,7 +229,7 @@ classify <- function(data, centroid, method = "pearson") {
 #'   \item Reynolds, A., Richards, G., de la Iglesia, B. and Rayward-Smith, V. (1992) Clustering rules: A comparison of partitioning and hierarchical clustering algorithms; Journal of Mathematical Modelling and Algorithms 5, 475--504. 10.1007/s10852-005-9022-1.
 #'   \item Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, \url{(https://arxiv.org/abs/1810.05691)}.
 #' }
-#' @export
+#'
 #' @noRd
 #' @examples
 #' rna_luad<-use_rna_luad()

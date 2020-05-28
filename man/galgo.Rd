@@ -28,6 +28,8 @@ galgo(population = 30, generations = 2, nCV = 5, usegpu = FALSE,
 
 \item{period}{a number indicating the outcome period to evaluate the RMST}
 
+\item{OS}{a \code{survival} object (see \code{ \link[survival]{Surv} } function from the \code{\link{survival}} package)}
+
 \item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns}
 
 \item{res_dir}{a \code{character} string indicating where to save the intermediate and final output of the algorithm}
@@ -42,7 +44,7 @@ galgo(population = 30, generations = 2, nCV = 5, usegpu = FALSE,
 
 \item{end_gen_callback}{optional callback function for the end of the run}
 
-\item{verbose}{}
+\item{verbose}{select the level of information printed during galgo execution}
 }
 \value{
 an object of type \code{'galgo.Obj'} that corresponds to a list with the elements \code{$Solutions} and \code{$ParetoFront}. \code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number of features evaluated and \eqn{l} is the number of solutions obtained.
@@ -53,6 +55,7 @@ For easier interpretation of the \code{'galgo.Obj'}, the output can be reshaped 
 \code{\link[galgoR:galgo]{galgo}} accepts an expression matrix and a survival object to find robust gene expression signatures related to a given outcome
 }
 \examples{
+options(mc.cores=2)
 rna_luad<-use_rna_luad()
 prm <- rna_luad$TCGA$expression_data
 clinical <- rna_luad$TCGA$pheno_data

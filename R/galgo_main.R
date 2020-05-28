@@ -20,9 +20,19 @@
 #' @docType package
 #' @name galgoR-package
 #' @aliases galgoR-package galgoR
+#' @importFrom  methods new
 NULL
 
 
+#' Title
+#'
+#' @slot Solutions matrix.
+#' @slot ParetoFront list.
+#'
+#' @return
+#' @export
+#'
+#' @examples
 galgo.Obj <- setClass(
   # Set the name for the class
   "galgo.Obj",
@@ -34,6 +44,161 @@ galgo.Obj <- setClass(
   )
   )
 
+#' Survival Mean
+#'
+#' @param x
+#' @param scale
+#' @param rmean
+#'
+#' @return
+#' @noRd
+#' @examples
+RMST <-function (x, scale = 1, rmean)
+{
+  if (!is.null(x$start.time))
+    start.time <- x$start.time
+  else start.time <- min(0, x$time)
+  pfun <- function(nused, time, surv, n.risk, n.event, lower,
+                   upper, start.time, end.time) {
+    minmin <- function(y, x) {
+      tolerance <- .Machine$double.eps^0.5
+      keep <- (!is.na(y) & y < (0.5 + tolerance))
+      if (!any(keep))
+        NA
+      else {
+        x <- x[keep]
+        y <- y[keep]
+        if (abs(y[1] - 0.5) < tolerance && any(y < y[1]))
+          (x[1] + x[min(which(y < y[1]))])/2
+        else x[1]
+      }
+    }
+    if (!is.na(end.time)) {
+      hh <- ifelse((n.risk - n.event) == 0, 0, n.event/(n.risk *
+                                                          (n.risk - n.event)))
+      keep <- which(time <= end.time)
+      if (length(keep) == 0) {
+        temptime <- end.time
+        tempsurv <- 1
+        hh <- 0
+      }
+      else {
+        temptime <- c(time[keep], end.time)
+        tempsurv <- c(surv[keep], surv[max(keep)])
+        hh <- c(hh[keep], 0)
+      }
+      n <- length(temptime)
+      delta <- diff(c(start.time, temptime))
+      rectangles <- delta * c(1, tempsurv[-n])
+      varmean <- sum(cumsum(rev(rectangles[-1]))^2 * rev(hh)[-1])
+      mean <- sum(rectangles) + start.time
+    }
+    else {
+      mean <- 0
+      varmean <- 0
+    }
+    med <- minmin(surv, time)
+    if (!is.null(upper)) {
+      upper <- minmin(upper, time)
+      lower <- minmin(lower, time)
+      c(nused, max(n.risk), n.risk[1], sum(n.event), sum(mean),
+        sqrt(varmean), med, lower, upper)
+    }
+    else c(nused, max(n.risk), n.risk[1], sum(n.event), sum(mean),
+           sqrt(varmean), med, 0, 0)
+  }
+  stime <- x$time/scale
+  if (is.numeric(rmean))
+    rmean <- rmean/scale
+  surv <- x$surv
+  plab <- c("records", "n.max", "n.start", "events", "*rmean",
+            "*se(rmean)", "median", paste(x$conf.int, c("LCL", "UCL"),
+                                          sep = ""))
+  ncols <- 9
+  if (is.matrix(surv) && !is.matrix(x$n.event))
+    x$n.event <- matrix(rep(x$n.event, ncol(surv)), ncol = ncol(surv))
+  if (is.null(x$strata)) {
+    if (rmean == "none")
+      end.time <- NA
+    else if (is.numeric(rmean))
+      end.time <- rmean
+    else end.time <- max(stime)
+    if (is.matrix(surv)) {
+      out <- matrix(0, ncol(surv), ncols)
+      for (i in 1:ncol(surv)) {
+        if (is.null(x$conf.int))
+          out[i, ] <- pfun(x$n, stime, surv[, i], x$n.risk,
+                           x$n.event[, i], NULL, NULL, start.time, end.time)
+        else out[i, ] <- pfun(x$n, stime, surv[, i],
+                              x$n.risk, x$n.event[, i], x$lower[, i], x$upper[,
+                                                                              i], start.time, end.time)
+      }
+      dimnames(out) <- list(dimnames(surv)[[2]], plab)
+    }
+    else {
+      out <- matrix(pfun(x$n, stime, surv, x$n.risk, x$n.event,
+                         x$lower, x$upper, start.time, end.time), nrow = 1)
+      dimnames(out) <- list(NULL, plab)
+    }
+  }
+  else {
+    nstrat <- length(x$strata)
+    stemp <- rep(1:nstrat, x$strata)
+    last.time <- (rev(stime))[match(1:nstrat, rev(stemp))]
+    if (rmean == "none")
+      end.time <- rep(NA, nstrat)
+    else if (is.numeric(rmean))
+      end.time <- rep(rmean, nstrat)
+    else if (rmean == "common")
+      end.time <- rep(stats::median(last.time), nstrat)
+    else end.time <- last.time
+    if (is.matrix(surv)) {
+      ns <- ncol(surv)
+      out <- matrix(0, nstrat * ns, ncols)
+      if (is.null(dimnames(surv)[[2]]))
+        dimnames(out) <- list(rep(names(x$strata), ns),
+                              plab)
+      else {
+        cname <- outer(names(x$strata), dimnames(surv)[[2]],
+                       paste, sep = ", ")
+        dimnames(out) <- list(c(cname), plab)
+      }
+      k <- 0
+      for (j in 1:ns) {
+        for (i in 1:nstrat) {
+          who <- (stemp == i)
+          k <- k + 1
+          if (is.null(x$lower))
+            out[k, ] <- pfun(x$n[i], stime[who], surv[who,
+                                                      j], x$n.risk[who], x$n.event[who, j], NULL,
+                             NULL, start.time, end.time[i])
+          else out[k, ] <- pfun(x$n[i], stime[who], surv[who,
+                                                         j], x$n.risk[who], x$n.event[who, j], x$lower[who,
+                                                                                                       j], x$upper[who, j], start.time, end.time[i])
+        }
+      }
+    }
+    else {
+      out <- matrix(0, nstrat, ncols)
+      dimnames(out) <- list(names(x$strata), plab)
+      for (i in 1:nstrat) {
+        who <- (stemp == i)
+        if (is.null(x$lower))
+          out[i, ] <- pfun(x$n[i], stime[who], surv[who],
+                           x$n.risk[who], x$n.event[who], NULL, NULL,
+                           start.time, end.time[i])
+        else out[i, ] <- pfun(x$n[i], stime[who], surv[who],
+                              x$n.risk[who], x$n.event[who], x$lower[who],
+                              x$upper[who], start.time, end.time[i])
+      }
+    }
+  }
+  if (is.null(x$lower))
+    out <- out[, 1:7, drop = F]
+  if (rmean == "none")
+    out <- out[, -(5:6), drop = F]
+  list(matrix = out[, , drop = T], end.time = end.time)
+}
 
 
 
@@ -45,14 +210,13 @@ galgo.Obj <- setClass(
 #' @param returnTrain a logical. When true, the values returned are the sample positions correspondingto the data used during training. This argument only works in conjunction withlist = TRUE
 #'
 #' @return if list=TRUE, it returns a list with k elements were each element of the list has the position of the outcomes included in said fold, if list=FALSE the function returns a vector where each outcome is assigned to a given fold from 1 to k
-#' @export
 #'
 #' @examples
 #' y= rnorm(100,5,2) # A vector of outcomes
 #' k= 5 #Number of folds
 #' createFolds(y,k=k,list=TRUE)
 #' @noRd
-
+#'
 createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 {
   if (class(y)[1] == "Surv")
@@ -105,7 +269,6 @@ createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 #' @param a a numeric vector of length > 1
 #'
 #' @return returns the harmonic mean of the values in \code{a}
-#' @export
 #' @noRd
 #' @examples
 #' x= rnorm(5,0,1) #five random numbers from the normal distribution
@@ -123,7 +286,6 @@ hmean <- function(a) {
 #' @param x A numeric vector of length > 1
 #'
 #' @return The function computes the harmonic mean of the differences between consecutive groups multiplied by the number of comparisons and returns a positive number. This function is used inside \code{fitness} function.
-#' @export
 #' @noRd
 #' @examples
 #' V <- c(4.5,3,7,11)
@@ -164,10 +326,10 @@ cDist <- function(x) {
 fitness <- function(OS, clustclass,period) {
   score <- tryCatch(
     {
-      t <- survival:::survmean(survival::survfit(OS ~ clustclass), rmean = period)[[1]][, "*rmean"] # This function calculates the RMST (comes from package survival)
+      t <- RMST(survival::survfit(OS ~ clustclass), rmean = period)[[1]][, "*rmean"] # This function calculates the RMST (comes from package survival)
       cDist(t)
     },
-    error = function(e) {
+error = function(e) {
       return(0)
     }
   ) # If cDist cannot be calculated, the difference is set to 0 (no difference between curves)
@@ -182,7 +344,6 @@ fitness <- function(OS, clustclass,period) {
 #' @param Data
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -196,7 +357,6 @@ ArrayTrain <- function(flds, Data) {
 #' @param Data
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -211,7 +371,6 @@ ArrayTest <- function(flds, Data) {
 #' @param D
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -224,7 +383,6 @@ subDist <- function(flds, D) {
 #' @param C
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -241,7 +399,6 @@ alloc2 <- function(C) {
 #' @param ord
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -267,7 +424,6 @@ reord <- function(C, ord) {
 #' @param period
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -300,7 +456,6 @@ crossvalidation <- function(Data, flds, indv, k, OS, distance,nCV,period) {
 #' @param chrom_length
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -320,7 +475,6 @@ minGenes <- function(x,chrom_length) {
 #' @param n
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -360,7 +514,6 @@ kcrossover <- function(a, b, n) {
 #' @param b
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -369,7 +522,7 @@ ucrossover <- function(a, b) {
     stop("vectors of unequal length")
   }
   l <- length(a)
-  points <- as.logical(rbinom(l, 1, prob = runif(1)))
+  points <- as.logical(stats::rbinom(l, 1, prob = stats::runif(1)))
   achild <- numeric(l)
   achild[points] <- a[points]
   achild[!points] <- b[!points]
@@ -386,7 +539,6 @@ ucrossover <- function(a, b) {
 #' @param x
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -416,7 +568,6 @@ asMut <- function(x) {
 #' @param TournamentSize
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -485,7 +636,6 @@ offspring <- function(X1, chrom_length, population, TournamentSize) {
 #' @param x
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #' @noRd
@@ -507,7 +657,7 @@ pen <- function(x) {
 #' @param current_time
 #'
 #' @return an objet of class galgo
-#' @export
+#'
 #'
 #' @examples
 #' @noRd
@@ -533,7 +683,7 @@ base_save_pop_callback <- function(directory="results/",prefix,generation,pop_po
 #' @param current_time
 #'
 #' @return
-#' @export
+#'
 #'
 #' @examples
 #' @noRd
@@ -556,7 +706,7 @@ base_save_pop_partial_callback <- function(directory="results/",generation,pop_p
 #' @param current_time
 #'
 #' @return
-#' @export
+#'
 #'
 #' @examples
 #' @noRd
@@ -579,7 +729,7 @@ base_save_pop_final_callback <- function(directory="results/",generation,pop_poo
 #' @param current_time
 #'
 #' @return
-#' @export
+#'
 #'
 #' @examples
 #' @noRd
@@ -599,7 +749,7 @@ base_report_callback <- function(generation,pop_pool,pareto,prob_matrix,current_
 #' @param current_time
 #'
 #' @return
-#' @export
+#'
 #'
 #' @examples
 #' @noRd
@@ -619,7 +769,7 @@ no_report_callback <- function(generation,pop_pool,pareto,prob_matrix,current_ti
 #' @param current_time
 #'
 #' @return
-#' @export
+#'
 #'
 #' @examples
 #' @noRd
@@ -636,7 +786,7 @@ base_start_gen_callback <- function(generation,pop_pool,pareto,prob_matrix,curre
 #' @param current_time
 #'
 #' @return
-#' @export
+#'
 #'
 #' @examples
 #' @noRd
@@ -653,7 +803,7 @@ base_end_gen_callback <- function(generation,pop_pool,pareto,prob_matrix,current
 #' @param current_time
 #'
 #' @return
-#' @export
+#'
 #'
 #' @examples
 #' @noRd
@@ -761,7 +911,7 @@ toDataFrame <- function(output) {
 #' @param distancetype character, it can be \code{'pearson'} (centered pearson), \code{'uncentered'} (uncentered pearson), \code{'spearman'} or \code{'euclidean'}
 #' @param TournamentSize a number indicating the size of the tournaments for the selection procedure
 #' @param period a number indicating the outcome period to evaluate the RMST
-#' @param OS a \code{survival} object (see \code{\link[surival:Surv]{Surv} function from the \code{\link[survival]{survival}} package)
+#' @param OS a \code{survival} object (see \code{ \link[survival]{Surv} } function from the \code{\link{survival}} package)
 #' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
 #' @param res_dir a \code{character} string indicating where to save the intermediate and final output of the algorithm
 #' @param save_pop_partial_callback optional callback function between iterations
@@ -769,7 +919,7 @@ toDataFrame <- function(output) {
 #' @param report_callback optional callback function
 #' @param start_gen_callback optional callback function for the beginning of the run
 #' @param end_gen_callback optional callback function for the end of the run
-#' @param verbose
+#' @param verbose select the level of information printed during galgo execution
 #'
 #' @return an object of type \code{'galgo.Obj'} that corresponds to a list with the elements \code{$Solutions} and \code{$ParetoFront}. \code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number of features evaluated and \eqn{l} is the number of solutions obtained.
 #' The submatrix \eqn{l x n} is a binary matrix where each row represents the chromosome of an evolved solution from the solution population, where each feature can be present (1) or absent (0) in the solution. Column \eqn{n +1} represent the  \eqn{k} number of clusters for each solutions. Column \eqn{n+2} to \eqn{n+5} shows the SC Fitness and Survival Fitness values, the solution rank, and the crowding distance of the solution in the final pareto front respectevely.
@@ -780,6 +930,7 @@ toDataFrame <- function(output) {
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
+#' options(mc.cores=2)
 #' rna_luad<-use_rna_luad()
 #' prm <- rna_luad$TCGA$expression_data
 #' clinical <- rna_luad$TCGA$pheno_data
@@ -837,7 +988,7 @@ galgo <- function(population = 30, # Number of individuals to evaluate
   # Matrix with random TRUE false with uniform distribution, representing solutions to test.
   X <- matrix(NA, nrow = population, ncol = chrom_length)
   for (i in 1:population) {
-    prob <- runif(1, 0, 1)
+    prob <- stats::runif(1, 0, 1)
     X[i, ] <- sample(c(1, 0), chrom_length, replace = T, prob = c(prob, 1 - prob))
   }
 
