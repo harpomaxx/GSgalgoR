@@ -839,7 +839,7 @@ default_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time
 #'OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #'#Run galgo
-#'output <- galgoR::galgo(generations = 5 ,population = 10, prob_matrix = TCGA_expr, OS = OS)
+#'output <- galgoR::galgo(generations = 2 ,population = 5, prob_matrix = TCGA_expr, OS = OS)
 #'outputList <- toList(output)
 
 toList <- function(output) {
@@ -888,7 +888,7 @@ toList <- function(output) {
 #'OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #'#Run galgo
-#'output <- galgoR::galgo(generations = 5 ,population = 10, prob_matrix = TCGA_expr, OS = OS)
+#'output <- galgoR::galgo(generations = 2 ,population = 5, prob_matrix = TCGA_expr, OS = OS)
 #'outputDF <- toDataFrame(output)
 toDataFrame <- function(output) {
   if (!methods::is(output, "galgo.Obj")) {
@@ -943,7 +943,7 @@ toDataFrame <- function(output) {
 #' OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #' #Run galgo
-#' output <- galgoR::galgo(generations = 5 ,population = 10, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 2 ,population = 5, prob_matrix = TCGA_expr, OS = OS)
 #' outputDF <- toDataFrame(output)
 #' outputList <- toList(output)
 #'
