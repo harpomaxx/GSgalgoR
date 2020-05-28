@@ -25,7 +25,7 @@ The current function transforms a \code{galgo.Obj} to a \code{data.frame}
 }
 \examples{
 rna_luad<-use_rna_luad()
-prm <- rna_luad$TCGA$expression_data
+prm <- rna_luad$TCGA$expression_matrix
 clinical <- rna_luad$TCGA$pheno_data
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
 output <- galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)

@@ -25,7 +25,7 @@
 #' #Run galgo
 #' output <- galgoR::galgo(generations = 10,population = 20, prob_matrix = TCGA_expr, OS = OS)
 #' non_dominated_summary(output=output,OS=OS,
-#'                       prob_matrix= TCGA_expression,
+#'                       prob_matrix= TCGA_expr,
 #'                       distancetype ="pearson",
 #'                       usegpu= FALSE)
 non_dominated_summary <- function(output,prob_matrix, OS, distancetype= "pearson",usegpu=FALSE){
@@ -62,7 +62,7 @@ non_dominated_summary <- function(output,prob_matrix, OS, distancetype= "pearson
     predicted_classdf <- as.data.frame(predicted_class)
 
 
-    surv_formula <- stats::as.formula("Surv~ predicted_class")
+    surv_formula <- stats::as.formula("OS~ predicted_class")
     tumortotal <- survival::survfit(surv_formula)
     totalsdf <- survival::survdiff(surv_formula)
     tumortotalpval <- 1 - stats::pchisq(totalsdf$chisq, length(totalsdf$n) - 1)
@@ -71,7 +71,7 @@ non_dominated_summary <- function(output,prob_matrix, OS, distancetype= "pearson
     coxsimple=survival::coxph(surv_formula,data=predicted_classdf)
 
     #CI=intsurv::cIndex(stats::predict(coxsimple),surv.time=OS[,1],surv.event=OS[,2],outx=FALSE)$c.index
-    CI<- intsurv::cIndex(risk_score= stats::predict(coxsimple),time= OS[,1],event= OS[,2])$index
+    CI<- intsurv::cIndex(risk_score= stats::predict(coxsimple),time= OS[,1],event= OS[,2])["index"]
     mean_Sil =mean(cluster::silhouette(as.numeric(predicted_class),D)[,3])
 
     row= c(name,k,length(genes),mean_Sil,CI)
@@ -105,10 +105,10 @@ non_dominated_summary <- function(output,prob_matrix, OS, distancetype= "pearson
 #' #Run galgo
 #' output <- galgoR::galgo(generations = 10,population = 20, prob_matrix = TCGA_expr, OS = OS)
 #' RESULTS <- non_dominated_summary(output=output,OS=OS,
-#'                                  prob_matrix= TCGA_expression,
+#'                                  prob_matrix= TCGA_expr,
 #'                                  distancetype ="pearson",
 #'                                  usegpu= FALSE)
-#' CentroidsList<- create_centroids(output,RESULTS$solution,train.set= TCGA_expression)
+#' CentroidsList<- create_centroids(output,RESULTS$solution,train.set= TCGA_expr)
 
 create_centroids<- function(output,solution.names,train.set){
   CentroidsList<-list()
@@ -155,7 +155,7 @@ create_centroids<- function(output,solution.names,train.set){
 #'                                 prob_matrix= TCGA_expr,
 #'                                 distancetype ="pearson",
 #'                                 usegpu= FALSE)
-#' CentroidsList<- create_centroids(output,RESULTS$solution,train.set= TCGA_expression)
+#' CentroidsList<- create_centroids(output,RESULTS$solution,train.set= TCGA_expr)
 #' TCGA_classes <- classify_multiple(prob_matrix=TCGA_expr,centroid.list= CentroidsList)
 
 classify_multiple<- function(prob_matrix, centroid.list,distancetype="pearson"){

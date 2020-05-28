@@ -57,7 +57,7 @@ For easier interpretation of the \code{'galgo.Obj'}, the output can be reshaped 
 \examples{
 options(mc.cores=2)
 rna_luad<-use_rna_luad()
-prm <- rna_luad$TCGA$expression_data
+prm <- rna_luad$TCGA$expression_matrix
 clinical <- rna_luad$TCGA$pheno_data
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
 output <- galgo(generations = 10, population = 30,prob_matrix = prm, OS=OS)

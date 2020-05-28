@@ -230,7 +230,7 @@ classify <- function(data, centroid, method = "pearson") {
 #'   \item Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, \url{(https://arxiv.org/abs/1810.05691)}.
 #' }
 #'
-#' @noRd
+#' @export
 #' @examples
 #' rna_luad<-use_rna_luad()
 #' prm <- rna_luad$TCGA$expression_matrix
