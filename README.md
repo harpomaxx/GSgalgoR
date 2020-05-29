@@ -1,5 +1,5 @@
 
-galgoR <img src="inst/doc/extdata/GalgoR.png" align="right" alt="" width="120" />
+galgoR <img src="inst/extdata/GalgoR.png" align="right" alt="" width="120" />
 ================================================================================
 <!-- badges: start -->
 <!-- badges: end -->
