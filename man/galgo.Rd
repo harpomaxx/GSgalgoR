@@ -14,7 +14,7 @@ galgo(
   period = 1825,
   OS,
   prob_matrix,
-  res_dir = "results/",
+  res_dir = "~/galgoR/results/",
   save_pop_partial_callback = base_save_pop_partial_callback,
   save_pop_final_callback = base_save_pop_final_callback,
   report_callback = base_report_callback,

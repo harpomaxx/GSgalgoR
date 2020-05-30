@@ -661,9 +661,9 @@ pen <- function(x) {
 #'
 #' @examples
 #' @noRd
-base_save_pop_callback <- function(directory="results/",prefix,generation,pop_pool,pareto,prob_matrix,current_time){
+base_save_pop_callback <- function(directory="~/galgoR/results/",prefix,generation,pop_pool,pareto,prob_matrix,current_time){
   if (!dir.exists(directory))
-    dir.create(directory)
+    dir.create(directory,recursive = TRUE)
   colnames(pop_pool)[1:(ncol(pop_pool) - 5)] <- rownames(prob_matrix)
   output <- list(Solutions = pop_pool, ParetoFront = pareto)
   output <- galgo.Obj(Solutions= output$Solutions, ParetoFront= output$ParetoFront)
@@ -710,9 +710,9 @@ base_save_pop_partial_callback <- function(directory="~/galgoR/results/",generat
 #'
 #' @examples
 #' @noRd
-base_save_pop_final_callback <- function(directory="results/",generation,pop_pool,pareto,prob_matrix,current_time){
+base_save_pop_final_callback <- function(directory="~/galgoR/results/",generation,pop_pool,pareto,prob_matrix,current_time){
   if (!dir.exists(directory))
-    dir.create(directory)
+    dir.create(directory,recursive = TRUE)
   #environment(base_save_pop_callback)<-environment()
   output<- base_save_pop_callback(directory,prefix="final",generation,pop_pool,pareto,prob_matrix,current_time)
   print(paste0("final population saved in final.rda"))
@@ -962,7 +962,7 @@ galgo <- function(population = 30, # Number of individuals to evaluate
                   period = 1825,
                   OS, #OS=Surv(time=clinical$time,event=clinical$status)
                   prob_matrix,
-                  res_dir="results/",
+                  res_dir="~/galgoR/results/",
                   save_pop_partial_callback=base_save_pop_partial_callback,
                   save_pop_final_callback=base_save_pop_final_callback,
                   report_callback=base_report_callback,
