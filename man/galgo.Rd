@@ -4,14 +4,24 @@
 \alias{galgo}
 \title{GalgoR main function}
 \usage{
-galgo(population = 30, generations = 2, nCV = 5, usegpu = FALSE,
-  distancetype = "pearson", TournamentSize = 2, period = 1825, OS,
-  prob_matrix, res_dir = "results/",
+galgo(
+  population = 30,
+  generations = 2,
+  nCV = 5,
+  usegpu = FALSE,
+  distancetype = "pearson",
+  TournamentSize = 2,
+  period = 1825,
+  OS,
+  prob_matrix,
+  res_dir = "results/",
   save_pop_partial_callback = base_save_pop_partial_callback,
   save_pop_final_callback = base_save_pop_final_callback,
   report_callback = base_report_callback,
   start_gen_callback = base_start_gen_callback,
-  end_gen_callback = base_end_gen_callback, verbose = 2)
+  end_gen_callback = base_end_gen_callback,
+  verbose = 2
+)
 }
 \arguments{
 \item{population}{a number indicating the number of solutions in the population of solutions that will be evolved}
