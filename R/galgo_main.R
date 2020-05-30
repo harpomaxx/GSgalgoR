@@ -11,7 +11,7 @@
 #' }
 #'
 #'
-#' @note Ideally, \pkg{galgoR} works faster using \pkg{gpuR} by C. Determan that provides wrappers functions for OpenCL
+#' @note Ideally, \pkg{galgoR} works faster using \code{gpuR} by C. Determan that provides wrappers functions for OpenCL
 #' programming.
 #' @author
 #' Martin E. Guerrero-Gimenez \email{mguerrero@@mendoza-conicet.gob.ar}

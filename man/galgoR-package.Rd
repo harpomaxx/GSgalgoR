@@ -17,7 +17,7 @@ Copyright: \tab (c) 2020 Martin E. Guerrero-Gimenez.\cr URL: \tab
 }
 }
 \note{
-Ideally, \pkg{galgoR} works faster using \pkg{gpuR} by C. Determan that provides wrappers functions for OpenCL
+Ideally, \pkg{galgoR} works faster using \code{gpuR} by C. Determan that provides wrappers functions for OpenCL
 programming.
 }
 \author{
