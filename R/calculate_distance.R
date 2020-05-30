@@ -221,7 +221,7 @@ classify <- function(data, centroid, method = "pearson") {
 #' @references
 #' \itemize{
 #'   \item Reynolds, A., Richards, G., de la Iglesia, B. and Rayward-Smith, V. (1992) Clustering rules: A comparison of partitioning and hierarchical clustering algorithms; Journal of Mathematical Modelling and Algorithms 5, 475--504. 10.1007/s10852-005-9022-1.
-#'   \item Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, \url{(https://arxiv.org/abs/1810.05691)}.
+#'   \item Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, (\url{https://arxiv.org/abs/1810.05691}).
 #' }
 #'
 #' @export
