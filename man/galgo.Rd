@@ -30,7 +30,7 @@ galgo(
 
 \item{nCV}{number of cross-validation sets}
 
-\item{usegpu}{\code{logical} default to \code{FALSE}, set to \code{TRUE} if you wish to use gpu computing (\code{\link[gpuR]{gpuR}} package must be properly installed and loaded)}
+\item{usegpu}{\code{logical} default to \code{FALSE}, set to \code{TRUE} if you wish to use gpu computing (\code{gpuR} package must be properly installed and loaded)}
 
 \item{distancetype}{character, it can be \code{'pearson'} (centered pearson), \code{'uncentered'} (uncentered pearson), \code{'spearman'} or \code{'euclidean'}}
 

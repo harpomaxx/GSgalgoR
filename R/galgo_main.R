@@ -915,7 +915,7 @@ toDataFrame <- function(output) {
 #' @param population  a number indicating the number of solutions in the population of solutions that will be evolved
 #' @param generations a number indicating the number of iterations of the galgo algorithm
 #' @param nCV number of cross-validation sets
-#' @param usegpu \code{logical} default to \code{FALSE}, set to \code{TRUE} if you wish to use gpu computing (\code{\link[gpuR]{gpuR}} package must be properly installed and loaded)
+#' @param usegpu \code{logical} default to \code{FALSE}, set to \code{TRUE} if you wish to use gpu computing (\code{gpuR} package must be properly installed and loaded)
 #' @param distancetype character, it can be \code{'pearson'} (centered pearson), \code{'uncentered'} (uncentered pearson), \code{'spearman'} or \code{'euclidean'}
 #' @param TournamentSize a number indicating the size of the tournaments for the selection procedure
 #' @param period a number indicating the outcome period to evaluate the RMST
