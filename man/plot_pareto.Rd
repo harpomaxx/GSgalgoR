@@ -26,5 +26,4 @@ OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 # Run galgo
 output <- galgoR::galgo(generations = 5, population = 10, prob_matrix = TCGA_expr, OS = OS)
 plot_pareto(output)
-
 }

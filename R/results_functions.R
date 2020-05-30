@@ -137,7 +137,7 @@ create_centroids <- function(output, solution.names, train.set, distancetype = "
 #' Classify samples from multiple centroids
 #'
 #' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
-#' @param centroid.list a\code{list} with the centroid matrix for each of the signatures to evaluate, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature. The output of \code{\link[galgoR:create_centroids]{create_centroids}} can be used.
+#' @param centroid._list a\code{list} with the centroid matrix for each of the signatures to evaluate, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature. The output of \code{\link[galgoR:create_centroids]{create_centroids}} can be used.
 #' @param distancetype  a \code{character} that can be either \code{'pearson'} (default), \code{'spearman'} or \code{'kendall'}.
 #'
 #' @return Returns a \code{data.frame} with the classes assigned to each sample in each signature, were samples are a rows and signatures in columns
@@ -159,16 +159,16 @@ create_centroids <- function(output, solution.names, train.set, distancetype = "
 #'   usegpu = FALSE
 #' )
 #' CentroidsList <- create_centroids(output, RESULTS$solution, train.set = TCGA_expr)
-#' TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid.list = CentroidsList)
-classify_multiple <- function(prob_matrix, centroid.list, distancetype = "pearson") {
-  classes <- matrix(rep(NA, ncol(prob_matrix) * length(centroid.list)), ncol = length(centroid.list))
+#' TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid._list = CentroidsList)
+classify_multiple <- function(prob_matrix, centroid._list, distancetype = "pearson") {
+  classes <- matrix(rep(NA, ncol(prob_matrix) * length(centroid._list)), ncol = length(centroid._list))
   as.data.frame <- classes
-  colnames(classes) <- names(centroid.list)
+  colnames(classes) <- names(centroid._list)
   rownames(classes) <- colnames(prob_matrix)
 
-  for (i in 1:length(centroid.list)) {
-    centroids <- centroid.list[[i]]
-    name <- names(centroid.list)[i]
+  for (i in 1:length(centroid._list)) {
+    centroids <- centroid._list[[i]]
+    name <- names(centroid._list)[i]
     genes <- rownames(centroids)
     k <- ncol(centroids)
     Sub_matrix <- prob_matrix[genes, ]
@@ -200,26 +200,24 @@ classify_multiple <- function(prob_matrix, centroid.list, distancetype = "pearso
 #' # Run galgo
 #' output <- galgoR::galgo(generations = 5, population = 10, prob_matrix = TCGA_expr, OS = OS)
 #' plot_pareto(output)
-#'
-plot_pareto<- function(output){
-
+plot_pareto <- function(output) {
   SC.Fit <- Surv.Fit <- Gen <- NULL
-  PARETO<-output@ParetoFront
+  PARETO <- output@ParetoFront
 
-  for ( i in 1:length(PARETO)){
-    PARETO[[i]]<-as.data.frame(PARETO[[i]])
-    PARETO[[i]]$Gen<-i
+  for (i in 1:length(PARETO)) {
+    PARETO[[i]] <- as.data.frame(PARETO[[i]])
+    PARETO[[i]]$Gen <- i
   }
-  PARETO<-do.call(rbind,PARETO)
-  colnames(PARETO)<- c("SC.Fit", "Surv.Fit", "Gen")
+  PARETO <- do.call(rbind, PARETO)
+  colnames(PARETO) <- c("SC.Fit", "Surv.Fit", "Gen")
 
-  output_df<- toDataFrame(output) #Transform output to dataframe
-  output_df<- output_df[output_df$Rank==1,]
-  output_df<- output_df[order(output_df$SC.Fit),]
+  output_df <- toDataFrame(output) # Transform output to dataframe
+  output_df <- output_df[output_df$Rank == 1, ]
+  output_df <- output_df[order(output_df$SC.Fit), ]
 
-  PlotPareto<- ggplot2::ggplot(PARETO,ggplot2::aes(x=SC.Fit,y=Surv.Fit,colour=Gen))+ggplot2::geom_point() + ggplot2::theme_bw()
-  PlotPareto <- PlotPareto+ ggplot2::geom_point(ggplot2::aes(x=SC.Fit,y=Surv.Fit),colour="black",size=2,output_df)+ggplot2::geom_line(ggplot2::aes(x=SC.Fit,y=Surv.Fit),colour="black",output_df)
-  PlotPareto<- PlotPareto + ggplot2::ggtitle("Galgo run Pareto front")
+  PlotPareto <- ggplot2::ggplot(PARETO, ggplot2::aes(x = SC.Fit, y = Surv.Fit, colour = Gen)) + ggplot2::geom_point() + ggplot2::theme_bw()
+  PlotPareto <- PlotPareto + ggplot2::geom_point(ggplot2::aes(x = SC.Fit, y = Surv.Fit), colour = "black", size = 2, output_df) + ggplot2::geom_line(ggplot2::aes(x = SC.Fit, y = Surv.Fit), colour = "black", output_df)
+  PlotPareto <- PlotPareto + ggplot2::ggtitle("Galgo run Pareto front")
   print(PlotPareto)
 }
 

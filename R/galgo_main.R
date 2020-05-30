@@ -794,13 +794,15 @@ base_end_gen_callback <- function(generation,pop_pool,pareto,prob_matrix,current
   #print(Sys.time()- start_time)
 }
 
-#' Title
+#' default_callback
 #'
-#' @param generation
-#' @param pop_pool
-#' @param pareto
-#' @param prob_matrix
-#' @param current_time
+#' a default call_back function that does nothing.
+#'
+#' @param generation a number indicating the number of iterations of the galgo algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
+#' @param pareto the solutions found by Galgo accross all generations in the solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param current_time an \code{POSIXct} object
 #'
 #' @return
 #'
@@ -985,7 +987,8 @@ galgo <- function(population = 30, # Number of individuals to evaluate
 
   # Support for parallel computing.
   chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-  if (nzchar(chk) && chk == "TRUE") {
+  print(chk)
+  if (nzchar(chk) && tolower(chk) == "true") {
     # use 2 cores in CRAN/Travis/AppVeyor
     num_workers <- 3L
   } else {
