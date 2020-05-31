@@ -841,7 +841,7 @@ default_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time
 #'OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #'#Run galgo
-#'output <- galgoR::galgo(generations = 2 ,population = 5, prob_matrix = TCGA_expr, OS = OS)
+#'output <- galgoR::galgo(generations = 2 ,population = 4, prob_matrix = TCGA_expr, OS = OS)
 #'outputList <- toList(output)
 
 toList <- function(output) {
@@ -890,7 +890,7 @@ toList <- function(output) {
 #'OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #'#Run galgo
-#'output <- galgoR::galgo(generations = 2 ,population = 5, prob_matrix = TCGA_expr, OS = OS)
+#'output <- galgoR::galgo(generations = 2 ,population = 4, prob_matrix = TCGA_expr, OS = OS)
 #'outputDF <- toDataFrame(output)
 toDataFrame <- function(output) {
   if (!methods::is(output, "galgo.Obj")) {
@@ -945,13 +945,12 @@ toDataFrame <- function(output) {
 #' OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #' #Run galgo
-#' output <- galgoR::galgo(generations = 2 ,population = 5, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 2 ,population = 4, prob_matrix = TCGA_expr, OS = OS)
 #' outputDF <- toDataFrame(output)
 #' outputList <- toList(output)
 #'
 #'
 #'
-
 
 galgo <- function(population = 30, # Number of individuals to evaluate
                   generations = 2, # Number of generations
@@ -983,7 +982,6 @@ galgo <- function(population = 30, # Number of individuals to evaluate
     end_gen_callback = default_callback
 
   }
-
 
   # Support for parallel computing.
   chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
@@ -1043,7 +1041,6 @@ galgo <- function(population = 30, # Number of individuals to evaluate
       reqpkgs <- c(reqpkgs,"gpuR")
     }
 
-
     # Calculate Fitness 1 (silhouette) and 2 (Survival differences).
     Fit2 <- foreach::foreach(i = 1:nrow(X), .packages = reqpkgs, .combine = rbind) %dopar% {
       #devtools::load_all() # required for package devel
@@ -1067,13 +1064,10 @@ galgo <- function(population = 30, # Number of individuals to evaluate
       objRange <- apply(Fit2, 2, max) - apply(Fit2, 2, min) # Range of fitness of the solutions.
       CrowD <- nsga2R::crowdingDist4frnt(X1, ranking, objRange) # Crowding distance of each front (nsga2R package).
       CrowD <- apply(CrowD, 1, sum)
-
       X1 <- cbind(X1, CrowD) # data.frame with solution vector, number of clusters, ranking and crowding distance.
 
       # Output for the generation callback
-      #environment(report_callback)<-environment()
       report_callback(generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
-
 
       # Save parent generation.
       Xold <- X
@@ -1097,7 +1091,6 @@ galgo <- function(population = 30, # Number of individuals to evaluate
         i <- i + 1
       }
 
-
       X1 <- cbind(oldnewfeature, k = oldnewK, oldnew, rnkIndex = rnkIndex2)
       objRange <- apply(oldnew, 2, max) - apply(oldnew, 2, min) # Range of fitness of the solutions.
       CrowD <- nsga2R::crowdingDist4frnt(X1, ranking2, objRange) # Crowding distance of each front (nsga2R package).
@@ -1110,7 +1103,6 @@ galgo <- function(population = 30, # Number of individuals to evaluate
       PARETO[[g]] <- X1[, (chrom_length + 2):(chrom_length + 3)] # Saves the fitness of the solutions of the current generation
 
       # Output for the generation callback
-      #environment(report_callback)<-environment()
       report_callback(generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
 
       #print(paste0("Generation ", g, " Non-dominated solutions:"))
@@ -1125,18 +1117,11 @@ galgo <- function(population = 30, # Number of individuals to evaluate
     }
 
     # 5.Go to step 2
-
     gc()
-    #environment(base_save_pop_callback)<-environment()
-    #environment(save_pop_partial_callback)<-environment()
     save_pop_partial_callback(res_dir,generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
-
-    #environment(end_gen_callback)<-environment()
     end_gen_callback(generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
   }
 
   parallel::stopCluster(cluster)
-  #environment(base_save_pop_callback)<-environment()
-  #environment(save_pop_final_callback)<-environment()
   save_pop_final_callback(res_dir,generation=g,pop_pool=X1,pareto=PARETO,prob_matrix=prob_matrix,current_time=start_time)
 }
