@@ -13,7 +13,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: cluster, doParallel, foreach, matchingR, nsga2R, survival, cba, stats, methods, intsurv 
-Suggests:  knitr, rmarkdown, ggplot2
+Suggests:  gpuR,knitr, rmarkdown, ggplot2
 URL: https://github.com/harpomaxx/galgo
 BugReports: https://github.com/harpomaxx/galgo/issues
 RoxygenNote: 7.1.0
