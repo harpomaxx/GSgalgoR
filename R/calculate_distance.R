@@ -38,6 +38,8 @@ NULL
 #' @rdname calculate_distance
 #' @export
 calculate_distance_pearson_gpu <- function(x) {
+
+  if (requireNamespace("gpuR", quietly = TRUE)) {
         x <- gpuR::vclMatrix(x)
         mx <- gpuR::colMeans(x)
         x2 <- gpuR::colMeans(x^2)
@@ -47,11 +49,16 @@ calculate_distance_pearson_gpu <- function(x) {
         # pDist=gpuR::cov(x)/sx%o%sx
         pDist <- as.matrix(pDist)
         stats::as.dist(1 - pDist)
+  } else {
+    print("Package gpuR not available for your platform. Fallback to CPU.")
+    calculate_distance_pearson_cpu(x)
+  }
  }
 
 #' @rdname calculate_distance
 #'
 calculate_distance_spearman_gpu <- function(x) {
+  if (requireNamespace("gpuR", quietly = TRUE)) {
         x <- gpuR::vclMatrix(x)
         mx <- gpuR::colMeans(x)
         x2 <- gpuR::colMeans(x^2)
@@ -61,11 +68,16 @@ calculate_distance_spearman_gpu <- function(x) {
         pDist <- as.matrix(pDist)
         # pDist=gpuR::cov(x)/sx%o%sx
         stats::as.dist(1 - pDist)
+  } else {
+    print("Package gpuR not available for your platform. Fallback to CPU.")
+    calculate_distance_spearman_cpu(x)
+  }
 }
 
 #' @rdname calculate_distance
 #' @export
 calculate_distance_uncentered_gpu <- function(x) {
+  if (requireNamespace("gpuR", quietly = TRUE)) {
         mgpu <- gpuR::vclMatrix(t(x))
         d2 <- gpuR::vclMatrix(1, ncol = 1, nrow = dim(mgpu)[2])
         a1 <- gpuR::tcrossprod(mgpu, mgpu)
@@ -73,17 +85,25 @@ calculate_distance_uncentered_gpu <- function(x) {
         pDist <- a1 / sqrt(gpuR::tcrossprod(a2, a2))
         pDist <- as.matrix(pDist)
         stats::as.dist(1 - pDist)
+  } else {
+    print("Package gpuR not available for your platform. Fallback to CPU.")
+    calculate_distance_uncentered_cpu(x)
+  }
 }
 
 #' @rdname calculate_distance
 #' @export
 calculate_distance_euclidean_gpu <- function(x) {
+  if (requireNamespace("gpuR", quietly = TRUE)) {
         mgpu <- gpuR::vclMatrix(t(x))
         pDist <- suppressWarnings(gpuR::distance(mgpu, mgpu, method = "euclidean"))
         pDist <- as.matrix(pDist)
         stats::as.dist(pDist)
-      }
-
+  } else {
+  print("Package gpuR not available for your platform. Fallback to CPU.")
+  calculate_distance_euclidean_cpu(x)
+  }
+}
 #' @rdname calculate_distance
 #' @export
 calculate_distance_pearson_cpu <-function(x){
