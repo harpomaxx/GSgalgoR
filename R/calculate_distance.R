@@ -50,7 +50,7 @@ calculate_distance_pearson_gpu <- function(x) {
         pDist <- as.matrix(pDist)
         stats::as.dist(1 - pDist)
   } else {
-    print("Package gpuR not available for your platform. Fallback to CPU.")
+    print("Package gpuR not available in your platform. Fallback to CPU.")
     calculate_distance_pearson_cpu(x)
   }
  }
@@ -69,7 +69,7 @@ calculate_distance_spearman_gpu <- function(x) {
         # pDist=gpuR::cov(x)/sx%o%sx
         stats::as.dist(1 - pDist)
   } else {
-    print("Package gpuR not available for your platform. Fallback to CPU.")
+    print("Package gpuR not available in your platform. Fallback to CPU.")
     calculate_distance_spearman_cpu(x)
   }
 }
@@ -86,7 +86,7 @@ calculate_distance_uncentered_gpu <- function(x) {
         pDist <- as.matrix(pDist)
         stats::as.dist(1 - pDist)
   } else {
-    print("Package gpuR not available for your platform. Fallback to CPU.")
+    print("Package gpuR not available in your platform. Fallback to CPU.")
     calculate_distance_uncentered_cpu(x)
   }
 }
@@ -100,7 +100,7 @@ calculate_distance_euclidean_gpu <- function(x) {
         pDist <- as.matrix(pDist)
         stats::as.dist(pDist)
   } else {
-  print("Package gpuR not available for your platform. Fallback to CPU.")
+  print("Package gpuR not available in your platform. Fallback to CPU.")
   calculate_distance_euclidean_cpu(x)
   }
 }

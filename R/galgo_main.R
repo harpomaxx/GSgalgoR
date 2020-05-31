@@ -1037,8 +1037,11 @@ galgo <- function(population = 30, # Number of individuals to evaluate
     reqpkgs <- c("cluster","cba", "survival", "matchingR","galgoR")
     #reqpkgs <- c("cluster","cba", "survival", "matchingR")
     if (usegpu == TRUE ){
-      # TODO: add validation for opencl machine. if not fallback to CPU.
-      reqpkgs <- c(reqpkgs,"gpuR")
+       if (requireNamespace("gpuR",quietly = TRUE)){
+          reqpkgs <- c(reqpkgs,"gpuR")
+      } else {
+          print("package gpuR not available in your platform. Fallback to CPU")
+      }
     }
 
     # Calculate Fitness 1 (silhouette) and 2 (Survival differences).
