@@ -22,7 +22,7 @@
 #' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 2, population = 5, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 2, population = 4, prob_matrix = TCGA_expr, OS = OS)
 #' non_dominated_summary(
 #'   output = output, OS = OS,
 #'   prob_matrix = TCGA_expr,
@@ -104,7 +104,7 @@ non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pears
 #' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 2, population = 5, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 2, population = 4, prob_matrix = TCGA_expr, OS = OS)
 #' RESULTS <- non_dominated_summary(
 #'   output = output, OS = OS,
 #'   prob_matrix = TCGA_expr,
@@ -151,7 +151,7 @@ create_centroids <- function(output, solution.names, train.set, distancetype = "
 #' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 2, population = 5, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 2, population = 4, prob_matrix = TCGA_expr, OS = OS)
 #' RESULTS <- non_dominated_summary(
 #'   output = output, OS = OS,
 #'   prob_matrix = TCGA_expr,
@@ -198,7 +198,7 @@ classify_multiple <- function(prob_matrix, centroid._list, distancetype = "pears
 #' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 10, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 2, population = 4, prob_matrix = TCGA_expr, OS = OS)
 #' plot_pareto(output)
 plot_pareto <- function(output) {
   SC.Fit <- Surv.Fit <- Gen <- NULL

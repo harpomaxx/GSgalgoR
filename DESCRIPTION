@@ -1,11 +1,11 @@
 Package: galgoR
 Type: Package
 Title: An Evolutionary Algorithm for the Identification and Study of Prognostic Gene Expression Signatures in Cancer
-Version: 0.1.0
+Version: 0.2.0
 Author: Martin Guerrero, Carlos Catania
 Maintainer: Carlos Catania <harpomaxx@gmail.com>
 Description: A multi-objective optimization algorithm for disease subtype discovery based on a 
-    non-dominated sorting genetic algorithm. The galgo framework combines the advantages of 
+    non-dominated sorting genetic algorithm. The 'Galgo' framework combines the advantages of 
     clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic 
     algorithms for feature selection and optimal number of clusters determination to find features that 
     maximize the survival difference between subtypes while keeping cluster consistency high.
@@ -13,7 +13,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: cluster, doParallel, foreach, matchingR, nsga2R, survival, cba, stats, methods, intsurv 
-Suggests: gpuR, knitr, rmarkdown, ggplot2
+Suggests:  knitr, rmarkdown, ggplot2
 URL: https://github.com/harpomaxx/galgo
 BugReports: https://github.com/harpomaxx/galgo/issues
 RoxygenNote: 7.1.0
