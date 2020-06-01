@@ -665,7 +665,7 @@ pen <- function(x) {
 #' @noRd
 base_save_pop_callback <- function(userdir="",prefix,generation,pop_pool,pareto,prob_matrix,current_time){
   if (userdir == ""){
-    directory = paste0(tempfile(),"/")
+    directory = paste0(tempdir(),"/")
   }else{
     directory = userdir
   }
@@ -696,7 +696,7 @@ base_save_pop_callback <- function(userdir="",prefix,generation,pop_pool,pareto,
 #' @noRd
 base_save_pop_partial_callback <- function(userdir="",generation,pop_pool,pareto,prob_matrix,current_time){
   if (userdir == ""){
-    directory = paste0(tempfile(),"/")
+    directory = paste0(tempdir(),"/")
   }else{
     directory = userdir
   }
@@ -723,7 +723,7 @@ base_save_pop_partial_callback <- function(userdir="",generation,pop_pool,pareto
 #' @noRd
 base_save_pop_final_callback <- function(userdir="",generation,pop_pool,pareto,prob_matrix,current_time){
   if (userdir == ""){
-    directory = paste0(tempfile(),"/")
+    directory = paste0(tempdir(),"/")
   }else{
     directory = userdir
   }
