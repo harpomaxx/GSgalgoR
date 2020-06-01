@@ -981,7 +981,7 @@ galgo <- function(population = 30, # Number of individuals to evaluate
                   period = 1825,
                   OS, #OS=Surv(time=clinical$time,event=clinical$status)
                   prob_matrix,
-                  res_dir="~/galgoR/results/",
+                  res_dir="",
                   save_pop_partial_callback=default_callback,
                   save_pop_final_callback=base_save_pop_final_callback,
                   report_callback=base_report_callback,
