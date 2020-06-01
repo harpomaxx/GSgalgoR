@@ -29,8 +29,11 @@
 #' #To get wilkerson centroids
 #' WilkCentroids <- rna_luad$WilkCentroids
 #' }
+#' @importFrom tools md5sum
 
 use_rna_luad <- function(userdir=""){
+  rna_luad_digest <-"900a74e7c4fdd0dcb7a3f2ddb44bb680"
+  rna_luad_url <- "https://bit.ly/luad_data_galgo"
   if(userdir == ""){
     dest_dir <- paste0(tempdir(),"/")
   }else{
@@ -44,20 +47,20 @@ use_rna_luad <- function(userdir=""){
   download_fail <- 0
   if (! file.exists(dest_file)){
       message(dest_file," not found.")
-      tryCatch( utils::download.file("https://bit.ly/luad_data_galgo",
+      tryCatch( utils::download.file(rna_luad_url,
                                      dest_file,
                                      mode="wb"),
                 warning = function(e) {
-                            message('rna_luad dataset is not available at [bit.ly/luad_data_galgo]. Are you connected to the internet? ')
+                            message("rna_luad dataset is not available at [",rna_luad_url,"]. Are you connected to the internet? ")
                             download_fail <<- sub(".+HTTP status was ", "", e)
                 })
   }
   #message(download_fail)
-  if ( download_fail == 0){
-      data<-readRDS(dest_file)
+  if ( download_fail == 0 && tools::md5sum(dest_file) == rna_luad_digest ){
+                data<-readRDS(dest_file)
   }
   else{
-    message("Could not load dataset")
+    message("Something goes wrong. Could not down(load) dataset. Please try again later or download it by your own from ",rna_luad_url)
     if (file.exists(dest_file))
         file.remove(dest_file)
   }
