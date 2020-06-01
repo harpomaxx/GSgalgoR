@@ -2,7 +2,7 @@
 % Please edit documentation in R/results_functions.R
 \name{plot_pareto}
 \alias{plot_pareto}
-\title{Plot pareto front}
+\title{Plot pareto front from an galgo.Obj}
 \usage{
 plot_pareto(output)
 }
@@ -14,7 +14,7 @@ This function returns a scatterplot showing the solutions found by Galgo accross
 A line is drawn over all non-dominated solutions showing the estimated Pareto front
 }
 \description{
-Plot pareto front
+Plot pareto front from an galgo.Obj
 }
 \examples{
 \dontrun{

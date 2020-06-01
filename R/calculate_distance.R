@@ -1,5 +1,3 @@
-#' calculate_distance
-#'
 #' Functions to calculate distance matrices using cpu or gpu computing
 #'
 #' @param distancetype a \code{character} that can be either \code{'pearson'}, \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}
@@ -195,7 +193,7 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
 }
 
 
-#' Distance to centroid classifier
+#' Distance to centroid classifier function
 #'
 #' Given an \eqn{n x m} matrix of centroids, where \eqn{m} are the prototypic centroids with \eqn{n} features, classify new samples according to the distance to the centroids.
 #'
@@ -263,7 +261,7 @@ cluster_algorithm <- function(c, k) {
   return(list(cluster = cluster::pam(c, k, cluster.only = TRUE, diss = TRUE, do.swap = TRUE, keep.diss = FALSE, keep.data = FALSE, pamonce = 2)))
 }
 
-#' cosine similarity
+#' Function for calculating the cosine similarity
 #'
 #' Cosine similarity is a metric of similarity between two non-zero vectors of an inner product space that measures the cosine of the angle between them.
 #'Two vectors with the same orientation have a cosine similarity of 1, if they are perpendicular they have a similarity of 0, and if they have opposing directions the cosine similarity is -1, independent of their magnitude.

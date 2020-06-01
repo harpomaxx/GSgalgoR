@@ -58,13 +58,13 @@ We will also load the `survival` library
 ```
 library(survival)
 ```
-## Run galgo()
-
+Run galgo()
+--
 The main function in this package is galgo(). It accepts an expression matrix and survival object to find robust gene expression signatures related to a given outcome.
 This function contains some parameters that can be modified, according to the characteristics of the analysis to be performed.
 
-### Setting parameters
-
+Setting parameters
+---
 The principal parameters are:
 
 - population: a number indicating the number of solutions in the population of solutions that will be evolved
@@ -84,26 +84,26 @@ TournamentSize <- 2
 period <- 1825
 ```
 
-### Expression matrix
-
+Expression matrix
+---
 Create an expression matrix for the TCGA_LUAD data example.
 
-```{r TCGA_expr}
+```
 TCGA_expr <- rna_luad$TCGA$expression_matrix
 ```
 
-### Survival Object
-
+Survival Object
+---
 The 'OS' object is created by the Surv() function of the survival package. This uses phenotypic data that are contained in the TCGA dataset.  
 
-```{r Surv}
+```
 TCGA_clinic <- rna_luad$TCGA$pheno_data
 
 OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 ```
 
-### Run Galgo algorithm
-
+Run Galgo algorithm
+---
 ```
 output <- galgoR::galgo(generations = generations, 
                         population = population, 
@@ -117,15 +117,15 @@ output <- galgoR::galgo(generations = generations,
 ```
 
 
-### Galgo Object
-
+Galgo Object
+---
 The output of the galgo() function is an object of type 'galgo.Obj' that has two slots with the elements:
 
 - Solutions 
 - ParetoFront.
 
-#### Solutions 
-
+Solutions 
+---
 Is a l x (n + 5) matrix where n is the number of features evaluated and l is the number of solutions obtained. 
 
 - The submatrix l x n is a binary matrix where each row represents the chromosome of an evolved solution from the solution population, where each feature can be present (1) or absent (0) in the solution. 
@@ -135,14 +135,15 @@ Is a l x (n + 5) matrix where n is the number of features evaluated and l is the
 - Column n+4 shows the solution rank
 - Column n+5 represent the crowding distance of the solution in the final pareto front
 
-#### ParetoFront
-
+ParetoFront
+---
 Is a list of length equal to the number of generations run in the algorithm. Each element is a l x 2 matrix where l is the number of solutions obtained and the columns are the SC Fitness and the Survival Fitness values respectively.
 
 
 For easier interpretation of the 'galgo.Obj', the output can be transformed to a List or to a DataFrame objects.
 
-#### toList() function
+toList() function
+---
 
 This function restructurates a galgo.Obj to a more easy to understand an use list. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type list has a length equals to the number of solutions obtained by the galgo algorithm.
 
@@ -166,7 +167,8 @@ To evaluate the structure of the first solution we can run:
 outputList[["Solution.1"]]
 ```
 
-#### toDataFrame() function
+toDataFrame() function
+---
 
 The current function restructurates a galgo.Obj to a more easy to understand an use data.frame. The output data.frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:
 
@@ -182,8 +184,8 @@ outputDF <- toDataFrame(output)
 head(outputDF)
 ```
 
-#### plot_pareto()
-
+plot_pareto()
+---
 Once we obtain the `galgo.obj` from the output of `galgo()` we can plot the obtained Pareto front and see how it evolved trough the tested number of generations
 
 ```

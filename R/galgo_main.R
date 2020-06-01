@@ -24,7 +24,7 @@
 NULL
 
 
-#' Title
+#' Galgo Object class
 #'
 #' @slot Solutions matrix.
 #' @slot ParetoFront list.

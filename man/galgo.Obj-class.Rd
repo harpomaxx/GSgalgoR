@@ -4,9 +4,9 @@
 \name{galgo.Obj-class}
 \alias{galgo.Obj-class}
 \alias{galgo.Obj}
-\title{Title}
+\title{Galgo Object class}
 \description{
-Title
+Galgo Object class
 }
 \section{Slots}{
 

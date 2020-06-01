@@ -188,7 +188,7 @@ classify_multiple <- function(prob_matrix, centroid._list, distancetype = "pears
   return(classes)
 }
 
-#' Plot pareto front
+#' Plot pareto front from an galgo.Obj
 #'
 #' @param output An object of class \code{galgo.Obj}
 #'

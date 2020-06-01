@@ -11,7 +11,7 @@
 \alias{calculate_distance_uncentered_cpu}
 \alias{calculate_distance_euclidean_cpu}
 \alias{select_distance}
-\title{calculate_distance}
+\title{Functions to calculate distance matrices using cpu or gpu computing}
 \usage{
 calculate_distance_pearson_gpu(x)
 

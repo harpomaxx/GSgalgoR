@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_distance.R
 \name{classify}
 \alias{classify}
-\title{Distance to centroid classifier}
+\title{Distance to centroid classifier function}
 \usage{
 classify(data, centroid, method = "pearson")
 }

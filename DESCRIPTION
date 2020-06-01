@@ -3,7 +3,7 @@ Type: Package
 Title: An Evolutionary Algorithm for the Identification and Study of Prognostic Gene Expression Signatures in Cancer
 Version: 0.2.0
 Author: Martin Guerrero, Carlos Catania
-Maintainer: Carlos Catania <harpomaxx@gmail.com>
+Maintainer:  Carlos Catania <harpomaxx@gmail.com>
 Description: A multi-objective optimization algorithm for disease sub-type discovery based on a 
     non-dominated sorting genetic algorithm. The 'Galgo' framework combines the advantages of 
     clustering algorithms for grouping heterogeneous 'omics' data and the searching properties of genetic 

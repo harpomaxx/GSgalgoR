@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_distance.R
 \name{cosine}
 \alias{cosine}
-\title{cosine similarity}
+\title{Function for calculating the cosine similarity}
 \usage{
 cosine(a, b)
 }
