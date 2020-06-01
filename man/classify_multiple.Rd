@@ -20,6 +20,7 @@ Returns a \code{data.frame} with the classes assigned to each sample in each sig
 Classify samples from multiple centroids
 }
 \examples{
+\dontrun{
 # Load data
 rna_luad <- use_rna_luad()
 TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -36,4 +37,5 @@ RESULTS <- non_dominated_summary(
 )
 CentroidsList <- create_centroids(output, RESULTS$solution, train.set = TCGA_expr)
 TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid._list = CentroidsList)
+}
 }

@@ -12,7 +12,7 @@
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
 
-There were 2 NOTES:
+There were 4 NOTES:
 
 * Possibly mis-spelled words in DESCRIPTION:  galgo (9:50), omics (10:54), subtype (8:67), subtypes (12:46)
 
@@ -22,22 +22,8 @@ A: All of the identified words are spelled correctly.
 
 A: The flagged URLs are correct.
 
+* checking package dependencies ... NOTE Package suggested but not available for checking: ‘gpuR’
 
-
-
-
-
-
-* checking package dependencies ... NOTE
-Package suggested but not available for checking: ‘gpuR’
-
-A: The package gpuR for the moment has some issues for Windows, however is not necesary for running galgoR
-
-* checking examples ... NOTE
-Examples with CPU (user + system) or elapsed time > 10s
-            user system elapsed
-plot_pareto 1.95   0.31   18.16
-
-A:the galgo functions runs a genetic algorithm that demands considerable time. We have tried to reduce examples' time to a mininum.
+A: The package gpuR for the moment has some issues for Windows, however is not necesary for running galgoR.
 
 

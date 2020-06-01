@@ -144,6 +144,7 @@ create_centroids <- function(output, solution.names, train.set, distancetype = "
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load data
 #' rna_luad <- use_rna_luad()
 #' TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -160,6 +161,7 @@ create_centroids <- function(output, solution.names, train.set, distancetype = "
 #' )
 #' CentroidsList <- create_centroids(output, RESULTS$solution, train.set = TCGA_expr)
 #' TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid._list = CentroidsList)
+#'}
 classify_multiple <- function(prob_matrix, centroid._list, distancetype = "pearson") {
   classes <- matrix(rep(NA, ncol(prob_matrix) * length(centroid._list)), ncol = length(centroid._list))
   as.data.frame <- classes
