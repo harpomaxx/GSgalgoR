@@ -142,7 +142,7 @@ Is a list of length equal to the number of generations run in the algorithm. Eac
 
 For easier interpretation of the 'galgo.Obj', the output can be transformed to a List or to a DataFrame objects.
 
-## toList() function
+#### toList() function
 
 This function restructurates a galgo.Obj to a more easy to understand an use list. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type list has a length equals to the number of solutions obtained by the galgo algorithm.
 
@@ -166,7 +166,7 @@ To evaluate the structure of the first solution we can run:
 outputList[["Solution.1"]]
 ```
 
-## toDataFrame() function
+#### toDataFrame() function
 
 The current function restructurates a galgo.Obj to a more easy to understand an use data.frame. The output data.frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:
 
@@ -182,7 +182,7 @@ outputDF <- toDataFrame(output)
 head(outputDF)
 ```
 
-## plot_pareto()
+#### plot_pareto()
 
 Once we obtain the `galgo.obj` from the output of `galgo()` we can plot the obtained Pareto front and see how it evolved trough the tested number of generations
 
