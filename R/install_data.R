@@ -32,14 +32,33 @@
 
 use_rna_luad <- function(userdir=""){
   if(userdir == ""){
-    dest_dir <- paste0(tempfile(),"/")
+    dest_dir <- paste0(tempdir(),"/")
   }else{
     dest_dir <- userdir
   }
   if (!dir.exists(dest_dir))
       dir.create(dest_dir,recursive=TRUE)
+
   dest_file <- paste(dest_dir,"luad_data.rds",sep="")
-  if (! file.exists(dest_file))
-      utils::download.file("https://bit.ly/luad_data_galgo",dest_file, mode="wb")
-  data<-readRDS(dest_file)
+  message("Trying to load dataset from ", dest_file)
+  download_fail <- 0
+  if (! file.exists(dest_file)){
+      message(dest_file," not found.")
+      tryCatch( utils::download.file("https://bit.ly/luad_data_galgo",
+                                     dest_file,
+                                     mode="wb"),
+                warning = function(e) {
+                            message('rna_luad dataset is not available at [bit.ly/luad_data_galgo]. Are you connected to the internet? ')
+                            download_fail <<- sub(".+HTTP status was ", "", e)
+                })
+  }
+  #message(download_fail)
+  if ( download_fail == 0){
+      data<-readRDS(dest_file)
+  }
+  else{
+    message("Could not load dataset")
+    if (file.exists(dest_file))
+        file.remove(dest_file)
+  }
 }
