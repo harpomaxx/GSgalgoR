@@ -4,15 +4,19 @@
 \alias{use_rna_luad}
 \title{Download a toy dataset to test galgoR}
 \usage{
-use_rna_luad()
+use_rna_luad(userdir = "")
+}
+\arguments{
+\item{userdir}{the name of the folder to install the datasets. A temporary file will be used if left blank.}
 }
 \value{
-The dataset gets downloaded in the \code{./data} folder of \code{galgoR} package. The output of the function is a \code{list} with two \code{lists} with the scaled gene expression and clinical data from TCGA lung adenocarcinoma and \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465}{GEO GSE68465} datasets.It also contains the Wilkerson's centroids extracted from \url{http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip} to perform sample classification into "Bronchoid", "Magnoid" and "Squamoid" subtypes.
+The dataset gets downloaded in a temporary folder or the \code{userdir} folder specified by the user. The output of the function is a \code{list} with two \code{lists} with the scaled gene expression and clinical data from TCGA lung adenocarcinoma and \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465}{GEO GSE68465} datasets.It also contains the Wilkerson's centroids extracted from \url{http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip} to perform sample classification into "Bronchoid", "Magnoid" and "Squamoid" subtypes.
 }
 \description{
 The current function downloads two reduced lung adenocarcinoma gene expression datasets (TCGA lung adenocarcinoma project and GEO GSE68465 datasets) to test \code{\link[galgoR:galgo]{galgoR}}. It also contains the Wilkerson's centroids to perform lung adenocarcinoma sample classification.
 }
 \examples{
+\dontrun{
 rna_luad<- use_rna_luad()
 TCGA<- rna_luad$TCGA #Access TCGA dataset
 GSE68465<- rna_luad$GSE68465 #Access GSE68465 dataset
@@ -28,6 +32,7 @@ TCGA_clinic <- TCGA$pheno_data
 
 #To get wilkerson centroids
 WilkCentroids <- rna_luad$WilkCentroids
+}
 }
 \references{
 \itemize{

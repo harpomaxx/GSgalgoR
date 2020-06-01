@@ -20,10 +20,12 @@ The function computes the Harmonic mean of the differences between Restricted Me
 Survival fitness function using the Restricted Mean Survival Time (RMST) of each group as proposed by \emph{Dehbi & Royston et al. (2017)}.
 }
 \examples{
+\dontrun{
 rna_luad<-use_rna_luad()
 clinical <- rna_luad$TCGA$pheno_data
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
 fitness(OS,clustclass= clinical$Wilk.Subtype, 1825)
+}
 }
 \references{
 Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life expectancy difference and life expectancy ratio: two measures of treatment effects in randomized trials with non-proportional hazards BMJ 2017; 357 :j2250 \url{https://www.bmj.com/content/357/bmj.j2250}

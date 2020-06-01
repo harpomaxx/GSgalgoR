@@ -319,10 +319,12 @@ cDist <- function(x) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' rna_luad<-use_rna_luad()
 #' clinical <- rna_luad$TCGA$pheno_data
 #' OS <- survival::Surv(time=clinical$time,event=clinical$status)
 #' fitness(OS,clustclass= clinical$Wilk.Subtype, 1825)
+#' }
 fitness <- function(OS, clustclass,period) {
   score <- tryCatch(
     {
@@ -648,7 +650,7 @@ pen <- function(x) {
 #' Base callback function
 #' Save  population
 #'
-#' @param directory
+#' @param userdir
 #' @param prefix
 #' @param generation
 #' @param pop_pool
@@ -661,7 +663,12 @@ pen <- function(x) {
 #'
 #' @examples
 #' @noRd
-base_save_pop_callback <- function(directory="~/galgoR/results/",prefix,generation,pop_pool,pareto,prob_matrix,current_time){
+base_save_pop_callback <- function(userdir="",prefix,generation,pop_pool,pareto,prob_matrix,current_time){
+  if (userdir == ""){
+    directory = paste0(tempfile(),"/")
+  }else{
+    directory = userdir
+  }
   if (!dir.exists(directory))
     dir.create(directory,recursive = TRUE)
   colnames(pop_pool)[1:(ncol(pop_pool) - 5)] <- rownames(prob_matrix)
@@ -675,7 +682,7 @@ base_save_pop_callback <- function(directory="~/galgoR/results/",prefix,generati
 #' Title
 #' Save partial population (every 2 generations)
 #'
-#' @param directory
+#' @param userdir
 #' @param generation
 #' @param pop_pool
 #' @param pareto
@@ -687,18 +694,22 @@ base_save_pop_callback <- function(directory="~/galgoR/results/",prefix,generati
 #'
 #' @examples
 #' @noRd
-base_save_pop_partial_callback <- function(directory="~/galgoR/results/",generation,pop_pool,pareto,prob_matrix,current_time){
+base_save_pop_partial_callback <- function(userdir="",generation,pop_pool,pareto,prob_matrix,current_time){
+  if (userdir == ""){
+    directory = paste0(tempfile(),"/")
+  }else{
+    directory = userdir
+  }
   if (!dir.exists(directory))
     dir.create(directory,recursive = TRUE)
   if (generation %% 2 == 0){
     base_save_pop_callback(directory,prefix=generation,generation,pop_pool,pareto,prob_matrix,current_time)
   }
-
 }
 
 #' Title
 #'
-#' @param directory
+#' @param userdir
 #' @param generation
 #' @param pop_pool
 #' @param pareto
@@ -710,12 +721,16 @@ base_save_pop_partial_callback <- function(directory="~/galgoR/results/",generat
 #'
 #' @examples
 #' @noRd
-base_save_pop_final_callback <- function(directory="~/galgoR/results/",generation,pop_pool,pareto,prob_matrix,current_time){
+base_save_pop_final_callback <- function(userdir="",generation,pop_pool,pareto,prob_matrix,current_time){
+  if (userdir == ""){
+    directory = paste0(tempfile(),"/")
+  }else{
+    directory = userdir
+  }
   if (!dir.exists(directory))
     dir.create(directory,recursive = TRUE)
-  #environment(base_save_pop_callback)<-environment()
   output<- base_save_pop_callback(directory,prefix="final",generation,pop_pool,pareto,prob_matrix,current_time)
-  print(paste0("final population saved in final.rda"))
+  message(paste0("final population saved in final.rda in ",directory))
   return(output)
 }
 
@@ -735,8 +750,8 @@ base_save_pop_final_callback <- function(directory="~/galgoR/results/",generatio
 #' @noRd
 base_report_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time){
   chrom_length <- nrow(prob_matrix)
-  print(paste0("Generation ", generation, " Non-dominated solutions:"))
-  print(pop_pool[pop_pool[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
+  message(paste0("Generation ", generation, " Non-dominated solutions:"))
+  message(pop_pool[pop_pool[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
   #print(Sys.time()- start_time)
 }
 
@@ -834,6 +849,7 @@ default_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
+#'\dontrun{
 #'#Load data
 #'rna_luad <- use_rna_luad()
 #'TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -841,8 +857,9 @@ default_callback <- function(generation,pop_pool,pareto,prob_matrix,current_time
 #'OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #'#Run galgo
-#'output <- galgoR::galgo(generations = 2 ,population = 4, prob_matrix = TCGA_expr, OS = OS)
+#'output <- galgoR::galgo(generations = 10 ,population = 30, prob_matrix = TCGA_expr, OS = OS)
 #'outputList <- toList(output)
+#'}
 
 toList <- function(output) {
   if (!methods::is(output, "galgo.Obj")) {
@@ -883,6 +900,7 @@ toList <- function(output) {
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #'@examples
+#'\dontrun{
 #'#Load data
 #'rna_luad <- use_rna_luad()
 #'TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -890,8 +908,9 @@ toList <- function(output) {
 #'OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #'#Run galgo
-#'output <- galgoR::galgo(generations = 2 ,population = 4, prob_matrix = TCGA_expr, OS = OS)
+#'output <- galgoR::galgo(generations = 10 ,population = 30, prob_matrix = TCGA_expr, OS = OS)
 #'outputDF <- toDataFrame(output)
+#'}
 toDataFrame <- function(output) {
   if (!methods::is(output, "galgo.Obj")) {
     stop("object must be of class 'galgo.Obj'")
@@ -938,6 +957,7 @@ toDataFrame <- function(output) {
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
+#' \dontrun{
 #' #Load data
 #' rna_luad <- use_rna_luad()
 #' TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -945,10 +965,10 @@ toDataFrame <- function(output) {
 #' OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 #'
 #' #Run galgo
-#' output <- galgoR::galgo(generations = 2 ,population = 4, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 10 ,population = 30, prob_matrix = TCGA_expr, OS = OS)
 #' outputDF <- toDataFrame(output)
 #' outputList <- toList(output)
-#'
+#'}
 #'
 #'
 
@@ -985,7 +1005,6 @@ galgo <- function(population = 30, # Number of individuals to evaluate
 
   # Support for parallel computing.
   chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-  print(chk)
   if (nzchar(chk) && tolower(chk) == "true") {
     # use 2 cores in CRAN/Travis/AppVeyor
     num_workers <- 3L
@@ -1040,7 +1059,7 @@ galgo <- function(population = 30, # Number of individuals to evaluate
        if (requireNamespace("gpuR",quietly = TRUE)){
           reqpkgs <- c(reqpkgs,"gpuR")
       } else {
-          print("package gpuR not available in your platform. Fallback to CPU")
+          message("package gpuR not available in your platform. Fallback to CPU")
       }
     }
 

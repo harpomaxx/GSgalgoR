@@ -15,6 +15,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load data
 #' rna_luad <- use_rna_luad()
 #' TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -22,13 +23,14 @@
 #' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 2, population = 3, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
 #' non_dominated_summary(
 #'   output = output, OS = OS,
 #'   prob_matrix = TCGA_expr,
 #'   distancetype = "pearson",
 #'   usegpu = FALSE
 #' )
+#' }
 non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pearson", usegpu = FALSE) {
   if (!methods::is(output, "galgo.Obj")) {
     stop("object must be of class 'galgo.Obj'")
@@ -97,6 +99,7 @@ non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pears
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load data
 #' rna_luad <- use_rna_luad()
 #' TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -104,7 +107,7 @@ non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pears
 #' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 2, population = 3, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
 #' RESULTS <- non_dominated_summary(
 #'   output = output, OS = OS,
 #'   prob_matrix = TCGA_expr,
@@ -112,6 +115,7 @@ non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pears
 #'   usegpu = FALSE
 #' )
 #' CentroidsList <- create_centroids(output, RESULTS$solution, train.set = TCGA_expr)
+#' }
 create_centroids <- function(output, solution.names, train.set, distancetype = "pearson", usegpu = FALSE) {
   calculate_distance <- select_distance(distancetype = distancetype, usegpu = usegpu)
 
@@ -152,7 +156,7 @@ create_centroids <- function(output, solution.names, train.set, distancetype = "
 #' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 2, population = 3, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
 #' RESULTS <- non_dominated_summary(
 #'   output = output, OS = OS,
 #'   prob_matrix = TCGA_expr,
@@ -193,6 +197,7 @@ classify_multiple <- function(prob_matrix, centroid._list, distancetype = "pears
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load data
 #' rna_luad <- use_rna_luad()
 #' TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -200,8 +205,9 @@ classify_multiple <- function(prob_matrix, centroid._list, distancetype = "pears
 #' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 2, population = 3, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
 #' plot_pareto(output)
+#' }
 plot_pareto <- function(output) {
   SC.Fit <- Surv.Fit <- Gen <- NULL
   PARETO <- output@ParetoFront

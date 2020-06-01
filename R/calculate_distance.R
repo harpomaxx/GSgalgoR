@@ -28,11 +28,13 @@
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #' @name calculate_distance
 #' @examples
+#' \dontrun{
 #' rna_luad<-use_rna_luad()
 #' prm <- rna_luad$TCGA$expression_matrix
 #' #Will select the calculate_distance_pearson_cpu() function to calculate the distance matrix
 #' calculate_distance<-select_distance(distancetype= "pearson", usegpu=FALSE)
 #' calculate_distance(prm)
+#' }
 NULL
 
 #' @rdname calculate_distance
@@ -50,7 +52,7 @@ calculate_distance_pearson_gpu <- function(x) {
         pDist <- as.matrix(pDist)
         stats::as.dist(1 - pDist)
   } else {
-    print("Package gpuR not available in your platform. Fallback to CPU.")
+    message("Package gpuR not available in your platform. Fallback to CPU.")
     calculate_distance_pearson_cpu(x)
   }
  }
@@ -69,7 +71,7 @@ calculate_distance_spearman_gpu <- function(x) {
         # pDist=gpuR::cov(x)/sx%o%sx
         stats::as.dist(1 - pDist)
   } else {
-    print("Package gpuR not available in your platform. Fallback to CPU.")
+    message("Package gpuR not available in your platform. Fallback to CPU.")
     calculate_distance_spearman_cpu(x)
   }
 }
@@ -86,7 +88,7 @@ calculate_distance_uncentered_gpu <- function(x) {
         pDist <- as.matrix(pDist)
         stats::as.dist(1 - pDist)
   } else {
-    print("Package gpuR not available in your platform. Fallback to CPU.")
+    message("Package gpuR not available in your platform. Fallback to CPU.")
     calculate_distance_uncentered_cpu(x)
   }
 }
@@ -100,14 +102,14 @@ calculate_distance_euclidean_gpu <- function(x) {
         pDist <- as.matrix(pDist)
         stats::as.dist(pDist)
   } else {
-  print("Package gpuR not available in your platform. Fallback to CPU.")
+  message("Package gpuR not available in your platform. Fallback to CPU.")
   calculate_distance_euclidean_cpu(x)
   }
 }
 #' @rdname calculate_distance
 #' @export
 calculate_distance_pearson_cpu <-function(x){
-    print("pearson....")
+    #print("pearson....")
     mx=base::colMeans(x)
     x2=base::colMeans(x^2)
     mx2=mx^2
@@ -185,7 +187,7 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
      calculate_distance <- calculate_distance_euclidean_gpu
     }
   }
-  print(paste(computingtype,distancetype,"distance"))
+  message(paste(computingtype,distancetype,"distance"))
   #assign("calculate_distance",calculate_distance,envir=.GlobalEnv)
   #return(invisible(calculate_distance))
   return(calculate_distance)
@@ -205,6 +207,7 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' rna_luad<-use_rna_luad()
 #'
 #' #The expression of the toy datasets are already scaled
@@ -222,6 +225,7 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
 #' #Classify samples
 #' Wilk.Class<- classify(prm[inBoth,],centroids[inBoth,])
 #' table(Wilk.Class)
+#' }
 
 classify <- function(data, centroid, method = "pearson") {
     R <- stats::cor(data, centroid, method = method)
@@ -246,12 +250,14 @@ classify <- function(data, centroid, method = "pearson") {
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' rna_luad<-use_rna_luad()
 #' prm <- rna_luad$TCGA$expression_matrix
 #'Dist <- calculate_distance_pearson_cpu(prm)
 #'k <- 4
 #'Pam <- cluster_algorithm(Dist,k)
 #'table(Pam$cluster)
+#'}
 
 cluster_algorithm <- function(c, k) {
   return(list(cluster = cluster::pam(c, k, cluster.only = TRUE, diss = TRUE, do.swap = TRUE, keep.diss = FALSE, keep.data = FALSE, pamonce = 2)))
@@ -291,12 +297,14 @@ cosine <- function(a, b) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' rna_luad<-use_rna_luad()
 #' prm <- rna_luad$TCGA$expression_matrix
 #' Dist <- calculate_distance_pearson_cpu(prm)
 #' k <- 4
 #' Pam <- cluster_algorithm(Dist,k)$cluster
 #' centroids <- kcentroid(prm,Pam)
+#' }
 
 kcentroid <- function(data, class) {
   L <- list()

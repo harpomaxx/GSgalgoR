@@ -20,6 +20,7 @@ Returns a numeric vector of length \eqn{p} with the class assigned to each sampl
 Given an \eqn{n x m} matrix of centroids, where \eqn{m} are the prototypic centroids with \eqn{n} features, classify new samples according to the distance to the centroids.
 }
 \examples{
+\dontrun{
 rna_luad<-use_rna_luad()
 
 #The expression of the toy datasets are already scaled
@@ -37,4 +38,5 @@ inBoth<- Reduce(intersect, list(rownames(prm),rownames(centroids)))
 #Classify samples
 Wilk.Class<- classify(prm[inBoth,],centroids[inBoth,])
 table(Wilk.Class)
+}
 }

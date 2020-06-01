@@ -17,6 +17,7 @@ A line is drawn over all non-dominated solutions showing the estimated Pareto fr
 Plot pareto front
 }
 \examples{
+\dontrun{
 # Load data
 rna_luad <- use_rna_luad()
 TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -24,6 +25,7 @@ TCGA_clinic <- rna_luad$TCGA$pheno_data
 OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
 
 # Run galgo
-output <- galgoR::galgo(generations = 2, population = 3, prob_matrix = TCGA_expr, OS = OS)
+output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
 plot_pareto(output)
+}
 }

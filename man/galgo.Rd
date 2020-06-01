@@ -65,6 +65,7 @@ For easier interpretation of the \code{'galgo.Obj'}, the output can be reshaped 
 \code{\link[galgoR:galgo]{galgo}} accepts an expression matrix and a survival object to find robust gene expression signatures related to a given outcome
 }
 \examples{
+\dontrun{
 #Load data
 rna_luad <- use_rna_luad()
 TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -72,10 +73,10 @@ TCGA_clinic <- rna_luad$TCGA$pheno_data
 OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 
 #Run galgo
-output <- galgoR::galgo(generations = 2 ,population = 4, prob_matrix = TCGA_expr, OS = OS)
+output <- galgoR::galgo(generations = 10 ,population = 30, prob_matrix = TCGA_expr, OS = OS)
 outputDF <- toDataFrame(output)
 outputList <- toList(output)
-
+}
 
 
 }

@@ -24,6 +24,7 @@ The current function restructurates a \code{galgo.Obj} to a more easy to underst
 The current function transforms a \code{galgo.Obj} to a \code{data.frame}
 }
 \examples{
+\dontrun{
 #Load data
 rna_luad <- use_rna_luad()
 TCGA_expr <- rna_luad$TCGA$expression_matrix
@@ -31,8 +32,9 @@ TCGA_clinic <- rna_luad$TCGA$pheno_data
 OS <- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)
 
 #Run galgo
-output <- galgoR::galgo(generations = 2 ,population = 4, prob_matrix = TCGA_expr, OS = OS)
+output <- galgoR::galgo(generations = 10 ,population = 30, prob_matrix = TCGA_expr, OS = OS)
 outputDF <- toDataFrame(output)
+}
 }
 \author{
 Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
