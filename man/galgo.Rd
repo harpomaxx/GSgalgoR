@@ -16,7 +16,7 @@ galgo(
   prob_matrix,
   res_dir = "",
   save_pop_partial_callback = default_callback,
-  save_pop_final_callback = base_save_pop_final_callback,
+  save_pop_final_callback = base_return_pop_callback,
   report_callback = base_report_callback,
   start_gen_callback = base_start_gen_callback,
   end_gen_callback = base_end_gen_callback,
