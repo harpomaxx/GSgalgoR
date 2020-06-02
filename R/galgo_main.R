@@ -645,10 +645,30 @@ pen <- function(x) {
   1 / (1 + (x / 500)^2)
 }
 
+#' A base callback function that returns a galgo.Obj
+#' @param userdir
+#' @param prefix
+#' @param generation
+#' @param pop_pool
+#' @param pareto
+#' @param prob_matrix
+#' @param current_time
+#'
+#' @return an objet of class galgo
+#'
+#'
+#' @examples
+#' @noRd
+base_return_pop_callback <- function(userdir="",prefix,generation,pop_pool,pareto,prob_matrix,current_time){
+  colnames(pop_pool)[1:(ncol(pop_pool) - 5)] <- rownames(prob_matrix)
+  output <- list(Solutions = pop_pool, ParetoFront = pareto)
+  output <- galgo.Obj(Solutions= output$Solutions, ParetoFront= output$ParetoFront)
+  return(output)
+}
 
-#' Title
-#' Base callback function
-#' Save  population
+#' A base callback function that saves galgo.Obj
+#'
+#'
 #'
 #' @param userdir
 #' @param prefix
@@ -679,8 +699,7 @@ base_save_pop_callback <- function(userdir="",prefix,generation,pop_pool,pareto,
   return(output)
 }
 
-#' Title
-#' Save partial population (every 2 generations)
+#' A callback for daving partial galgo.Obj (every 2 generations)
 #'
 #' @param userdir
 #' @param generation
@@ -707,7 +726,7 @@ base_save_pop_partial_callback <- function(userdir="",generation,pop_pool,pareto
   }
 }
 
-#' Title
+#' A callback for saving final galgo.Obj
 #'
 #' @param userdir
 #' @param generation
@@ -809,9 +828,7 @@ base_end_gen_callback <- function(userdir="",generation,pop_pool,pareto,prob_mat
   #print(Sys.time()- start_time)
 }
 
-#' default_callback
-#'
-#' a default call_back function that does nothing.
+#' A default call_back function that does nothing.
 #'
 #' @param generation a number indicating the number of iterations of the galgo algorithm
 #' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
@@ -983,7 +1000,7 @@ galgo <- function(population = 30, # Number of individuals to evaluate
                   prob_matrix,
                   res_dir="",
                   save_pop_partial_callback=default_callback,
-                  save_pop_final_callback=base_save_pop_final_callback,
+                  save_pop_final_callback=base_return_pop_callback,
                   report_callback=base_report_callback,
                   start_gen_callback=base_start_gen_callback,
                   end_gen_callback=base_end_gen_callback,
