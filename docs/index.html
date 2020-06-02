@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>An Evolutionary Algorithm for the Identification and Study of Prognostic Gene Expression Signatures in Cancer • galgoR</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -48,19 +48,10 @@
   </a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="articles/galgoR.html">Get started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/Galgo_vignette.html">GalgoR user Guide</a>
-    </li>
-  </ul>
+  <a href="reference/index.html">Reference</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -90,170 +81,32 @@
 <!-- badges: start -->
 <!-- badges: end -->
 <p>A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm. The galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic algorithms for feature selection and optimal number of clusters determination to find features that maximize the survival difference between subtypes while keeping cluster consistency high.</p>
-<div id="installation" class="section level2">
+<div id="package-overview" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<a href="#package-overview" class="anchor"></a>Package Overview</h2>
+<p>The <strong>galgoR</strong> package implements the Galgo algorithm as well as several helper functions for analyzing the results. The package also includes some example data sets useful for getting familiar with the package.</p>
+<p>In order to standardize the structure of genomic data, the package uses the <code>ExpressionSet</code> structure from the <strong>Biobase</strong> package. The <code>ExpressionSet</code> objects can hold different types of data in a single structure, but in this case, we opted for using a simplified format to facilitate the example to those not familiar with the <em>Biobase</em> package. The <em>ExpressionSet</em> objects are formed mainly by a matrix of genetic expression, usually derived from microarray or RNAseq experiments and the Phenotypic data containing information on the samples (condition, status, treatment, survival, and other covariates). Additionally, some annotations and feature Meta-data can also be included in the objects.</p>
+<p>For testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets ([TCGA] and [GSE68465]), that can be downloaded using the function <code><a href="reference/use_rna_luad.html">use_rna_luad()</a></code>. Additionally, <strong>galgoR</strong> provides the Wilkerson’s centroids to perform lung adenocarcinoma sample classification.</p>
+</div>
+</div>
+<div id="installation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h1>
 <p>You can install the released version of galgoR using devtools with:</p>
 <pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("https://github.com/harpomaxx/galgo")
-
 library(galgoR)</a></code></pre>
-</div>
-<div id="examples-datasets" class="section level2">
+<div id="executing-galgo" class="section level2">
 <h2 class="hasAnchor">
-<a href="#examples-datasets" class="anchor"></a>Examples datasets</h2>
-<p>To standardize the structure of genomic data, we use the <a href="https://www.bioconductor.org/packages/release/bioc/html/Biobase.html">ExpressionSet</a> structure for the examples given in this guide. The <code>ExpressionSet</code> objects can hold different types of data in a single structure but in this case we opted for using a simplified format to facilitate the example to those not familiar with the <a href="https://www.bioconductor.org/packages/release/bioc/html/Biobase.html">Biobase</a> package. The <code>ExpressionSet</code> objects are formed mainly by:</p>
-<ul>
-<li>A matrix of genetic expression, usually derived from microarray or RNAseq experiments.</li>
-<li>Phenotypic data, where we find information on the samples (condition, status, treatment, survival, and other covariates).</li>
-<li>Finally, these objects can also contain Annotations and feature Meta-data.</li>
-</ul>
-<p>To start testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets (<a href="https://gdc.cancer.gov/about-data/publications/luad_2014">TCGA</a> and <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68465">GSE68465</a>), that can be download using the function use_rna_luad(). Additionally, It also contains the <a href="http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip">Wilkerson’s centroids</a> to perform lung adenocarcinoma sample classification.</p>
-<pre><code> rna_luad&lt;- use_rna_luad()
- TCGA&lt;- rna_luad$TCGA #Access TCGA dataset
- GSE68465&lt;- rna_luad$GSE68465 #Access GSE68465 dataset
+<a href="#executing-galgo" class="anchor"></a>Executing Galgo</h2>
+<p>The main function in the package is <code><a href="reference/galgo.html">galgo()</a></code>. The function accepts an expression matrix in the previous detailed section and a survival object <strong>survival</strong> package) to find robust gene expression signatures related to a given outcome. Besides, <code><a href="reference/galgo.html">galgo()</a></code> accepts several other parameters such as the number of solutions in the population, the number of generations the algorithm must evolve, and the distance function used for the clustering algorithm, among others. The parameters facilitate the setup according to the characteristics of the analysis to be performed. All the Galgo evolutionary process is executed using a multicore architecture. Alternatively, to speed up the process, it is possible to execute Galgo on Graphics processor units (GPU). An example of a typical galgoR workflow is shown below:</p>
+<pre><code>rna_luad&lt;-use_rna_luad()
+prm &lt;- rna_luad$TCGA$expression_matrix
+clinical &lt;-rna_luad$TCGA$pheno_data
+OS &lt;- survival::Surv(time=clinical$time,event=clinical$status)
 
- #To access gene expression data
- TCGA_expr&lt;- TCGA$expression_data
-
- #To access feature data
- TCGA_features&lt;- TCGA$feature_data
-
- #To access clinical data
- TCGA_clinic &lt;- TCGA$pheno_data
-
- #To get wilkerson centroids
- WilkCentroids &lt;- rna_luad$WilkCentroids</code></pre>
-</div>
-</div>
-<div id="an-example" class="section level1">
-<h1 class="hasAnchor">
-<a href="#an-example" class="anchor"></a>An Example</h1>
-<div id="loading-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#loading-data" class="anchor"></a>Loading data</h2>
-<pre><code>rna_luad &lt;- use_rna_luad()</code></pre>
-<p>We will also load the <code>survival</code> library</p>
-<pre><code><a href="https://rdrr.io/pkg/survival/man">library(survival)</a></code></pre>
-</div>
-<div id="run-galgo" class="section level2">
-<h2 class="hasAnchor">
-<a href="#run-galgo" class="anchor"></a>Run galgo()</h2>
-<p>The main function in this package is galgo(). It accepts an expression matrix and survival object to find robust gene expression signatures related to a given outcome. This function contains some parameters that can be modified, according to the characteristics of the analysis to be performed.</p>
-</div>
-<div id="setting-parameters" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setting-parameters" class="anchor"></a>Setting parameters</h2>
-<p>The principal parameters are:</p>
-<ul>
-<li>population: a number indicating the number of solutions in the population of solutions that will be evolved</li>
-<li>generations: a number indicating the number of iterations of the galgo algorithm</li>
-<li>nCV: number of cross-validation sets</li>
-<li>usegpu: logical default to FALSE, set to TRUE if you wish to use gpu computing (gpuR package must be properly installed and loaded)</li>
-<li>distancetype: character, it can be ‘pearson’ (centered pearson), ‘uncentered’ (uncentered pearson), ‘spearman’ or ‘euclidean’</li>
-<li>TournamentSize: a number indicating the size of the tournaments for the selection procedure</li>
-<li>period: a number indicating the outcome period to evaluate the RMST</li>
-</ul>
-<pre><code>population &lt;- 30 # For testing reasons it is set to a low number but ideally should be above 100            
-generations &lt;-15 # For testing reasons it is set to a low number but ideally should be above 150            
-nCV &lt;- 5                      
-distancetype &lt;- "pearson"     
-TournamentSize &lt;- 2
-period &lt;- 1825</code></pre>
-</div>
-<div id="expression-matrix" class="section level2">
-<h2 class="hasAnchor">
-<a href="#expression-matrix" class="anchor"></a>Expression matrix</h2>
-<p>Create an expression matrix for the TCGA_LUAD data example.</p>
-<pre><code>TCGA_expr &lt;- rna_luad$TCGA$expression_matrix</code></pre>
-</div>
-<div id="survival-object" class="section level2">
-<h2 class="hasAnchor">
-<a href="#survival-object" class="anchor"></a>Survival Object</h2>
-<p>The ‘OS’ object is created by the Surv() function of the survival package. This uses phenotypic data that are contained in the TCGA dataset.</p>
-<pre><code>TCGA_clinic &lt;- rna_luad$TCGA$pheno_data
-
-OS &lt;- survival::Surv(time=TCGA_clinic$time,event=TCGA_clinic$status)</code></pre>
-</div>
-<div id="run-galgo-algorithm" class="section level2">
-<h2 class="hasAnchor">
-<a href="#run-galgo-algorithm" class="anchor"></a>Run Galgo algorithm</h2>
-<pre><code>output &lt;- galgoR::galgo(generations = generations, 
-                        population = population, 
-                        prob_matrix = TCGA_expr, 
-                        OS = OS,
-                        nCV = nCV, 
-                        distancetype = distancetype,
-                        TournamentSize = TournamentSize, 
-                        period = period)
-</code></pre>
-</div>
-<div id="galgo-object" class="section level2">
-<h2 class="hasAnchor">
-<a href="#galgo-object" class="anchor"></a>Galgo Object</h2>
-<p>The output of the galgo() function is an object of type ‘galgo.Obj’ that has two slots with the elements:</p>
-<ul>
-<li>Solutions</li>
-<li>ParetoFront.</li>
-</ul>
-</div>
-<div id="solutions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#solutions" class="anchor"></a>Solutions</h2>
-<p>Is a l x (n + 5) matrix where n is the number of features evaluated and l is the number of solutions obtained.</p>
-<ul>
-<li>The submatrix l x n is a binary matrix where each row represents the chromosome of an evolved solution from the solution population, where each feature can be present (1) or absent (0) in the solution.</li>
-<li>Column n+1 represent the k number of clusters for each solutions</li>
-<li>Column n+2 shows the SC Fitness</li>
-<li>Column n+3 represent Survival Fitness values</li>
-<li>Column n+4 shows the solution rank</li>
-<li>Column n+5 represent the crowding distance of the solution in the final pareto front</li>
-</ul>
-</div>
-<div id="paretofront" class="section level2">
-<h2 class="hasAnchor">
-<a href="#paretofront" class="anchor"></a>ParetoFront</h2>
-<p>Is a list of length equal to the number of generations run in the algorithm. Each element is a l x 2 matrix where l is the number of solutions obtained and the columns are the SC Fitness and the Survival Fitness values respectively.</p>
-<p>For easier interpretation of the ‘galgo.Obj’, the output can be transformed to a List or to a DataFrame objects.</p>
-</div>
-<div id="tolist-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#tolist-function" class="anchor"></a>toList() function</h2>
-<p>This function restructurates a galgo.Obj to a more easy to understand an use list. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type list has a length equals to the number of solutions obtained by the galgo algorithm.</p>
-<p>Basically this output is a list of lists, where each element of the output is named after the solution’s name (solution.n, where n is the number assigned to that solution), and inside of it, it has all the constituents for that given solution with the following structure:</p>
-<ul>
-<li>solution.n$Genes: A vector of the features included in the solution</li>
-<li>solution.n$k: The number of partitions found in that solution</li>
-<li>solution.n$SC.Fit: The average silhouette coefficient of the partitions found</li>
-<li>solution.n$Surv.Fit: The survival fitnes value</li>
-<li>solution.n$Rank: The solution rank</li>
-<li>CrowD: The solution crowding distance related to the rest of the solutions</li>
-</ul>
-<pre><code>outputList &lt;- toList(output)
-head(names(outputList))</code></pre>
-<p>To evaluate the structure of the first solution we can run:</p>
-<pre><code>outputList[["Solution.1"]]</code></pre>
-</div>
-<div id="todataframe-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#todataframe-function" class="anchor"></a>toDataFrame() function</h2>
-<p>The current function restructurates a galgo.Obj to a more easy to understand an use data.frame. The output data.frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:</p>
-<ul>
-<li>Genes: The features included in each solution in form of a list</li>
-<li>k: The number of partitions found in that solution</li>
-<li>SC.Fit: The average silhouette coefficient of the partitions found</li>
-<li>Surv.Fit: The survival fitnes value</li>
-<li>Rank: The solution rank</li>
-<li>CrowD: The solution crowding distance related to the rest of the solutions</li>
-</ul>
-<pre><code>outputDF &lt;- toDataFrame(output)
-head(outputDF)</code></pre>
-</div>
-<div id="plot_pareto" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plot_pareto" class="anchor"></a>plot_pareto()</h2>
-<p>Once we obtain the <code>galgo.obj</code> from the output of <code><a href="reference/galgo.html">galgo()</a></code> we can plot the obtained Pareto front and see how it evolved trough the tested number of generations</p>
-<pre><code><a href="reference/plot_pareto.html">plot_pareto(output)</a></code></pre>
-<p><img src="./inst/extdata/images/pareto2.jpg"></p>
+output&lt;-galgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=OS, ,verbose = 2,usegpu = T)</code></pre>
+<p>An example of the results obtained by Galgo in the TCGA dataset is shown below. The first plot shows the Pareto front obtained by <em>Galgo</em> in terms of the Survival (Surv.Fit) and the cohesiveness (SC.Fit) fitness functions. On the second plots shows the different survival subtypes found by the algorithm.</p>
+<p><img src="./inst/extdata/images/pareto2.jpg"><img src="./inst/extdata/images/TCGA_galgo.jpg"></p>
 </div>
 <div id="gpu-support" class="section level2">
 <h2 class="hasAnchor">
@@ -290,6 +143,7 @@ head(outputDF)</code></pre>
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
+<li>Martin Guerrero <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Carlos Catania <br><small class="roles"> Maintainer </small>  </li>
 </ul>
 </div>
@@ -299,7 +153,7 @@ head(outputDF)</code></pre>
 
 
       <footer><div class="copyright">
-  <p>Developed by Carlos Catania.</p>
+  <p>Developed by Martin Guerrero, Carlos Catania.</p>
 </div>
 
 <div class="pkgdown">
