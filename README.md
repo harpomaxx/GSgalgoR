@@ -6,6 +6,10 @@ galgoR <img src="inst/extdata/GalgoR.png" align="right" alt="" width="120" />
 
 A multi-objective optimization algorithm for disease subtype discovery based on a  non-dominated sorting genetic algorithm. The galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic algorithms for feature selection and optimal number of clusters determination to find features that maximize the survival difference between subtypes while keeping cluster consistency high.
 
+## Documentation
+
+The full documentation of the package is available at https://harpomaxx.github.io/galgo/
+
 ## Package Overview
 The **galgoR** package implements the Galgo algorithm as well as several helper functions for analyzing the results. The package also includes some example data sets useful for getting familiar with the package.  
 
