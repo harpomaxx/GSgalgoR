@@ -377,7 +377,8 @@ ArrayTest <- function(flds, Data) {
 #' @examples
 #' @noRd
 subDist <- function(flds, D) {
-  sub <- subset(D, -flds)
+  #sub <- subset(D, -flds) #experimental function from cba package
+  sub<- usedist::dist_subset(D, -flds)
 }
 
 #' Title

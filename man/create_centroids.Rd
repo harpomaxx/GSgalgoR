@@ -4,13 +4,8 @@
 \alias{create_centroids}
 \title{Create Centroids}
 \usage{
-create_centroids(
-  output,
-  solution.names,
-  train.set,
-  distancetype = "pearson",
-  usegpu = FALSE
-)
+create_centroids(output, solution.names, train.set,
+  distancetype = "pearson", usegpu = FALSE)
 }
 \arguments{
 \item{output}{@param output An object of class \code{galgo.Obj}}
