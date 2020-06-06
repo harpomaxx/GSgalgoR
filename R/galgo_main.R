@@ -1071,7 +1071,7 @@ galgo <- function(population = 30, # Number of individuals to evaluate
 
     `%dopar%` <- foreach::`%dopar%`
     `%do%` <- foreach::`%do%`
-    reqpkgs <- c("cluster","cba", "survival", "matchingR","galgoR")
+    reqpkgs <- c("cluster","usedist", "survival", "matchingR","galgoR")
     #reqpkgs <- c("cluster","cba", "survival", "matchingR")
     if (usegpu == TRUE ){
        if (requireNamespace("gpuR",quietly = TRUE)){
