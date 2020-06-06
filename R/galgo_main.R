@@ -378,7 +378,8 @@ ArrayTest <- function(flds, Data) {
 #' @noRd
 subDist <- function(flds, D) {
   #sub <- subset(D, -flds) #experimental function from cba package
-  sub<- usedist::dist_subset(D, -flds)
+  #sub<- usedist::dist_subset(D, -flds)
+  proxy::as.dist(proxy::as.matrix(D)[-flds, -flds])
 }
 
 #' Title
@@ -1071,7 +1072,7 @@ galgo <- function(population = 30, # Number of individuals to evaluate
 
     `%dopar%` <- foreach::`%dopar%`
     `%do%` <- foreach::`%do%`
-    reqpkgs <- c("cluster","usedist", "survival", "matchingR","galgoR")
+    reqpkgs <- c("cluster","proxy", "survival", "matchingR","galgoR")
     #reqpkgs <- c("cluster","cba", "survival", "matchingR")
     if (usegpu == TRUE ){
        if (requireNamespace("gpuR",quietly = TRUE)){

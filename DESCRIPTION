@@ -15,7 +15,7 @@ Description: A multi-objective optimization algorithm for disease sub-type disco
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: cluster, doParallel, foreach, matchingR, nsga2R, survival, usedist, stats, methods, intsurv 
+Imports: cluster, doParallel, foreach, matchingR, nsga2R, survival, proxy, stats, methods, intsurv 
 Suggests:  knitr, rmarkdown, ggplot2, gpuR
 URL: https://github.com/harpomaxx/galgo
 BugReports: https://github.com/harpomaxx/galgo/issues
