@@ -57,9 +57,9 @@ non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pears
 
     true_class <- cluster_algorithm(D, k)
 
-    Centroids <- kcentroid(Sub_matrix, true_class$cluster)
+    Centroids <- k_centroids(Sub_matrix, true_class$cluster)
 
-    predicted_class <- classify(Sub_matrix, Centroids, method = distancetype)
+    predicted_class <- cluster_classify(Sub_matrix, Centroids, method = distancetype)
 
     predicted_class <- as.factor(predicted_class)
     predicted_classdf <- as.data.frame(predicted_class)
@@ -90,12 +90,12 @@ non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pears
 #' This functions create the signature centroids estimated from the GalgoR output and the expression matrix of the training sets.
 #'
 #' @param output @param output An object of class \code{galgo.Obj}
-#' @param solution.names A \code{character} vector with the names of the solutions for which the centroids are to be calculated
-#' @param train.set a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param solution_names A \code{character} vector with the names of the solutions for which the centroids are to be calculated
+#' @param trainset a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
 #' @param distancetype a \code{character} that can be either \code{'pearson'}, \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}
 #' @param usegpu \code{logical} \code{TRUE} or \code{FALSE}
 #'
-#' @return Returns a list with the centroid matrix for each of the solutions in \code{solution.names}, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature
+#' @return Returns a list with the centroid matrix for each of the solutions in \code{solution_names}, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature
 #' @export
 #'
 #' @examples
@@ -114,24 +114,24 @@ non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pears
 #'   distancetype = "pearson",
 #'   usegpu = FALSE
 #' )
-#' CentroidsList <- create_centroids(output, RESULTS$solution, train.set = TCGA_expr)
+#' CentroidsList <- create_centroids(output, RESULTS$solution, trainset = TCGA_expr)
 #' }
-create_centroids <- function(output, solution.names, train.set, distancetype = "pearson", usegpu = FALSE) {
+create_centroids <- function(output, solution_names, trainset, distancetype = "pearson", usegpu = FALSE) {
   calculate_distance <- select_distance(distancetype = distancetype, usegpu = usegpu)
 
   CentroidsList <- list()
   output_df <- toDataFrame(output)
-  for (j in solution.names) {
+  for (j in solution_names) {
     genes <- output_df[j, "Genes"][[1]]
     k <- output_df[j, "k"]
     name <- j
-    Sub_matrix <- train.set[genes, ]
+    Sub_matrix <- trainset[genes, ]
 
     D <- calculate_distance(Sub_matrix)
 
     true_class <- cluster_algorithm(D, k)
 
-    Centroids <- kcentroid(Sub_matrix, true_class$cluster)
+    Centroids <- k_centroids(Sub_matrix, true_class$cluster)
     CentroidsList[[name]] <- Centroids
   }
   return(CentroidsList)
@@ -163,7 +163,7 @@ create_centroids <- function(output, solution.names, train.set, distancetype = "
 #'   distancetype = "pearson",
 #'   usegpu = FALSE
 #' )
-#' CentroidsList <- create_centroids(output, RESULTS$solution, train.set = TCGA_expr)
+#' CentroidsList <- create_centroids(output, RESULTS$solution, trainset = TCGA_expr)
 #' TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid._list = CentroidsList)
 #'}
 classify_multiple <- function(prob_matrix, centroid._list, distancetype = "pearson") {
@@ -179,7 +179,7 @@ classify_multiple <- function(prob_matrix, centroid._list, distancetype = "pears
     k <- ncol(centroids)
     Sub_matrix <- prob_matrix[genes, ]
 
-    predicted_class <- classify(Sub_matrix, centroids, method = distancetype)
+    predicted_class <- cluster_classify(Sub_matrix, centroids, method = distancetype)
 
     predicted_class <- as.factor(predicted_class)
     classes[, name] <- predicted_class

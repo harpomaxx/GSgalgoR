@@ -206,26 +206,26 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE ) {
 #'
 #' @examples
 #' \dontrun{
-#' rna_luad<-use_rna_luad()
+#' rna_luad <-use_rna_luad()
 #'
 #' #The expression of the toy datasets are already scaled
 #' prm <- rna_luad$TCGA$expression_matrix
 #'
 #' #We change the rownames to be gene Symbol insted of Gene Id.
-#' rownames(prm)<- rna_luad$TCGA$feature_data$gene
+#' rownames(prm) <- rna_luad$TCGA$feature_data$gene
 #'
 #' #Wilkerson's centroids
 #' centroids<- rna_luad$WilkCentroids
 #'
 #' #Extract features from both data.frames
-#' inBoth<- Reduce(intersect, list(rownames(prm),rownames(centroids)))
+#' inBoth <- Reduce(intersect, list(rownames(prm),rownames(centroids)))
 #'
 #' #Classify samples
-#' Wilk.Class<- classify(prm[inBoth,],centroids[inBoth,])
+#' Wilk.Class <- cluster_classify(prm[inBoth,],centroids[inBoth,])
 #' table(Wilk.Class)
 #' }
 
-classify <- function(data, centroid, method = "pearson") {
+cluster_classify <- function(data, centroid, method = "pearson") {
     R <- stats::cor(data, centroid, method = method)
     scores <- apply(R, 1, which.max)
 }
@@ -251,10 +251,10 @@ classify <- function(data, centroid, method = "pearson") {
 #' \dontrun{
 #' rna_luad<-use_rna_luad()
 #' prm <- rna_luad$TCGA$expression_matrix
-#'Dist <- calculate_distance_pearson_cpu(prm)
-#'k <- 4
-#'Pam <- cluster_algorithm(Dist,k)
-#'table(Pam$cluster)
+#' Dist <- calculate_distance_pearson_cpu(prm)
+#' k <- 4
+#' Pam <- cluster_algorithm(Dist,k)
+#' table(Pam$cluster)
 #'}
 
 cluster_algorithm <- function(c, k) {
@@ -275,13 +275,13 @@ cluster_algorithm <- function(c, k) {
 #' @examples
 #' solution1 <- c(1,0,0,1,0,0,1)
 #' solution2 <- solution1
-#' r <- cosine(solution1, solution2)
+#' r <- cosine_similarity(solution1, solution2)
 #' #the cosine similarity (r) equals 1
 #' solution2 <- abs(solution1-1)
-#' r2<- cosine(solution1, solution2)
+#' r2<- cosine_similarity(solution1, solution2)
 #' #the cosine similarity (r2) equals 0
 
-cosine <- function(a, b) {
+cosine_similarity <- function(a, b) {
   a %*% b / sqrt(a %*% a * b %*% b)
 } # Calculates the cosine distance between two solutions to estimate the mutational rate
 
@@ -301,10 +301,10 @@ cosine <- function(a, b) {
 #' Dist <- calculate_distance_pearson_cpu(prm)
 #' k <- 4
 #' Pam <- cluster_algorithm(Dist,k)$cluster
-#' centroids <- kcentroid(prm,Pam)
+#' centroids <- k_centroids(prm,Pam)
 #' }
 
-kcentroid <- function(data, class) {
+k_centroids <- function(data, class) {
   L <- list()
   c <- unique(unlist(class))
   for (i in c) {

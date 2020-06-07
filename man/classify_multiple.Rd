@@ -35,7 +35,7 @@ RESULTS <- non_dominated_summary(
   distancetype = "pearson",
   usegpu = FALSE
 )
-CentroidsList <- create_centroids(output, RESULTS$solution, train.set = TCGA_expr)
+CentroidsList <- create_centroids(output, RESULTS$solution, trainset = TCGA_expr)
 TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid._list = CentroidsList)
 }
 }

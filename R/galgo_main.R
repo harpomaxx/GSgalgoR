@@ -438,12 +438,12 @@ crossvalidation <- function(Data, flds, indv, k, OS, distance,nCV,period) {
   TestA <- sapply(flds, ArrayTest, Data = Data, simplify = FALSE)
   SUB <- sapply(flds, subDist, D = D, simplify = FALSE)
   hc <- sapply(SUB, cluster_algorithm, k = k)
-  C <- mapply(kcentroid, TrainA, hc, SIMPLIFY = FALSE)
+  C <- mapply(k_centroids, TrainA, hc, SIMPLIFY = FALSE)
   CentrCor <- mapply(stats::cor, C[1], C[2:nCV], SIMPLIFY = FALSE)
   Cord <- sapply(CentrCor, alloc2, simplify = FALSE)
   Cord <- append(list(as.matrix(1:k, ncol = 1)), Cord, 1)
   C <- mapply(reord, C, Cord, SIMPLIFY = FALSE)
-  CLASS <- mapply(classify, TestA, C, SIMPLIFY = FALSE)
+  CLASS <- mapply(cluster_classify, TestA, C, SIMPLIFY = FALSE)
   # t1=Sys.time();for(i in 1:10){CLASS=mapply(classify2,TestA,C,SIMPLIFY=FALSE)};t2=Sys.time();t2-t1
   clustclass <- unlist(CLASS)
   clustclass <- clustclass[order(as.vector(unlist(flds)))]
@@ -606,7 +606,7 @@ offspring <- function(X1, chrom_length, population, TournamentSize) {
     # since the results are sparse strings, cosine similarity is more adequate
     # Mutation by asymmetric mutation: Analysis of an Asymmetric Mutation Operator; Jansen et al.
 
-    Mp <- cosine(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
+    Mp <- cosine_similarity(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
 
     if (sample(c(1, 0), 1, prob = c(Mp, 1 - Mp)) == 1) {
       off1 <- asMut(off1)

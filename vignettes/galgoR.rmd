@@ -295,10 +295,10 @@ inBoth<- Reduce(intersect, list(rownames(train_expression),rownames(centroids)))
 
 #Classify samples
 
-Wilk.Class_train<- classify(train_expression[inBoth,],centroids[inBoth,])
+Wilk.Class_train<- cluster_classify(train_expression[inBoth,],centroids[inBoth,])
 table(Wilk.Class_train)
 
-Wilk.Class_test<- classify(test_expression[inBoth,],centroids[inBoth,])
+Wilk.Class_test<- cluster_classify(test_expression[inBoth,],centroids[inBoth,])
 table(Wilk.Class_test)
 
 ```
