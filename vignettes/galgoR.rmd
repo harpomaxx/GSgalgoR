@@ -202,7 +202,7 @@ Is a list of length equal to the number of generations run in the algorithm. Eac
 
 For easier interpretation of the 'galgo.Obj', the output can be transformed to a List or to a DataFrame objects.
 
-## toList() function
+## to_list() function
 
 This function restructurates a galgo.Obj to a more easy to understand an use list. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type list has a length equals to the number of solutions obtained by the galgo algorithm.
 
@@ -215,8 +215,8 @@ Basically this output is a list of lists, where each element of the output is na
 - solution.n$Rank: The solution rank
 - CrowD: The solution crowding distance related to the rest of the solutions
 
-```{r toList, eval= TRUE}
-outputList <- toList(output)
+```{r to_list, eval= TRUE}
+outputList <- to_list(output)
 head(names(outputList))
 ```
 
@@ -226,7 +226,7 @@ To evaluate the structure of the first solution we can run:
 outputList[["Solution.1"]]
 ```
 
-## toDataFrame() function
+## to_dataframe() function
 
 The current function restructurates a galgo.Obj to a more easy to understand an use data.frame. The output data.frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:
 
@@ -237,8 +237,8 @@ The current function restructurates a galgo.Obj to a more easy to understand an 
 - Rank: The solution rank
 - CrowD: The solution crowding distance related to the rest of the solutions
 
-```{r toDataFrame, eval= TRUE}
-outputDF <- toDataFrame(output)
+```{r to_dataframe, eval= TRUE}
+outputDF <- to_dataframe(output)
 head(outputDF)
 ```
 
@@ -391,7 +391,7 @@ knitr::include_graphics('../inst/extdata/images/pareto2.jpg')
 
 ```{r, summary_results, eval=TRUE}
 
-output_df<- toDataFrame(output)
+output_df<- to_dataframe(output)
 
 NonDom_solutions<- output_df[output_df$Rank==1,]
 
