@@ -73,8 +73,8 @@ non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pears
 
     coxsimple <- survival::coxph(surv_formula, data = predicted_classdf)
 
-    # CI=intsurv::cIndex(stats::predict(coxsimple),surv.time=OS[,1],surv.event=OS[,2],outx=FALSE)$c.index
-    CI <- intsurv::cIndex(risk_score = stats::predict(coxsimple), time = OS[, 1], event = OS[, 2])["index"]
+    CI=survcomp::concordance.index(stats::predict(coxsimple,new=predicted_classdf),surv.time=OS[,1],surv.event=OS[,2],outx=FALSE)$c.index
+    #CI <- intsurv::cIndex(risk_score = stats::predict(coxsimple,new=predicted_classdf), time = OS[, 1], event = OS[, 2])["index"]
     mean_Sil <- mean(cluster::silhouette(as.numeric(predicted_class), D)[, 3])
 
     row <- c(name, k, length(genes), mean_Sil, CI)
@@ -141,7 +141,7 @@ create_centroids <- function(output, solution_names, trainset, distancetype = "p
 #' Classify samples from multiple centroids
 #'
 #' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
-#' @param centroid._list a\code{list} with the centroid matrix for each of the signatures to evaluate, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature. The output of \code{\link[galgoR:create_centroids]{create_centroids}} can be used.
+#' @param centroid_list a\code{list} with the centroid matrix for each of the signatures to evaluate, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature. The output of \code{\link[galgoR:create_centroids]{create_centroids}} can be used.
 #' @param distancetype  a \code{character} that can be either \code{'pearson'} (default), \code{'spearman'} or \code{'kendall'}.
 #'
 #' @return Returns a \code{data.frame} with the classes assigned to each sample in each signature, were samples are a rows and signatures in columns
@@ -164,17 +164,17 @@ create_centroids <- function(output, solution_names, trainset, distancetype = "p
 #'   usegpu = FALSE
 #' )
 #' CentroidsList <- create_centroids(output, RESULTS$solution, trainset = TCGA_expr)
-#' TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid._list = CentroidsList)
+#' TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid_list = CentroidsList)
 #'}
-classify_multiple <- function(prob_matrix, centroid._list, distancetype = "pearson") {
-  classes <- matrix(rep(NA, ncol(prob_matrix) * length(centroid._list)), ncol = length(centroid._list))
+classify_multiple <- function(prob_matrix, centroid_list, distancetype = "pearson") {
+  classes <- matrix(rep(NA, ncol(prob_matrix) * length(centroid_list)), ncol = length(centroid_list))
   as.data.frame <- classes
-  colnames(classes) <- names(centroid._list)
+  colnames(classes) <- names(centroid_list)
   rownames(classes) <- colnames(prob_matrix)
 
-  for (i in 1:length(centroid._list)) {
-    centroids <- centroid._list[[i]]
-    name <- names(centroid._list)[i]
+  for (i in 1:length(centroid_list)) {
+    centroids <- centroid_list[[i]]
+    name <- names(centroid_list)[i]
     genes <- rownames(centroids)
     k <- ncol(centroids)
     Sub_matrix <- prob_matrix[genes, ]

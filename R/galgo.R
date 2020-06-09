@@ -482,7 +482,7 @@ reord <- function(C, ord) {
 #' @param flds
 #' @param indv
 #' @param k
-#' @param surb_ob
+#' @param surv_obj
 #' @param distance
 #' @param nCV
 #' @param period

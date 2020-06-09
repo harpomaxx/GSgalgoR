@@ -4,12 +4,12 @@
 \alias{classify_multiple}
 \title{Classify samples from multiple centroids}
 \usage{
-classify_multiple(prob_matrix, centroid._list, distancetype = "pearson")
+classify_multiple(prob_matrix, centroid_list, distancetype = "pearson")
 }
 \arguments{
 \item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns}
 
-\item{centroid._list}{a\code{list} with the centroid matrix for each of the signatures to evaluate, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature. The output of \code{\link[galgoR:create_centroids]{create_centroids}} can be used.}
+\item{centroid_list}{a\code{list} with the centroid matrix for each of the signatures to evaluate, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature. The output of \code{\link[galgoR:create_centroids]{create_centroids}} can be used.}
 
 \item{distancetype}{a \code{character} that can be either \code{'pearson'} (default), \code{'spearman'} or \code{'kendall'}.}
 }
@@ -36,6 +36,6 @@ RESULTS <- non_dominated_summary(
   usegpu = FALSE
 )
 CentroidsList <- create_centroids(output, RESULTS$solution, trainset = TCGA_expr)
-TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid._list = CentroidsList)
+TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid_list = CentroidsList)
 }
 }
