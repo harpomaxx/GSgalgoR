@@ -77,16 +77,16 @@ To standardize the structure of genomic data, we use the [ExpressionSet](https:/
 - Finally, these objects can also contain Annotations and feature Meta-data.
 
 
-To start testing galgoR, we will use two Breast Cancer datasets. Namely, the UPP and the TRANSBIG datasets. Additionally, we will use PAM50 centroids to perform breas cancer sample classification.
-The datasets can be accesed from the following `Bioconductor` packages:
+To start testing galgoR, we will use two Breast Cancer datasets. Namely, the [UPP](bioconductor.org/packages/release/data/experiment/html/breastCancerUPP.html) and the [TRANSBIG](bioconductor.org/packages/release/data/experiment/html/breastCancerTRANSBIG.html) datasets. Additionally, we will use PAM50 centroids to perform breas cancer sample classification.
+The datasets can be accesed from the following [Bioconductor](https://bioconductor.org/) packages:
 
 ```{r datasets, eval=FALSE}
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-BiocManager::install("breastCancerUPP")
-BiocManager::install("breastCancerTRANSBIG")
+BiocManager::install("breastCancerUPP",version = "devel")
+BiocManager::install("breastCancerTRANSBIG",version = "devel")
 
 ```
 
@@ -138,7 +138,7 @@ To access the `ExpressionSets` we use:
 
 ## Data tidying and preparation
 
-Galgo can accept any numeric data like probe intensity from microarray experiments or RNAseq normalized counts, nevertheless, features are expected to be scaled across the dataset before being plugged in into the Galgo Framework.
+Galgo can accept any numeric data, like probe intensity from microarray experiments or RNAseq normalized counts, nevertheless, features are expected to be scaled across the dataset before being plugged in into the Galgo Framework.
 For PAM50 classification, Gene Symbols are expected, so probesets are mapped into their respective gene symbols. Probesets mapping for multiple genes are expanded while Genes mapped to multiple probes are collapsed selecting the probes with the highest variance for each duplicated gene. 
 
 ### Drop duplicates and NA's
@@ -206,12 +206,14 @@ expandProbesets <- function (eset, sep = "///", map="Gene.symbol")
 Train=DropDuplicates(Train)
 Train=expandProbesets(Train)
 
-#Drop NAs in survival
-Train <- Train[,!is.na(survival::Surv(time=pData(Train)$t.rfs,event=pData(Train)$e.rfs))]
+Train <- Train[,!is.na(survival::Surv(time=pData(Train)$t.rfs,event=pData(Train)$e.rfs))] #Drop NAs in survival
+
 
 
 Test=DropDuplicates(Test)
 Test=expandProbesets(Test)
+Test <- Test[,!is.na(survival::Surv(time=pData(Test)$t.rfs,event=pData(Test)$e.rfs))] #Drop NAs in survival
+
 
 #Determine common probes (Genes)
 Int= intersect(rownames(Train),rownames(Test))
@@ -253,14 +255,16 @@ Apply robust linear scaling as proposed in [paper reference](https://www.ncbi.nl
 
 ```{r robust_scaling}
 
-train_expr= t(apply(exprs(Train),1,genefu::rescale,na.rm=TRUE,q=0.05))
-test_expr= t(apply(exprs(Test),1,genefu::rescale,na.rm=TRUE,q=0.05))
+exprs(Train) <- t(apply(exprs(Train),1,genefu::rescale,na.rm=TRUE,q=0.05))
+exprs(Test) <- t(apply(exprs(Test),1,genefu::rescale,na.rm=TRUE,q=0.05))
 
+train_expr <- exprs(Train)
+test_expr <- exprs(Test)
 ```
 
 ### Survival Object
 
-The 'OS' object is created by the Surv() function of the survival package. This uses phenotypic data that are contained in the TCGA dataset.  
+The 'Surv' object is created by the Surv() function of the survival package. This uses phenotypic data that are contained in the corresponding datasets, accessed by the `pData` command.  
 
 ```{r Surv}
 train_clinic <- pData(Train) 
@@ -274,7 +278,7 @@ test_surv <- survival::Surv(time=test_clinic$t.rfs,event=test_clinic$e.rfs)
 
 ## Run galgo()
 
-The main function in this package is galgo(). It accepts an expression matrix and survival object to find robust gene expression signatures related to a given outcome.
+The main function in this package is `galgo()`. It accepts an expression matrix and survival object to find robust gene expression signatures related to a given outcome.
 This function contains some parameters that can be modified, according to the characteristics of the analysis to be performed.
 
 ### Setting parameters
@@ -316,7 +320,7 @@ print(class(output))
 
 ### Galgo Object
 
-The output of the galgo() function is an object of type 'galgo.Obj' that has two slots with the elements:
+The output of the galgo() function is an object of type `galgo.Obj` that has two slots with the elements:
 
 - Solutions 
 - ParetoFront.
@@ -337,11 +341,11 @@ Is a l x (n + 5) matrix where n is the number of features evaluated and l is the
 Is a list of length equal to the number of generations run in the algorithm. Each element is a l x 2 matrix where l is the number of solutions obtained and the columns are the SC Fitness and the Survival Fitness values respectively.
 
 
-For easier interpretation of the 'galgo.Obj', the output can be transformed to a List or to a DataFrame objects.
+For easier interpretation of the `galgo.Obj`, the output can be transformed to a List or to a DataFrame objects.
 
 ## to_list() function
 
-This function restructurates a galgo.Obj to a more easy to understand an use list. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type list has a length equals to the number of solutions obtained by the galgo algorithm.
+This function restructurates a `galgo.Obj` to a more easy to understand an use list. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type list has a length equals to the number of solutions obtained by the galgo algorithm.
 
 Basically this output is a list of lists, where each element of the output is named after the solution's name (solution.n, where n is the number assigned to that solution), and inside of it, it has all the constituents for that given solution with the following structure:
 
@@ -365,7 +369,7 @@ outputList[["Solution.1"]]
 
 ## to_dataframe() function
 
-The current function restructurates a galgo.Obj to a more easy to understand an use data.frame. The output data.frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:
+The current function restructurates a `galgo.Obj` to a more easy to understand an use `data.frame`. The output data frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:
 
 - Genes: The features included in each solution in form of a list
 - k: The number of partitions found in that solution
@@ -389,18 +393,18 @@ plot_pareto(output)
 
 # Case study
 
-Lung adenocarcinoma (LUAD) is one of the most common types of cancer and, to date, still presents high mortality rates. Currently, numerous molecular alteration for this type of cancer are well known but, unlike breast cancer, very few transcriptomic signatures have been developed for this type of cancer. In this regards, [Wilkerson's et al.](https://pubmed.ncbi.nlm.nih.gov/22590557/) have proposed a transcriptomic classification into three different LUAD molecular subtypes (Bronchoid, Magnoid, and Squamoid) which recapitulates naturally-occurring gene expression patterns that encompass different functional pathways and patient outcomes.
+Breast cancer (BRCA) is the most common neoplasm in women to date and one of the best studied cnacer types. Currently, numerous molecular alteration for this type of cancer are well known and many transcriptomic signatures have been developed for this type of cancer. 
+In this regards, [Perou et al.](XXX) proposed one of the first molecular subtype classification according to transcriptomic profiles of the tumor, which recapitulates naturally-occurring gene expression patterns that encompass different functional pathways and patient outcomes. These subtypes, (LumA, LumB, Basal-like, HER2 and Normal-Like) have a strong overap with the classical histopathological classification of BRCA tumors and migh affect decission making when used to decided chemotherapy in certain cases.
 
 ## Data Preprocessing
 
-To evaluate Galgo's performance along with Wilkerson's classification, we used two already scaled and reduced lung adenocarcinoma gene expression datasets included in the package (TCGA) and GSE68465 that can be download using the function use_rna_luad(). Aditionally, It also contains the Wilkerson's centroids to perform lung adenocarcinoma sample classification. 
-Wilkerson's centroids were used to classify samples according to their corresponding molecular subtype.
+To evaluate Galgo's performance along with PAM50 classification, we will use the two already scaled and reduced BRCA gene expression datasets and will compare Galgo performance with the widely used intrinsic molecular subtype PAM50 classification. Galgo performs feature selection by design, so this step is not strictly necessary to use galgoR (although feature selection might fasten GalgoR runs), nevertheless, appropiate gene expression scaling is critical when runing galgoR.
 
-## Lung adenocarcinoma classification
+## Breast cancer classification
 
 The scaled expression values of each patient are compared with the prototypical centroids using Pearson's correlation coefficient and the closest centroid to each patient is used to assign the corresponding labels.
 
-```{r load_sets, eval=TRUE}
+```{r classify, eval=TRUE}
 
 #The expression of the toy datasets are already scaled
 
@@ -417,62 +421,63 @@ test_clinic<- pData(Test)
 test_features<- fData(Test)
 test_surv<- survival::Surv(time=test_clinic$t.rfs,event=test_clinic$e.rfs)
 
-#We change the rownames to be gene Symbol insted of Gene Id.
-rownames(train_expression)<- train_features$gene
-rownames(test_expression)<- test_features$gene
 
-#Wilkerson's centroids
-centroids<- PAM50Centroids
-
+#PAM50 centroids
+centroids<- genefu::pam50$centroids
 #Extract features from both data.frames
 inBoth<- Reduce(intersect, list(rownames(train_expression),rownames(centroids)))
 
-#Classify samples
+#Classify samples 
 
-Wilk.Class_train<- cluster_classify(train_expression[inBoth,],centroids[inBoth,])
-table(Wilk.Class_train)
+PAM50_train<- cluster_classify(train_expression[inBoth,],centroids[inBoth,],method = "spearman")
+table(PAM50_train)
 
-Wilk.Class_test<- cluster_classify(test_expression[inBoth,],centroids[inBoth,])
-table(Wilk.Class_test)
+PAM50_test<- cluster_classify(test_expression[inBoth,],centroids[inBoth,],method = "spearman")
+table(PAM50_test)
+
+# Classify samples using genefu
+#annot<- fData(Train)
+#colnames(annot)[3]="Gene.Symbol"
+#PAM50_train<- molecular.subtyping(sbt.model = "pam50",data = t(train_expression), annot = annot,do.mapping = TRUE)
 
 ```
 
 Once the patients are classified according to their closest centroids, we can now evaluate the survival curves for the different types in each of the datasets
 
-### Survival of TCGA patients
+### Survival of UPP patients
 
-```{r wilk_surv_TCGA, eval=FALSE}
+```{r pam50_surv_UPP, eval=FALSE}
 
 
-surv_formula <- as.formula("Surv(train_clinic$t.rfs,train_clinic$e.rfs)~ Wilk.Class_train")
+surv_formula <- as.formula("Surv(train_clinic$t.rfs,train_clinic$e.rfs)~ PAM50_train")
 tumortotal1 <- surv_fit(surv_formula,data=train_clinic)
 tumortotal1diff <- survdiff(surv_formula)
 tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, lower.tail = FALSE) 
 
-  p<-ggsurvplot(tumortotal1,data=train_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="TCGA Lung adenocarcinoma \n Wilkerson subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
+  p<-ggsurvplot(tumortotal1,data=train_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="UPP breast cancer \n PAM50 subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
   print(p)
 
 ```
 
 
-### Survival of GSE68465 patients 
+### Survival of TRANSBIG patients 
 
-```{r wilk_surv_GSE, eval=FALSE}
+```{r pam50_surv_TRANSBIG, eval=FALSE}
 
 
-surv_formula <- as.formula("Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ Wilk.Class_test")
+surv_formula <- as.formula("Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ PAM50_test")
 tumortotal2 <- surv_fit(surv_formula,data=test_clinic)
 tumortotal2diff <- survdiff(surv_formula)
 tumortotal2pval<- pchisq(tumortotal2diff$chisq, length(tumortotal2diff$n) - 1, lower.tail = FALSE) 
 
-  p<-ggsurvplot(tumortotal2,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="GSE68465 Lung adenocarcinoma \n Wilkerson subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
+  p<-ggsurvplot(tumortotal2,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="TRANSBIG breast cancer \n PAM50 subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
   print(p)
 
 ```
 
 ## Find breast cancer gene signatures with GalgoR
 
-Now we run Galgo to find cohesive and clinically meaningful signatures for LUAD using TCGA data as training set and GSE68465 data as test set
+Now we run Galgo to find cohesive and clinically meaningful signatures for BRCA using UPP data as training set and TRANSBIG data as test set
 
 ### Set configuration parameters
 
@@ -557,14 +562,7 @@ Now we create the prototypic centroids of the selected solutions
 
 ## Test Galgo signatures in a test set
 
-We will test the Galgo signatures found with the TCGA training set in an independent test set
-
-```{r test}
-#testSet=rna_luad$GSE68465
-#prob_matrix_test= testSet$expression_matrix
-#clinical_test=testSet$pheno_data
-#OS_test=Surv(time=clinical_test$time,event=clinical_test$status)
-```
+We will test the Galgo signatures found with the UPP training set in an independent test set (TRANSBIG)
 
 ### Classify train and test  set into galgoR subtypes 
 
@@ -579,7 +577,7 @@ test_classes<- classify_multiple(prob_matrix=test_expression,centroid_list= Cent
 
 ### Calculate train and test set C.Index
 
- To calculate the train and test C.Index, the risk coefficients are calculated for each subclass in the training set and are then used to predict the risk of the different groups in the test set. This is particularly important for signatures with high number of partitions, were the survival differences of different groups might overlap and change their relative order, which is of great importance in the C.Index calculation.
+ To calculate the train and test C.Index, the risk coefficients are calculated for each subclass in the training set and then are used to predict the risk of the different groups in the test set. This is particularly important for signatures with high number of partitions, were the survival differences of different groups might overlap and change their relative order, which is of great importance in the C.Index calculation.
  
 ``` {r pred_model}
 
@@ -656,7 +654,7 @@ tumortotal1 <- surv_fit(surv_formula,data=train_clinic)
 tumortotal1diff <- survdiff(surv_formula)
 tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, lower.tail = FALSE) 
 
-  p<-ggsurvplot(tumortotal1,data=train_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="TCGA Lung adenocarcinoma \n Galgo subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
+  p<-ggsurvplot(tumortotal1,data=train_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="UPP breast cancer \n Galgo subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
   print(p)
 
 ```
@@ -670,14 +668,14 @@ tumortotal1 <- surv_fit(surv_formula,data=test_clinic)
 tumortotal1diff <- survdiff(surv_formula)
 tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, lower.tail = FALSE) 
 
-  p<-ggsurvplot(tumortotal1,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="GSE68465 Lung adenocarcinoma \n Galgo subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
+  p<-ggsurvplot(tumortotal1,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="TRANSBIG breast cancer \n Galgo subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
   print(p)
 
 ```
 
 
 ## Comparison of Galgo vs Wilkerson classifiers
-Compare Wilkerson classification vs Galgo classification in the GSE68465 (test) dataset
+Compare PAM50 classification vs Galgo classification in the TRANSBIG (test) dataset
 
 ```{r test_pam50, eval=TRUE, out.width='100%'}
 
@@ -695,10 +693,10 @@ tumortotal2pval<- pchisq(tumortotal1diff$chisq, length(tumortotal2diff$n) - 1, l
 
 
   
-  SURV=list(GALGO=tumortotal1,Wilk=tumortotal2 )
+  SURV=list(GALGO=tumortotal1,PAM50=tumortotal2 )
   COLS=c(1:8,10)
   par(cex=1.35, mar=c(3.8, 3.8, 2.5, 2.5) + 0.1)
-  p=ggsurvplot(SURV,combine=TRUE,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="Galgo vs. Wilkerson subtypes \n Lung survival comparison", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,period),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
+  p=ggsurvplot(SURV,combine=TRUE,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="Galgo vs. PAM50 subtypes \n BRCA survival comparison", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,period),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
   print(p)
 
 ```
