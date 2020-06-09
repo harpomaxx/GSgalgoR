@@ -494,13 +494,13 @@ reord <- function(C, ord) {
 crossvalidation <- function(data, flds, indv, k, surv_obj, distance, nCV, period) {
   data <- data[indv, ]
   distance_data <- distance(data)
-  train_a <- sapply(flds, build_train, data = data, simplify = FALSE)
-  test_a <- sapply(flds, build_test, data = data, simplify = FALSE)
-  sub <- sapply(flds, subset_distance, distance_data = distance_data, simplify = FALSE)
+  train_a <- lapply(flds, build_train, data = data)
+  test_a <- lapply(flds, build_test, data = data)
+  sub <- lapply(flds, subset_distance, distance_data = distance_data)
   hc <- sapply(sub, cluster_algorithm, k = k)
   centroids <- mapply(k_centroids, train_a, hc, SIMPLIFY = FALSE)
   centroids_cor <- mapply(stats::cor, centroids[1], centroids[2:nCV], SIMPLIFY = FALSE)
-  cord <- sapply(centroids_cor, alloc2, simplify = FALSE)
+  cord <- lapply(centroids_cor, alloc2)
   cord <- append(list(as.matrix(1:k, ncol = 1)), cord, 1)
   centroids <- mapply(reord, centroids, cord, SIMPLIFY = FALSE)
   class_results <- mapply(cluster_classify, test_a, centroids, SIMPLIFY = FALSE)
