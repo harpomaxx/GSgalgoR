@@ -23,7 +23,7 @@ date: "`r Sys.Date()`"
 output: 
     BiocStyle::html_document
 vignette: >
-    %\VignetteIndexEntry{GalgoR user Guide}
+    %\VignetteIndexEntry{GalgoR user example using LUAD}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
     
@@ -63,7 +63,7 @@ In the galgoR package, the NSGA-II framework was used for finding multiple Paret
 
 To install galgoR package, start R and enter:
 ```{r install}
-devtools::install_github("https://github.com/harpomaxx/galgo")
+devtools::install_github("https://github.com/harpomaxx/galgoR-package")
 
 library(galgoR)
 ```

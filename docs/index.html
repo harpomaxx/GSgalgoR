@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>An Evolutionary Algorithm for the Identification and Study of Prognostic Gene Expression Signatures in Cancer • galgoR</title>
+<title>An Evolutionary Framework for the Identification and Study of Prognostic Gene Expression Signatures in Cancer • galgoR</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="An Evolutionary Algorithm for the Identification and Study of Prognostic Gene Expression Signatures in Cancer">
+<script src="pkgdown.js"></script><meta property="og:title" content="An Evolutionary Framework for the Identification and Study of Prognostic Gene Expression Signatures in Cancer">
 <meta property="og:description" content="A multi-objective optimization algorithm for disease sub-type discovery based on a 
     non-dominated sorting genetic algorithm. The Galgo framework combines the advantages of 
     clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic 
@@ -53,6 +53,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/galgoR_LUAD.html">GalgoR user Guide</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -74,13 +86,18 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="galgor" class="section level1">
+<div id="galgor-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#galgor" class="anchor"></a>galgoR <img src="inst/extdata/GalgoR.png" align="right" alt="" width="120">
+<a href="#galgor-" class="anchor"></a>galgoR <img src="inst/extdata/GalgoR.png" align="right" alt="" width="120">
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
 <p>A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm. The galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic algorithms for feature selection and optimal number of clusters determination to find features that maximize the survival difference between subtypes while keeping cluster consistency high.</p>
+<div id="documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<p>The full documentation of the package is available at <a href="https://harpomaxx.github.io/galgo/" class="uri">https://harpomaxx.github.io/galgo/</a></p>
+</div>
 <div id="package-overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#package-overview" class="anchor"></a>Package Overview</h2>
@@ -143,7 +160,7 @@ output&lt;-galgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Martin Guerrero <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Martin Guerrero <br><small class="roles"> Author </small>  </li>
 <li>Carlos Catania <br><small class="roles"> Maintainer </small>  </li>
 </ul>
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types. — galgoR-package • galgoR</title>
+<title>Convert galgo.Obj to list — to_list • galgoR</title>
 
 
 <!-- jquery -->
@@ -39,21 +39,8 @@
 
 
 
-<meta property="og:title" content="GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types. — galgoR-package" />
-<meta property="og:description" content="This package was developed to provide a simple to use set of functions to use the galgo algorithm. A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm.
-Different statistical and machine learning approaches have long been used to identify gene expression/molecular signatures with prognostic potential in different cancer types. Nonetheless, the molecular classification of tumors is a difficult task and the results obtained via the current statistical methods are highly dependent on the features analyzed, the number of possible tumor subtypes under consideration, and the underlying assumptions made about the data. In addition, some cancer types are still lacking prognostic signatures and/or of subtype-specific predictors which are continually needed to further dissect tumor biology. In order to identify specific molecular phenotypes to develop precision medicine strategies we present Galgo: A multi-objective optimization process based on a non-dominated sorting genetic algorithm that combines the advantages of clustering methods for grouping heterogeneous omics data and the exploratory properties of genetic algorithms (GA) in order to find features that maximize the survival difference between subtypes while keeping high cluster consistency.
-
-Package:galgoR
-Type:Package
-Version:1.0.0
-Date:2020-05-06
-License:GPL-3
-Copyright:(c) 2020 Martin E. Guerrero-Gimenez.
-URL:https://www.github.com/harpomaxx/galgo
-LazyLoad:yes
-
-
-" />
+<meta property="og:title" content="Convert galgo.Obj to list — to_list" />
+<meta property="og:description" content="The current function transforms a galgo.Obj to a list" />
 
 
 
@@ -136,35 +123,51 @@ LazyLoad:yes
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/galgo.R'><code>R/galgo.R</code></a></small>
-    <div class="hidden name"><code>galgoR-package.Rd</code></div>
+    <h1>Convert galgo.Obj to list</h1>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/convert-functions.R'><code>R/convert-functions.R</code></a></small>
+    <div class="hidden name"><code>to_list.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This package was developed to provide a simple to use set of functions to use the galgo algorithm. A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm.</p>
-<p>Different statistical and machine learning approaches have long been used to identify gene expression/molecular signatures with prognostic potential in different cancer types. Nonetheless, the molecular classification of tumors is a difficult task and the results obtained via the current statistical methods are highly dependent on the features analyzed, the number of possible tumor subtypes under consideration, and the underlying assumptions made about the data. In addition, some cancer types are still lacking prognostic signatures and/or of subtype-specific predictors which are continually needed to further dissect tumor biology. In order to identify specific molecular phenotypes to develop precision medicine strategies we present Galgo: A multi-objective optimization process based on a non-dominated sorting genetic algorithm that combines the advantages of clustering methods for grouping heterogeneous omics data and the exploratory properties of genetic algorithms (GA) in order to find features that maximize the survival difference between subtypes while keeping high cluster consistency.</p>
-<table class='table'>
-<tr><td>Package:</td><td>galgoR</td></tr>
-<tr><td>Type:</td><td>Package</td></tr>
-<tr><td>Version:</td><td>1.0.0</td></tr>
-<tr><td>Date:</td><td>2020-05-06</td></tr>
-<tr><td>License:</td><td>GPL-3</td></tr>
-<tr><td>Copyright:</td><td>(c) 2020 Martin E. Guerrero-Gimenez.</td></tr>
-<tr><td>URL:</td><td><a href='https://www.github.com/harpomaxx/galgo'>https://www.github.com/harpomaxx/galgo</a></td></tr>
-<tr><td>LazyLoad:</td><td>yes</td></tr>
-</table>
-
-
+    <p>The current function transforms a <code>galgo.Obj</code> to a <code>list</code></p>
     </div>
 
+    <pre class="usage"><span class='fu'>to_list</span>(<span class='no'>output</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>output</th>
+      <td><p>An object of class <code>galgo.Obj</code></p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The current function restructurates a <code>galgo.Obj</code> to a more easy to understand an use <code>list</code>. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type <code>list</code> has a length equals to the number of solutions obtained by the <code><a href='galgo.html'>galgo</a></code> algorithm.</p>
+<p>Basically this output is a list of lists, where each element of the output is named after the solution's name (<code>solution.n</code>, where <code>n</code> is the number assigned to that solution), and inside of it, it has all the constituents for that given solution with the following structure:</p><ol>
+<li><p><strong>output$solution.n$Genes</strong>: A vector of the features included in the solution</p></li>
+<li><p><strong>output$solution.n$k</strong>: The number of partitions found in that solution</p></li>
+<li><p><strong>output$solution.n$SC.Fit</strong>: The average silhouette coefficient of the partitions found</p></li>
+<li><p><strong>output$solution.n$Surv.Fit</strong>: The survival fitness value</p></li>
+<li><p><strong>output$solution.n$Rank</strong>: The solution rank</p></li>
+<li><p><strong>CrowD</strong>: The solution crowding distance related to the rest of the solutions</p></li>
+</ol>
 
 
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># Load data</span>
+<span class='no'>rna_luad</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='use_rna_luad.html'>use_rna_luad</a></span>()
+<span class='no'>TCGA_expr</span> <span class='kw'>&lt;-</span> <span class='no'>rna_luad</span>$<span class='no'>TCGA</span>$<span class='no'>expression_matrix</span>
+<span class='no'>TCGA_clinic</span> <span class='kw'>&lt;-</span> <span class='no'>rna_luad</span>$<span class='no'>TCGA</span>$<span class='no'>pheno_data</span>
+<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>survival</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>TCGA_clinic</span>$<span class='no'>time</span>, <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>TCGA_clinic</span>$<span class='no'>status</span>)
 
-    <p>Ideally, <span class="pkg">galgoR</span> works faster using <code>gpuR</code> by C. Determan that provides wrappers functions for OpenCL
-programming.</p>
-
+<span class='co'># Run galgo</span>
+<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>galgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>TCGA_expr</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)
+<span class='no'>outputList</span> <span class='kw'>&lt;-</span> <span class='fu'>to_list</span>(<span class='no'>output</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

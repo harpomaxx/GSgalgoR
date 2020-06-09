@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types. — galgoR-package • galgoR</title>
+<title>Function to calculate the centroids of different groups (classes) — k_centroids • galgoR</title>
 
 
 <!-- jquery -->
@@ -39,21 +39,8 @@
 
 
 
-<meta property="og:title" content="GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types. — galgoR-package" />
-<meta property="og:description" content="This package was developed to provide a simple to use set of functions to use the galgo algorithm. A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm.
-Different statistical and machine learning approaches have long been used to identify gene expression/molecular signatures with prognostic potential in different cancer types. Nonetheless, the molecular classification of tumors is a difficult task and the results obtained via the current statistical methods are highly dependent on the features analyzed, the number of possible tumor subtypes under consideration, and the underlying assumptions made about the data. In addition, some cancer types are still lacking prognostic signatures and/or of subtype-specific predictors which are continually needed to further dissect tumor biology. In order to identify specific molecular phenotypes to develop precision medicine strategies we present Galgo: A multi-objective optimization process based on a non-dominated sorting genetic algorithm that combines the advantages of clustering methods for grouping heterogeneous omics data and the exploratory properties of genetic algorithms (GA) in order to find features that maximize the survival difference between subtypes while keeping high cluster consistency.
-
-Package:galgoR
-Type:Package
-Version:1.0.0
-Date:2020-05-06
-License:GPL-3
-Copyright:(c) 2020 Martin E. Guerrero-Gimenez.
-URL:https://www.github.com/harpomaxx/galgo
-LazyLoad:yes
-
-
-" />
+<meta property="og:title" content="Function to calculate the centroids of different groups (classes) — k_centroids" />
+<meta property="og:description" content="This function calculates the mean value for each feature of each class to calculate the prototypic centroids of the different groups" />
 
 
 
@@ -136,35 +123,43 @@ LazyLoad:yes
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/galgo.R'><code>R/galgo.R</code></a></small>
-    <div class="hidden name"><code>galgoR-package.Rd</code></div>
+    <h1>Function to calculate the centroids of different groups (classes)</h1>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/cluster-classifier.R'><code>R/cluster-classifier.R</code></a></small>
+    <div class="hidden name"><code>k_centroids.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This package was developed to provide a simple to use set of functions to use the galgo algorithm. A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm.</p>
-<p>Different statistical and machine learning approaches have long been used to identify gene expression/molecular signatures with prognostic potential in different cancer types. Nonetheless, the molecular classification of tumors is a difficult task and the results obtained via the current statistical methods are highly dependent on the features analyzed, the number of possible tumor subtypes under consideration, and the underlying assumptions made about the data. In addition, some cancer types are still lacking prognostic signatures and/or of subtype-specific predictors which are continually needed to further dissect tumor biology. In order to identify specific molecular phenotypes to develop precision medicine strategies we present Galgo: A multi-objective optimization process based on a non-dominated sorting genetic algorithm that combines the advantages of clustering methods for grouping heterogeneous omics data and the exploratory properties of genetic algorithms (GA) in order to find features that maximize the survival difference between subtypes while keeping high cluster consistency.</p>
-<table class='table'>
-<tr><td>Package:</td><td>galgoR</td></tr>
-<tr><td>Type:</td><td>Package</td></tr>
-<tr><td>Version:</td><td>1.0.0</td></tr>
-<tr><td>Date:</td><td>2020-05-06</td></tr>
-<tr><td>License:</td><td>GPL-3</td></tr>
-<tr><td>Copyright:</td><td>(c) 2020 Martin E. Guerrero-Gimenez.</td></tr>
-<tr><td>URL:</td><td><a href='https://www.github.com/harpomaxx/galgo'>https://www.github.com/harpomaxx/galgo</a></td></tr>
-<tr><td>LazyLoad:</td><td>yes</td></tr>
-</table>
-
-
+    <p>This function calculates the mean value for each feature of each class to calculate the prototypic centroids of the different groups</p>
     </div>
 
+    <pre class="usage"><span class='fu'>k_centroids</span>(<span class='no'>data</span>, <span class='no'>class</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>a scaled gene expression <code>matrix</code> or <code>data.frame</code> with samples as columns and features as rows</p></td>
+    </tr>
+    <tr>
+      <th>class</th>
+      <td><p>a vector with the samples classes</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Ideally, <span class="pkg">galgoR</span> works faster using <code>gpuR</code> by C. Determan that provides wrappers functions for OpenCL
-programming.</p>
+    <p>returns a <code>data.frame</code> with the estimated prototypic centroids for each class with the features names as rownames</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>rna_luad</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='use_rna_luad.html'>use_rna_luad</a></span>()
+<span class='no'>prm</span> <span class='kw'>&lt;-</span> <span class='no'>rna_luad</span>$<span class='no'>TCGA</span>$<span class='no'>expression_matrix</span>
+<span class='no'>Dist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>calculate_distance_pearson_cpu</a></span>(<span class='no'>prm</span>)
+<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
+<span class='no'>Pam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cluster_algorithm.html'>cluster_algorithm</a></span>(<span class='no'>Dist</span>, <span class='no'>k</span>)$<span class='no'>cluster</span>
+<span class='no'>centroids</span> <span class='kw'>&lt;-</span> <span class='fu'>k_centroids</span>(<span class='no'>prm</span>, <span class='no'>Pam</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

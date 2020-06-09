@@ -90,6 +90,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/galgoR_LUAD.html">GalgoR user Guide</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -112,7 +124,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Classify samples from multiple centroids</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/results_functions.R'><code>R/results_functions.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/results-functions.R'><code>R/results-functions.R</code></a></small>
     <div class="hidden name"><code>classify_multiple.Rd</code></div>
     </div>
 
@@ -120,7 +132,7 @@
     <p>Classify samples from multiple centroids</p>
     </div>
 
-    <pre class="usage"><span class='fu'>classify_multiple</span>(<span class='no'>prob_matrix</span>, <span class='no'>centroid._list</span>, <span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</pre>
+    <pre class="usage"><span class='fu'>classify_multiple</span>(<span class='no'>prob_matrix</span>, <span class='no'>centroid_list</span>, <span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,7 +142,7 @@
       <td><p>a <code>matrix</code> or <code>data.frame</code>. Must be an expression matrix with features in rows and samples in columns</p></td>
     </tr>
     <tr>
-      <th>centroid._list</th>
+      <th>centroid_list</th>
       <td><p>a<code>list</code> with the centroid matrix for each of the signatures to evaluate, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature. The output of <code><a href='create_centroids.html'>create_centroids</a></code> can be used.</p></td>
     </tr>
     <tr>
@@ -159,8 +171,8 @@
   <span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
   <span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
-<span class='no'>CentroidsList</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_centroids.html'>create_centroids</a></span>(<span class='no'>output</span>, <span class='no'>RESULTS</span>$<span class='no'>solution</span>, <span class='kw'>train.set</span> <span class='kw'>=</span> <span class='no'>TCGA_expr</span>)
-<span class='no'>TCGA_classes</span> <span class='kw'>&lt;-</span> <span class='fu'>classify_multiple</span>(<span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>TCGA_expr</span>, <span class='kw'>centroid._list</span> <span class='kw'>=</span> <span class='no'>CentroidsList</span>)
+<span class='no'>CentroidsList</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_centroids.html'>create_centroids</a></span>(<span class='no'>output</span>, <span class='no'>RESULTS</span>$<span class='no'>solution</span>, <span class='kw'>trainset</span> <span class='kw'>=</span> <span class='no'>TCGA_expr</span>)
+<span class='no'>TCGA_classes</span> <span class='kw'>&lt;-</span> <span class='fu'>classify_multiple</span>(<span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>TCGA_expr</span>, <span class='kw'>centroid_list</span> <span class='kw'>=</span> <span class='no'>CentroidsList</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

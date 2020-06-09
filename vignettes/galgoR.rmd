@@ -63,7 +63,7 @@ In the galgoR package, the NSGA-II framework was used for finding multiple Paret
 
 To install galgoR package, start R and enter:
 ```{r install, eval=FALSE}
-devtools::install_github("https://github.com/harpomaxx/galgo")
+devtools::install_github("https://github.com/harpomaxx/galgoR-package")
 
 library(galgoR)
 ```
@@ -230,7 +230,7 @@ For simplicity and speed, we will create a reduced expression matrix for the exa
 
 #First we will get PAM50 centroids from genefu package
  
-#PAM50Centroids <- pam50$centroids
+PAM50Centroids <- pam50$centroids
 PAM50Genes <- pam50$centroids.map$probe
 PAM50Genes<- featureNames(Train)[ featureNames(Train) %in% PAM50Genes]
 

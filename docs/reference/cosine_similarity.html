@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types. — galgoR-package • galgoR</title>
+<title>Function for calculating the cosine similarity — cosine_similarity • galgoR</title>
 
 
 <!-- jquery -->
@@ -39,21 +39,11 @@
 
 
 
-<meta property="og:title" content="GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types. — galgoR-package" />
-<meta property="og:description" content="This package was developed to provide a simple to use set of functions to use the galgo algorithm. A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm.
-Different statistical and machine learning approaches have long been used to identify gene expression/molecular signatures with prognostic potential in different cancer types. Nonetheless, the molecular classification of tumors is a difficult task and the results obtained via the current statistical methods are highly dependent on the features analyzed, the number of possible tumor subtypes under consideration, and the underlying assumptions made about the data. In addition, some cancer types are still lacking prognostic signatures and/or of subtype-specific predictors which are continually needed to further dissect tumor biology. In order to identify specific molecular phenotypes to develop precision medicine strategies we present Galgo: A multi-objective optimization process based on a non-dominated sorting genetic algorithm that combines the advantages of clustering methods for grouping heterogeneous omics data and the exploratory properties of genetic algorithms (GA) in order to find features that maximize the survival difference between subtypes while keeping high cluster consistency.
-
-Package:galgoR
-Type:Package
-Version:1.0.0
-Date:2020-05-06
-License:GPL-3
-Copyright:(c) 2020 Martin E. Guerrero-Gimenez.
-URL:https://www.github.com/harpomaxx/galgo
-LazyLoad:yes
-
-
-" />
+<meta property="og:title" content="Function for calculating the cosine similarity — cosine_similarity" />
+<meta property="og:description" content="Cosine similarity is a metric of similarity between two non-zero vectors of an inner product space that measures the cosine of the angle between them.
+Two vectors with the same orientation have a cosine similarity of 1, if they are perpendicular they have a similarity of 0, and if they have opposing directions the cosine similarity is -1, independent of their magnitude.
+One advantage of cosine similarity is its low-complexity, especially for sparse vectors where only the non-zero dimensions need to be considered, which is a common case in galgoR.
+Other names of cosine similarity are Otuska-Orchini similarity when it is applied to binary data, which is the case for galgoR, where individual solutions represented as strings of 0 and 1 are compared with this metric." />
 
 
 
@@ -136,35 +126,41 @@ LazyLoad:yes
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>GalgoR:  A bi-objective evolutionary meta-heuristic to identify robust transcriptomic classifiers associated with patient outcome across multiple cancer types.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/galgo.R'><code>R/galgo.R</code></a></small>
-    <div class="hidden name"><code>galgoR-package.Rd</code></div>
+    <h1>Function for calculating the cosine similarity</h1>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/cluster-classifier.R'><code>R/cluster-classifier.R</code></a></small>
+    <div class="hidden name"><code>cosine_similarity.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This package was developed to provide a simple to use set of functions to use the galgo algorithm. A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm.</p>
-<p>Different statistical and machine learning approaches have long been used to identify gene expression/molecular signatures with prognostic potential in different cancer types. Nonetheless, the molecular classification of tumors is a difficult task and the results obtained via the current statistical methods are highly dependent on the features analyzed, the number of possible tumor subtypes under consideration, and the underlying assumptions made about the data. In addition, some cancer types are still lacking prognostic signatures and/or of subtype-specific predictors which are continually needed to further dissect tumor biology. In order to identify specific molecular phenotypes to develop precision medicine strategies we present Galgo: A multi-objective optimization process based on a non-dominated sorting genetic algorithm that combines the advantages of clustering methods for grouping heterogeneous omics data and the exploratory properties of genetic algorithms (GA) in order to find features that maximize the survival difference between subtypes while keeping high cluster consistency.</p>
-<table class='table'>
-<tr><td>Package:</td><td>galgoR</td></tr>
-<tr><td>Type:</td><td>Package</td></tr>
-<tr><td>Version:</td><td>1.0.0</td></tr>
-<tr><td>Date:</td><td>2020-05-06</td></tr>
-<tr><td>License:</td><td>GPL-3</td></tr>
-<tr><td>Copyright:</td><td>(c) 2020 Martin E. Guerrero-Gimenez.</td></tr>
-<tr><td>URL:</td><td><a href='https://www.github.com/harpomaxx/galgo'>https://www.github.com/harpomaxx/galgo</a></td></tr>
-<tr><td>LazyLoad:</td><td>yes</td></tr>
-</table>
-
-
+    <p>Cosine similarity is a metric of similarity between two non-zero vectors of an inner product space that measures the cosine of the angle between them.
+Two vectors with the same orientation have a cosine similarity of 1, if they are perpendicular they have a similarity of 0, and if they have opposing directions the cosine similarity is -1, independent of their magnitude.
+One advantage of cosine similarity is its low-complexity, especially for sparse vectors where only the non-zero dimensions need to be considered, which is a common case in <code>galgoR</code>.
+Other names of cosine similarity are Otuska-Orchini similarity when it is applied to binary data, which is the case for <code>galgoR</code>, where individual solutions represented as strings of 0 and 1 are compared with this metric.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>cosine_similarity</span>(<span class='no'>a</span>, <span class='no'>b</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>a, b</th>
+      <td><p>A string of numbers with equal length. It can also be two binary strings of 0's and 1's</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Ideally, <span class="pkg">galgoR</span> works faster using <code>gpuR</code> by C. Determan that provides wrappers functions for OpenCL
-programming.</p>
+    <p>In practice, the function can return numeric values from -1 to 1 according the vector orientations, where a cosine similarity of 1 implies same orientation of the vectors while -1 imply vector of oposing directions. In the binary application, values range from 0 to 1, where 0 are totally discordant vectors while 1 are identical binary vectors.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>solution1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)
+<span class='no'>solution2</span> <span class='kw'>&lt;-</span> <span class='no'>solution1</span>
+<span class='no'>r</span> <span class='kw'>&lt;-</span> <span class='fu'>cosine_similarity</span>(<span class='no'>solution1</span>, <span class='no'>solution2</span>)
+<span class='co'># the cosine similarity (r) equals 1</span>
+<span class='no'>solution2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span>(<span class='no'>solution1</span> - <span class='fl'>1</span>)
+<span class='no'>r2</span> <span class='kw'>&lt;-</span> <span class='fu'>cosine_similarity</span>(<span class='no'>solution1</span>, <span class='no'>solution2</span>)
+<span class='co'># the cosine similarity (r2) equals 0</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

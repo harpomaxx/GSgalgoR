@@ -4,8 +4,13 @@
 \alias{non_dominated_summary}
 \title{Summary of the non dominated solutions}
 \usage{
-non_dominated_summary(output, prob_matrix, OS, distancetype = "pearson",
-  usegpu = FALSE)
+non_dominated_summary(
+  output,
+  prob_matrix,
+  OS,
+  distancetype = "pearson",
+  usegpu = FALSE
+)
 }
 \arguments{
 \item{output}{An object of class \code{galgo.Obj}}
