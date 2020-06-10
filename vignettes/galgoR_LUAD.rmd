@@ -1,5 +1,5 @@
 ---
-title: "GalgoR user Guide"
+title: "GalgoR user Guide (LUAD)"
 author:
 - affiliation:
   - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo
