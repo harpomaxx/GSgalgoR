@@ -293,7 +293,7 @@ The principal parameters are:
 - TournamentSize: a number indicating the size of the tournaments for the selection procedure
 - period: a number indicating the outcome period to evaluate the RMST
 
-```{r parameters}
+```{r parameters, eval=TRUE}
 population <- 30 # For testing reasons it is set to a low number but ideally should be above 100            
 generations <-15 # For testing reasons it is set to a low number but ideally should be above 150            
 nCV <- 5                      
@@ -304,7 +304,7 @@ period <- 3650
 
 ### Run Galgo algorithm
 
-```{r galgo_run, eval= TRUE}
+```{r galgo_run, eval= TRUE,results='hide'}
 set.seed(264)
 output <- galgoR::galgo(generations = generations, 
                         population = population, 
@@ -314,7 +314,8 @@ output <- galgoR::galgo(generations = generations,
                         distancetype = distancetype,
                         TournamentSize = TournamentSize, 
                         period = period)
-
+```
+```{r}
 print(class(output))
 ```
 
@@ -387,7 +388,7 @@ head(outputDF)
 
 Once we obtain the `galgo.obj` from the output of `galgo()` we can plot the obtained Pareto front and see how it evolved trough the tested number of generations
 
-```{r plot_pareto, eval=FALSE}
+```{r plot_pareto, eval=TRUE}
 plot_pareto(output)
 ```
 
@@ -405,9 +406,6 @@ To evaluate Galgo's performance along with PAM50 classification, we will use the
 The scaled expression values of each patient are compared with the prototypical centroids using Pearson's correlation coefficient and the closest centroid to each patient is used to assign the corresponding labels.
 
 ```{r classify, eval=TRUE}
-
-#The expression of the toy datasets are already scaled
-
 #The reduced UPP dataset will be used as training set 
 train_expression <- exprs(Train) 
 train_clinic<- pData(Train)
@@ -446,9 +444,7 @@ Once the patients are classified according to their closest centroids, we can no
 
 ### Survival of UPP patients
 
-```{r pam50_surv_UPP, eval=FALSE}
-
-
+```{r pam50_surv_UPP, eval=TRUE}
 surv_formula <- as.formula("Surv(train_clinic$t.rfs,train_clinic$e.rfs)~ PAM50_train")
 tumortotal1 <- surv_fit(surv_formula,data=train_clinic)
 tumortotal1diff <- survdiff(surv_formula)
@@ -456,15 +452,12 @@ tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, l
 
   p<-ggsurvplot(tumortotal1,data=train_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="UPP breast cancer \n PAM50 subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
   print(p)
-
 ```
 
 
 ### Survival of TRANSBIG patients 
 
-```{r pam50_surv_TRANSBIG, eval=FALSE}
-
-
+```{r pam50_surv_TRANSBIG, eval=TRUE}
 surv_formula <- as.formula("Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ PAM50_test")
 tumortotal2 <- surv_fit(surv_formula,data=test_clinic)
 tumortotal2diff <- survdiff(surv_formula)
@@ -472,7 +465,6 @@ tumortotal2pval<- pchisq(tumortotal2diff$chisq, length(tumortotal2diff$n) - 1, l
 
   p<-ggsurvplot(tumortotal2,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="TRANSBIG breast cancer \n PAM50 subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
   print(p)
-
 ```
 
 ## Find breast cancer gene signatures with GalgoR
@@ -493,11 +485,9 @@ usegpu <- FALSE
 
 Run Galgo on the training set
 
-```{r galgo_train}
-
+```{r galgo_train, results='hide'}
 output= galgoR::galgo(generations = generations, population = population,prob_matrix = train_expression, OS=train_surv,usegpu=usegpu,nCV= nCV, distancetype=distancetype, TournamentSize=TournamentSize, period=period)
 print(class(output))
-
 ```
 ## Analyzing Galgo results
 
@@ -548,7 +538,6 @@ best_sol=NULL
   }
 
 print(best_sol)
-# [1] "Solutions.1" "Solutions.7" "Solutions.3" "Solutions.9"   
 ```
 
 ### Create prototypic centroids
@@ -629,17 +618,10 @@ C.indexes[i,"test_CI"]<- CI_test
 
 print(C.indexes)
 
-#             train_CI   test_CI
-#Solutions.1 0.6079561 0.5685536
-#Solutions.7 0.6034458 0.6025023
-#Solutions.3 0.6147336 0.6060875
-#Solutions.9 0.6024516 0.5916318
-
 
 best_signature<- best_sol[which.max(C.indexes$test_CI)]
 
 print(best_signature)
-# "Solutions.3"
 ```
 
 ### Evaluate prediction survival of Galgo signatures
@@ -674,7 +656,7 @@ tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, l
 ```
 
 
-## Comparison of Galgo vs Wilkerson classifiers
+## Comparison of Galgo vs PAM50 classifier
 Compare PAM50 classification vs Galgo classification in the TRANSBIG (test) dataset
 
 ```{r test_pam50, eval=TRUE, out.width='100%'}
@@ -685,7 +667,7 @@ tumortotal1 <- surv_fit(surv_formula1,data=test_clinic)
 tumortotal1diff <- survdiff(surv_formula1)
 tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, lower.tail = FALSE) 
 
-surv_formula2 <- as.formula("Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ Wilk.Class_test")
+surv_formula2 <- as.formula("Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ PAM50_test")
 tumortotal2 <- surv_fit(surv_formula2,data=test_clinic)
 tumortotal2diff <- survdiff(surv_formula2)
 tumortotal2pval<- pchisq(tumortotal1diff$chisq, length(tumortotal2diff$n) - 1, lower.tail = FALSE) 
