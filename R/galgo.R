@@ -33,15 +33,14 @@ NULL
 #' @export
 #'
 #' @examples
-galgo.Obj <- setClass(
-  # Set the name for the class
-  "galgo.Obj",
+galgo.Obj <- setClass( # Set the name for the class
+    "galgo.Obj",
 
-  # Define the slots
-  slots = c(
-    Solutions = "matrix",
-    ParetoFront = "list"
-  )
+    # Define the slots
+    slots = c(
+        Solutions = "matrix",
+        ParetoFront = "list"
+    )
 )
 
 #' Survival Mean
@@ -54,200 +53,280 @@ galgo.Obj <- setClass(
 #' @noRd
 #' @examples
 RMST <- function(x, scale = 1, rmean) {
-  if (!is.null(x$start.time)) {
-    start.time <- x$start.time
-  } else {
-    start.time <- min(0, x$time)
-  }
-  pfun <- function(nused, time, surv, n.risk, n.event, lower,
-                   upper, start.time, end.time) {
-    minmin <- function(y, x) {
-      tolerance <- .Machine$double.eps^0.5
-      keep <- (!is.na(y) & y < (0.5 + tolerance))
-      if (!any(keep)) {
-        NA
-      } else {
-        x <- x[keep]
-        y <- y[keep]
-        if (abs(y[1] - 0.5) < tolerance && any(y < y[1])) {
-          (x[1] + x[min(which(y < y[1]))]) / 2
-        } else {
-          x[1]
-        }
-      }
-    }
-    if (!is.na(end.time)) {
-      hh <- ifelse((n.risk - n.event) == 0, 0, n.event / (n.risk *
-        (n.risk - n.event)))
-      keep <- which(time <= end.time)
-      if (length(keep) == 0) {
-        temptime <- end.time
-        tempsurv <- 1
-        hh <- 0
-      }
-      else {
-        temptime <- c(time[keep], end.time)
-        tempsurv <- c(surv[keep], surv[max(keep)])
-        hh <- c(hh[keep], 0)
-      }
-      n <- length(temptime)
-      delta <- diff(c(start.time, temptime))
-      rectangles <- delta * c(1, tempsurv[-n])
-      varmean <- sum(cumsum(rev(rectangles[-1]))^2 * rev(hh)[-1])
-      mean <- sum(rectangles) + start.time
-    }
-    else {
-      mean <- 0
-      varmean <- 0
-    }
-    med <- minmin(surv, time)
-    if (!is.null(upper)) {
-      upper <- minmin(upper, time)
-      lower <- minmin(lower, time)
-      c(
-        nused, max(n.risk), n.risk[1], sum(n.event), sum(mean),
-        sqrt(varmean), med, lower, upper
-      )
-    }
-    else {
-      c(
-        nused, max(n.risk), n.risk[1], sum(n.event), sum(mean),
-        sqrt(varmean), med, 0, 0
-      )
-    }
-  }
-  stime <- x$time / scale
-  if (is.numeric(rmean)) {
-    rmean <- rmean / scale
-  }
-  surv <- x$surv
-  plab <- c(
-    "records", "n.max", "n.start", "events", "*rmean",
-    "*se(rmean)", "median", paste(x$conf.int, c("LCL", "UCL"),
-      sep = ""
-    )
-  )
-  ncols <- 9
-  if (is.matrix(surv) && !is.matrix(x$n.event)) {
-    x$n.event <- matrix(rep(x$n.event, ncol(surv)), ncol = ncol(surv))
-  }
-  if (is.null(x$strata)) {
-    if (rmean == "none") {
-      end.time <- NA
-    } else if (is.numeric(rmean)) {
-      end.time <- rmean
+    if (!is.null(x$start.time)) {
+        start.time <- x$start.time
     } else {
-      end.time <- max(stime)
+        start.time <- min(0, x$time)
     }
-    if (is.matrix(surv)) {
-      out <- matrix(0, ncol(surv), ncols)
-      for (i in 1:ncol(surv)) {
-        if (is.null(x$conf.int)) {
-          out[i, ] <- pfun(
-            x$n, stime, surv[, i], x$n.risk,
-            x$n.event[, i], NULL, NULL, start.time, end.time
-          )
-        } else {
-          out[i, ] <- pfun(
-            x$n, stime, surv[, i],
-            x$n.risk, x$n.event[, i], x$lower[, i], x$upper[
-              ,
-              i
-            ], start.time, end.time
-          )
+    pfun <- function(nused,
+                     time,
+                     surv,
+                     n.risk,
+                     n.event,
+                     lower,
+                     upper,
+                     start.time,
+                     end.time) {
+        minmin <- function(y, x) {
+            tolerance <- .Machine$double.eps^0.5
+            keep <- (!is.na(y) & y < (0.5 + tolerance))
+            if (!any(keep)) {
+                NA
+            } else {
+                x <- x[keep]
+                y <- y[keep]
+                if (abs(y[1] - 0.5) < tolerance && any(y < y[1])) {
+                    (x[1] + x[min(which(y < y[1]))]) / 2
+                } else {
+                    x[1]
+                }
+            }
         }
-      }
-      dimnames(out) <- list(dimnames(surv)[[2]], plab)
-    }
-    else {
-      out <- matrix(pfun(
-        x$n, stime, surv, x$n.risk, x$n.event,
-        x$lower, x$upper, start.time, end.time
-      ), nrow = 1)
-      dimnames(out) <- list(NULL, plab)
-    }
-  }
-  else {
-    nstrat <- length(x$strata)
-    stemp <- rep(1:nstrat, x$strata)
-    last.time <- (rev(stime))[match(1:nstrat, rev(stemp))]
-    if (rmean == "none") {
-      end.time <- rep(NA, nstrat)
-    } else if (is.numeric(rmean)) {
-      end.time <- rep(rmean, nstrat)
-    } else if (rmean == "common") {
-      end.time <- rep(stats::median(last.time), nstrat)
-    } else {
-      end.time <- last.time
-    }
-    if (is.matrix(surv)) {
-      ns <- ncol(surv)
-      out <- matrix(0, nstrat * ns, ncols)
-      if (is.null(dimnames(surv)[[2]])) {
-        dimnames(out) <- list(
-          rep(names(x$strata), ns),
-          plab
-        )
-      } else {
-        cname <- outer(names(x$strata), dimnames(surv)[[2]],
-          paste,
-          sep = ", "
-        )
-        dimnames(out) <- list(c(cname), plab)
-      }
-      k <- 0
-      for (j in 1:ns) {
-        for (i in 1:nstrat) {
-          who <- (stemp == i)
-          k <- k + 1
-          if (is.null(x$lower)) {
-            out[k, ] <- pfun(
-              x$n[i], stime[who], surv[
-                who,
-                j
-              ], x$n.risk[who], x$n.event[who, j], NULL,
-              NULL, start.time, end.time[i]
+        if (!is.na(end.time)) {
+            hh <- ifelse((n.risk - n.event) == 0, 0, n.event / (n.risk *
+                (n.risk - n.event)))
+            keep <- which(time <= end.time)
+            if (length(keep) == 0) {
+                temptime <- end.time
+                tempsurv <- 1
+                hh <- 0
+            }
+            else {
+                temptime <- c(time[keep], end.time)
+                tempsurv <- c(surv[keep], surv[max(keep)])
+                hh <- c(hh[keep], 0)
+            }
+            n <- length(temptime)
+            delta <- diff(c(start.time, temptime))
+            rectangles <- delta * c(1, tempsurv[-n])
+            varmean <- sum(cumsum(rev(rectangles[-1]))^2 * rev(hh)[-1])
+            mean <- sum(rectangles) + start.time
+        }
+        else {
+            mean <- 0
+            varmean <- 0
+        }
+        med <- minmin(surv, time)
+        if (!is.null(upper)) {
+            upper <- minmin(upper, time)
+            lower <- minmin(lower, time)
+            c(
+                nused,
+                max(n.risk),
+                n.risk[1],
+                sum(n.event),
+                sum(mean),
+                sqrt(varmean),
+                med,
+                lower,
+                upper
             )
-          } else {
-            out[k, ] <- pfun(x$n[i], stime[who], surv[
-              who,
-              j
-            ], x$n.risk[who], x$n.event[who, j], x$lower[
-              who,
-              j
-            ], x$upper[who, j], start.time, end.time[i])
-          }
         }
-      }
+        else {
+            c(
+                nused,
+                max(n.risk),
+                n.risk[1],
+                sum(n.event),
+                sum(mean),
+                sqrt(varmean),
+                med,
+                0,
+                0
+            )
+        }
+    }
+    stime <- x$time / scale
+    if (is.numeric(rmean)) {
+        rmean <- rmean / scale
+    }
+    surv <- x$surv
+    plab <- c(
+        "records",
+        "n.max",
+        "n.start",
+        "events",
+        "*rmean",
+        "*se(rmean)",
+        "median",
+        paste(x$conf.int, c("LCL", "UCL"),
+            sep = ""
+        )
+    )
+    ncols <- 9
+    if (is.matrix(surv) && !is.matrix(x$n.event)) {
+        x$n.event <- matrix(rep(x$n.event, ncol(surv)), ncol = ncol(surv))
+    }
+    if (is.null(x$strata)) {
+        if (rmean == "none") {
+            end.time <- NA
+        } else if (is.numeric(rmean)) {
+            end.time <- rmean
+        } else {
+            end.time <- max(stime)
+        }
+        if (is.matrix(surv)) {
+            out <- matrix(0, ncol(surv), ncols)
+            for (i in 1:ncol(surv)) {
+                if (is.null(x$conf.int)) {
+                    out[i, ] <- pfun(
+                        x$n,
+                        stime,
+                        surv[, i],
+                        x$n.risk,
+                        x$n.event[, i],
+                        NULL,
+                        NULL,
+                        start.time,
+                        end.time
+                    )
+                } else {
+                    out[i, ] <- pfun(
+                        x$n,
+                        stime,
+                        surv[, i],
+                        x$n.risk,
+                        x$n.event[, i],
+                        x$lower[, i],
+                        x$upper[
+                            ,
+                            i
+                        ],
+                        start.time,
+                        end.time
+                    )
+                }
+            }
+            dimnames(out) <- list(dimnames(surv)[[2]], plab)
+        }
+        else {
+            out <- matrix(
+                pfun(
+                    x$n,
+                    stime,
+                    surv,
+                    x$n.risk,
+                    x$n.event,
+                    x$lower,
+                    x$upper,
+                    start.time,
+                    end.time
+                ),
+                nrow = 1
+            )
+            dimnames(out) <- list(NULL, plab)
+        }
     }
     else {
-      out <- matrix(0, nstrat, ncols)
-      dimnames(out) <- list(names(x$strata), plab)
-      for (i in 1:nstrat) {
-        who <- (stemp == i)
-        if (is.null(x$lower)) {
-          out[i, ] <- pfun(
-            x$n[i], stime[who], surv[who],
-            x$n.risk[who], x$n.event[who], NULL, NULL,
-            start.time, end.time[i]
-          )
+        nstrat <- length(x$strata)
+        stemp <- rep(1:nstrat, x$strata)
+        last.time <- (rev(stime))[match(1:nstrat, rev(stemp))]
+        if (rmean == "none") {
+            end.time <- rep(NA, nstrat)
+        } else if (is.numeric(rmean)) {
+            end.time <- rep(rmean, nstrat)
+        } else if (rmean == "common") {
+            end.time <- rep(stats::median(last.time), nstrat)
         } else {
-          out[i, ] <- pfun(
-            x$n[i], stime[who], surv[who],
-            x$n.risk[who], x$n.event[who], x$lower[who],
-            x$upper[who], start.time, end.time[i]
-          )
+            end.time <- last.time
         }
-      }
+        if (is.matrix(surv)) {
+            ns <- ncol(surv)
+            out <- matrix(0, nstrat * ns, ncols)
+            if (is.null(dimnames(surv)[[2]])) {
+                dimnames(out) <- list(
+                    rep(names(x$strata), ns),
+                    plab
+                )
+            } else {
+                cname <- outer(names(x$strata), dimnames(surv)[[2]],
+                    paste,
+                    sep = ", "
+                )
+                dimnames(out) <- list(c(cname), plab)
+            }
+            k <- 0
+            for (j in 1:ns) {
+                for (i in 1:nstrat) {
+                    who <- (stemp == i)
+                    k <- k + 1
+                    if (is.null(x$lower)) {
+                        out[k, ] <- pfun(
+                            x$n[i],
+                            stime[who],
+                            surv[
+                                who,
+                                j
+                            ],
+                            x$n.risk[who],
+                            x$n.event[who, j],
+                            NULL,
+                            NULL,
+                            start.time,
+                            end.time[i]
+                        )
+                    } else {
+                        out[k, ] <- pfun(
+                            x$n[i],
+                            stime[who],
+                            surv[
+                                who,
+                                j
+                            ],
+                            x$n.risk[who],
+                            x$n.event[who, j],
+                            x$lower[
+                                who,
+                                j
+                            ],
+                            x$upper[who, j],
+                            start.time,
+                            end.time[i]
+                        )
+                    }
+                }
+            }
+        }
+        else {
+            out <- matrix(0, nstrat, ncols)
+            dimnames(out) <- list(names(x$strata), plab)
+            for (i in 1:nstrat) {
+                who <- (stemp == i)
+                if (is.null(x$lower)) {
+                    out[i, ] <- pfun(
+                        x$n[i],
+                        stime[who],
+                        surv[who],
+                        x$n.risk[who],
+                        x$n.event[who],
+                        NULL,
+                        NULL,
+                        start.time,
+                        end.time[i]
+                    )
+                } else {
+                    out[i, ] <- pfun(
+                        x$n[i],
+                        stime[who],
+                        surv[who],
+                        x$n.risk[who],
+                        x$n.event[who],
+                        x$lower[who],
+                        x$upper[who],
+                        start.time,
+                        end.time[i]
+                    )
+                }
+            }
+        }
     }
-  }
-  if (is.null(x$lower)) {
-    out <- out[, 1:7, drop = F]
-  }
-  if (rmean == "none") {
-    out <- out[, -(5:6), drop = F]
-  }
-  list(matrix = out[, , drop = T], end.time = end.time)
+    if (is.null(x$lower)) {
+        out <- out[, 1:7, drop = FALSE]
+    }
+    if (rmean == "none") {
+        out <- out[, -(5:6), drop = FALSE]
+    }
+    list(matrix = out[, , drop = TRUE], end.time = end.time)
 }
 
 
@@ -267,59 +346,68 @@ RMST <- function(x, scale = 1, rmean) {
 #' create_folds(y, k = k, list = TRUE)
 #' @noRd
 #'
-create_folds <- function(y, k = 10, list = TRUE, returnTrain = FALSE) {
-  if (class(y)[1] == "Surv") {
-    y <- y[, "time"]
-  }
-  if (is.numeric(y)) {
-    cuts <- floor(length(y) / k)
-    if (cuts < 2) {
-      cuts <- 2
-    }
-    if (cuts > 5) {
-      cuts <- 5
-    }
-    breaks <- unique(stats::quantile(y, probs = seq(0, 1, length = cuts)))
-    y <- cut(y, breaks, include.lowest = TRUE)
-  }
-  if (k < length(y)) {
-    y <- factor(as.character(y))
-    numInClass <- table(y)
-    foldVector <- vector(mode = "integer", length(y))
-    for (i in 1:length(numInClass)) {
-      min_reps <- numInClass[i] %/% k
-      if (min_reps > 0) {
-        spares <- numInClass[i] %% k
-        seqVector <- rep(1:k, min_reps)
-        if (spares > 0) {
-          seqVector <- c(seqVector, sample(1:k, spares))
+create_folds <-
+    function(y,
+             k = 10,
+             list = TRUE,
+             returnTrain = FALSE) {
+        if (class(y)[1] == "Surv") {
+            y <- y[, "time"]
         }
-        foldVector[which(y == names(numInClass)[i])] <- sample(seqVector)
-      }
-      else {
-        foldVector[which(y == names(numInClass)[i])] <- sample(1:k,
-          size = numInClass[i]
-        )
-      }
+        if (is.numeric(y)) {
+            cuts <- floor(length(y) / k)
+            if (cuts < 2) {
+                cuts <- 2
+            }
+            if (cuts > 5) {
+                cuts <- 5
+            }
+            breaks <-
+                unique(stats::quantile(y, probs = seq(0, 1, length = cuts)))
+            y <- cut(y, breaks, include.lowest = TRUE)
+        }
+        if (k < length(y)) {
+            y <- factor(as.character(y))
+            numInClass <- table(y)
+            foldVector <- vector(mode = "integer", length(y))
+            for (i in 1:length(numInClass)) {
+                min_reps <- numInClass[i] %/% k
+                if (min_reps > 0) {
+                    spares <- numInClass[i] %% k
+                    seqVector <- rep(1:k, min_reps)
+                    if (spares > 0) {
+                        seqVector <- c(seqVector, sample(1:k, spares))
+                    }
+                    foldVector[which(y == names(numInClass)[i])] <-
+                        sample(seqVector)
+                }
+                else {
+                    foldVector[which(y == names(numInClass)[i])] <- sample(1:k,
+                        size = numInClass[i]
+                    )
+                }
+            }
+        }
+        else {
+            foldVector <- seq(along = y)
+        }
+        if (list) {
+            out <- split(seq(along = y), foldVector)
+            names(out) <-
+                paste("Fold", gsub(" ", "0", format(seq(along = out))),
+                    sep = ""
+                )
+            if (returnTrain) {
+                out <- lapply(out, function(data, y) {
+                    y[-data]
+                }, y = seq(along = y))
+            }
+        }
+        else {
+            out <- foldVector
+        }
+        out
     }
-  }
-  else {
-    foldVector <- seq(along = y)
-  }
-  if (list) {
-    out <- split(seq(along = y), foldVector)
-    names(out) <- paste("Fold", gsub(" ", "0", format(seq(along = out))),
-      sep = ""
-    )
-    if (returnTrain) {
-      out <- lapply(out, function(data, y) y[-data], y = seq(along = y))
-    }
-  }
-  else {
-    out <- foldVector
-  }
-  out
-}
 
 
 #' Harmonic mean
@@ -379,21 +467,22 @@ consecutive_distance <- function(x) {
 #'
 #' @examples
 #'
-#' #load example dataset
+#' # load example dataset
 #' library(breastCancerTRANSBIG)
 #' library(Biobase)
-#'  data(transbig)
-#'  Train<- transbig
-#'  rm(transbig)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
 #'
-#'  clinical <- pData(Train)
-#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#' clinical <- pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 #'
-#'  surv_fitness(OS, clustclass = clinical$grade, period= 3650)
+#' surv_fitness(OS, clustclass = clinical$grade, period = 3650)
 surv_fitness <- function(OS, clustclass, period) {
   score <- tryCatch(
     {
-      t <- RMST(survival::survfit(OS ~ clustclass), rmean = period)[[1]][, "*rmean"] # This function calculates the RMST (comes from package survival)
+      t <-
+        RMST(survival::survfit(OS ~ clustclass), rmean = period)[[1]][, "*rmean"] # This function calculates the RMST (comes from package survival)
       consecutive_distance(t)
     },
     error = function(e) {
@@ -497,25 +586,37 @@ reord <- function(C, ord) {
 #'
 #' @examples
 #' @noRd
-crossvalidation <- function(data, flds, indv, k, surv_obj, distance, nCV, period) {
-  data <- data[indv, ]
-  distance_data <- distance(data)
-  train_a <- lapply(flds, build_train, data = data)
-  test_a <- lapply(flds, build_test, data = data)
-  sub <- lapply(flds, subset_distance, distance_data = distance_data)
-  hc <- sapply(sub, cluster_algorithm, k = k)
-  centroids <- mapply(k_centroids, train_a, hc, SIMPLIFY = FALSE)
-  centroids_cor <- mapply(stats::cor, centroids[1], centroids[2:nCV], SIMPLIFY = FALSE)
-  cord <- lapply(centroids_cor, alloc2)
-  cord <- append(list(as.matrix(1:k, ncol = 1)), cord, 1)
-  centroids <- mapply(reord, centroids, cord, SIMPLIFY = FALSE)
-  class_results <- mapply(cluster_classify, test_a, centroids, SIMPLIFY = FALSE)
-  cluster_class <- unlist(class_results)
-  cluster_class <- cluster_class[order(as.vector(unlist(flds)))]
-  fit_silhouette <- mean(cluster::silhouette(cluster_class, distance_data)[, 3])
-  fit_differences <- surv_fitness(surv_obj, cluster_class, period)
-  return(c(fit_silhouette, fit_differences))
-}
+crossvalidation <-
+  function(data,
+           flds,
+           indv,
+           k,
+           surv_obj,
+           distance,
+           nCV,
+           period) {
+    data <- data[indv, ]
+    distance_data <- distance(data)
+    train_a <- lapply(flds, build_train, data = data)
+    test_a <- lapply(flds, build_test, data = data)
+    sub <-
+      lapply(flds, subset_distance, distance_data = distance_data)
+    hc <- sapply(sub, cluster_algorithm, k = k)
+    centroids <- mapply(k_centroids, train_a, hc, SIMPLIFY = FALSE)
+    centroids_cor <-
+      mapply(stats::cor, centroids[1], centroids[2:nCV], SIMPLIFY = FALSE)
+    cord <- lapply(centroids_cor, alloc2)
+    cord <- append(list(as.matrix(1:k, ncol = 1)), cord, 1)
+    centroids <- mapply(reord, centroids, cord, SIMPLIFY = FALSE)
+    class_results <-
+      mapply(cluster_classify, test_a, centroids, SIMPLIFY = FALSE)
+    cluster_class <- unlist(class_results)
+    cluster_class <- cluster_class[order(as.vector(unlist(flds)))]
+    fit_silhouette <-
+      mean(cluster::silhouette(cluster_class, distance_data)[, 3])
+    fit_differences <- surv_fitness(surv_obj, cluster_class, period)
+    return(c(fit_silhouette, fit_differences))
+  }
 
 
 #' Minimum number of genes to use in a solution (A constraint for the algorithm)
@@ -611,19 +712,29 @@ uniform_crossover <- function(a, b) {
 #' @examples
 #' @noRd
 asymetric_mutation <- function(x) {
-  chrom_length <- length(x)
-  res <- x
-  Active <- sum(x)
-  Deactive <- chrom_length - Active
-  mutrate1 <- 1 / Active
-  mutrate2 <- 1 / Deactive
-  mutpoint1 <- sample(c(1, 0), Deactive, prob = c(mutrate2, 1 - mutrate2), replace = TRUE)
-  res[x == 0] <- abs(x[x == 0] - mutpoint1)
+    chrom_length <- length(x)
+    res <- x
+    Active <- sum(x)
+    Deactive <- chrom_length - Active
+    mutrate1 <- 1 / Active
+    mutrate2 <- 1 / Deactive
+    mutpoint1 <-
+        sample(c(1, 0),
+            Deactive,
+            prob = c(mutrate2, 1 - mutrate2),
+            replace = TRUE
+        )
+    res[x == 0] <- abs(x[x == 0] - mutpoint1)
 
-  mutpoint2 <- sample(c(1, 0), Active, prob = c(mutrate1, 1 - mutrate1), replace = TRUE)
-  res[x == 1] <- abs(x[x == 1] - mutpoint2)
+    mutpoint2 <-
+        sample(c(1, 0),
+            Active,
+            prob = c(mutrate1, 1 - mutrate1),
+            replace = TRUE
+        )
+    res[x == 1] <- abs(x[x == 1] - mutpoint2)
 
-  return(res)
+    return(res)
 }
 
 
@@ -638,65 +749,77 @@ asymetric_mutation <- function(x) {
 #'
 #' @examples
 #' @noRd
-offsprings <- function(X1, chrom_length, population, TournamentSize) {
-  New <- matrix(NA, ncol = chrom_length, nrow = population) # Create empty matrix to add new individuals
-  NewK <- matrix(NA, nrow = 1, ncol = population) # same for cluster chromosome
+offsprings <-
+    function(X1,
+             chrom_length,
+             population,
+             TournamentSize) {
+        New <-
+            matrix(NA, ncol = chrom_length, nrow = population) # Create empty matrix to add new individuals
+        NewK <-
+            matrix(NA, nrow = 1, ncol = population) # same for cluster chromosome
 
-  matingPool <- nsga2R::tournamentSelection(X1, population, TournamentSize) # Use tournament selection, to select parents that will give offsprings
+        matingPool <-
+            nsga2R::tournamentSelection(X1, population, TournamentSize) # Use tournament selection, to select parents that will give offsprings
 
-  count <- 0 # Count how many offsprings are still needed to reach the original population size
-  while (anyNA(New)) {
-    count <- count + 1
-    ## a.Select a pair of parent chromosomes from the matingPool
-    Pair <- sample(1:nrow(matingPool), 2, replace = F)
+        count <-
+            0 # Count how many offsprings are still needed to reach the original population size
+        while (anyNA(New)) {
+            count <- count + 1
+            ## a.Select a pair of parent chromosomes from the matingPool
+            Pair <- sample(1:nrow(matingPool), 2, replace = FALSE)
 
 
-    ## b.With probability pc (the "crossover probability" or "crossover rate"), cross over the pair at a n randomly chosen points (with probability p, chosen randomly from uniform distribution) to form two offsprings. If no crossover takes place, exact copies of their respective parents are pass to the next generation.
+            ## b.With probability pc (the "crossover probability" or "crossover rate"), cross over the pair at a n randomly chosen points (with probability p, chosen randomly from uniform distribution) to form two offsprings. If no crossover takes place, exact copies of their respective parents are pass to the next generation.
 
-    Cp <- 1 # with elitism there is no need to add a crossover probability
-    if (sample(c(1, 0), 1, prob = c(Cp, 1 - Cp)) == 1) { #
-      # multiple point crossingover
-      offsprings <- uniform_crossover(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
-      off1 <- offsprings[[1]]
-      off2 <- offsprings[[2]]
-    } else {
-      off1 <- matingPool[Pair[1], 1:chrom_length]
-      off2 <- matingPool[Pair[2], 1:chrom_length]
+            Cp <-
+                1 # with elitism there is no need to add a crossover probability
+            if (sample(c(1, 0), 1, prob = c(Cp, 1 - Cp)) == 1) {
+                #
+                # multiple point crossingover
+                offsprings <-
+                    uniform_crossover(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
+                off1 <- offsprings[[1]]
+                off2 <- offsprings[[2]]
+            } else {
+                off1 <- matingPool[Pair[1], 1:chrom_length]
+                off2 <- matingPool[Pair[2], 1:chrom_length]
+            }
+
+            ## c.Mutate the two offsprings at each locus with probability Mp (the mutation probability or mutation rate),
+            # and place the resulting chromosomes in the new population.
+            # since the results are sparse strings, cosine similarity is more adequate
+            # Mutation by asymmetric mutation: Analysis of an Asymmetric Mutation Operator; Jansen et al.
+
+            Mp <-
+                cosine_similarity(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
+
+            if (sample(c(1, 0), 1, prob = c(Mp, 1 - Mp)) == 1) {
+                off1 <- asymetric_mutation(off1)
+            }
+            if (sample(c(1, 0), 1, prob = c(Mp, 1 - Mp)) == 1) {
+                off2 <- asymetric_mutation(off2)
+            }
+
+            # Mutation for k (number of partitions)
+
+            p <- 0.3
+            probs <- rep((1 - p) / 9, 9)
+            k1 <- matingPool[Pair[1], "k"]
+            k2 <- matingPool[Pair[2], "k"]
+            probs[k1 - 1] <- probs[k1 - 1] + p / 2
+            probs[k2 - 1] <- probs[k2 - 1] + p / 2
+            offk1 <- sample(2:10, 1, prob = probs)
+            offk2 <- sample(2:10, 1, prob = probs)
+
+            # Add offsprings to new generation
+            New[count, ] <- off1
+            New[count + 1, ] <- off2
+            NewK[, count] <- offk1
+            NewK[, count + 1] <- offk2
+        }
+        return(list(New = New, NewK = NewK))
     }
-
-    ## c.Mutate the two offsprings at each locus with probability Mp (the mutation probability or mutation rate),
-    # and place the resulting chromosomes in the new population.
-    # since the results are sparse strings, cosine similarity is more adequate
-    # Mutation by asymmetric mutation: Analysis of an Asymmetric Mutation Operator; Jansen et al.
-
-    Mp <- cosine_similarity(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
-
-    if (sample(c(1, 0), 1, prob = c(Mp, 1 - Mp)) == 1) {
-      off1 <- asymetric_mutation(off1)
-    }
-    if (sample(c(1, 0), 1, prob = c(Mp, 1 - Mp)) == 1) {
-      off2 <- asymetric_mutation(off2)
-    }
-
-    # Mutation for k (number of partitions)
-
-    p <- 0.3
-    probs <- rep((1 - p) / 9, 9)
-    k1 <- matingPool[Pair[1], "k"]
-    k2 <- matingPool[Pair[2], "k"]
-    probs[k1 - 1] <- probs[k1 - 1] + p / 2
-    probs[k2 - 1] <- probs[k2 - 1] + p / 2
-    offk1 <- sample(2:10, 1, prob = probs)
-    offk2 <- sample(2:10, 1, prob = probs)
-
-    # Add offsprings to new generation
-    New[count, ] <- off1
-    New[count + 1, ] <- off2
-    NewK[, count] <- offk1
-    NewK[, count + 1] <- offk2
-  }
-  return(list(New = New, NewK = NewK))
-}
 
 #' Title
 #' Penalize Fitness2 function according the number of genes
@@ -741,196 +864,277 @@ penalize <- function(x) {
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
-#' #load example dataset
+#' # load example dataset
 #' library(breastCancerTRANSBIG)
-#'  data(transbig)
-#'  Train<- transbig
-#'  rm(transbig)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
 #'
-#'  expression <- Biobase::exprs(Train)
-#'  clinical <- Biobase::pData(Train)
-#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 #'
-#' #We will use a reduced dataset for the example
-#' expression <- expression[sample(1:nrow(expression),100),]
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
 #'
-#' #Now we scale the expression matrix
+#' # Now we scale the expression matrix
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
 #' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
-#'
-galgo <- function(population = 30, # Number of individuals to evaluate
-                  generations = 2, # Number of generations
-                  nCV = 5, # Number of crossvalidations for function "crossvalidation"
-                  usegpu = FALSE, # to use gpuR
-                  distancetype = "pearson", # Options are: "pearson","uncentered","spearman","euclidean"
-                  TournamentSize = 2,
-                  period = 1825,
-                  OS, # OS=Surv(time=clinical$time,event=clinical$status)
-                  prob_matrix,
-                  res_dir = "",
-                  save_pop_partial_callback = default_callback,
-                  save_pop_final_callback = base_return_pop_callback,
-                  report_callback = base_report_callback,
-                  start_gen_callback = base_start_gen_callback,
-                  end_gen_callback = base_end_gen_callback,
-                  verbose = 2) {
-  if (verbose == 0) {
-    report_callback <- default_callback
-    start_gen_callback <- default_callback
-    end_gen_callback <- default_callback
-  }
+galgo <-
+    function(population = 30,
+             # Number of individuals to evaluate
+             generations = 2,
+             # Number of generations
+             nCV = 5,
+             # Number of crossvalidations for function "crossvalidation"
+             usegpu = FALSE,
+             # to use gpuR
+             distancetype = "pearson",
+             # Options are: "pearson","uncentered","spearman","euclidean"
+             TournamentSize = 2,
+             period = 1825,
+             OS,
+             # OS=Surv(time=clinical$time,event=clinical$status)
+             prob_matrix,
+             res_dir = "",
+             save_pop_partial_callback = default_callback,
+             save_pop_final_callback = base_return_pop_callback,
+             report_callback = base_report_callback,
+             start_gen_callback = base_start_gen_callback,
+             end_gen_callback = base_end_gen_callback,
+             verbose = 2) {
+        if (verbose == 0) {
+            report_callback <- default_callback
+            start_gen_callback <- default_callback
+            end_gen_callback <- default_callback
+        }
 
-  if (verbose == 1) {
-    report_callback <- no_report_callback
-    start_gen_callback <- default_callback
-    end_gen_callback <- default_callback
-  }
+        if (verbose == 1) {
+            report_callback <- no_report_callback
+            start_gen_callback <- default_callback
+            end_gen_callback <- default_callback
+        }
 
-  # Support for parallel computing.
-  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-  if (nzchar(chk) && tolower(chk) == "true") {
-    # use 2 cores in CRAN/Travis/AppVeyor
-    num_workers <- 3L
-  } else {
-    # use all cores in devtools::test()
-    num_workers <- parallel::detectCores()
-  }
-  cluster <- parallel::makeCluster(num_workers - 1) # convention to leave 1 core for OS
-  doParallel::registerDoParallel(cluster)
-  calculate_distance <- select_distance(distancetype, usegpu)
-  # Empty list to save the solutions.
-  PARETO <- list()
-  chrom_length <- nrow(prob_matrix)
-  # 1. Create random population of solutions.
+        # Support for parallel computing.
+        chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+        if (nzchar(chk) && tolower(chk) == "true") {
+            # use 2 cores in CRAN/Travis/AppVeyor
+            num_workers <- 3L
+        } else {
+            # use all cores in devtools::test()
+            num_workers <- parallel::detectCores()
+        }
+        cluster <-
+            parallel::makeCluster(num_workers - 1) # convention to leave 1 core for OS
+        doParallel::registerDoParallel(cluster)
+        calculate_distance <- select_distance(distancetype, usegpu)
+        # Empty list to save the solutions.
+        PARETO <- list()
+        chrom_length <- nrow(prob_matrix)
+        # 1. Create random population of solutions.
 
-  # Creating random clusters from 2-10.
-  Nclust <- sample(2:10, population, replace = TRUE)
+        # Creating random clusters from 2-10.
+        Nclust <- sample(2:10, population, replace = TRUE)
 
-  # Matrix with random TRUE false with uniform distribution, representing solutions to test.
-  X <- matrix(NA, nrow = population, ncol = chrom_length)
-  for (i in 1:population) {
-    prob <- stats::runif(1, 0, 1)
-    X[i, ] <- sample(c(1, 0), chrom_length, replace = T, prob = c(prob, 1 - prob))
-  }
+        # Matrix with random TRUE false with uniform distribution, representing solutions to test.
+        X <- matrix(NA, nrow = population, ncol = chrom_length)
+        for (i in 1:population) {
+            prob <- stats::runif(1, 0, 1)
+            X[i, ] <-
+                sample(c(1, 0),
+                    chrom_length,
+                    replace = TRUE,
+                    prob = c(prob, 1 - prob)
+                )
+        }
 
-  ##### Main loop.
-  for (g in 1:generations) {
-    # Output for the generation callback
-    callback_data <- list()
-    environment(start_gen_callback) <- environment()
-    start_gen_callback()
+        ##### Main loop.
+        for (g in 1:generations) {
+            # Output for the generation callback
+            callback_data <- list()
+            environment(start_gen_callback) <- environment()
+            start_gen_callback()
 
-    start_time <- Sys.time() # Measures generation time
+            start_time <- Sys.time() # Measures generation time
 
-    # 2.Calculate the fitness f(x) of each chromosome x in the population.
-    Fit1 <- apply(X, 1, mininum_genes, chrom_length = chrom_length) # Apply constraints (min 10 genes per solution). #TODO: Check chrom_length parameter
-    # Fit1 <- apply(X, 1, mininum_genes) # Apply constraints (min 10 genes per solution). #TODO: Check chrom_length parameter
-    X <- X[Fit1, ]
-    X <- apply(X, 2, as.logical)
-    n <- nrow(X)
-    Nclust <- Nclust[Fit1]
+            # 2.Calculate the fitness f(x) of each chromosome x in the population.
+            Fit1 <-
+                apply(X, 1, mininum_genes, chrom_length = chrom_length) # Apply constraints (min 10 genes per solution). #TODO: Check chrom_length parameter
+            # Fit1 <- apply(X, 1, mininum_genes) # Apply constraints (min 10 genes per solution). #TODO: Check chrom_length parameter
+            X <- X[Fit1, ]
+            X <- apply(X, 2, as.logical)
+            n <- nrow(X)
+            Nclust <- Nclust[Fit1]
 
-    k <- Nclust
+            k <- Nclust
 
-    flds <- create_folds(1:ncol(prob_matrix), k = nCV)
+            flds <- create_folds(1:ncol(prob_matrix), k = nCV)
 
-    `%dopar%` <- foreach::`%dopar%`
-    `%do%` <- foreach::`%do%`
-    reqpkgs <- c("cluster", "proxy", "survival", "matchingR", "galgoR")
-    # reqpkgs <- c("cluster","cba", "survival", "matchingR")
-    if (usegpu == TRUE) {
-      if (requireNamespace("gpuR", quietly = TRUE)) {
-        reqpkgs <- c(reqpkgs, "gpuR")
-      } else {
-        message("package gpuR not available in your platform. Fallback to CPU")
-      }
+            `%dopar%` <- foreach::`%dopar%`
+            `%do%` <- foreach::`%do%`
+            reqpkgs <-
+                c("cluster", "proxy", "survival", "matchingR", "galgoR")
+            # reqpkgs <- c("cluster","cba", "survival", "matchingR")
+            if (usegpu == TRUE) {
+                if (requireNamespace("gpuR", quietly = TRUE)) {
+                    reqpkgs <- c(reqpkgs, "gpuR")
+                } else {
+                    message("package gpuR not available in your platform. Fallback to CPU")
+                }
+            }
+
+            # Calculate Fitness 1 (silhouette) and 2 (Survival differences).
+            Fit2 <-
+                foreach::foreach(
+                    i = 1:nrow(X),
+                    .packages = reqpkgs,
+                    .combine = rbind
+                ) %dopar% {
+                    # devtools::load_all() # required for package devel
+                    crossvalidation(
+                        prob_matrix,
+                        flds,
+                        X[i, ],
+                        k[i],
+                        surv_obj = OS,
+                        distance = calculate_distance,
+                        nCV,
+                        period
+                    )
+                }
+
+            # Penalization of SC by number of genes.
+            Fit2[, 1] <- (Fit2[, 1] * penalize(rowSums(X)))
+
+            if (g == 1) {
+                PARETO[[g]] <-
+                    Fit2 # Saves the fitness of the solutions of the current generation.
+                ranking <-
+                    nsga2R::fastNonDominatedSorting(Fit2 * -1) # NonDominatedSorting from package nsga2R. -1 multiplication to alter the sign of the fitness (function sorts from min to max).
+                rnkIndex <- integer(n)
+                i <- 1
+                while (i <= length(ranking)) {
+                    # Save the rank of each solution.
+                    rnkIndex[ranking[[i]]] <- i
+                    i <- i + 1
+                }
+
+                X1 <-
+                    cbind(X, k, Fit2, rnkIndex) # Data.frame with solution vector, number of clusters and ranking.
+                objRange <-
+                    apply(Fit2, 2, max) - apply(Fit2, 2, min) # Range of fitness of the solutions.
+                CrowD <-
+                    nsga2R::crowdingDist4frnt(X1, ranking, objRange) # Crowding distance of each front (nsga2R package).
+                CrowD <- apply(CrowD, 1, sum)
+                X1 <-
+                    cbind(X1, CrowD) # data.frame with solution vector, number of clusters, ranking and crowding distance.
+
+                # Output for the generation callback
+                report_callback(
+                    generation = g,
+                    pop_pool = X1,
+                    pareto = PARETO,
+                    prob_matrix = prob_matrix,
+                    current_time = start_time
+                )
+
+                # Save parent generation.
+                Xold <- X
+                Nclustold <- Nclust
+
+                # 3. create offspring.
+                NEW <-
+                    offsprings(X1, chrom_length, population, TournamentSize)
+                X <- NEW[["New"]]
+                Nclust <- NEW[["NewK"]]
+            } else {
+                oldnew <- rbind(PARETO[[g - 1]], Fit2)
+                oldnewfeature <- rbind(Xold, X)
+                oldnewNclust <- c(Nclustold, Nclust)
+                oldnewK <- oldnewNclust
+
+                ranking2 <-
+                    nsga2R::fastNonDominatedSorting(oldnew * -1) # NonDominatedSorting from package nsga2R. -1 multiplication to alter the sign of the fitness (function sorts from min to max).
+                rnkIndex2 <- integer(nrow(oldnew))
+                i <- 1
+                while (i <= length(ranking2)) {
+                    # saves the rank of each solution.
+                    rnkIndex2[ranking2[[i]]] <- i
+                    i <- i + 1
+                }
+
+                X1 <-
+                    cbind(oldnewfeature,
+                        k = oldnewK,
+                        oldnew,
+                        rnkIndex = rnkIndex2
+                    )
+                objRange <-
+                    apply(oldnew, 2, max) - apply(oldnew, 2, min) # Range of fitness of the solutions.
+                CrowD <-
+                    nsga2R::crowdingDist4frnt(X1, ranking2, objRange) # Crowding distance of each front (nsga2R package).
+                CrowD <- apply(CrowD, 1, sum)
+                X1 <-
+                    cbind(X1, CrowD) # data.frame with solution vector, number of clusters, ranking and crowding distance
+                X1 <- X1[X1[, "CrowD"] > 0, ]
+                O <- order(X1[, "rnkIndex"], X1[, "CrowD"] * -1)[1:population]
+                X1 <- X1[O, ]
+
+                PARETO[[g]] <-
+                    X1[, (chrom_length + 2):(chrom_length + 3)] # Saves the fitness of the solutions of the current generation
+
+                # Output for the generation callback
+                report_callback(
+                    generation = g,
+                    pop_pool = X1,
+                    pareto = PARETO,
+                    prob_matrix = prob_matrix,
+                    current_time = start_time
+                )
+
+                # print(paste0("Generation ", g, " Non-dominated solutions:"))
+                # print(X1[X1[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
+
+                Xold <- X1[, 1:chrom_length]
+                Nclustold <- X1[, "k"]
+
+                NEW <-
+                    offsprings(X1, chrom_length, population, TournamentSize)
+                X <- NEW[["New"]]
+                Nclust <- NEW[["NewK"]]
+            }
+
+            # 5.Go to step 2
+            gc()
+            save_pop_partial_callback(
+                userdir = res_dir,
+                generation = g,
+                pop_pool = X1,
+                pareto = PARETO,
+                prob_matrix = prob_matrix,
+                current_time = start_time
+            )
+            end_gen_callback(
+                userdir = res_dir,
+                generation = g,
+                pop_pool = X1,
+                pareto = PARETO,
+                prob_matrix = prob_matrix,
+                current_time = start_time
+            )
+        }
+
+        parallel::stopCluster(cluster)
+        save_pop_final_callback(
+            userdir = res_dir,
+            generation = g,
+            pop_pool = X1,
+            pareto = PARETO,
+            prob_matrix = prob_matrix,
+            current_time = start_time
+        )
     }
-
-    # Calculate Fitness 1 (silhouette) and 2 (Survival differences).
-    Fit2 <- foreach::foreach(i = 1:nrow(X), .packages = reqpkgs, .combine = rbind) %dopar% {
-      # devtools::load_all() # required for package devel
-      crossvalidation(prob_matrix, flds, X[i, ], k[i], surv_obj = OS, distance = calculate_distance, nCV, period)
-    }
-
-    # Penalization of SC by number of genes.
-    Fit2[, 1] <- (Fit2[, 1] * penalize(rowSums(X)))
-
-    if (g == 1) {
-      PARETO[[g]] <- Fit2 # Saves the fitness of the solutions of the current generation.
-      ranking <- nsga2R::fastNonDominatedSorting(Fit2 * -1) # NonDominatedSorting from package nsga2R. -1 multiplication to alter the sign of the fitness (function sorts from min to max).
-      rnkIndex <- integer(n)
-      i <- 1
-      while (i <= length(ranking)) { # Save the rank of each solution.
-        rnkIndex[ranking[[i]]] <- i
-        i <- i + 1
-      }
-
-      X1 <- cbind(X, k, Fit2, rnkIndex) # Data.frame with solution vector, number of clusters and ranking.
-      objRange <- apply(Fit2, 2, max) - apply(Fit2, 2, min) # Range of fitness of the solutions.
-      CrowD <- nsga2R::crowdingDist4frnt(X1, ranking, objRange) # Crowding distance of each front (nsga2R package).
-      CrowD <- apply(CrowD, 1, sum)
-      X1 <- cbind(X1, CrowD) # data.frame with solution vector, number of clusters, ranking and crowding distance.
-
-      # Output for the generation callback
-      report_callback(generation = g, pop_pool = X1, pareto = PARETO, prob_matrix = prob_matrix, current_time = start_time)
-
-      # Save parent generation.
-      Xold <- X
-      Nclustold <- Nclust
-
-      # 3. create offspring.
-      NEW <- offsprings(X1, chrom_length, population, TournamentSize)
-      X <- NEW[["New"]]
-      Nclust <- NEW[["NewK"]]
-    } else {
-      oldnew <- rbind(PARETO[[g - 1]], Fit2)
-      oldnewfeature <- rbind(Xold, X)
-      oldnewNclust <- c(Nclustold, Nclust)
-      oldnewK <- oldnewNclust
-
-      ranking2 <- nsga2R::fastNonDominatedSorting(oldnew * -1) # NonDominatedSorting from package nsga2R. -1 multiplication to alter the sign of the fitness (function sorts from min to max).
-      rnkIndex2 <- integer(nrow(oldnew))
-      i <- 1
-      while (i <= length(ranking2)) { # saves the rank of each solution.
-        rnkIndex2[ranking2[[i]]] <- i
-        i <- i + 1
-      }
-
-      X1 <- cbind(oldnewfeature, k = oldnewK, oldnew, rnkIndex = rnkIndex2)
-      objRange <- apply(oldnew, 2, max) - apply(oldnew, 2, min) # Range of fitness of the solutions.
-      CrowD <- nsga2R::crowdingDist4frnt(X1, ranking2, objRange) # Crowding distance of each front (nsga2R package).
-      CrowD <- apply(CrowD, 1, sum)
-      X1 <- cbind(X1, CrowD) # data.frame with solution vector, number of clusters, ranking and crowding distance
-      X1 <- X1[X1[, "CrowD"] > 0, ]
-      O <- order(X1[, "rnkIndex"], X1[, "CrowD"] * -1)[1:population]
-      X1 <- X1[O, ]
-
-      PARETO[[g]] <- X1[, (chrom_length + 2):(chrom_length + 3)] # Saves the fitness of the solutions of the current generation
-
-      # Output for the generation callback
-      report_callback(generation = g, pop_pool = X1, pareto = PARETO, prob_matrix = prob_matrix, current_time = start_time)
-
-      # print(paste0("Generation ", g, " Non-dominated solutions:"))
-      # print(X1[X1[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
-
-      Xold <- X1[, 1:chrom_length]
-      Nclustold <- X1[, "k"]
-
-      NEW <- offsprings(X1, chrom_length, population, TournamentSize)
-      X <- NEW[["New"]]
-      Nclust <- NEW[["NewK"]]
-    }
-
-    # 5.Go to step 2
-    gc()
-    save_pop_partial_callback(userdir = res_dir, generation = g, pop_pool = X1, pareto = PARETO, prob_matrix = prob_matrix, current_time = start_time)
-    end_gen_callback(userdir = res_dir, generation = g, pop_pool = X1, pareto = PARETO, prob_matrix = prob_matrix, current_time = start_time)
-  }
-
-  parallel::stopCluster(cluster)
-  save_pop_final_callback(userdir = res_dir, generation = g, pop_pool = X1, pareto = PARETO, prob_matrix = prob_matrix, current_time = start_time)
-}

@@ -21,17 +21,17 @@ Survival fitness function using the Restricted Mean Survival Time (RMST) of each
 }
 \examples{
 
-#load example dataset
+# load example dataset
 library(breastCancerTRANSBIG)
 library(Biobase)
- data(transbig)
- Train<- transbig
- rm(transbig)
+data(transbig)
+Train <- transbig
+rm(transbig)
 
- clinical <- pData(Train)
- OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+clinical <- pData(Train)
+OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 
- surv_fitness(OS, clustclass = clinical$grade, period= 3650)
+surv_fitness(OS, clustclass = clinical$grade, period = 3650)
 }
 \references{
 Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life expectancy difference and life expectancy ratio: two measures of treatment effects in randomized trials with non-proportional hazards BMJ 2017; 357 :j2250 \url{https://www.bmj.com/content/357/bmj.j2250}

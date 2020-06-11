@@ -21,16 +21,16 @@ Given an \eqn{n x m} matrix of centroids, where \eqn{m} are the prototypic centr
 }
 \examples{
 
-#load example dataset
+# load example dataset
 require(iC10TrainingData)
 require(pamr)
 
 data(train.Exp)
 data(IntClustMemb)
-TrainData<- list(x= train.Exp,y=IntClustMemb)
+TrainData <- list(x = train.Exp, y = IntClustMemb)
 
-#Create prototypic centroids
-pam<- pamr.train(TrainData)
+# Create prototypic centroids
+pam <- pamr.train(TrainData)
 centroids <- pam$centroids
 
 Class <- cluster_classify(train.Exp, centroids)

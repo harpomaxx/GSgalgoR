@@ -1,4 +1,3 @@
-
 #' Plot pareto front from an galgo.Obj
 #'
 #' @param output An object of class \code{galgo.Obj}
@@ -8,42 +7,52 @@
 #' @export
 #'
 #' @examples
-#' #load example dataset
+#' # load example dataset
 #' library(breastCancerTRANSBIG)
-#'  data(transbig)
-#'  Train<- transbig
-#'  rm(transbig)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
 #'
-#'  expression <- Biobase::exprs(Train)
-#'  clinical <- Biobase::pData(Train)
-#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 #'
-#' #We will use a reduced dataset for the example
-#' expression <- expression[sample(1:nrow(expression),100),]
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
 #'
-#' #Now we scale the expression matrix
+#' # Now we scale the expression matrix
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+#' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
 #' plot_pareto(output)
 plot_pareto <- function(output) {
-  SC.Fit <- Surv.Fit <- Gen <- NULL
-  PARETO <- output@ParetoFront
+    SC.Fit <- Surv.Fit <- Gen <- NULL
+    PARETO <- output@ParetoFront
 
-  for (i in 1:length(PARETO)) {
-    PARETO[[i]] <- as.data.frame(PARETO[[i]])
-    PARETO[[i]]$Gen <- i
-  }
-  PARETO <- do.call(rbind, PARETO)
-  colnames(PARETO) <- c("SC.Fit", "Surv.Fit", "Gen")
+    for (i in seq_len(length(PARETO))) {
+        PARETO[[i]] <- as.data.frame(PARETO[[i]])
+        PARETO[[i]]$Gen <- i
+    }
+    PARETO <- do.call(rbind, PARETO)
+    colnames(PARETO) <- c("SC.Fit", "Surv.Fit", "Gen")
 
-  output_df <- to_dataframe(output) # Transform output to dataframe
-  output_df <- output_df[output_df$Rank == 1, ]
-  output_df <- output_df[order(output_df$SC.Fit), ]
+    output_df <- to_dataframe(output) # Transform output to dataframe
+    output_df <- output_df[output_df$Rank == 1, ]
+    output_df <- output_df[order(output_df$SC.Fit), ]
 
-  PlotPareto <- ggplot2::ggplot(PARETO, ggplot2::aes(x = SC.Fit, y = Surv.Fit, colour = Gen)) + ggplot2::geom_point() + ggplot2::theme_bw()
-  PlotPareto <- PlotPareto + ggplot2::geom_point(ggplot2::aes(x = SC.Fit, y = Surv.Fit), colour = "black", size = 2, output_df) + ggplot2::geom_line(ggplot2::aes(x = SC.Fit, y = Surv.Fit), colour = "black", output_df)
-  PlotPareto <- PlotPareto + ggplot2::ggtitle("Galgo run Pareto front")
-  print(PlotPareto)
+    PlotPareto <-
+        ggplot2::ggplot(PARETO, ggplot2::aes(x = SC.Fit, y = Surv.Fit, colour = Gen)) +
+        ggplot2::geom_point() +
+        ggplot2::theme_bw()
+    PlotPareto <-
+        PlotPareto + ggplot2::geom_point(
+            ggplot2::aes(x = SC.Fit, y = Surv.Fit),
+            colour = "black",
+            size = 2,
+            output_df
+        ) + ggplot2::geom_line(ggplot2::aes(x = SC.Fit, y = Surv.Fit), colour = "black", output_df)
+    PlotPareto <-
+        PlotPareto + ggplot2::ggtitle("Galgo run Pareto front")
+    print(PlotPareto)
 }

@@ -1,4 +1,3 @@
-
 #' A base callback function that returns a galgo.Obj
 #' @param userdir
 #' @param prefix
@@ -13,12 +12,24 @@
 #'
 #' @examples
 #' @noRd
-base_return_pop_callback <- function(userdir = "", prefix, generation, pop_pool, pareto, prob_matrix, current_time) {
-  colnames(pop_pool)[1:(ncol(pop_pool) - 5)] <- rownames(prob_matrix)
-  output <- list(Solutions = pop_pool, ParetoFront = pareto)
-  output <- galgo.Obj(Solutions = output$Solutions, ParetoFront = output$ParetoFront)
-  return(output)
-}
+base_return_pop_callback <-
+    function(userdir = "",
+             prefix,
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+        colnames(pop_pool)[seq_len(ncol(pop_pool) - 5)] <-
+            rownames(prob_matrix)
+        output <- list(Solutions = pop_pool, ParetoFront = pareto)
+        output <-
+            galgo.Obj(
+                Solutions = output$Solutions,
+                ParetoFront = output$ParetoFront
+            )
+        return(output)
+    }
 
 #' A base callback function that saves galgo.Obj
 #'
@@ -37,22 +48,34 @@ base_return_pop_callback <- function(userdir = "", prefix, generation, pop_pool,
 #'
 #' @examples
 #' @noRd
-base_save_pop_callback <- function(userdir = "", prefix, generation, pop_pool, pareto, prob_matrix, current_time) {
-  if (userdir == "") {
-    directory <- paste0(tempdir(), "/")
-  } else {
-    directory <- userdir
-  }
-  if (!dir.exists(directory)) {
-    dir.create(directory, recursive = TRUE)
-  }
-  colnames(pop_pool)[1:(ncol(pop_pool) - 5)] <- rownames(prob_matrix)
-  output <- list(Solutions = pop_pool, ParetoFront = pareto)
-  output <- galgo.Obj(Solutions = output$Solutions, ParetoFront = output$ParetoFront)
-  filename <- paste0(directory, prefix, ".rda")
-  save(file = filename, output)
-  return(output)
-}
+base_save_pop_callback <-
+    function(userdir = "",
+             prefix,
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+        if (userdir == "") {
+            directory <- paste0(tempdir(), "/")
+        } else {
+            directory <- userdir
+        }
+        if (!dir.exists(directory)) {
+            dir.create(directory, recursive = TRUE)
+        }
+        colnames(pop_pool)[seq_len(ncol(pop_pool) - 5)] <-
+            rownames(prob_matrix)
+        output <- list(Solutions = pop_pool, ParetoFront = pareto)
+        output <-
+            galgo.Obj(
+                Solutions = output$Solutions,
+                ParetoFront = output$ParetoFront
+            )
+        filename <- paste0(directory, prefix, ".rda")
+        save(file = filename, output)
+        return(output)
+    }
 
 #' A callback for daving partial galgo.Obj (every 2 generations)
 #'
@@ -68,19 +91,33 @@ base_save_pop_callback <- function(userdir = "", prefix, generation, pop_pool, p
 #'
 #' @examples
 #' @noRd
-base_save_pop_partial_callback <- function(userdir = "", generation, pop_pool, pareto, prob_matrix, current_time) {
-  if (userdir == "") {
-    directory <- paste0(tempdir(), "/")
-  } else {
-    directory <- userdir
-  }
-  if (!dir.exists(directory)) {
-    dir.create(directory, recursive = TRUE)
-  }
-  if (generation %% 2 == 0) {
-    base_save_pop_callback(userdir = directory, prefix = generation, generation, pop_pool, pareto, prob_matrix, current_time)
-  }
-}
+base_save_pop_partial_callback <-
+    function(userdir = "",
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+        if (userdir == "") {
+            directory <- paste0(tempdir(), "/")
+        } else {
+            directory <- userdir
+        }
+        if (!dir.exists(directory)) {
+            dir.create(directory, recursive = TRUE)
+        }
+        if (generation %% 2 == 0) {
+            base_save_pop_callback(
+                userdir = directory,
+                prefix = generation,
+                generation,
+                pop_pool,
+                pareto,
+                prob_matrix,
+                current_time
+            )
+        }
+    }
 
 #' A callback for saving final galgo.Obj
 #'
@@ -96,19 +133,34 @@ base_save_pop_partial_callback <- function(userdir = "", generation, pop_pool, p
 #'
 #' @examples
 #' @noRd
-base_save_pop_final_callback <- function(userdir = "", generation, pop_pool, pareto, prob_matrix, current_time) {
-  if (userdir == "") {
-    directory <- paste0(tempdir(), "/")
-  } else {
-    directory <- userdir
-  }
-  if (!dir.exists(directory)) {
-    dir.create(directory, recursive = TRUE)
-  }
-  output <- base_save_pop_callback(userdir = directory, prefix = "final", generation, pop_pool, pareto, prob_matrix, current_time)
-  message(paste0("final population saved in final.rda in ", directory))
-  return(output)
-}
+base_save_pop_final_callback <-
+    function(userdir = "",
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+        if (userdir == "") {
+            directory <- paste0(tempdir(), "/")
+        } else {
+            directory <- userdir
+        }
+        if (!dir.exists(directory)) {
+            dir.create(directory, recursive = TRUE)
+        }
+        output <-
+            base_save_pop_callback(
+                userdir = directory,
+                prefix = "final",
+                generation,
+                pop_pool,
+                pareto,
+                prob_matrix,
+                current_time
+            )
+        message(paste0("final population saved in final.rda in ", directory))
+        return(output)
+    }
 
 #' Title
 #' Print basic info per generation
@@ -124,12 +176,18 @@ base_save_pop_final_callback <- function(userdir = "", generation, pop_pool, par
 #'
 #' @examples
 #' @noRd
-base_report_callback <- function(userdir = "", generation, pop_pool, pareto, prob_matrix, current_time) {
-  chrom_length <- nrow(prob_matrix)
-  message(paste0("Generation ", generation, " Non-dominated solutions:"))
-  print(pop_pool[pop_pool[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
-  # print(Sys.time()- start_time)
-}
+base_report_callback <-
+    function(userdir = "",
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+        chrom_length <- nrow(prob_matrix)
+        message(paste0("Generation ", generation, " Non-dominated solutions:"))
+        print(pop_pool[pop_pool[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
+        # print(Sys.time()- start_time)
+    }
 
 #' Title
 #'
@@ -144,13 +202,19 @@ base_report_callback <- function(userdir = "", generation, pop_pool, pareto, pro
 #'
 #' @examples
 #' @noRd
-no_report_callback <- function(userdir = "", generation, pop_pool, pareto, prob_matrix, current_time) {
-  if (generation %% 5 == 0) {
-    cat("*")
-  } else {
-    cat(".")
-  }
-}
+no_report_callback <-
+    function(userdir = "",
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+        if (generation %% 5 == 0) {
+            cat("*")
+        } else {
+            cat(".")
+        }
+    }
 
 #' Title
 #'
@@ -165,9 +229,15 @@ no_report_callback <- function(userdir = "", generation, pop_pool, pareto, prob_
 #'
 #' @examples
 #' @noRd
-base_start_gen_callback <- function(userdir = "", generation, pop_pool, pareto, prob_matrix, current_time) {
-  # start_time <- Sys.time()
-}
+base_start_gen_callback <-
+    function(userdir = "",
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+        # start_time <- Sys.time()
+    }
 
 #' Title
 #'
@@ -182,9 +252,15 @@ base_start_gen_callback <- function(userdir = "", generation, pop_pool, pareto, 
 #'
 #' @examples
 #' @noRd
-base_end_gen_callback <- function(userdir = "", generation, pop_pool, pareto, prob_matrix, current_time) {
-  # print(Sys.time()- start_time)
-}
+base_end_gen_callback <-
+    function(userdir = "",
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+        # print(Sys.time()- start_time)
+    }
 
 #' A default call_back function that does nothing.
 #'
@@ -199,6 +275,12 @@ base_end_gen_callback <- function(userdir = "", generation, pop_pool, pareto, pr
 #'
 #' @examples
 #' @noRd
-default_callback <- function(userdir = "", generation, pop_pool, pareto, prob_matrix, current_time) {
-  
-}
+default_callback <-
+    function(userdir = "",
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+
+    }

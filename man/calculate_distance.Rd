@@ -61,16 +61,16 @@ select_distance(distancetype = "pearson", usegpu = TRUE)
 Functions to calculate distance matrices using cpu or gpu computing
 }
 \examples{
-#load example dataset
+# load example dataset
 require(iC10TrainingData)
 require(pamr)
 
 data(train.Exp)
 
-calculate_distance<- select_distance(distancetype= "pearson",usegpu=FALSE)
-Dist<- calculate_distance(train.Exp)
-k<- 4
-Pam<- cluster_algorithm(Dist,k)
+calculate_distance <- select_distance(distancetype = "pearson", usegpu = FALSE)
+Dist <- calculate_distance(train.Exp)
+k <- 4
+Pam <- cluster_algorithm(Dist, k)
 table(Pam$cluster)
 }
 \author{

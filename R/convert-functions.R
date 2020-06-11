@@ -19,44 +19,47 @@
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
-#' #load example dataset
+#' # load example dataset
 #' library(breastCancerTRANSBIG)
-#'  data(transbig)
-#'  Train<- transbig
-#'  rm(transbig)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
 #'
-#'  expression <- Biobase::exprs(Train)
-#'  clinical <- Biobase::pData(Train)
-#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 #'
-#' #We will use a reduced dataset for the example
-#' expression <- expression[sample(1:nrow(expression),100),]
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
 #'
-#' #Now we scale the expression matrix
+#' # Now we scale the expression matrix
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+#' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
-#'
 to_list <- function(output) {
-  if (!methods::is(output, "galgo.Obj")) {
-    stop("object must be of class 'galgo.Obj'")
-  }
-  OUTPUT <- list()
-  Genes <- colnames(output@Solutions)[1:(ncol(output@Solutions) - 5)]
-  for (i in 1:nrow(output@Solutions)) {
-    Sol <- paste("Solution", i, sep = ".")
-    OUTPUT[[Sol]] <- list()
-    OUTPUT[[Sol]][["Genes"]] <- Genes[as.logical(output@Solutions[i, 1:length(Genes)])]
-    OUTPUT[[Sol]]["k"] <- output@Solutions[i, "k"]
-    OUTPUT[[Sol]]["SC.Fit"] <- output@Solutions[i, length(Genes) + 2]
-    OUTPUT[[Sol]]["Surv.Fit"] <- output@Solutions[i, length(Genes) + 3]
-    OUTPUT[[Sol]]["rank"] <- output@Solutions[i, "rnkIndex"]
-    OUTPUT[[Sol]]["CrowD"] <- output@Solutions[i, "CrowD"]
-  }
-  return(OUTPUT)
+    if (!methods::is(output, "galgo.Obj")) {
+        stop("object must be of class 'galgo.Obj'")
+    }
+    OUTPUT <- list()
+    Genes <-
+        colnames(output@Solutions)[seq_len(ncol(output@Solutions) - 5)]
+    for (i in seq_len(nrow(output@Solutions))) {
+        Sol <- paste("Solution", i, sep = ".")
+        OUTPUT[[Sol]] <- list()
+        OUTPUT[[Sol]][["Genes"]] <-
+            Genes[as.logical(output@Solutions[i, seq_len(length(Genes))])]
+        OUTPUT[[Sol]]["k"] <- output@Solutions[i, "k"]
+        OUTPUT[[Sol]]["SC.Fit"] <-
+            output@Solutions[i, length(Genes) + 2]
+        OUTPUT[[Sol]]["Surv.Fit"] <-
+            output@Solutions[i, length(Genes) + 3]
+        OUTPUT[[Sol]]["rank"] <- output@Solutions[i, "rnkIndex"]
+        OUTPUT[[Sol]]["CrowD"] <- output@Solutions[i, "CrowD"]
+    }
+    return(OUTPUT)
 }
 
 #' Convert galgo.Obj to data.frame
@@ -79,39 +82,49 @@ to_list <- function(output) {
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
-#' #load example dataset
+#' # load example dataset
 #' library(breastCancerTRANSBIG)
-#'  data(transbig)
-#'  Train<- transbig
-#'  rm(transbig)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
 #'
-#'  expression <- Biobase::exprs(Train)
-#'  clinical <- Biobase::pData(Train)
-#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 #'
-#' #We will use a reduced dataset for the example
-#' expression <- expression[sample(1:nrow(expression),100),]
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
 #'
-#' #Now we scale the expression matrix
+#' # Now we scale the expression matrix
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+#' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
-#'
 to_dataframe <- function(output) {
-  if (!methods::is(output, "galgo.Obj")) {
-    stop("object must be of class 'galgo.Obj'")
-  }
-  Genes <- colnames(output@Solutions)[1:(ncol(output@Solutions) - 5)]
-  ListGenes <- list()
-  for (i in 1:nrow(output@Solutions)) {
-    ListGenes[[i]] <- list()
-    ListGenes[[i]] <- Genes[as.logical(output@Solutions[i, 1:length(Genes)])]
-  }
+    if (!methods::is(output, "galgo.Obj")) {
+        stop("object must be of class 'galgo.Obj'")
+    }
+    Genes <-
+        colnames(output@Solutions)[seq_len(ncol(output@Solutions) - 5)]
+    ListGenes <- list()
+    for (i in seq_len(nrow(output@Solutions))) {
+        ListGenes[[i]] <- list()
+        ListGenes[[i]] <-
+            Genes[as.logical(output@Solutions[i, seq_len(length(Genes))])]
+    }
 
-  OUTPUT <- data.frame(Genes = I(ListGenes), k = output@Solutions[, "k"], SC.Fit = output@Solutions[, ncol(output@Solutions) - 3], Surv.Fit = output@Solutions[, ncol(output@Solutions) - 2], Rank = output@Solutions[, "rnkIndex"], CrowD = output@Solutions[, "CrowD"])
-  rownames(OUTPUT) <- paste("Solutions", 1:nrow(output@Solutions), sep = ".")
-  return(OUTPUT)
+    OUTPUT <-
+        data.frame(
+            Genes = I(ListGenes),
+            k = output@Solutions[, "k"],
+            SC.Fit = output@Solutions[, ncol(output@Solutions) - 3],
+            Surv.Fit = output@Solutions[, ncol(output@Solutions) - 2],
+            Rank = output@Solutions[, "rnkIndex"],
+            CrowD = output@Solutions[, "CrowD"]
+        )
+    rownames(OUTPUT) <-
+        paste("Solutions", seq_len(nrow(output@Solutions)), sep = ".")
+    return(OUTPUT)
 }

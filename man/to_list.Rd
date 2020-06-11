@@ -26,27 +26,26 @@ Basically this output is a list of lists, where each element of the output is na
 The current function transforms a \code{galgo.Obj} to a \code{list}
 }
 \examples{
-#load example dataset
+# load example dataset
 library(breastCancerTRANSBIG)
- data(transbig)
- Train<- transbig
- rm(transbig)
+data(transbig)
+Train <- transbig
+rm(transbig)
 
- expression <- Biobase::exprs(Train)
- clinical <- Biobase::pData(Train)
- OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+expression <- Biobase::exprs(Train)
+clinical <- Biobase::pData(Train)
+OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 
-#We will use a reduced dataset for the example
-expression <- expression[sample(1:nrow(expression),100),]
+# We will use a reduced dataset for the example
+expression <- expression[sample(1:nrow(expression), 100), ]
 
-#Now we scale the expression matrix
+# Now we scale the expression matrix
 expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
 outputDF <- to_dataframe(output)
 outputList <- to_list(output)
-
 }
 \author{
 Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}

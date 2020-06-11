@@ -26,16 +26,16 @@
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #' @name calculate_distance
 #' @examples
-#' #load example dataset
+#' # load example dataset
 #' require(iC10TrainingData)
 #' require(pamr)
 #'
 #' data(train.Exp)
 #'
-#' calculate_distance<- select_distance(distancetype= "pearson",usegpu=FALSE)
-#' Dist<- calculate_distance(train.Exp)
-#' k<- 4
-#' Pam<- cluster_algorithm(Dist,k)
+#' calculate_distance <- select_distance(distancetype = "pearson", usegpu = FALSE)
+#' Dist <- calculate_distance(train.Exp)
+#' k <- 4
+#' Pam <- cluster_algorithm(Dist, k)
 #' table(Pam$cluster)
 NULL
 
@@ -193,4 +193,3 @@ select_distance <- function(distancetype = "pearson", usegpu = TRUE) {
   # return(invisible(calculate_distance))
   return(calculate_distance)
 }
-

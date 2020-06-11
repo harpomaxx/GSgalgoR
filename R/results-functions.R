@@ -1,5 +1,4 @@
 # GalgoR results functions
-
 #' Summary of the non dominated solutions
 #'
 #' The function uses a \code{'galgo.Obj'} as input an the training dataset to evaluate the non-dominated solutions found by GalgoR
@@ -15,83 +14,98 @@
 #' @export
 #'
 #' @examples
-#' #load example dataset
+#' # load example dataset
 #' library(breastCancerTRANSBIG)
-#'  data(transbig)
-#'  Train<- transbig
-#'  rm(transbig)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
 #'
-#'  expression <- Biobase::exprs(Train)
-#'  clinical <- Biobase::pData(Train)
-#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 #'
-#' #We will use a reduced dataset for the example
-#' expression <- expression[sample(1:nrow(expression),100),]
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
 #'
-#' #Now we scale the expression matrix
+#' # Now we scale the expression matrix
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+#' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
 #' non_dominated_summary(
-#'   output = output,
-#'   OS = OS,
-#'   prob_matrix = expression,
-#'   distancetype = "pearson",
-#'   usegpu = FALSE
+#'     output = output,
+#'     OS = OS,
+#'     prob_matrix = expression,
+#'     distancetype = "pearson",
+#'     usegpu = FALSE
 #' )
-non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pearson", usegpu = FALSE) {
-  if (!methods::is(output, "galgo.Obj")) {
-    stop("object must be of class 'galgo.Obj'")
-  }
-  output_df <- to_dataframe(output)
-  NonDom_solutions <- output_df[output_df$Rank == 1, ]
-  calculate_distance <- select_distance(distancetype = distancetype, usegpu = usegpu)
-  RESULT <- data.frame(
-    solution = as.character(),
-    k = as.numeric(),
-    ngenes = as.numeric(),
-    mean.Silhouette = as.numeric(),
-    C.Index = as.numeric(),
-    stringsAsFactors = FALSE
-  )
+non_dominated_summary <-
+    function(output,
+             prob_matrix,
+             OS,
+             distancetype = "pearson",
+             usegpu = FALSE) {
+        if (!methods::is(output, "galgo.Obj")) {
+            stop("object must be of class 'galgo.Obj'")
+        }
+        output_df <- to_dataframe(output)
+        NonDom_solutions <- output_df[output_df$Rank == 1, ]
+        calculate_distance <-
+            select_distance(distancetype = distancetype, usegpu = usegpu)
+        RESULT <- data.frame(
+            solution = as.character(),
+            k = as.numeric(),
+            ngenes = as.numeric(),
+            mean.Silhouette = as.numeric(),
+            C.Index = as.numeric(),
+            stringsAsFactors = FALSE
+        )
 
-  for (i in 1:nrow(NonDom_solutions)) {
-    name <- rownames(NonDom_solutions)[i]
-    genes <- NonDom_solutions[i, "Genes"][[1]]
-    k <- NonDom_solutions[i, "k"]
-    Sub_matrix <- prob_matrix[genes, ]
+        for (i in seq_len(nrow(NonDom_solutions))) {
+            name <- rownames(NonDom_solutions)[i]
+            genes <- NonDom_solutions[i, "Genes"][[1]]
+            k <- NonDom_solutions[i, "k"]
+            Sub_matrix <- prob_matrix[genes, ]
 
-    D <- calculate_distance(Sub_matrix)
+            D <- calculate_distance(Sub_matrix)
 
-    true_class <- cluster_algorithm(D, k)
+            true_class <- cluster_algorithm(D, k)
 
-    Centroids <- k_centroids(Sub_matrix, true_class$cluster)
+            Centroids <- k_centroids(Sub_matrix, true_class$cluster)
 
-    predicted_class <- cluster_classify(Sub_matrix, Centroids, method = distancetype)
+            predicted_class <-
+                cluster_classify(Sub_matrix, Centroids, method = distancetype)
 
-    predicted_class <- as.factor(predicted_class)
-    predicted_classdf <- as.data.frame(predicted_class)
+            predicted_class <- as.factor(predicted_class)
+            predicted_classdf <- as.data.frame(predicted_class)
 
 
-    surv_formula <- stats::as.formula("OS~ predicted_class")
-    tumortotal <- survival::survfit(surv_formula)
-    totalsdf <- survival::survdiff(surv_formula)
-    tumortotalpval <- 1 - stats::pchisq(totalsdf$chisq, length(totalsdf$n) - 1)
-    tumortotalpval <- format(tumortotalpval, digits = 4)
+            surv_formula <- stats::as.formula("OS~ predicted_class")
+            tumortotal <- survival::survfit(surv_formula)
+            totalsdf <- survival::survdiff(surv_formula)
+            tumortotalpval <-
+                1 - stats::pchisq(totalsdf$chisq, length(totalsdf$n) - 1)
+            tumortotalpval <- format(tumortotalpval, digits = 4)
 
-    coxsimple <- survival::coxph(surv_formula, data = predicted_classdf)
+            coxsimple <-
+                survival::coxph(surv_formula, data = predicted_classdf)
 
-    CI=survcomp::concordance.index(stats::predict(coxsimple,new=predicted_classdf),surv.time=OS[,1],surv.event=OS[,2],outx=FALSE)$c.index
-    #CI <- intsurv::cIndex(risk_score = stats::predict(coxsimple,new=predicted_classdf), time = OS[, 1], event = OS[, 2])["index"]
-    mean_Sil <- mean(cluster::silhouette(as.numeric(predicted_class), D)[, 3])
+            CI <- survcomp::concordance.index(
+                stats::predict(coxsimple, new = predicted_classdf),
+                surv.time = OS[, 1],
+                surv.event = OS[, 2],
+                outx = FALSE
+            )$c.index
+            # CI <- intsurv::cIndex(risk_score = stats::predict(coxsimple,new=predicted_classdf), time = OS[, 1], event = OS[, 2])["index"]
+            mean_Sil <-
+                mean(cluster::silhouette(as.numeric(predicted_class), D)[, 3])
 
-    row <- c(name, k, length(genes), mean_Sil, CI)
-    RESULT[nrow(RESULT) + 1, ] <- row
-    # print(row)
-  }
-  return(RESULT)
-}
+            row <- c(name, k, length(genes), mean_Sil, CI)
+            RESULT[nrow(RESULT) + 1, ] <- row
+            # print(row)
+        }
+        return(RESULT)
+    }
 
 
 #' Create Centroids
@@ -108,54 +122,60 @@ non_dominated_summary <- function(output, prob_matrix, OS, distancetype = "pears
 #' @export
 #'
 #' @examples
-#' #load example dataset
+#' # load example dataset
 #' library(breastCancerTRANSBIG)
-#'  data(transbig)
-#'  Train<- transbig
-#'  rm(transbig)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
 #'
-#'  expression <- Biobase::exprs(Train)
-#'  clinical <- Biobase::pData(Train)
-#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 #'
-#' #We will use a reduced dataset for the example
-#' expression <- expression[sample(1:nrow(expression),100),]
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
 #'
-#' #Now we scale the expression matrix
+#' # Now we scale the expression matrix
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+#' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
 #'
 #' RESULTS <- non_dominated_summary(
-#'   output = output, OS = OS,
-#'   prob_matrix = expression,
-#'   distancetype = "pearson",
-#'   usegpu = FALSE
+#'     output = output, OS = OS,
+#'     prob_matrix = expression,
+#'     distancetype = "pearson",
+#'     usegpu = FALSE
 #' )
 #' CentroidsList <- create_centroids(output, RESULTS$solution, trainset = expression)
-create_centroids <- function(output, solution_names, trainset, distancetype = "pearson", usegpu = FALSE) {
-  calculate_distance <- select_distance(distancetype = distancetype, usegpu = usegpu)
+create_centroids <-
+    function(output,
+             solution_names,
+             trainset,
+             distancetype = "pearson",
+             usegpu = FALSE) {
+        calculate_distance <-
+            select_distance(distancetype = distancetype, usegpu = usegpu)
 
-  CentroidsList <- list()
-  output_df <- to_dataframe(output)
-  for (j in solution_names) {
-    genes <- output_df[j, "Genes"][[1]]
-    k <- output_df[j, "k"]
-    name <- j
-    Sub_matrix <- trainset[genes, ]
+        CentroidsList <- list()
+        output_df <- to_dataframe(output)
+        for (j in solution_names) {
+            genes <- output_df[j, "Genes"][[1]]
+            k <- output_df[j, "k"]
+            name <- j
+            Sub_matrix <- trainset[genes, ]
 
-    D <- calculate_distance(Sub_matrix)
+            D <- calculate_distance(Sub_matrix)
 
-    true_class <- cluster_algorithm(D, k)
+            true_class <- cluster_algorithm(D, k)
 
-    Centroids <- k_centroids(Sub_matrix, true_class$cluster)
-    CentroidsList[[name]] <- Centroids
-  }
-  return(CentroidsList)
-}
+            Centroids <- k_centroids(Sub_matrix, true_class$cluster)
+            CentroidsList[[name]] <- Centroids
+        }
+        return(CentroidsList)
+    }
 
 
 #' Classify samples from multiple centroids
@@ -168,54 +188,58 @@ create_centroids <- function(output, solution_names, trainset, distancetype = "p
 #' @export
 #'
 #' @examples
-#' #load example dataset
+#' # load example dataset
 #' library(breastCancerTRANSBIG)
-#'  data(transbig)
-#'  Train<- transbig
-#'  rm(transbig)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
 #'
-#'  expression <- Biobase::exprs(Train)
-#'  clinical <- Biobase::pData(Train)
-#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 #'
-#' #We will use a reduced dataset for the example
-#' expression <- expression[sample(1:nrow(expression),100),]
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
 #'
-#' #Now we scale the expression matrix
+#' # Now we scale the expression matrix
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+#' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
 #'
 #' RESULTS <- non_dominated_summary(
-#'   output = output, OS = OS,
-#'   prob_matrix = expression,
-#'   distancetype = "pearson",
-#'   usegpu = FALSE
+#'     output = output, OS = OS,
+#'     prob_matrix = expression,
+#'     distancetype = "pearson",
+#'     usegpu = FALSE
 #' )
 #' CentroidsList <- create_centroids(output, RESULTS$solution, trainset = expression)
 #' classes <- classify_multiple(prob_matrix = expression, centroid_list = CentroidsList)
-classify_multiple <- function(prob_matrix, centroid_list, distancetype = "pearson") {
-  classes <- matrix(rep(NA, ncol(prob_matrix) * length(centroid_list)), ncol = length(centroid_list))
-  as.data.frame <- classes
-  colnames(classes) <- names(centroid_list)
-  rownames(classes) <- colnames(prob_matrix)
+classify_multiple <-
+    function(prob_matrix,
+             centroid_list,
+             distancetype = "pearson") {
+        classes <-
+            matrix(rep(NA, ncol(prob_matrix) * length(centroid_list)), ncol = length(centroid_list))
+        as.data.frame <- classes
+        colnames(classes) <- names(centroid_list)
+        rownames(classes) <- colnames(prob_matrix)
 
-  for (i in 1:length(centroid_list)) {
-    centroids <- centroid_list[[i]]
-    name <- names(centroid_list)[i]
-    genes <- rownames(centroids)
-    k <- ncol(centroids)
-    Sub_matrix <- prob_matrix[genes, ]
+        for (i in seq_len(length(centroid_list))) {
+            centroids <- centroid_list[[i]]
+            name <- names(centroid_list)[i]
+            genes <- rownames(centroids)
+            k <- ncol(centroids)
+            Sub_matrix <- prob_matrix[genes, ]
 
-    predicted_class <- cluster_classify(Sub_matrix, centroids, method = distancetype)
+            predicted_class <-
+                cluster_classify(Sub_matrix, centroids, method = distancetype)
 
-    predicted_class <- as.factor(predicted_class)
-    classes[, name] <- predicted_class
-  }
+            predicted_class <- as.factor(predicted_class)
+            classes[, name] <- predicted_class
+        }
 
-  return(classes)
-}
-
+        return(classes)
+    }

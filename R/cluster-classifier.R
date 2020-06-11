@@ -11,16 +11,16 @@
 #'
 #' @examples
 #'
-#' #load example dataset
+#' # load example dataset
 #' require(iC10TrainingData)
 #' require(pamr)
 #'
 #' data(train.Exp)
 #' data(IntClustMemb)
-#' TrainData<- list(x= train.Exp,y=IntClustMemb)
+#' TrainData <- list(x = train.Exp, y = IntClustMemb)
 #'
-#' #Create prototypic centroids
-#' pam<- pamr.train(TrainData)
+#' # Create prototypic centroids
+#' pam <- pamr.train(TrainData)
 #' centroids <- pam$centroids
 #'
 #' Class <- cluster_classify(train.Exp, centroids)
@@ -48,18 +48,29 @@ cluster_classify <- function(data, centroid, method = "pearson") {
 #'
 #' @export
 #' @examples
-#' #load example dataset
+#' # load example dataset
 #' require(iC10TrainingData)
 #' require(pamr)
-#'data(train.Exp)
+#' data(train.Exp)
 #'
-#' calculate_distance<- select_distance(distancetype= "pearson",usegpu=FALSE)
-#' Dist<- calculate_distance(train.Exp)
-#' k<- 4
-#' Pam<- cluster_algorithm(Dist,k)
+#' calculate_distance <- select_distance(distancetype = "pearson", usegpu = FALSE)
+#' Dist <- calculate_distance(train.Exp)
+#' k <- 4
+#' Pam <- cluster_algorithm(Dist, k)
 #' table(Pam$cluster)
 cluster_algorithm <- function(c, k) {
-  return(list(cluster = cluster::pam(c, k, cluster.only = TRUE, diss = TRUE, do.swap = TRUE, keep.diss = FALSE, keep.data = FALSE, pamonce = 2)))
+    return(list(
+        cluster = cluster::pam(
+            c,
+            k,
+            cluster.only = TRUE,
+            diss = TRUE,
+            do.swap = TRUE,
+            keep.diss = FALSE,
+            keep.data = FALSE,
+            pamonce = 2
+        )
+    ))
 }
 
 #' Function for calculating the cosine similarity
@@ -95,16 +106,16 @@ cosine_similarity <- function(a, b) {
 #' @export
 #'
 #' @examples
-#' #load example dataset
+#' # load example dataset
 #' require(iC10TrainingData)
 #' require(pamr)
 #'
 #' data(train.Exp)
 #'
-#' calculate_distance<- select_distance(distancetype= "pearson",usegpu=FALSE)
-#' Dist<- calculate_distance(train.Exp)
-#' k<- 4
-#' Pam<- cluster_algorithm(Dist,k)
+#' calculate_distance <- select_distance(distancetype = "pearson", usegpu = FALSE)
+#' Dist <- calculate_distance(train.Exp)
+#' k <- 4
+#' Pam <- cluster_algorithm(Dist, k)
 #' table(Pam$cluster)
 #' centroids <- k_centroids(train.Exp, Pam)
 k_centroids <- function(data, class) {
