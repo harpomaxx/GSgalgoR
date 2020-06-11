@@ -69,3 +69,148 @@ use_rna_luad <- function(userdir = "") {
     }
   }
 }
+
+
+#' Title
+#'
+#' @param eset 
+#' @param map 
+#'
+#' @return
+#' @noRd 
+#'
+#' @examples
+drop_duplicates <- function(eset, map = "Gene.symbol") {
+
+  # Drop NA's
+  drop <- which(is.na(Biobase::fData(eset)[, map]))
+  eset <- eset[-drop, ]
+
+  # Drop duplicates
+  drop <- NULL
+  Dup <- as.character(unique(Biobase::fData(eset)[which(duplicated(Biobase::fData(eset)[, map])), map]))
+  Var <- apply(Biobase::exprs(eset), 1, stats::var)
+  for (j in Dup) {
+    pos <- which(Biobase::fData(eset)[, map] == j)
+    drop <- c(drop, pos[-which.max(Var[pos])])
+  }
+  eset <- eset[-drop, ]
+
+  Biobase::featureNames(eset) <- Biobase::fData(eset)[, map]
+  return(eset)
+}
+
+# Custom function to expand probesets mapping to multiple genes
+#' Title
+#'
+#' @param eset 
+#' @param sep 
+#' @param map 
+#'
+#' @return
+#' @noRd
+#'
+#' @examples
+expand_probesets <- function (eset, sep = "///", map="Gene.symbol")
+{
+  x <- lapply(Biobase::featureNames(eset), function(x) strsplit(x, sep)[[1]])
+  y<- lapply(as.character(Biobase::fData(eset)[,map]), function(x) strsplit(x, sep))
+  eset <- eset[order(sapply(x, length)), ]
+  x <- lapply(Biobase::featureNames(eset), function(x) strsplit(x, sep)[[1]])
+  y<- lapply(as.character(Biobase::fData(eset)[,map]), function(x) strsplit(x, sep))
+  idx <- unlist(sapply(1:length(x), function(i) rep(i, length(x[[i]]))))
+  idy <- unlist(sapply(1:length(y), function(i) rep(i, length(y[[i]]))))
+  xx <- !duplicated(unlist(x))
+  idx <- idx[xx]
+  idy <- idy[xx]
+  x <- unlist(x)[xx]
+  y <- unlist(y)[xx]
+  
+  eset <- eset[idx, ]
+  Biobase::featureNames(eset) <- x
+  Biobase::fData(eset)[,map] <- x
+  Biobase::fData(eset)$gene <- y
+  return(eset)
+  
+}
+
+#' Title
+#'
+#' @return
+#' @noRd
+#'
+#' @examples
+get_upp_dataset<- function(){
+  utils::data("upp", package = "breastCancerUPP")
+  get("upp")
+}
+
+#' Title
+#'
+#' @return
+#' @noRd
+#'
+#' @examples
+
+get_transbig_dataset<-function(){
+  utils::data("transbig", package = "breastCancerTRANSBIG")
+  get("transbig")
+}
+
+#' Title
+#'
+#' @return
+#' @noRd
+#'
+#' @examples
+#' 
+
+use_BRCA <- function() {
+
+  # To access gene expression data
+  train_expr <- Biobase::exprs(get_upp_dataset())
+  test_expr <- Biobase::exprs(get_transbig_dataset())
+  # To access feature data
+  train_features <- Biobase::fData(get_upp_dataset())
+  test_features <- Biobase::fData(get_transbig_dataset())
+  # To access clinical data
+  train_clinic <- Biobase::pData(get_upp_dataset())
+  test_clinic <- Biobase::pData(get_transbig_dataset())
+
+  train <- drop_duplicates(get_upp_dataset())
+  train <- expand_probesets(train)
+  train <- train[, !is.na(survival::Surv(time = train_clinic$t.rfs, event = train_clinic$e.rfs))] # Drop NAs in survival
+  test <- drop_duplicates(get_transbig_dataset())
+  test <- expand_probesets(test)
+  test <- test[, !is.na(survival::Surv(time = test_clinic$t.rfs, event = test_clinic$e.rfs))] # Drop NAs in survival
+
+  # Determine common probes (Genes)
+  int <- intersect(rownames(train), rownames(test))
+  train <- train[int, ]
+  test <- test[int, ]
+  identical(rownames(train), rownames(test))
+  # First we will get PAM50 centroids from genefu package
+  PAM50Centroids <- genefu::pam50$centroids
+  PAM50Genes <- genefu::pam50$centroids.map$probe
+  PAM50Genes <- Biobase::featureNames(train)[Biobase::featureNames(train) %in% PAM50Genes]
+  # Now we sample 200 random genes from expression matrix
+  Non_PAM50Genes <- Biobase::featureNames(train)[!Biobase::featureNames(train) %in% PAM50Genes]
+  Non_PAM50Genes <- sample(Non_PAM50Genes, 200, replace = FALSE)
+  reduced_set <- c(PAM50Genes, Non_PAM50Genes)
+  # Now we get the reduced training and test sets
+  train <- train[reduced_set, ]
+  test <- test[reduced_set, ]
+  Biobase::exprs(train) <- t(apply(Biobase::exprs(train), 1, genefu::rescale, na.rm = TRUE, q = 0.05))
+  Biobase::exprs(test) <- t(apply(Biobase::exprs(test), 1, genefu::rescale, na.rm = TRUE, q = 0.05))
+  train_expr <- Biobase::exprs(train)
+  test_expr <- Biobase::exprs(test)
+  # Survival objects
+  train_surv <- survival::Surv(time = train_clinic$t.rfs, event = train_clinic$e.rfs)
+  test_surv <- survival::Surv(time = test_clinic$t.rfs, event = test_clinic$e.rfs)
+  
+  return(list(train = list(expression_data = train_expr, phenotype_data = train_surv),
+              test =  list(expression_data = test_expr, phenotype_data = test_surv)
+              )
+         )
+}
+

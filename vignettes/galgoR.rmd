@@ -150,19 +150,19 @@ For PAM50 classification, Gene Symbols are expected, so probesets are mapped int
 DropDuplicates<- function(eset, map= "Gene.symbol"){
   
   #Drop NA's
-  drop= which(is.na(fData(eset)[,map]))
-  eset=eset[-drop,]
+  drop <- which(is.na(fData(eset)[,map]))
+  eset <- eset[-drop,]
   
   #Drop duplicates
-  drop=NULL
-  Dup=as.character(unique(fData(eset)[which(duplicated(fData(eset)[,map])),map]))
-  Var= apply(exprs(eset),1,var)
+  drop <- NULL
+  Dup <- as.character(unique(fData(eset)[which(duplicated(fData(eset)[,map])),map]))
+  Var <- apply(exprs(eset),1,var)
   for(j in Dup){
-   pos=which(fData(eset)[,map]==j)
-    drop= c(drop,pos[-which.max(Var[pos])])
+   pos <- which(fData(eset)[,map]==j)
+    drop <- c(drop,pos[-which.max(Var[pos])])
     
   }
-  eset=eset[-drop,]
+  eset <- eset[-drop,]
 
 featureNames(eset) <- fData(eset)[,map]
 return(eset)
