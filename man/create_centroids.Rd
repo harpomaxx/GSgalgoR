@@ -4,13 +4,8 @@
 \alias{create_centroids}
 \title{Create Centroids}
 \usage{
-create_centroids(
-  output,
-  solution_names,
-  trainset,
-  distancetype = "pearson",
-  usegpu = FALSE
-)
+create_centroids(output, solution_names, trainset,
+  distancetype = "pearson", usegpu = FALSE)
 }
 \arguments{
 \item{output}{@param output An object of class \code{galgo.Obj}}
@@ -30,21 +25,32 @@ Returns a list with the centroid matrix for each of the solutions in \code{solut
 This functions create the signature centroids estimated from the GalgoR output and the expression matrix of the training sets.
 }
 \examples{
-\dontrun{
-# Load data
-rna_luad <- use_rna_luad()
-TCGA_expr <- rna_luad$TCGA$expression_matrix
-TCGA_clinic <- rna_luad$TCGA$pheno_data
-OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
+#load example dataset
+library(breastCancerTRANSBIG)
+ data(transbig)
+ Train<- transbig
+ rm(transbig)
+
+ expression <- Biobase::exprs(Train)
+ clinical <- Biobase::pData(Train)
+ OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+
+#We will use a reduced dataset for the example
+expression <- expression[sample(1:nrow(expression),100),]
+
+#Now we scale the expression matrix
+expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
+output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+outputDF <- to_dataframe(output)
+outputList <- to_list(output)
+
 RESULTS <- non_dominated_summary(
   output = output, OS = OS,
-  prob_matrix = TCGA_expr,
+  prob_matrix = expression,
   distancetype = "pearson",
   usegpu = FALSE
 )
-CentroidsList <- create_centroids(output, RESULTS$solution, trainset = TCGA_expr)
-}
+CentroidsList <- create_centroids(output, RESULTS$solution, trainset = expression)
 }

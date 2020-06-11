@@ -18,13 +18,16 @@ returns a \code{data.frame} with the estimated prototypic centroids for each cla
 This function calculates the mean value for each feature of each class to calculate the prototypic centroids of the different groups
 }
 \examples{
-\dontrun{
-rna_luad <- use_rna_luad()
-prm <- rna_luad$TCGA$expression_matrix
-Dist <- calculate_distance_pearson_cpu(prm)
-k <- 4
-Pam <- cluster_algorithm(Dist, k)$cluster
-centroids <- k_centroids(prm, Pam)
-}
+#load example dataset
+require(iC10TrainingData)
+require(pamr)
 
+data(train.Exp)
+
+calculate_distance<- select_distance(distancetype= "pearson",usegpu=FALSE)
+Dist<- calculate_distance(train.Exp)
+k<- 4
+Pam<- cluster_algorithm(Dist,k)
+table(Pam$cluster)
+centroids <- k_centroids(train.Exp, Pam)
 }

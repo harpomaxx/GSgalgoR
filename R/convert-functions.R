@@ -19,17 +19,26 @@
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
-#' \dontrun{
-#' # Load data
-#' rna_luad <- use_rna_luad()
-#' TCGA_expr <- rna_luad$TCGA$expression_matrix
-#' TCGA_clinic <- rna_luad$TCGA$pheno_data
-#' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
+#' #load example dataset
+#' library(breastCancerTRANSBIG)
+#'  data(transbig)
+#'  Train<- transbig
+#'  rm(transbig)
+#'
+#'  expression <- Biobase::exprs(Train)
+#'  clinical <- Biobase::pData(Train)
+#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#'
+#' #We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression),100),]
+#'
+#' #Now we scale the expression matrix
+#' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+#' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
-#' }
 #'
 to_list <- function(output) {
   if (!methods::is(output, "galgo.Obj")) {
@@ -70,17 +79,27 @@ to_list <- function(output) {
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
-#' \dontrun{
-#' # Load data
-#' rna_luad <- use_rna_luad()
-#' TCGA_expr <- rna_luad$TCGA$expression_matrix
-#' TCGA_clinic <- rna_luad$TCGA$pheno_data
-#' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
+#' #load example dataset
+#' library(breastCancerTRANSBIG)
+#'  data(transbig)
+#'  Train<- transbig
+#'  rm(transbig)
+#'
+#'  expression <- Biobase::exprs(Train)
+#'  clinical <- Biobase::pData(Train)
+#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#'
+#' #We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression),100),]
+#'
+#' #Now we scale the expression matrix
+#' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
-#' }
+#' outputList <- to_list(output)
+#'
 to_dataframe <- function(output) {
   if (!methods::is(output, "galgo.Obj")) {
     stop("object must be of class 'galgo.Obj'")
@@ -91,7 +110,7 @@ to_dataframe <- function(output) {
     ListGenes[[i]] <- list()
     ListGenes[[i]] <- Genes[as.logical(output@Solutions[i, 1:length(Genes)])]
   }
-  
+
   OUTPUT <- data.frame(Genes = I(ListGenes), k = output@Solutions[, "k"], SC.Fit = output@Solutions[, ncol(output@Solutions) - 3], Surv.Fit = output@Solutions[, ncol(output@Solutions) - 2], Rank = output@Solutions[, "rnkIndex"], CrowD = output@Solutions[, "CrowD"])
   rownames(OUTPUT) <- paste("Solutions", 1:nrow(output@Solutions), sep = ".")
   return(OUTPUT)

@@ -26,13 +26,17 @@
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #' @name calculate_distance
 #' @examples
-#' \dontrun{
-#' rna_luad <- use_rna_luad()
-#' prm <- rna_luad$TCGA$expression_matrix
-#' # Will select the calculate_distance_pearson_cpu() function to calculate the distance matrix
-#' calculate_distance <- select_distance(distancetype = "pearson", usegpu = FALSE)
-#' calculate_distance(prm)
-#' }
+#' #load example dataset
+#' require(iC10TrainingData)
+#' require(pamr)
+#'
+#' data(train.Exp)
+#'
+#' calculate_distance<- select_distance(distancetype= "pearson",usegpu=FALSE)
+#' Dist<- calculate_distance(train.Exp)
+#' k<- 4
+#' Pam<- cluster_algorithm(Dist,k)
+#' table(Pam$cluster)
 NULL
 
 #' @rdname calculate_distance

@@ -20,22 +20,33 @@ Returns a \code{data.frame} with the classes assigned to each sample in each sig
 Classify samples from multiple centroids
 }
 \examples{
-\dontrun{
-# Load data
-rna_luad <- use_rna_luad()
-TCGA_expr <- rna_luad$TCGA$expression_matrix
-TCGA_clinic <- rna_luad$TCGA$pheno_data
-OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
+#load example dataset
+library(breastCancerTRANSBIG)
+ data(transbig)
+ Train<- transbig
+ rm(transbig)
+
+ expression <- Biobase::exprs(Train)
+ clinical <- Biobase::pData(Train)
+ OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+
+#We will use a reduced dataset for the example
+expression <- expression[sample(1:nrow(expression),100),]
+
+#Now we scale the expression matrix
+expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
+output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+outputDF <- to_dataframe(output)
+outputList <- to_list(output)
+
 RESULTS <- non_dominated_summary(
   output = output, OS = OS,
-  prob_matrix = TCGA_expr,
+  prob_matrix = expression,
   distancetype = "pearson",
   usegpu = FALSE
 )
-CentroidsList <- create_centroids(output, RESULTS$solution, trainset = TCGA_expr)
-TCGA_classes <- classify_multiple(prob_matrix = TCGA_expr, centroid_list = CentroidsList)
-}
+CentroidsList <- create_centroids(output, RESULTS$solution, trainset = expression)
+classes <- classify_multiple(prob_matrix = expression, centroid_list = CentroidsList)
 }

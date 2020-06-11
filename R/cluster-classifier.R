@@ -1,4 +1,3 @@
-
 #' Distance to centroid classifier function
 #'
 #' Given an \eqn{n x m} matrix of centroids, where \eqn{m} are the prototypic centroids with \eqn{n} features, classify new samples according to the distance to the centroids.
@@ -11,26 +10,21 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' rna_luad <- use_rna_luad()
 #'
-#' # The expression of the toy datasets are already scaled
-#' prm <- rna_luad$TCGA$expression_matrix
+#' #load example dataset
+#' require(iC10TrainingData)
+#' require(pamr)
 #'
-#' # We change the rownames to be gene Symbol insted of Gene Id.
-#' rownames(prm) <- rna_luad$TCGA$feature_data$gene
+#' data(train.Exp)
+#' data(IntClustMemb)
+#' TrainData<- list(x= train.Exp,y=IntClustMemb)
 #'
-#' # Wilkerson's centroids
-#' centroids <- rna_luad$WilkCentroids
+#' #Create prototypic centroids
+#' pam<- pamr.train(TrainData)
+#' centroids <- pam$centroids
 #'
-#' # Extract features from both data.frames
-#' inBoth <- Reduce(intersect, list(rownames(prm), rownames(centroids)))
-#'
-#' # Classify samples
-#' Wilk.Class <- cluster_classify(prm[inBoth, ], centroids[inBoth, ])
-#' table(Wilk.Class)
-#' }
-#'
+#' Class <- cluster_classify(train.Exp, centroids)
+#' table(Class, IntClustMemb)
 cluster_classify <- function(data, centroid, method = "pearson") {
   R <- stats::cor(data, centroid, method = method)
   scores <- apply(R, 1, which.max)
@@ -54,15 +48,16 @@ cluster_classify <- function(data, centroid, method = "pearson") {
 #'
 #' @export
 #' @examples
-#' \dontrun{
-#' rna_luad <- use_rna_luad()
-#' prm <- rna_luad$TCGA$expression_matrix
-#' Dist <- calculate_distance_pearson_cpu(prm)
-#' k <- 4
-#' Pam <- cluster_algorithm(Dist, k)
-#' table(Pam$cluster)
-#' }
+#' #load example dataset
+#' require(iC10TrainingData)
+#' require(pamr)
+#'data(train.Exp)
 #'
+#' calculate_distance<- select_distance(distancetype= "pearson",usegpu=FALSE)
+#' Dist<- calculate_distance(train.Exp)
+#' k<- 4
+#' Pam<- cluster_algorithm(Dist,k)
+#' table(Pam$cluster)
 cluster_algorithm <- function(c, k) {
   return(list(cluster = cluster::pam(c, k, cluster.only = TRUE, diss = TRUE, do.swap = TRUE, keep.diss = FALSE, keep.data = FALSE, pamonce = 2)))
 }
@@ -100,15 +95,18 @@ cosine_similarity <- function(a, b) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' rna_luad <- use_rna_luad()
-#' prm <- rna_luad$TCGA$expression_matrix
-#' Dist <- calculate_distance_pearson_cpu(prm)
-#' k <- 4
-#' Pam <- cluster_algorithm(Dist, k)$cluster
-#' centroids <- k_centroids(prm, Pam)
-#' }
+#' #load example dataset
+#' require(iC10TrainingData)
+#' require(pamr)
 #'
+#' data(train.Exp)
+#'
+#' calculate_distance<- select_distance(distancetype= "pearson",usegpu=FALSE)
+#' Dist<- calculate_distance(train.Exp)
+#' k<- 4
+#' Pam<- cluster_algorithm(Dist,k)
+#' table(Pam$cluster)
+#' centroids <- k_centroids(train.Exp, Pam)
 k_centroids <- function(data, class) {
   L <- list()
   c <- unique(unlist(class))

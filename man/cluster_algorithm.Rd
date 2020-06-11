@@ -21,15 +21,16 @@ In \code{galgoR}, the partition around medioids (PAM) algorithm is the default c
 The function runs the \code{\link[cluster:pam]{pam}} function of the \code{'cluster'} package with options \code{cluster.only =TRUE}, \code{diss = TRUE}, \code{do.swap=TRUE}, \code{keep.diss=FALSE}, \code{keep.data = FALSE}, \code{pamonce= 2}
 }
 \examples{
-\dontrun{
-rna_luad <- use_rna_luad()
-prm <- rna_luad$TCGA$expression_matrix
-Dist <- calculate_distance_pearson_cpu(prm)
-k <- 4
-Pam <- cluster_algorithm(Dist, k)
-table(Pam$cluster)
-}
+#load example dataset
+require(iC10TrainingData)
+require(pamr)
+data(train.Exp)
 
+calculate_distance<- select_distance(distancetype= "pearson",usegpu=FALSE)
+Dist<- calculate_distance(train.Exp)
+k<- 4
+Pam<- cluster_algorithm(Dist,k)
+table(Pam$cluster)
 }
 \references{
 \itemize{

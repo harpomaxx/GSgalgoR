@@ -378,12 +378,18 @@ consecutive_distance <- function(x) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' rna_luad <- use_rna_luad()
-#' clinical <- rna_luad$TCGA$pheno_data
-#' OS <- survival::Surv(time = clinical$time, event = clinical$status)
-#' surv_fitness(OS, clustclass = clinical$Wilk.Subtype, 1825)
-#' }
+#'
+#' #load example dataset
+#' library(breastCancerTRANSBIG)
+#' library(Biobase)
+#'  data(transbig)
+#'  Train<- transbig
+#'  rm(transbig)
+#'
+#'  clinical <- pData(Train)
+#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#'
+#'  surv_fitness(OS, clustclass = clinical$grade, period= 3650)
 surv_fitness <- function(OS, clustclass, period) {
   score <- tryCatch(
     {
@@ -735,18 +741,26 @@ penalize <- function(x) {
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'
 #' @examples
-#' \dontrun{
-#' # Load data
-#' rna_luad <- use_rna_luad()
-#' TCGA_expr <- rna_luad$TCGA$expression_matrix
-#' TCGA_clinic <- rna_luad$TCGA$pheno_data
-#' OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
+#' #load example dataset
+#' library(breastCancerTRANSBIG)
+#'  data(transbig)
+#'  Train<- transbig
+#'  rm(transbig)
+#'
+#'  expression <- Biobase::exprs(Train)
+#'  clinical <- Biobase::pData(Train)
+#'  OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+#'
+#' #We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression),100),]
+#'
+#' #Now we scale the expression matrix
+#' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
+#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
-#' }
 #'
 galgo <- function(population = 30, # Number of individuals to evaluate
                   generations = 2, # Number of generations

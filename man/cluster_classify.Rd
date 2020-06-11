@@ -20,24 +20,19 @@ Returns a numeric vector of length \eqn{p} with the class assigned to each sampl
 Given an \eqn{n x m} matrix of centroids, where \eqn{m} are the prototypic centroids with \eqn{n} features, classify new samples according to the distance to the centroids.
 }
 \examples{
-\dontrun{
-rna_luad <- use_rna_luad()
 
-# The expression of the toy datasets are already scaled
-prm <- rna_luad$TCGA$expression_matrix
+#load example dataset
+require(iC10TrainingData)
+require(pamr)
 
-# We change the rownames to be gene Symbol insted of Gene Id.
-rownames(prm) <- rna_luad$TCGA$feature_data$gene
+data(train.Exp)
+data(IntClustMemb)
+TrainData<- list(x= train.Exp,y=IntClustMemb)
 
-# Wilkerson's centroids
-centroids <- rna_luad$WilkCentroids
+#Create prototypic centroids
+pam<- pamr.train(TrainData)
+centroids <- pam$centroids
 
-# Extract features from both data.frames
-inBoth <- Reduce(intersect, list(rownames(prm), rownames(centroids)))
-
-# Classify samples
-Wilk.Class <- cluster_classify(prm[inBoth, ], centroids[inBoth, ])
-table(Wilk.Class)
-}
-
+Class <- cluster_classify(train.Exp, centroids)
+table(Class, IntClustMemb)
 }

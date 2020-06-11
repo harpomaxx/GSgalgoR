@@ -4,24 +4,14 @@
 \alias{galgo}
 \title{GalgoR main function}
 \usage{
-galgo(
-  population = 30,
-  generations = 2,
-  nCV = 5,
-  usegpu = FALSE,
-  distancetype = "pearson",
-  TournamentSize = 2,
-  period = 1825,
-  OS,
-  prob_matrix,
-  res_dir = "",
+galgo(population = 30, generations = 2, nCV = 5, usegpu = FALSE,
+  distancetype = "pearson", TournamentSize = 2, period = 1825, OS,
+  prob_matrix, res_dir = "",
   save_pop_partial_callback = default_callback,
   save_pop_final_callback = base_return_pop_callback,
   report_callback = base_report_callback,
   start_gen_callback = base_start_gen_callback,
-  end_gen_callback = base_end_gen_callback,
-  verbose = 2
-)
+  end_gen_callback = base_end_gen_callback, verbose = 2)
 }
 \arguments{
 \item{population}{a number indicating the number of solutions in the population of solutions that will be evolved}
@@ -65,18 +55,26 @@ For easier interpretation of the \code{'galgo.Obj'}, the output can be reshaped 
 \code{\link[galgoR:galgo]{galgo}} accepts an expression matrix and a survival object to find robust gene expression signatures related to a given outcome
 }
 \examples{
-\dontrun{
-# Load data
-rna_luad <- use_rna_luad()
-TCGA_expr <- rna_luad$TCGA$expression_matrix
-TCGA_clinic <- rna_luad$TCGA$pheno_data
-OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
+#load example dataset
+library(breastCancerTRANSBIG)
+ data(transbig)
+ Train<- transbig
+ rm(transbig)
+
+ expression <- Biobase::exprs(Train)
+ clinical <- Biobase::pData(Train)
+ OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+
+#We will use a reduced dataset for the example
+expression <- expression[sample(1:nrow(expression),100),]
+
+#Now we scale the expression matrix
+expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
+output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
 outputDF <- to_dataframe(output)
 outputList <- to_list(output)
-}
 
 }
 \author{

@@ -17,15 +17,23 @@ A line is drawn over all non-dominated solutions showing the estimated Pareto fr
 Plot pareto front from an galgo.Obj
 }
 \examples{
-\dontrun{
-# Load data
-rna_luad <- use_rna_luad()
-TCGA_expr <- rna_luad$TCGA$expression_matrix
-TCGA_clinic <- rna_luad$TCGA$pheno_data
-OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
+#load example dataset
+library(breastCancerTRANSBIG)
+ data(transbig)
+ Train<- transbig
+ rm(transbig)
+
+ expression <- Biobase::exprs(Train)
+ clinical <- Biobase::pData(Train)
+ OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+
+#We will use a reduced dataset for the example
+expression <- expression[sample(1:nrow(expression),100),]
+
+#Now we scale the expression matrix
+expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
+output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
 plot_pareto(output)
-}
 }

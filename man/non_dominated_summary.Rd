@@ -4,13 +4,8 @@
 \alias{non_dominated_summary}
 \title{Summary of the non dominated solutions}
 \usage{
-non_dominated_summary(
-  output,
-  prob_matrix,
-  OS,
-  distancetype = "pearson",
-  usegpu = FALSE
-)
+non_dominated_summary(output, prob_matrix, OS, distancetype = "pearson",
+  usegpu = FALSE)
 }
 \arguments{
 \item{output}{An object of class \code{galgo.Obj}}
@@ -31,20 +26,29 @@ The first column has the name of the non-dominated solutions, the second the num
 The function uses a \code{'galgo.Obj'} as input an the training dataset to evaluate the non-dominated solutions found by GalgoR
 }
 \examples{
-\dontrun{
-# Load data
-rna_luad <- use_rna_luad()
-TCGA_expr <- rna_luad$TCGA$expression_matrix
-TCGA_clinic <- rna_luad$TCGA$pheno_data
-OS <- survival::Surv(time = TCGA_clinic$time, event = TCGA_clinic$status)
+#load example dataset
+library(breastCancerTRANSBIG)
+ data(transbig)
+ Train<- transbig
+ rm(transbig)
+
+ expression <- Biobase::exprs(Train)
+ clinical <- Biobase::pData(Train)
+ OS <- survival::Surv(time=clinical$t.rfs,event= clinical$e.rfs)
+
+#We will use a reduced dataset for the example
+expression <- expression[sample(1:nrow(expression),100),]
+
+#Now we scale the expression matrix
+expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = TCGA_expr, OS = OS)
+output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
 non_dominated_summary(
-  output = output, OS = OS,
-  prob_matrix = TCGA_expr,
+  output = output,
+  OS = OS,
+  prob_matrix = expression,
   distancetype = "pearson",
   usegpu = FALSE
 )
-}
 }
