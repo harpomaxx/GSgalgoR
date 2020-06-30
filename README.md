@@ -8,7 +8,7 @@ A multi-objective optimization algorithm for disease subtype discovery based on 
 
 ## Documentation
 
-The full documentation of the package is available at https://harpomaxx.github.io/galgo/
+The full documentation of the package is available at https://harpomaxx.github.io/galgoR-package/
 
 ## Package Overview
 The **galgoR** package implements the Galgo algorithm as well as several helper functions for analyzing the results. The package also includes some example data sets useful for getting familiar with the package.  
