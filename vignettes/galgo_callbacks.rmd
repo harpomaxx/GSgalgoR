@@ -1,0 +1,192 @@
+---
+title: "Galgo Callbacks Mechanism"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Galgo Callbacks Mechanism}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+The galgoR package provides a practical but straightforward callback mechanism for adapting different Galgo execution sections to final user needs. The Galgo callbacks mechanism enables adding custom functions to change the Galgo behavior by including minor modification to Galgo's workflow. A common application of the callback mechanism is to implement personalized reports, saving partial information during the evolution process or compute the execution time.
+
+There are five possible  points where the user can hook its own code inside Galgo execution process.
+
+* At the beginning of the Galgo execution process. (i.e. when Galgo is about to  start.)
+* At the end of the Galgo execution process. (i.e. when Galgo is about to finish. )
+* At the beginning of the evolution process. (i.e. at the beginning of each generation/iteration. )
+* At the end of the evolution process. (i.e. at the end of each generation/iteration.)
+* In the middle of the evolution process. (i.e. in the middle of the generation, right after the new mating pool have been created.)
+
+Each one of the five possible hooks can be accessed through parameters  with the *_callback* suffix in the `galgo()` function.
+
+```{r eval=FALSE }
+galgo(...,
+  start_galgo_callback = default_callback, # When Galgo is about to start.
+  end_galgo_callback = default_callback,   # When Galgo is about to finish. 
+  start_gen_callback = default_callback,   # At the beginning of each generation/iteration.
+  end_gen_callback = default_callback,     # At the end of each generation/iteration.
+  report_callback = default_callback,      # In the middle of the generation, 
+                                           # right after the new mating pool have been created.
+      ...) 
+```
+
+
+# A simple custom callback function definition
+
+A callback function definition can be any R function accepting six parameters. 
+
+- `userdir`: the directory ("character") where the user can save information into local filesystem. 
+- `generation`: the number ("integer") of the current generation/iteration.
+- `pop_pool`: the data.frame containing the resulting solutions for current iteration. 
+- `pareto`: the solutions found by Galgo accross all generations in the solution space
+- `prob_matrix`: the expression set ("matrix) where  features are rows and samples distributed in  columns.
+- `current_time`: The current time (an object of class "POSIXct").
+
+The following callback function example prints the generation number and current time  every two iterations
+
+```{r}
+library(galgoR)
+
+my_callback <-
+    function(userdir = "",
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+      
+    # code starts  here
+    if (generation%%2 == 0)
+        message(paste0("generation: ",generation," current_time: ",current_time))
+    }
+```
+
+then, the `my_callback()` function needs to be assigned to some of the available hooks provided by the `galgo()`. An example of such assignment and the resulting output is provided in the two snippets below.
+
+
+A reduced version of the [TRANSBIG](bioconductor.org/packages/release/data/experiment/html/breastCancerTRANSBIG.html) dataset is used to setup the expression and clinical information required for the `galgo()` function.
+
+```{r}
+ library(breastCancerTRANSBIG)
+ data(transbig)
+ train <- transbig
+ rm(transbig)
+ expression <- Biobase::exprs(train)
+ clinical <- Biobase::pData(train)
+ OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
+# use a reduced dataset for the example
+ expression <- expression[sample(1:nrow(expression), 100), ]
+# scale the expression matrix
+ expression <- t(scale(t(expression)))
+```
+
+Then, the `galgo()` function is invoked and the recently defined function `my_callback()` is assigned to the `report_callback` hook-point.
+
+```{r}
+# Run galgo
+galgoR::galgo(generations = 6, 
+              population = 15, 
+              prob_matrix = expression, 
+              OS = OS,
+  start_galgo_callback = galgoR::default_callback, 
+  end_galgo_callback = galgoR::default_callback,   
+  report_callback = my_callback,      # call `my_callback()` in the middle of of each generation/iteration.
+  start_gen_callback = galgoR::default_callback,  
+  end_gen_callback = galgoR::default_callback) 
+
+
+```
+
+
+# Saving the partial state of the population pool through a custom callback function
+
+The following callback function save in a temporary directory the solutions obtained every five generation/iteration. A file the number of the generation and  with a `rda.` extension will be left in a directory defined by the `tempdir()` function.
+
+```{r}
+my_save_pop_callback <-
+    function(userdir = "",
+             generation,
+             pop_pool,
+             pareto,
+             prob_matrix,
+             current_time) {
+        
+        directory <- paste0(tempdir(), "/")
+        if (!dir.exists(directory)) {
+            dir.create(directory, recursive = TRUE)
+        }
+        filename <- paste0(directory, generation, ".rda")
+        if (generation%%2 == 0){
+               save(file = filename, pop_pool)
+        }
+        message(paste("solution file saved in",filename))
+    }
+```
+
+As usual, the `galgo()` function is invoked and the recently defined function `my_save_pop_callback()` is assigned to the `end_gen_callback` hook-point. As a result, every five generation/iteration the complete solution obtained by galgo will be saved in a file. 
+
+```{r}
+# Run galgo
+galgoR::galgo(
+  generations = 6, 
+  population = 15, 
+  prob_matrix = expression, 
+  OS = OS,
+  start_galgo_callback = galgoR::default_callback, 
+  end_galgo_callback = galgoR::default_callback,   
+  report_callback = my_callback,      # call `my_callback()` in the middle of of each generation/iteration.
+  start_gen_callback = galgoR::default_callback,
+  end_gen_callback = my_save_pop_callback , # call `my_save_pop_callback()` at the end of each generation/iteration
+  ) 
+
+
+```
+
+
+# Galgo implemented Callbacks
+
+By default, Galgo implements four callback functions
+
+`default_callback()` a simple callback that does nothing at all. It is just used for setting the default behavior of some of the hook-points inside `galgo()`
+`base_report_callback()` a  report callback for printing basic information about the solution provided by `galgo()` such as fitness and crowding distance.
+`no_report_callback()`   a report callback for informing the user galgo is running. Not valuable information is shown.
+`base_return_pop_callback()` a callback function for building and returning the `galgo.Obj` object.
+
+In the the default definition of the `galgo()` function the hook-points are defined as follow:
+
+- `start_galgo_callback = default_callback`
+- `end_galgo_callback = base_return_pop_callback`
+- `report_callback = base_report_callback`
+- `start_gen_callback = default_callback`
+- `end_gen_callback = default_callback`
+
+
+Notice by using the callback mechanism it is possible to modify even the returning value of the `galgo()` function. The default `base_return_pop_callback()` returns a `galgo.Obj` object, however it would simple to change that behavior for something like the `my_save_pop_callback()` and the function will not returning any value.
+
+
+```{r}
+# Run galgo
+galgoR::galgo(
+  generations = 6, 
+  population = 15, 
+  prob_matrix = expression, 
+  OS = OS,
+  start_galgo_callback = galgoR::default_callback, 
+  end_galgo_callback = my_save_pop_callback,
+  report_callback = my_callback,      # call `my_callback()` in the middle of of each generation/iteration.
+  start_gen_callback = galgoR::default_callback,
+  end_gen_callback = galgoR::default_callback
+  ) 
+
+```
+
+

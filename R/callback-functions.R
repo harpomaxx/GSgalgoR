@@ -1,20 +1,44 @@
 #' A base callback function that returns a galgo.Obj
-#' @param userdir
-#' @param prefix
-#' @param generation
-#' @param pop_pool
-#' @param pareto
-#' @param prob_matrix
-#' @param current_time
+#' @param userdir the default directory used by `galgo()` to store files
+#' @param generation a number indicating the number of iterations of the galgo algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
+#' @param pareto the solutions found by Galgo across all generations in the solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param current_time an \code{POSIXct} object
 #'
-#' @return an objet of class galgo
 #'
+#' @return an object of class galgo
+#' @export 
 #'
 #' @examples
-#' @noRd
+#' # load example dataset
+#' 
+#' library(breastCancerTRANSBIG)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
+#'
+#' # Now we scale the expression matrix
+#' expression <- t(scale(t(expression)))
+#'
+#' # Run galgo with base_return_pop_callback assigned to the end_galgo_callback
+#' # hook-point
+#' # By using this callback galgo() return a `galgo,Obj` object.
+#' output <- galgoR::galgo(generations = 5, 
+#' population = 15, 
+#' prob_matrix = expression, 
+#' OS = OS,
+#' end_galgo_callback = base_return_pop_callback
+#' )
+#' 
+#' 
 base_return_pop_callback <-
     function(userdir = "",
-             prefix,
              generation,
              pop_pool,
              pareto,
@@ -35,15 +59,15 @@ base_return_pop_callback <-
 #'
 #'
 #'
-#' @param userdir
-#' @param prefix
-#' @param generation
-#' @param pop_pool
-#' @param pareto
-#' @param prob_matrix
-#' @param current_time
+#' @param generation a number indicating the number of iterations of the galgo algorithm
+#' @param prefix a prefix used for the file name
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
+#' @param pareto the solutions found by Galgo across all generations in the solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param current_time an \code{POSIXct} object
 #'
-#' @return an objet of class galgo
+#'
+#' @return an object of class galgo
 #'
 #'
 #' @examples
@@ -56,6 +80,7 @@ base_save_pop_callback <-
              pareto,
              prob_matrix,
              current_time) {
+        
         if (userdir == "") {
             directory <- paste0(tempdir(), "/")
         } else {
@@ -77,16 +102,16 @@ base_save_pop_callback <-
         return(output)
     }
 
-#' A callback for daving partial galgo.Obj (every 2 generations)
+#' A callback for saving partial galgo.Obj (every 2 generations)
 #'
-#' @param userdir
-#' @param generation
-#' @param pop_pool
-#' @param pareto
-#' @param prob_matrix
-#' @param current_time
+#' @param generation a number indicating the number of iterations of the galgo algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
+#' @param pareto the solutions found by Galgo accross all generations in the solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param current_time an \code{POSIXct} object
 #'
-#' @return
+#'
+#' @return an object of class galgo
 #'
 #'
 #' @examples
@@ -121,12 +146,12 @@ base_save_pop_partial_callback <-
 
 #' A callback for saving final galgo.Obj
 #'
-#' @param userdir
-#' @param generation
-#' @param pop_pool
-#' @param pareto
-#' @param prob_matrix
-#' @param current_time
+#' @param generation a number indicating the number of iterations of the galgo algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
+#' @param pareto the solutions found by Galgo accross all generations in the solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param current_time an \code{POSIXct} object
+#'
 #'
 #' @return
 #'
@@ -162,20 +187,44 @@ base_save_pop_final_callback <-
         return(output)
     }
 
-#' Title
+
 #' Print basic info per generation
+#' 
+#' @param userdir the default directory used by `galgo()` to store files
+#' @param generation a number indicating the number of iterations of the galgo algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
+#' @param pareto the solutions found by Galgo across all generations in the solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param current_time an \code{POSIXct} object
 #'
-#' @param generation
-#' @param pop_pool
-#' @param pareto
-#' @param prob_matrix
-#' @param current_time
 #'
-#' @return
-#'
+#' 
+#' @export
 #'
 #' @examples
-#' @noRd
+#' # load example dataset
+#' 
+#' library(breastCancerTRANSBIG)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
+#'
+#' # Now we scale the expression matrix
+#' expression <- t(scale(t(expression)))
+#'
+#' # Run galgo with base_report_callback assigned to the report_callback
+#' # hook-point
+#' galgoR::galgo(generations = 5, 
+#' population = 15, 
+#' prob_matrix = expression, 
+#' OS = OS,
+#' report_callback = base_report_callback
+#' )
 base_report_callback <-
     function(userdir = "",
              generation,
@@ -185,23 +234,51 @@ base_report_callback <-
              current_time) {
         chrom_length <- nrow(prob_matrix)
         message(paste0("Generation ", generation, " Non-dominated solutions:"))
-        print(pop_pool[pop_pool[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
+        print(pop_pool[pop_pool[, "rnkIndex"] == 1, 
+                       (chrom_length + 1):(chrom_length + 5)])
         # print(Sys.time()- start_time)
     }
 
-#' Title
+#' Print minimal information to the user about galgo execution.
+#' 
+#' The main idea behind this callback function is to provide some feedback to the user about galgo execution. 
+#' No other relevant information is shown
+#' 
+#' @param userdir the default directory used by `galgo()` to store files
+#' @param generation a number indicating the number of iterations of the galgo algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
+#' @param pareto the solutions found by Galgo across all generations in the solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param current_time an \code{POSIXct} object
 #'
-#' @param generation
-#' @param pop_pool
-#' @param pareto
-#' @param prob_matrix
-#' @param current_time
 #'
-#' @return
-#'
+#' 
+#' @export
 #'
 #' @examples
-#' @noRd
+#' # load example dataset
+#' 
+#' library(breastCancerTRANSBIG)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
+#'
+#' # Now we scale the expression matrix
+#' expression <- t(scale(t(expression)))
+#'
+#' # Run galgo with no_report_callback assigned to the report_callback
+#' # hook-point
+#' galgoR::galgo(generations = 5, 
+#' population = 15, 
+#' prob_matrix = expression, 
+#' OS = OS,
+#' report_callback = no_report_callback
+#' )
 no_report_callback <-
     function(userdir = "",
              generation,
@@ -216,66 +293,49 @@ no_report_callback <-
         }
     }
 
-#' Title
-#'
-#' @param generation
-#' @param pop_pool
-#' @param pareto
-#' @param prob_matrix
-#' @param current_time
-#'
-#' @return
-#'
-#'
-#' @examples
-#' @noRd
-base_start_gen_callback <-
-    function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
-        # start_time <- Sys.time()
-        
-    }
-
-#' Title
-#'
-#' @param generation
-#' @param pop_pool
-#' @param pareto
-#' @param prob_matrix
-#' @param current_time
-#'
-#' @return
-#'
-#'
-#' @examples
-#' @noRd
-base_end_gen_callback <-
-    function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
-        # print(Sys.time()- start_time)
-    }
 
 #' A default call_back function that does nothing.
-#'
+#' 
+#' @param userdir the default directory used by \code{galgo()} to store files
 #' @param generation a number indicating the number of iterations of the galgo algorithm
 #' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
-#' @param pareto the solutions found by Galgo accross all generations in the solution space
+#' @param pareto the solutions found by Galgo across all generations in the solution space
 #' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
-#' @return
-#'
 #' 
+#'
+#' @export 
 #' @examples
-#' @noRd
+#' # load example dataset
+#' 
+#' library(breastCancerTRANSBIG)
+#' data(transbig)
+#' Train <- transbig
+#' rm(transbig)
+#' expression <- Biobase::exprs(Train)
+#' clinical <- Biobase::pData(Train)
+#' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
+#' # We will use a reduced dataset for the example
+#' expression <- expression[sample(1:nrow(expression), 100), ]
+#'
+#' # Now we scale the expression matrix
+#' expression <- t(scale(t(expression)))
+#'
+#' # Run galgo with default_callback assigned to all the hook-points
+#' 
+#' galgoR::galgo(generations = 5, 
+#' population = 15, 
+#' prob_matrix = expression, 
+#' OS = OS,
+#' start_galgo_callback = default_callback, # When Galgo is about to start.
+#' end_galgo_callback = default_callback,   # When Galgo is about to finish. 
+#' start_gen_callback = default_callback,   # At the beginning of each generation/iteration.
+#' end_gen_callback = default_callback,     # At the end of each generation/iteration.
+# 'report_callback = default_callback,      # In the middle of the generation 
+#' )
+#' 
+#' 
 default_callback <-
     function(userdir = "",
              generation,

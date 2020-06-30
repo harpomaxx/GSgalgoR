@@ -590,7 +590,7 @@ penalize <- function(x) {
 #' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
 #' @param res_dir a \code{character} string indicating where to save the intermediate and final output of the algorithm
 #' @param start_galgo_callback optional callback function for the start of the galgo execution
-#' @param end_galgo_final_callback optional callback function for the end of the galgo execution
+#' @param end_galgo_callback optional callback function for the end of the galgo execution
 #' @param report_callback optional callback function
 #' @param start_gen_callback optional callback function for the beginning of the run
 #' @param end_gen_callback optional callback function for the end of the run
@@ -622,7 +622,7 @@ penalize <- function(x) {
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+#' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
 galgo <-
@@ -645,8 +645,8 @@ galgo <-
              start_galgo_callback = default_callback,
              end_galgo_callback = base_return_pop_callback,
              report_callback = base_report_callback,
-             start_gen_callback = base_start_gen_callback,
-             end_gen_callback = base_end_gen_callback,
+             start_gen_callback = default_callback,
+             end_gen_callback = default_callback,
              verbose = 2) {
       
         if (verbose == 0) {

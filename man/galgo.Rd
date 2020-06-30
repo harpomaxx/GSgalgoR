@@ -18,8 +18,8 @@ galgo(
   start_galgo_callback = default_callback,
   end_galgo_callback = base_return_pop_callback,
   report_callback = base_report_callback,
-  start_gen_callback = base_start_gen_callback,
-  end_gen_callback = base_end_gen_callback,
+  start_gen_callback = default_callback,
+  end_gen_callback = default_callback,
   verbose = 2
 )
 }
@@ -46,6 +46,8 @@ galgo(
 
 \item{start_galgo_callback}{optional callback function for the start of the galgo execution}
 
+\item{end_galgo_callback}{optional callback function for the end of the galgo execution}
+
 \item{report_callback}{optional callback function}
 
 \item{start_gen_callback}{optional callback function for the beginning of the run}
@@ -53,8 +55,6 @@ galgo(
 \item{end_gen_callback}{optional callback function for the end of the run}
 
 \item{verbose}{select the level of information printed during galgo execution}
-
-\item{end_galgo_final_callback}{optional callback function for the end of the galgo execution}
 }
 \value{
 an object of type \code{'galgo.Obj'} that corresponds to a list with the elements \code{$Solutions} and \code{$ParetoFront}. \code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number of features evaluated and \eqn{l} is the number of solutions obtained.
@@ -82,7 +82,7 @@ expression <- expression[sample(1:nrow(expression), 100), ]
 expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 10, population = 30, prob_matrix = expression, OS = OS)
+output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
 outputDF <- to_dataframe(output)
 outputList <- to_list(output)
 }

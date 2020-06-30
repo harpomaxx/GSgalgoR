@@ -24,7 +24,7 @@ For testing galgoR, the package contains two reduced lung adenocarcinoma gene ex
 You can install the released version of galgoR using devtools with:
 
 ```
-devtools::install_github("https://github.com/harpomaxx/galgo")
+devtools::install_github("https://github.com/harpomaxx/galgoR-package")
 library(galgoR)
 ```
 ## Executing Galgo
