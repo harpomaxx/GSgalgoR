@@ -51,23 +51,22 @@ galgo.Obj <- setClass( # Set the name for the class
 #' @return
 #' @noRd
 #' @examples
-RMST<- function (ft, rmean) {
-
+RMST <- function(ft, rmean) {
   nstrat <- length(ft$strata)
   stemp <- rep(1:nstrat, ft$strata)
 
-  rmst=NULL
+  rmst <- NULL
   for (i in 1:nstrat) {
     who <- (stemp == i)
-    idx = ft$time[who] <= rmean
-    wk.time = sort(c(ft$time[who][idx], rmean))
-    wk.surv = ft$surv[who][idx]
-    wk.n.risk = ft$n.risk[who][idx]
-    wk.n.event = ft$n.event[who][idx]
+    idx <- ft$time[who] <= rmean
+    wk.time <- sort(c(ft$time[who][idx], rmean))
+    wk.surv <- ft$surv[who][idx]
+    wk.n.risk <- ft$n.risk[who][idx]
+    wk.n.event <- ft$n.event[who][idx]
     time.diff <- diff(c(0, wk.time))
     areas <- time.diff * c(1, wk.surv)
-    rmst_x = sum(areas)
-    rmst = c(rmst,rmst_x)
+    rmst_x <- sum(areas)
+    rmst <- c(rmst, rmst_x)
   }
   return(rmst)
 }
