@@ -15,8 +15,8 @@ galgo(
   OS,
   prob_matrix,
   res_dir = "",
-  save_pop_partial_callback = default_callback,
-  save_pop_final_callback = base_return_pop_callback,
+  start_galgo_callback = default_callback,
+  end_galgo_callback = base_return_pop_callback,
   report_callback = base_report_callback,
   start_gen_callback = base_start_gen_callback,
   end_gen_callback = base_end_gen_callback,
@@ -44,9 +44,7 @@ galgo(
 
 \item{res_dir}{a \code{character} string indicating where to save the intermediate and final output of the algorithm}
 
-\item{save_pop_partial_callback}{optional callback function between iterations}
-
-\item{save_pop_final_callback}{optional callback function for the last iteration}
+\item{start_galgo_callback}{optional callback function for the start of the galgo execution}
 
 \item{report_callback}{optional callback function}
 
@@ -55,6 +53,8 @@ galgo(
 \item{end_gen_callback}{optional callback function for the end of the run}
 
 \item{verbose}{select the level of information printed during galgo execution}
+
+\item{end_galgo_final_callback}{optional callback function for the end of the galgo execution}
 }
 \value{
 an object of type \code{'galgo.Obj'} that corresponds to a list with the elements \code{$Solutions} and \code{$ParetoFront}. \code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number of features evaluated and \eqn{l} is the number of solutions obtained.

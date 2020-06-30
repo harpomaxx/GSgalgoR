@@ -589,8 +589,8 @@ penalize <- function(x) {
 #' @param OS a \code{survival} object (see \code{ \link[survival]{Surv} } function from the \code{\link{survival}} package)
 #' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
 #' @param res_dir a \code{character} string indicating where to save the intermediate and final output of the algorithm
-#' @param save_pop_partial_callback optional callback function between iterations
-#' @param save_pop_final_callback optional callback function for the last iteration
+#' @param start_galgo_callback optional callback function for the start of the galgo execution
+#' @param end_galgo_final_callback optional callback function for the end of the galgo execution
 #' @param report_callback optional callback function
 #' @param start_gen_callback optional callback function for the beginning of the run
 #' @param end_gen_callback optional callback function for the end of the run
@@ -642,12 +642,13 @@ galgo <-
              # OS=Surv(time=clinical$time,event=clinical$status)
              prob_matrix,
              res_dir = "",
-             save_pop_partial_callback = default_callback,
-             save_pop_final_callback = base_return_pop_callback,
+             start_galgo_callback = default_callback,
+             end_galgo_callback = base_return_pop_callback,
              report_callback = base_report_callback,
              start_gen_callback = base_start_gen_callback,
              end_gen_callback = base_end_gen_callback,
              verbose = 2) {
+      
         if (verbose == 0) {
             report_callback <- default_callback
             start_gen_callback <- default_callback
@@ -692,16 +693,33 @@ galgo <-
                     prob = c(prob, 1 - prob)
                 )
         }
-
+        
+        X1<-X
+        
+        start_galgo_callback(
+            generation = 0,
+            pop_pool = X1,
+            pareto = PARETO,
+            prob_matrix = prob_matrix,
+            current_time = start_time
+          )
+        
         ##### Main loop.
         for (g in 1:generations) {
             # Output for the generation callback
-            callback_data <- list()
-            environment(start_gen_callback) <- environment()
-            start_gen_callback()
-
+            #callback_data <- list()
+            #environment(start_gen_callback) <- environment()
             start_time <- Sys.time() # Measures generation time
+          
+            start_gen_callback(
+              generation = g,
+              pop_pool = X1,
+              pareto = PARETO,
+              prob_matrix = prob_matrix,
+              current_time = start_time
+            )
 
+     
             # 2.Calculate the fitness f(x) of each chromosome x in the population.
             Fit1 <-
                 apply(X, 1, mininum_genes, chrom_length = chrom_length) # Apply constraints (min 10 genes per solution). #TODO: Check chrom_length parameter
@@ -780,8 +798,10 @@ galgo <-
                     pop_pool = X1,
                     pareto = PARETO,
                     prob_matrix = prob_matrix,
-                    current_time = start_time
+                    current_time =  Sys.time()
                 )
+             
+                
 
                 # Save parent generation.
                 Xold <- X
@@ -834,7 +854,7 @@ galgo <-
                     pop_pool = X1,
                     pareto = PARETO,
                     prob_matrix = prob_matrix,
-                    current_time = start_time
+                    current_time = Sys.time()
                 )
 
                 # print(paste0("Generation ", g, " Non-dominated solutions:"))
@@ -851,31 +871,24 @@ galgo <-
 
             # 5.Go to step 2
             gc()
-            save_pop_partial_callback(
-                userdir = res_dir,
-                generation = g,
-                pop_pool = X1,
-                pareto = PARETO,
-                prob_matrix = prob_matrix,
-                current_time = start_time
-            )
+            
             end_gen_callback(
                 userdir = res_dir,
                 generation = g,
                 pop_pool = X1,
                 pareto = PARETO,
                 prob_matrix = prob_matrix,
-                current_time = start_time
+                current_time = Sys.time()
             )
         }
 
         parallel::stopCluster(cluster)
-        save_pop_final_callback(
+        end_galgo_callback(
             userdir = res_dir,
             generation = g,
             pop_pool = X1,
             pareto = PARETO,
             prob_matrix = prob_matrix,
-            current_time = start_time
+            current_time = Sys.time()
         )
     }

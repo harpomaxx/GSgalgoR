@@ -237,6 +237,7 @@ base_start_gen_callback <-
              prob_matrix,
              current_time) {
         # start_time <- Sys.time()
+        
     }
 
 #' Title
@@ -272,7 +273,7 @@ base_end_gen_callback <-
 #'
 #' @return
 #'
-#'
+#' 
 #' @examples
 #' @noRd
 default_callback <-
