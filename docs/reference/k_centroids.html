@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -98,14 +98,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/galgoR_LUAD.html">GalgoR user Guide</a>
+      <a href="../articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/harpomaxx/galgo/">
+  <a href="https://github.com/harpomaxx/galgoR-package/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -124,7 +124,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Function to calculate the centroids of different groups (classes)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/cluster-classifier.R'><code>R/cluster-classifier.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgoR-package/blob/master/R/cluster-classifier.R'><code>R/cluster-classifier.R</code></a></small>
     <div class="hidden name"><code>k_centroids.Rd</code></div>
     </div>
 
@@ -152,14 +152,18 @@
     <p>returns a <code>data.frame</code> with the estimated prototypic centroids for each class with the features names as rownames</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>rna_luad</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='use_rna_luad.html'>use_rna_luad</a></span>()
-<span class='no'>prm</span> <span class='kw'>&lt;-</span> <span class='no'>rna_luad</span>$<span class='no'>TCGA</span>$<span class='no'>expression_matrix</span>
-<span class='no'>Dist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>calculate_distance_pearson_cpu</a></span>(<span class='no'>prm</span>)
+    <pre class="examples"><div class='input'><span class='co'># load example dataset</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>iC10TrainingData</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>pamr</span>)
+
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>train.Exp</span>)
+
+<span class='no'>calculate_distance</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>select_distance</a></span>(<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>Dist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>calculate_distance</a></span>(<span class='no'>train.Exp</span>)
 <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
-<span class='no'>Pam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cluster_algorithm.html'>cluster_algorithm</a></span>(<span class='no'>Dist</span>, <span class='no'>k</span>)$<span class='no'>cluster</span>
-<span class='no'>centroids</span> <span class='kw'>&lt;-</span> <span class='fu'>k_centroids</span>(<span class='no'>prm</span>, <span class='no'>Pam</span>)
-}</div></pre>
+<span class='no'>Pam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cluster_algorithm.html'>cluster_algorithm</a></span>(<span class='no'>Dist</span>, <span class='no'>k</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>Pam</span>$<span class='no'>cluster</span>)</div><div class='output co'>#&gt; 
+#&gt;   1   2   3   4 
+#&gt; 252 161 332 252 </div><div class='input'><span class='no'>centroids</span> <span class='kw'>&lt;-</span> <span class='fu'>k_centroids</span>(<span class='no'>train.Exp</span>, <span class='no'>Pam</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

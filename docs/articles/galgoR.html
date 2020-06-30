@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -57,14 +57,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/galgoR_LUAD.html">GalgoR user Guide</a>
+      <a href="../articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/harpomaxx/galgo/">
+  <a href="https://github.com/harpomaxx/galgoR-package/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -91,9 +91,9 @@
             <address class="author_afil">
       Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza, Argentina.<br><h4 class="author">Carlos A. Catania</h4>
             <address class="author_afil">
-      Engineering School, National University of Cuyo, Mendoza, Argentina.<br><h4 class="date">2020-06-09</h4>
+      Engineering School, National University of Cuyo, Mendoza, Argentina.<br><h4 class="date">2020-06-30</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/harpomaxx/galgo/blob/master/vignettes/galgoR.rmd"><code>vignettes/galgoR.rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/harpomaxx/galgoR-package/blob/master/vignettes/galgoR.rmd"><code>vignettes/galgoR.rmd</code></a></small>
       <div class="hidden name"><code>galgoR.rmd</code></div>
 
     </address>
@@ -141,13 +141,13 @@
 <li>Phenotypic data, where we find information on the samples (condition, status, treatment, survival, and other covariates).</li>
 <li>Finally, these objects can also contain Annotations and feature Meta-data.</li>
 </ul>
-<p>To start testing galgoR, we will use two Breast Cancer datasets. Namely, the UPP and the TRANSBIG datasets. Additionally, we will use PAM50 centroids to perform breas cancer sample classification. The datasets can be accesed from the following <code>Bioconductor</code> packages:</p>
+<p>To start testing galgoR, we will use two Breast Cancer datasets. Namely, the <a href="bioconductor.org/packages/release/data/experiment/html/breastCancerUPP.html">UPP</a> and the <a href="bioconductor.org/packages/release/data/experiment/html/breastCancerTRANSBIG.html">TRANSBIG</a> datasets. Additionally, we will use PAM50 centroids to perform breas cancer sample classification. The datasets can be accesed from the following <a href="https://bioconductor.org/">Bioconductor</a> packages:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r">
 <span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>, <span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)
 
-<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"breastCancerUPP"</span>)
-<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"breastCancerTRANSBIG"</span>)</pre></body></html></div>
+<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"breastCancerUPP"</span>,<span class="kw">version</span> <span class="kw">=</span> <span class="st">"devel"</span>)
+<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"breastCancerTRANSBIG"</span>,<span class="kw">version</span> <span class="kw">=</span> <span class="st">"devel"</span>)</pre></body></html></div>
 <div class="sourceCode" id="cb3"><html><body><pre class="r">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">breastCancerTRANSBIG</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">breastCancerUPP</span>)</pre></body></html></div>
@@ -190,7 +190,7 @@
 <div id="data-tidying-and-preparation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-tidying-and-preparation" class="anchor"></a>Data tidying and preparation</h2>
-<p>Galgo can accept any numeric data like probe intensity from microarray experiments or RNAseq normalized counts, nevertheless, features are expected to be scaled across the dataset before being plugged in into the Galgo Framework. For PAM50 classification, Gene Symbols are expected, so probesets are mapped into their respective gene symbols. Probesets mapping for multiple genes are expanded while Genes mapped to multiple probes are collapsed selecting the probes with the highest variance for each duplicated gene.</p>
+<p>Galgo can accept any numeric data, like probe intensity from microarray experiments or RNAseq normalized counts, nevertheless, features are expected to be scaled across the dataset before being plugged in into the Galgo Framework. For PAM50 classification, Gene Symbols are expected, so probesets are mapped into their respective gene symbols. Probesets mapping for multiple genes are expanded while Genes mapped to multiple probes are collapsed selecting the probes with the highest variance for each duplicated gene.</p>
 <div id="drop-duplicates-and-nas" class="section level3">
 <h3 class="hasAnchor">
 <a href="#drop-duplicates-and-nas" class="anchor"></a>Drop duplicates and NA’s</h3>
@@ -200,19 +200,19 @@
 <span class="no">DropDuplicates</span><span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">eset</span>, <span class="no">map</span><span class="kw">=</span> <span class="st">"Gene.symbol"</span>){
 
   <span class="co">#Drop NA's</span>
-  <span class="no">drop</span><span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">eset</span>)[,<span class="no">map</span>]))
-  <span class="no">eset</span><span class="kw">=</span><span class="no">eset</span>[-<span class="no">drop</span>,]
+  <span class="no">drop</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">eset</span>)[,<span class="no">map</span>]))
+  <span class="no">eset</span> <span class="kw">&lt;-</span> <span class="no">eset</span>[-<span class="no">drop</span>,]
 
   <span class="co">#Drop duplicates</span>
-  <span class="no">drop</span><span class="kw">=</span><span class="kw">NULL</span>
-  <span class="no">Dup</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">eset</span>)[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">eset</span>)[,<span class="no">map</span>])),<span class="no">map</span>]))
-  <span class="no">Var</span><span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">eset</span>),<span class="fl">1</span>,<span class="no">var</span>)
+  <span class="no">drop</span> <span class="kw">&lt;-</span> <span class="kw">NULL</span>
+  <span class="no">Dup</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">eset</span>)[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">eset</span>)[,<span class="no">map</span>])),<span class="no">map</span>]))
+  <span class="no">Var</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">eset</span>),<span class="fl">1</span>,<span class="no">var</span>)
   <span class="kw">for</span>(<span class="no">j</span> <span class="kw">in</span> <span class="no">Dup</span>){
-   <span class="no">pos</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">eset</span>)[,<span class="no">map</span>]<span class="kw">==</span><span class="no">j</span>)
-    <span class="no">drop</span><span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">drop</span>,<span class="no">pos</span>[-<span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span>(<span class="no">Var</span>[<span class="no">pos</span>])])
+   <span class="no">pos</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">eset</span>)[,<span class="no">map</span>]<span class="kw">==</span><span class="no">j</span>)
+    <span class="no">drop</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">drop</span>,<span class="no">pos</span>[-<span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span>(<span class="no">Var</span>[<span class="no">pos</span>])])
 
   }
-  <span class="no">eset</span><span class="kw">=</span><span class="no">eset</span>[-<span class="no">drop</span>,]
+  <span class="no">eset</span> <span class="kw">&lt;-</span> <span class="no">eset</span>[-<span class="no">drop</span>,]
 
 <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureNames.html">featureNames</a></span>(<span class="no">eset</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">eset</span>)[,<span class="no">map</span>]
 <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="no">eset</span>)
@@ -245,12 +245,14 @@
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">Train</span><span class="kw">=</span><span class="fu">DropDuplicates</span>(<span class="no">Train</span>)
 <span class="no">Train</span><span class="kw">=</span><span class="fu">expandProbesets</span>(<span class="no">Train</span>)
 
-<span class="co">#Drop NAs in survival</span>
-<span class="no">Train</span> <span class="kw">&lt;-</span> <span class="no">Train</span>[,!<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="kw pkg">survival</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span>(<span class="kw">time</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">Train</span>)$<span class="no">t.rfs</span>,<span class="kw">event</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">Train</span>)$<span class="no">e.rfs</span>))]
+<span class="no">Train</span> <span class="kw">&lt;-</span> <span class="no">Train</span>[,!<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="kw pkg">survival</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span>(<span class="kw">time</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">Train</span>)$<span class="no">t.rfs</span>,<span class="kw">event</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">Train</span>)$<span class="no">e.rfs</span>))] <span class="co">#Drop NAs in survival</span>
+
 
 
 <span class="no">Test</span><span class="kw">=</span><span class="fu">DropDuplicates</span>(<span class="no">Test</span>)
 <span class="no">Test</span><span class="kw">=</span><span class="fu">expandProbesets</span>(<span class="no">Test</span>)
+<span class="no">Test</span> <span class="kw">&lt;-</span> <span class="no">Test</span>[,!<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="kw pkg">survival</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span>(<span class="kw">time</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">Test</span>)$<span class="no">t.rfs</span>,<span class="kw">event</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">Test</span>)$<span class="no">e.rfs</span>))] <span class="co">#Drop NAs in survival</span>
+
 
 <span class="co">#Determine common probes (Genes)</span>
 <span class="no">Int</span><span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">intersect</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">Train</span>),<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">Test</span>))
@@ -285,13 +287,16 @@
 <a href="#rescale-expression-matrix" class="anchor"></a>Rescale expression matrix</h3>
 <p>Apply robust linear scaling as proposed in <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3283537/#bib61">paper reference</a></p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r">
-<span class="no">train_expr</span><span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">Train</span>),<span class="fl">1</span>,<span class="kw pkg">genefu</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/genefu/man/rescale.html">rescale</a></span>,<span class="kw">na.rm</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">q</span><span class="kw">=</span><span class="fl">0.05</span>))
-<span class="no">test_expr</span><span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">Test</span>),<span class="fl">1</span>,<span class="kw pkg">genefu</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/genefu/man/rescale.html">rescale</a></span>,<span class="kw">na.rm</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">q</span><span class="kw">=</span><span class="fl">0.05</span>))</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">Train</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">Train</span>),<span class="fl">1</span>,<span class="kw pkg">genefu</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/genefu/man/rescale.html">rescale</a></span>,<span class="kw">na.rm</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">q</span><span class="kw">=</span><span class="fl">0.05</span>))
+<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">Test</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">Test</span>),<span class="fl">1</span>,<span class="kw pkg">genefu</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/genefu/man/rescale.html">rescale</a></span>,<span class="kw">na.rm</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">q</span><span class="kw">=</span><span class="fl">0.05</span>))
+
+<span class="no">train_expr</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">Train</span>)
+<span class="no">test_expr</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">Test</span>)</pre></body></html></div>
 </div>
 <div id="survival-object" class="section level3">
 <h3 class="hasAnchor">
 <a href="#survival-object" class="anchor"></a>Survival Object</h3>
-<p>The ‘OS’ object is created by the Surv() function of the survival package. This uses phenotypic data that are contained in the TCGA dataset.</p>
+<p>The ‘Surv’ object is created by the Surv() function of the survival package. This uses phenotypic data that are contained in the corresponding datasets, accessed by the <code>pData</code> command.</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">train_clinic</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">Train</span>)
 <span class="no">test_clinic</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">Test</span>)
 
@@ -302,7 +307,7 @@
 <div id="run-galgo" class="section level2">
 <h2 class="hasAnchor">
 <a href="#run-galgo" class="anchor"></a>Run galgo()</h2>
-<p>The main function in this package is galgo(). It accepts an expression matrix and survival object to find robust gene expression signatures related to a given outcome. This function contains some parameters that can be modified, according to the characteristics of the analysis to be performed.</p>
+<p>The main function in this package is <code><a href="../reference/galgo.html">galgo()</a></code>. It accepts an expression matrix and survival object to find robust gene expression signatures related to a given outcome. This function contains some parameters that can be modified, according to the characteristics of the analysis to be performed.</p>
 <div id="setting-parameters" class="section level3">
 <h3 class="hasAnchor">
 <a href="#setting-parameters" class="anchor"></a>Setting parameters</h3>
@@ -334,148 +339,8 @@
                         <span class="kw">nCV</span> <span class="kw">=</span> <span class="no">nCV</span>,
                         <span class="kw">distancetype</span> <span class="kw">=</span> <span class="no">distancetype</span>,
                         <span class="kw">TournamentSize</span> <span class="kw">=</span> <span class="no">TournamentSize</span>,
-                        <span class="kw">period</span> <span class="kw">=</span> <span class="no">period</span>)
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt; result.2   3 0.10239766 151.0907        1       Inf</span>
-<span class="co">#&gt; result.9   3 0.05961810 409.9801        1 0.8726425</span>
-<span class="co">#&gt; result.15  9 0.02689090 751.1537        1 0.6611805</span>
-<span class="co">#&gt; result.21  4 0.05725412 467.1766        1 0.3037357</span>
-<span class="co">#&gt; result.24 10 0.01306676 784.9277        1       Inf</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.6816997</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt; result.24 10 0.01306676 784.9277        1       Inf</span>
-<span class="co">#&gt; result.12  3 0.12984962 240.0751        1       Inf</span>
-<span class="co">#&gt; result.2   4 0.07194497 510.4745        1 0.8204652</span>
-<span class="co">#&gt; result.14  3 0.10004832 240.4686        1 0.8061060</span>
-<span class="co">#&gt; result.15  9 0.02689090 751.1537        1 0.5111291</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.4171497</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.3078916</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt; result.24 10 0.01306676 784.9277        1       Inf</span>
-<span class="co">#&gt; result.12  3 0.12984962 240.0751        1       Inf</span>
-<span class="co">#&gt;            2 0.11932403 384.7521        1 0.5569262</span>
-<span class="co">#&gt;            4 0.08090165 513.4121        1 0.5523199</span>
-<span class="co">#&gt; result.15  9 0.02689090 751.1537        1 0.5348767</span>
-<span class="co">#&gt;            4 0.09433233 435.0991        1 0.4957795</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.4348524</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.3979323</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.13188252 489.8190        1       Inf</span>
-<span class="co">#&gt;            2 0.13005681 529.2113        1 0.7489864</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.7448515</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.2962084</span>
-<span class="co">#&gt; result.15  9 0.02689090 751.1537        1 0.2684357</span>
-<span class="co">#&gt;           10 0.04659097 635.9970        1 0.2460537</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.1088497</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.13188252 489.8190        1       Inf</span>
-<span class="co">#&gt;            2 0.13005681 529.2113        1 0.7336230</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.7291271</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.2915317</span>
-<span class="co">#&gt; result.15  9 0.02689090 751.1537        1 0.2647984</span>
-<span class="co">#&gt;           10 0.04659097 635.9970        1 0.2423806</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.1073031</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.13188252 489.8190        1       Inf</span>
-<span class="co">#&gt;            2 0.13005681 529.2113        1 0.7081414</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.6982100</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.2989499</span>
-<span class="co">#&gt; result.15  9 0.02689090 751.1537        1 0.2790340</span>
-<span class="co">#&gt;           10 0.04659097 635.9970        1 0.2511892</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.1121791</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.13188252 489.8190        1       Inf</span>
-<span class="co">#&gt;            2 0.13005681 529.2113        1 0.7309707</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.7260699</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.2917989</span>
-<span class="co">#&gt; result.15  9 0.02689090 751.1537        1 0.2656056</span>
-<span class="co">#&gt;           10 0.04659097 635.9970        1 0.2428016</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.1075630</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.13188252 489.8190        1       Inf</span>
-<span class="co">#&gt;            2 0.11965661 532.3087        1 0.6705242</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.6425442</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.3417480</span>
-<span class="co">#&gt;            9 0.03238322 829.5102        1 0.2643447</span>
-<span class="co">#&gt;           10 0.04659097 635.9970        1 0.2419276</span>
-<span class="co">#&gt;            2 0.13005681 529.2113        1 0.1459670</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.1071113</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.13188252 489.8190        1       Inf</span>
-<span class="co">#&gt;            2 0.05636223 533.9356        1 0.5977243</span>
-<span class="co">#&gt;            2 0.11965661 532.3087        1 0.5930281</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.3430897</span>
-<span class="co">#&gt;            9 0.03238322 829.5102        1 0.2657905</span>
-<span class="co">#&gt;           10 0.04659097 635.9970        1 0.2438916</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.1488434</span>
-<span class="co">#&gt;            2 0.13005681 529.2113        1 0.1479184</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.1078326</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.13188252 489.8190        1       Inf</span>
-<span class="co">#&gt;            2 0.05636223 533.9356        1 0.5762510</span>
-<span class="co">#&gt;            2 0.11965661 532.3087        1 0.5653167</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.3532471</span>
-<span class="co">#&gt;            9 0.03238322 829.5102        1 0.2719960</span>
-<span class="co">#&gt;           10 0.04659097 635.9970        1 0.2469766</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.1505427</span>
-<span class="co">#&gt;            2 0.13005681 529.2113        1 0.1466774</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.1097985</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.13188252 489.8190        1       Inf</span>
-<span class="co">#&gt;            2 0.05636223 533.9356        1 0.5632353</span>
-<span class="co">#&gt;            2 0.11965661 532.3087        1 0.5510257</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.3506107</span>
-<span class="co">#&gt;            9 0.03238322 829.5102        1 0.2695959</span>
-<span class="co">#&gt;           10 0.04659097 635.9970        1 0.2442132</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.1488167</span>
-<span class="co">#&gt;            2 0.13005681 529.2113        1 0.1443322</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.1087062</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.13188252 489.8190        1       Inf</span>
-<span class="co">#&gt;            2 0.05636223 533.9356        1 0.5613251</span>
-<span class="co">#&gt;            2 0.11965661 532.3087        1 0.5523112</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.3383523</span>
-<span class="co">#&gt;            9 0.03238322 829.5102        1 0.2609252</span>
-<span class="co">#&gt;           10 0.04659097 635.9970        1 0.2375523</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.1448428</span>
-<span class="co">#&gt;            2 0.13005681 529.2113        1 0.1418374</span>
-<span class="co">#&gt; result.13  5 0.04725973 598.1657        1 0.1054623</span>
-<span class="co">#&gt;            k                     rnkIndex      CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1        Inf</span>
-<span class="co">#&gt;            2 0.13188252 489.8190        1        Inf</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.78360211</span>
-<span class="co">#&gt;            2 0.12950053 544.4644        1 0.63883556</span>
-<span class="co">#&gt;            5 0.04772669 692.6175        1 0.29431172</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.28105992</span>
-<span class="co">#&gt;            9 0.03238322 829.5102        1 0.26354911</span>
-<span class="co">#&gt;            2 0.13005681 529.2113        1 0.08465945</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.17701411 531.4440        1       Inf</span>
-<span class="co">#&gt;            2 0.12950053 544.4644        1 0.8077532</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.6756015</span>
-<span class="co">#&gt;            5 0.04772669 692.6175        1 0.2728256</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.2665884</span>
-<span class="co">#&gt;            9 0.03238322 829.5102        1 0.2527122</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt;            8 0.01985866 843.3988        1       Inf</span>
-<span class="co">#&gt;            2 0.17701411 531.4440        1       Inf</span>
-<span class="co">#&gt;            2 0.12950053 544.4644        1 0.7183940</span>
-<span class="co">#&gt; result.25  3 0.05238776 584.1107        1 0.6138474</span>
-<span class="co">#&gt;            5 0.04772669 692.6175        1 0.2555795</span>
-<span class="co">#&gt;           10 0.03267091 705.6021        1 0.2520042</span>
-<span class="co">#&gt;            9 0.03238322 829.5102        1 0.2398886</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="no">output</span>))
+                        <span class="kw">period</span> <span class="kw">=</span> <span class="no">period</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="no">output</span>))
 <span class="co">#&gt; [1] "galgo.Obj"</span>
 <span class="co">#&gt; attr(,"package")</span>
 <span class="co">#&gt; [1] "galgoR"</span></pre></body></html></div>
@@ -483,7 +348,7 @@
 <div id="galgo-object" class="section level3">
 <h3 class="hasAnchor">
 <a href="#galgo-object" class="anchor"></a>Galgo Object</h3>
-<p>The output of the galgo() function is an object of type ‘galgo.Obj’ that has two slots with the elements:</p>
+<p>The output of the galgo() function is an object of type <code>galgo.Obj</code> that has two slots with the elements:</p>
 <ul>
 <li>Solutions</li>
 <li>ParetoFront.</li>
@@ -505,14 +370,14 @@
 <h4 class="hasAnchor">
 <a href="#paretofront" class="anchor"></a>ParetoFront</h4>
 <p>Is a list of length equal to the number of generations run in the algorithm. Each element is a l x 2 matrix where l is the number of solutions obtained and the columns are the SC Fitness and the Survival Fitness values respectively.</p>
-<p>For easier interpretation of the ‘galgo.Obj’, the output can be transformed to a List or to a DataFrame objects.</p>
+<p>For easier interpretation of the <code>galgo.Obj</code>, the output can be transformed to a List or to a DataFrame objects.</p>
 </div>
 </div>
 </div>
 <div id="to_list-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#to_list-function" class="anchor"></a>to_list() function</h2>
-<p>This function restructurates a galgo.Obj to a more easy to understand an use list. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type list has a length equals to the number of solutions obtained by the galgo algorithm.</p>
+<p>This function restructurates a <code>galgo.Obj</code> to a more easy to understand an use list. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type list has a length equals to the number of solutions obtained by the galgo algorithm.</p>
 <p>Basically this output is a list of lists, where each element of the output is named after the solution’s name (solution.n, where n is the number assigned to that solution), and inside of it, it has all the constituents for that given solution with the following structure:</p>
 <ul>
 <li>solution.n$Genes: A vector of the features included in the solution</li>
@@ -522,41 +387,51 @@
 <li>solution.n$Rank: The solution rank</li>
 <li>CrowD: The solution crowding distance related to the rest of the solutions</li>
 </ul>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">outputList</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/to_list.html">to_list</a></span>(<span class="no">output</span>)
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">outputList</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/to_list.html">to_list</a></span>(<span class="no">output</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">outputList</span>))
 <span class="co">#&gt; [1] "Solution.1" "Solution.2" "Solution.3" "Solution.4" "Solution.5"</span>
 <span class="co">#&gt; [6] "Solution.6"</span></pre></body></html></div>
 <p>To evaluate the structure of the first solution we can run:</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">outputList</span><span class="kw">[[</span><span class="st">"Solution.1"</span>]]
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">outputList</span><span class="kw">[[</span><span class="st">"Solution.1"</span>]]
 <span class="co">#&gt; $Genes</span>
-<span class="co">#&gt;   [1] "MYBL2"     "KRT5"      "RRM2"      "EGFR"      "BIRC5"     "CDC20"    </span>
-<span class="co">#&gt;   [7] "CDC6"      "KRT17"     "ESR1"      "MAPT"      "CENPF"     "PGR"      </span>
-<span class="co">#&gt;  [13] "KRT14"     "GRB7"      "CCNB1"     "FOXA1"     "MDM2"      "LOC731884"</span>
-<span class="co">#&gt;  [19] "RUNX2"     "NDUFAF3"   "XAGE1A"    "PTPRA"     "C9orf156"  "CHI3L1"   </span>
-<span class="co">#&gt;  [25] "MRC1L1"    "ZNF330"    "MAMLD1"    "ZCCHC6"    "SRY"       "MSX1"     </span>
-<span class="co">#&gt;  [31] "GPR65"     "ALDOB"     "CYP2C8"    "CRYBB2P1"  "AKAP8L"    "CDKN1C"   </span>
-<span class="co">#&gt;  [37] "SFRS15"    "PDCL"      "RAI2"      "DCT"       "C8G"       "PLEKHF2"  </span>
-<span class="co">#&gt;  [43] "MPRIP"     "C5orf45"   "AHSA1"     "CCBL2"     "LIN7A"     "NCOA4"    </span>
-<span class="co">#&gt;  [49] "ZNF177"    "GNS"       "UBE2D1"    "C9orf167"  "CEACAM1"   "STOML1"   </span>
-<span class="co">#&gt;  [55] "PRPF18"    "NUP188"    "TSPO"      "C9orf45"   "GORASP2"   "GSTO1"    </span>
-<span class="co">#&gt;  [61] "YBX1P2"    "PRPH"      "OPCML"     "CD302"     "SH3GLB1"   "HDAC3"    </span>
-<span class="co">#&gt;  [67] "RIMBP2"    "ZNF236"    "MGMT"      "RBM34"     "MYH8"      "YPEL5"    </span>
-<span class="co">#&gt;  [73] "P2RY2"     "SRSF4"     "WNT11"     "LOC729143" "GJC2"      "TIAM1"    </span>
-<span class="co">#&gt;  [79] "DVL3"      "RPL7P32"   "KLHDC10"   "ATP6V1D"   "BOLA2"     "NOL8"     </span>
-<span class="co">#&gt;  [85] "MAGEA2B"   "LAT2"      "GAN"       "CLEC11A"   "AFTPH"     "KDR"      </span>
-<span class="co">#&gt;  [91] "CHRNG"     "ABHD5"     "EPS15"     "C22orf30"  "GCFC1"     "PHC1"     </span>
-<span class="co">#&gt;  [97] "ATF4"      "OBFC1"     "SYCP1"     "EYA4"      "KPNA3"     "PCNXL2"   </span>
-<span class="co">#&gt; [103] "LRRN3"     "RRAGC"     "ICA1"      "SKAP2"     "KRT75"     "GGH"      </span>
-<span class="co">#&gt; [109] "HGF"       "GSTP1"     "ACTN2"    </span>
+<span class="co">#&gt;   [1] "MYBL2"        "RRM2"         "BIRC5"        "CDC20"        "CDH3"        </span>
+<span class="co">#&gt;   [6] "BCL2"         "MMP11"        "EXO1"         "MELK"         "MAPT"        </span>
+<span class="co">#&gt;  [11] "MIA"          "PGR"          "KRT14"        "KIF2C"        "FGFR4"       </span>
+<span class="co">#&gt;  [16] "CCNE1"        "ORC6L"        "CCNB1"        "FOXA1"        "MDM2"        </span>
+<span class="co">#&gt;  [21] "HAUS4"        "LGALS9"       "LGALS13"      "HNF4G"        "MAP4"        </span>
+<span class="co">#&gt;  [26] "SLC31A2"      "DNAH7"        "THOC6"        "TIMM8B"       "TOMM70A"     </span>
+<span class="co">#&gt;  [31] "NRXN2"        "RBM25"        "IFNA1"        "ZNF148"       "RAB1B"       </span>
+<span class="co">#&gt;  [36] "NCRNA00094"   "COPB1"        "HOXC11"       "GAD2"         "NCF4"        </span>
+<span class="co">#&gt;  [41] "SERF1B"       "SPPL2B"       "ASPH"         "SMC4"         "MCM10"       </span>
+<span class="co">#&gt;  [46] "ABCD1"        "KDM6B"        "TOM1L1"       "IDH2"         "TRIM45"      </span>
+<span class="co">#&gt;  [51] "TGM3"         "TUBB4"        "MAGEB3"       "HINFP"        "CGB5"        </span>
+<span class="co">#&gt;  [56] "ZNHIT3"       "IGLC1"        "ARAF"         "KLHL12"       "MRPL24"      </span>
+<span class="co">#&gt;  [61] "VDR"          "PAPSS2"       "SCAMP3"       "GRPR"         "FER"         </span>
+<span class="co">#&gt;  [66] "STAMBP"       "ARHGEF18"     "SAA4"         "TRIM58"       "KRAS"        </span>
+<span class="co">#&gt;  [71] "ARHGEF7"      "SIRT2"        "BEAN"         "KCNK12"       "PLSCR2"      </span>
+<span class="co">#&gt;  [76] "GALNT11"      "CLCN2"        "CCDC94"       "OPN1MW"       "PCDHB8"      </span>
+<span class="co">#&gt;  [81] "C15orf44"     "ST8SIA5"      "SLC43A3"      "LOC100133811" "TTC27"       </span>
+<span class="co">#&gt;  [86] "GNL3LP1"      "PGLS"         "IRX5"         "BFSP2"        "UCHL1"       </span>
+<span class="co">#&gt;  [91] "DHX8"         "CAMKV"        "GLP1R"        "BUD31"        "SNURF"       </span>
+<span class="co">#&gt;  [96] "WDR61"        "C1QB"         "TTTY15"       "GYG2"         "GTPBP8"      </span>
+<span class="co">#&gt; [101] "LSM14A"       "GAMT"         "MTCH2"        "CREG1"        "PADI2"       </span>
+<span class="co">#&gt; [106] "ZNF665"       "CYP2A13"      "MYL12A"       "LOC442497"    "CLSTN1"      </span>
+<span class="co">#&gt; [111] "LPAR6"        "ZNF549"       "LEFTY2"       "GSG1"         "H2AFJ"       </span>
+<span class="co">#&gt; [116] "TACR1"        "PEX10"        "ATP5H"        "HMOX2"        "BCL2L14"     </span>
+<span class="co">#&gt; [121] "E2F1"         "INS"          "WDR6"         "FAM136A"      "TNFSF11"     </span>
+<span class="co">#&gt; [126] "OR1E3"        "ELN"          "ESF1"         "CYP39A1"      "CREB3L2"     </span>
+<span class="co">#&gt; [131] "FOXJ1"        "FOLH1B"       "TEC"          "RPL21P44"     "NPHP4"       </span>
+<span class="co">#&gt; [136] "PSIP1P2"      "GLB1L"        "OTUD3"        "ABAT"         "CACNB3"      </span>
+<span class="co">#&gt; [141] "CLEC3B"      </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $k</span>
 <span class="co">#&gt; [1] 8</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $SC.Fit</span>
-<span class="co">#&gt; [1] 0.01985866</span>
+<span class="co">#&gt; [1] 0.03798326</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Surv.Fit</span>
-<span class="co">#&gt; [1] 843.3988</span>
+<span class="co">#&gt; [1] 820.709</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $rank</span>
 <span class="co">#&gt; [1] 1</span>
@@ -567,7 +442,7 @@
 <div id="to_dataframe-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#to_dataframe-function" class="anchor"></a>to_dataframe() function</h2>
-<p>The current function restructurates a galgo.Obj to a more easy to understand an use data.frame. The output data.frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:</p>
+<p>The current function restructurates a <code>galgo.Obj</code> to a more easy to understand an use <code>data.frame</code>. The output data frame has m x n dimensions, were the rownames (m) are the solutions obtained by the galgo algorithm. The columns has the following structure:</p>
 <ul>
 <li>Genes: The features included in each solution in form of a list</li>
 <li>k: The number of partitions found in that solution</li>
@@ -576,40 +451,38 @@
 <li>Rank: The solution rank</li>
 <li>CrowD: The solution crowding distance related to the rest of the solutions</li>
 </ul>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">outputDF</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/to_dataframe.html">to_dataframe</a></span>(<span class="no">output</span>)
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">outputDF</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/to_dataframe.html">to_dataframe</a></span>(<span class="no">output</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">outputDF</span>)
-<span class="co">#&gt;                    Genes  k     SC.Fit Surv.Fit Rank     CrowD</span>
-<span class="co">#&gt; Solutions.1 MYBL2, K....  8 0.01985866 843.3988    1       Inf</span>
-<span class="co">#&gt; Solutions.2 MYBL2, S....  2 0.17701411 531.4440    1       Inf</span>
-<span class="co">#&gt; Solutions.3 MYBL2, K....  2 0.12950053 544.4644    1 0.7183940</span>
-<span class="co">#&gt; Solutions.4 MYBL2, R....  3 0.05238776 584.1107    1 0.6138474</span>
-<span class="co">#&gt; Solutions.5 MYBL2, K....  5 0.04772669 692.6175    1 0.2555795</span>
-<span class="co">#&gt; Solutions.6 PHGDH, K.... 10 0.03267091 705.6021    1 0.2520042</span></pre></body></html></div>
+<span class="co">#&gt;                    Genes k     SC.Fit Surv.Fit Rank     CrowD</span>
+<span class="co">#&gt; Solutions.1 MYBL2, R.... 8 0.03798326 820.7090    1       Inf</span>
+<span class="co">#&gt; Solutions.2 MYBL2, M.... 2 0.21973284 336.6704    1       Inf</span>
+<span class="co">#&gt; Solutions.3 PHGDH, M.... 2 0.15231143 572.0087    1 0.7233325</span>
+<span class="co">#&gt; Solutions.4 MYBL2, R.... 5 0.06601393 693.1520    1 0.6829693</span>
+<span class="co">#&gt; Solutions.5 MYBL2, M.... 2 0.21473336 475.6751    1 0.3091949</span>
+<span class="co">#&gt; Solutions.6 EGFR, SL.... 8 0.05113286 747.9578    1 0.2869158</span></pre></body></html></div>
 </div>
 <div id="plot_pareto" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plot_pareto" class="anchor"></a>plot_pareto()</h2>
 <p>Once we obtain the <code>galgo.obj</code> from the output of <code><a href="../reference/galgo.html">galgo()</a></code> we can plot the obtained Pareto front and see how it evolved trough the tested number of generations</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_pareto.html">plot_pareto</a></span>(<span class="no">output</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_pareto.html">plot_pareto</a></span>(<span class="no">output</span>)</pre></body></html></div>
+<p><img src="galgoR_files/figure-html/plot_pareto-1.png" width="700"></p>
 </div>
 </div>
 <div id="case-study" class="section level1">
 <h1 class="hasAnchor">
 <a href="#case-study" class="anchor"></a>Case study</h1>
-<p>Lung adenocarcinoma (LUAD) is one of the most common types of cancer and, to date, still presents high mortality rates. Currently, numerous molecular alteration for this type of cancer are well known but, unlike breast cancer, very few transcriptomic signatures have been developed for this type of cancer. In this regards, <a href="https://pubmed.ncbi.nlm.nih.gov/22590557/">Wilkerson’s et al.</a> have proposed a transcriptomic classification into three different LUAD molecular subtypes (Bronchoid, Magnoid, and Squamoid) which recapitulates naturally-occurring gene expression patterns that encompass different functional pathways and patient outcomes.</p>
+<p>Breast cancer (BRCA) is the most common neoplasm in women to date and one of the best studied cnacer types. Currently, numerous molecular alteration for this type of cancer are well known and many transcriptomic signatures have been developed for this type of cancer. In this regards, <a href="XXX">Perou et al.</a> proposed one of the first molecular subtype classification according to transcriptomic profiles of the tumor, which recapitulates naturally-occurring gene expression patterns that encompass different functional pathways and patient outcomes. These subtypes, (LumA, LumB, Basal-like, HER2 and Normal-Like) have a strong overap with the classical histopathological classification of BRCA tumors and migh affect decission making when used to decided chemotherapy in certain cases.</p>
 <div id="data-preprocessing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-preprocessing" class="anchor"></a>Data Preprocessing</h2>
-<p>To evaluate Galgo’s performance along with Wilkerson’s classification, we used two already scaled and reduced lung adenocarcinoma gene expression datasets included in the package (TCGA) and GSE68465 that can be download using the function use_rna_luad(). Aditionally, It also contains the Wilkerson’s centroids to perform lung adenocarcinoma sample classification. Wilkerson’s centroids were used to classify samples according to their corresponding molecular subtype.</p>
+<p>To evaluate Galgo’s performance along with PAM50 classification, we will use the two already scaled and reduced BRCA gene expression datasets and will compare Galgo performance with the widely used intrinsic molecular subtype PAM50 classification. Galgo performs feature selection by design, so this step is not strictly necessary to use galgoR (although feature selection might fasten GalgoR runs), nevertheless, appropiate gene expression scaling is critical when runing galgoR.</p>
 </div>
-<div id="lung-adenocarcinoma-classification" class="section level2">
+<div id="breast-cancer-classification" class="section level2">
 <h2 class="hasAnchor">
-<a href="#lung-adenocarcinoma-classification" class="anchor"></a>Lung adenocarcinoma classification</h2>
+<a href="#breast-cancer-classification" class="anchor"></a>Breast cancer classification</h2>
 <p>The scaled expression values of each patient are compared with the prototypical centroids using Pearson’s correlation coefficient and the closest centroid to each patient is used to assign the corresponding labels.</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r">
-<span class="co">#The expression of the toy datasets are already scaled</span>
-
-<span class="co">#The reduced UPP dataset will be used as training set </span>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="co">#The reduced UPP dataset will be used as training set </span>
 <span class="no">train_expression</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">Train</span>)
 <span class="no">train_clinic</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">Train</span>)
 <span class="no">train_features</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">Train</span>)
@@ -622,65 +495,64 @@
 <span class="no">test_features</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html">fData</a></span>(<span class="no">Test</span>)
 <span class="no">test_surv</span><span class="kw">&lt;-</span> <span class="kw pkg">survival</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span>(<span class="kw">time</span><span class="kw">=</span><span class="no">test_clinic</span>$<span class="no">t.rfs</span>,<span class="kw">event</span><span class="kw">=</span><span class="no">test_clinic</span>$<span class="no">e.rfs</span>)
 
-<span class="co">#We change the rownames to be gene Symbol insted of Gene Id.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">train_expression</span>)<span class="kw">&lt;-</span> <span class="no">train_features</span>$<span class="no">gene</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">test_expression</span>)<span class="kw">&lt;-</span> <span class="no">test_features</span>$<span class="no">gene</span>
 
-<span class="co">#Wilkerson's centroids</span>
-<span class="no">centroids</span><span class="kw">&lt;-</span> <span class="no">PAM50Centroids</span>
-
+<span class="co">#PAM50 centroids</span>
+<span class="no">centroids</span><span class="kw">&lt;-</span> <span class="kw pkg">genefu</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/genefu/man/pam50.html">pam50</a></span>$<span class="no">centroids</span>
 <span class="co">#Extract features from both data.frames</span>
 <span class="no">inBoth</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html">Reduce</a></span>(<span class="no">intersect</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">train_expression</span>),<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">centroids</span>)))
 
-<span class="co">#Classify samples</span>
+<span class="co">#Classify samples </span>
 
-<span class="no">Wilk.Class_train</span><span class="kw">&lt;-</span> <span class="fu"><a href="../reference/cluster_classify.html">cluster_classify</a></span>(<span class="no">train_expression</span>[<span class="no">inBoth</span>,],<span class="no">centroids</span>[<span class="no">inBoth</span>,])
-<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">Wilk.Class_train</span>)
-<span class="co">#&gt; Wilk.Class_train</span>
-<span class="co">#&gt;   1   2   3   4   5 </span>
-<span class="co">#&gt;  13   3 165  40  13</span>
+<span class="no">PAM50_train</span><span class="kw">&lt;-</span> <span class="fu"><a href="../reference/cluster_classify.html">cluster_classify</a></span>(<span class="no">train_expression</span>[<span class="no">inBoth</span>,],<span class="no">centroids</span>[<span class="no">inBoth</span>,],<span class="kw">method</span> <span class="kw">=</span> <span class="st">"spearman"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">PAM50_train</span>)
+<span class="co">#&gt; PAM50_train</span>
+<span class="co">#&gt;  1  2  3  4  5 </span>
+<span class="co">#&gt; 22 30 94 73 15</span>
 
-<span class="no">Wilk.Class_test</span><span class="kw">&lt;-</span> <span class="fu"><a href="../reference/cluster_classify.html">cluster_classify</a></span>(<span class="no">test_expression</span>[<span class="no">inBoth</span>,],<span class="no">centroids</span>[<span class="no">inBoth</span>,])
-<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">Wilk.Class_test</span>)
-<span class="co">#&gt; Wilk.Class_test</span>
-<span class="co">#&gt;   1   2   3   4   5 </span>
-<span class="co">#&gt;  38   6 109  35  10</span></pre></body></html></div>
+<span class="no">PAM50_test</span><span class="kw">&lt;-</span> <span class="fu"><a href="../reference/cluster_classify.html">cluster_classify</a></span>(<span class="no">test_expression</span>[<span class="no">inBoth</span>,],<span class="no">centroids</span>[<span class="no">inBoth</span>,],<span class="kw">method</span> <span class="kw">=</span> <span class="st">"spearman"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">PAM50_test</span>)
+<span class="co">#&gt; PAM50_test</span>
+<span class="co">#&gt;  1  2  3  4  5 </span>
+<span class="co">#&gt; 45 26 80 44  3</span>
+
+<span class="co"># Classify samples using genefu</span>
+<span class="co">#annot&lt;- fData(Train)</span>
+<span class="co">#colnames(annot)[3]="Gene.Symbol"</span>
+<span class="co">#PAM50_train&lt;- molecular.subtyping(sbt.model = "pam50",data = t(train_expression), annot = annot,do.mapping = TRUE)</span></pre></body></html></div>
 <p>Once the patients are classified according to their closest centroids, we can now evaluate the survival curves for the different types in each of the datasets</p>
-<div id="survival-of-tcga-patients" class="section level3">
+<div id="survival-of-upp-patients" class="section level3">
 <h3 class="hasAnchor">
-<a href="#survival-of-tcga-patients" class="anchor"></a>Survival of TCGA patients</h3>
-<div class="sourceCode" id="cb19"><html><body><pre class="r">
-
-<span class="no">surv_formula</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span>(<span class="st">"Surv(train_clinic$t.rfs,train_clinic$e.rfs)~ Wilk.Class_train"</span>)
+<a href="#survival-of-upp-patients" class="anchor"></a>Survival of UPP patients</h3>
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">surv_formula</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span>(<span class="st">"Surv(train_clinic$t.rfs,train_clinic$e.rfs)~ PAM50_train"</span>)
 <span class="no">tumortotal1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survminer/man/surv_fit.html">surv_fit</a></span>(<span class="no">surv_formula</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">train_clinic</span>)
 <span class="no">tumortotal1diff</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html">survdiff</a></span>(<span class="no">surv_formula</span>)
 <span class="no">tumortotal1pval</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">pchisq</a></span>(<span class="no">tumortotal1diff</span>$<span class="no">chisq</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">tumortotal1diff</span>$<span class="no">n</span>) - <span class="fl">1</span>, <span class="kw">lower.tail</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 
-  <span class="no">p</span><span class="kw">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span>(<span class="no">tumortotal1</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">train_clinic</span>,<span class="kw">risk.table</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">pval</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">palette</span><span class="kw">=</span><span class="st">"dark2"</span>, <span class="kw">title</span><span class="kw">=</span><span class="st">"TCGA Lung adenocarcinoma \n Wilkerson subtypes survival"</span>, <span class="kw">surv.scale</span><span class="kw">=</span><span class="st">"percent"</span>, <span class="kw">conf.int</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="kw">xlab</span><span class="kw">=</span><span class="st">"time (days)"</span>, <span class="kw">ylab</span><span class="kw">=</span><span class="st">"survival(%)"</span>, <span class="kw">xlim</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">3650</span>),<span class="kw">break.time.by</span> <span class="kw">=</span> <span class="fl">365</span>, <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>(), <span class="kw">risk.table.y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">risk.table.y.text</span> <span class="kw">=</span> <span class="fl">FALSE</span>,<span class="kw">censor</span><span class="kw">=</span><span class="fl">FALSE</span>)
+  <span class="no">p</span><span class="kw">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span>(<span class="no">tumortotal1</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">train_clinic</span>,<span class="kw">risk.table</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">pval</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">palette</span><span class="kw">=</span><span class="st">"dark2"</span>, <span class="kw">title</span><span class="kw">=</span><span class="st">"UPP breast cancer \n PAM50 subtypes survival"</span>, <span class="kw">surv.scale</span><span class="kw">=</span><span class="st">"percent"</span>, <span class="kw">conf.int</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="kw">xlab</span><span class="kw">=</span><span class="st">"time (days)"</span>, <span class="kw">ylab</span><span class="kw">=</span><span class="st">"survival(%)"</span>, <span class="kw">xlim</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">3650</span>),<span class="kw">break.time.by</span> <span class="kw">=</span> <span class="fl">365</span>, <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>(), <span class="kw">risk.table.y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">risk.table.y.text</span> <span class="kw">=</span> <span class="fl">FALSE</span>,<span class="kw">censor</span><span class="kw">=</span><span class="fl">FALSE</span>)
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">p</span>)</pre></body></html></div>
+<p><img src="galgoR_files/figure-html/pam50_surv_UPP-1.png" width="700"></p>
 </div>
-<div id="survival-of-gse68465-patients" class="section level3">
+<div id="survival-of-transbig-patients" class="section level3">
 <h3 class="hasAnchor">
-<a href="#survival-of-gse68465-patients" class="anchor"></a>Survival of GSE68465 patients</h3>
-<div class="sourceCode" id="cb20"><html><body><pre class="r">
-
-<span class="no">surv_formula</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span>(<span class="st">"Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ Wilk.Class_test"</span>)
+<a href="#survival-of-transbig-patients" class="anchor"></a>Survival of TRANSBIG patients</h3>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">surv_formula</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span>(<span class="st">"Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ PAM50_test"</span>)
 <span class="no">tumortotal2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survminer/man/surv_fit.html">surv_fit</a></span>(<span class="no">surv_formula</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">test_clinic</span>)
 <span class="no">tumortotal2diff</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html">survdiff</a></span>(<span class="no">surv_formula</span>)
 <span class="no">tumortotal2pval</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">pchisq</a></span>(<span class="no">tumortotal2diff</span>$<span class="no">chisq</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">tumortotal2diff</span>$<span class="no">n</span>) - <span class="fl">1</span>, <span class="kw">lower.tail</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 
-  <span class="no">p</span><span class="kw">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span>(<span class="no">tumortotal2</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">test_clinic</span>,<span class="kw">risk.table</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">pval</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">palette</span><span class="kw">=</span><span class="st">"dark2"</span>, <span class="kw">title</span><span class="kw">=</span><span class="st">"GSE68465 Lung adenocarcinoma \n Wilkerson subtypes survival"</span>, <span class="kw">surv.scale</span><span class="kw">=</span><span class="st">"percent"</span>, <span class="kw">conf.int</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="kw">xlab</span><span class="kw">=</span><span class="st">"time (days)"</span>, <span class="kw">ylab</span><span class="kw">=</span><span class="st">"survival(%)"</span>, <span class="kw">xlim</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">3650</span>),<span class="kw">break.time.by</span> <span class="kw">=</span> <span class="fl">365</span>, <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>(), <span class="kw">risk.table.y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">risk.table.y.text</span> <span class="kw">=</span> <span class="fl">FALSE</span>,<span class="kw">censor</span><span class="kw">=</span><span class="fl">FALSE</span>)
+  <span class="no">p</span><span class="kw">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span>(<span class="no">tumortotal2</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">test_clinic</span>,<span class="kw">risk.table</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">pval</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">palette</span><span class="kw">=</span><span class="st">"dark2"</span>, <span class="kw">title</span><span class="kw">=</span><span class="st">"TRANSBIG breast cancer \n PAM50 subtypes survival"</span>, <span class="kw">surv.scale</span><span class="kw">=</span><span class="st">"percent"</span>, <span class="kw">conf.int</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="kw">xlab</span><span class="kw">=</span><span class="st">"time (days)"</span>, <span class="kw">ylab</span><span class="kw">=</span><span class="st">"survival(%)"</span>, <span class="kw">xlim</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">3650</span>),<span class="kw">break.time.by</span> <span class="kw">=</span> <span class="fl">365</span>, <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>(), <span class="kw">risk.table.y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">risk.table.y.text</span> <span class="kw">=</span> <span class="fl">FALSE</span>,<span class="kw">censor</span><span class="kw">=</span><span class="fl">FALSE</span>)
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">p</span>)</pre></body></html></div>
+<p><img src="galgoR_files/figure-html/pam50_surv_TRANSBIG-1.png" width="700"></p>
 </div>
 </div>
 <div id="find-breast-cancer-gene-signatures-with-galgor" class="section level2">
 <h2 class="hasAnchor">
 <a href="#find-breast-cancer-gene-signatures-with-galgor" class="anchor"></a>Find breast cancer gene signatures with GalgoR</h2>
-<p>Now we run Galgo to find cohesive and clinically meaningful signatures for LUAD using TCGA data as training set and GSE68465 data as test set</p>
+<p>Now we run Galgo to find cohesive and clinically meaningful signatures for BRCA using UPP data as training set and TRANSBIG data as test set</p>
 <div id="set-configuration-parameters" class="section level3">
 <h3 class="hasAnchor">
 <a href="#set-configuration-parameters" class="anchor"></a>Set configuration parameters</h3>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">population</span> <span class="kw">&lt;-</span> <span class="fl">15</span>
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">population</span> <span class="kw">&lt;-</span> <span class="fl">15</span>
 <span class="no">generations</span> <span class="kw">&lt;-</span><span class="fl">5</span>
 <span class="no">nCV</span> <span class="kw">&lt;-</span> <span class="fl">5</span>
 <span class="no">distancetype</span> <span class="kw">&lt;-</span> <span class="st">"pearson"</span>
@@ -688,38 +560,8 @@
 <span class="no">period</span> <span class="kw">&lt;-</span> <span class="fl">3650</span>
 <span class="no">usegpu</span> <span class="kw">&lt;-</span> <span class="fl">FALSE</span></pre></body></html></div>
 <p>Run Galgo on the training set</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r">
-<span class="no">output</span><span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="fu"><a href="../reference/galgo.html">galgo</a></span>(<span class="kw">generations</span> <span class="kw">=</span> <span class="no">generations</span>, <span class="kw">population</span> <span class="kw">=</span> <span class="no">population</span>,<span class="kw">prob_matrix</span> <span class="kw">=</span> <span class="no">train_expression</span>, <span class="kw">OS</span><span class="kw">=</span><span class="no">train_surv</span>,<span class="kw">usegpu</span><span class="kw">=</span><span class="no">usegpu</span>,<span class="kw">nCV</span><span class="kw">=</span> <span class="no">nCV</span>, <span class="kw">distancetype</span><span class="kw">=</span><span class="no">distancetype</span>, <span class="kw">TournamentSize</span><span class="kw">=</span><span class="no">TournamentSize</span>, <span class="kw">period</span><span class="kw">=</span><span class="no">period</span>)
-<span class="co">#&gt;            k                     rnkIndex    CrowD</span>
-<span class="co">#&gt; result.2   4 0.09110284 604.1839        1 1.145083</span>
-<span class="co">#&gt; result.4   4 0.20961156 172.1146        1      Inf</span>
-<span class="co">#&gt; result.11  2 0.16903751 454.4083        1 1.018346</span>
-<span class="co">#&gt; result.14 10 0.02640064 904.4585        1      Inf</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt; result.4   4 0.20961156 172.1146        1       Inf</span>
-<span class="co">#&gt; result.14 10 0.02640064 904.4585        1       Inf</span>
-<span class="co">#&gt; result.2   4 0.09110284 604.1839        1 1.1248441</span>
-<span class="co">#&gt; result.11  2 0.16903751 454.4083        1 0.9990402</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt; result.14 10 0.02640064 904.4585        1       Inf</span>
-<span class="co">#&gt;            2 0.23860424 454.2155        1       Inf</span>
-<span class="co">#&gt;           10 0.10596500 719.1333        1 1.0668844</span>
-<span class="co">#&gt; result.11  2 0.16903751 454.4083        1 0.8177505</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt; result.14 10 0.02640064 904.4585        1       Inf</span>
-<span class="co">#&gt;            2 0.23860424 454.2155        1       Inf</span>
-<span class="co">#&gt;           10 0.10596500 719.1333        1 1.1811676</span>
-<span class="co">#&gt;            2 0.19772422 492.2435        1 0.8486501</span>
-<span class="co">#&gt;            k                     rnkIndex     CrowD</span>
-<span class="co">#&gt; result.14 10 0.02640064 904.4585        1       Inf</span>
-<span class="co">#&gt;            2 0.23860424 454.2155        1       Inf</span>
-<span class="co">#&gt;           10 0.10596500 719.1333        1 1.1722060</span>
-<span class="co">#&gt;            2 0.20248371 521.1665        1 0.7369677</span>
-<span class="co">#&gt;            2 0.21654760 477.7565        1 0.2262874</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="no">output</span>))
-<span class="co">#&gt; [1] "galgo.Obj"</span>
-<span class="co">#&gt; attr(,"package")</span>
-<span class="co">#&gt; [1] "galgoR"</span></pre></body></html></div>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">output</span><span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="fu"><a href="../reference/galgo.html">galgo</a></span>(<span class="kw">generations</span> <span class="kw">=</span> <span class="no">generations</span>, <span class="kw">population</span> <span class="kw">=</span> <span class="no">population</span>,<span class="kw">prob_matrix</span> <span class="kw">=</span> <span class="no">train_expression</span>, <span class="kw">OS</span><span class="kw">=</span><span class="no">train_surv</span>,<span class="kw">usegpu</span><span class="kw">=</span><span class="no">usegpu</span>,<span class="kw">nCV</span><span class="kw">=</span> <span class="no">nCV</span>, <span class="kw">distancetype</span><span class="kw">=</span><span class="no">distancetype</span>, <span class="kw">TournamentSize</span><span class="kw">=</span><span class="no">TournamentSize</span>, <span class="kw">period</span><span class="kw">=</span><span class="no">period</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="no">output</span>))</pre></body></html></div>
 </div>
 </div>
 <div id="analyzing-galgo-results" class="section level2">
@@ -728,41 +570,41 @@
 <div id="pareto-front" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pareto-front" class="anchor"></a>Pareto front</h3>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_pareto.html">plot_pareto</a></span>(<span class="no">output</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_pareto.html">plot_pareto</a></span>(<span class="no">output</span>)</pre></body></html></div>
 <p><img src="galgoR_files/figure-html/pareto_2-1.png" width="100%"></p>
 </div>
 <div id="summary-of-the-results" class="section level3">
 <h3 class="hasAnchor">
 <a href="#summary-of-the-results" class="anchor"></a>Summary of the results</h3>
-<div class="sourceCode" id="cb24"><html><body><pre class="r">
+<div class="sourceCode" id="cb25"><html><body><pre class="r">
 <span class="no">output_df</span><span class="kw">&lt;-</span> <span class="fu"><a href="../reference/to_dataframe.html">to_dataframe</a></span>(<span class="no">output</span>)
 
 <span class="no">NonDom_solutions</span><span class="kw">&lt;-</span> <span class="no">output_df</span>[<span class="no">output_df</span>$<span class="no">Rank</span><span class="kw">==</span><span class="fl">1</span>,]
 
 <span class="co"># N of non-dominated solutions </span>
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">NonDom_solutions</span>)
-<span class="co">#&gt; [1] 5</span>
+<span class="co">#&gt; [1] 4</span>
 
 <span class="co"># N of partitions found</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">NonDom_solutions</span>$<span class="no">k</span>)
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  2 10 </span>
-<span class="co">#&gt;  3  2</span>
+<span class="co">#&gt; 2 4 8 </span>
+<span class="co">#&gt; 2 1 1</span>
 
 <span class="co">#Average N of genes per signature</span>
 <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="no">NonDom_solutions</span>$<span class="no">Genes</span>,<span class="no">length</span>)))
-<span class="co">#&gt; [1] 74.2</span>
+<span class="co">#&gt; [1] 105.5</span>
 
 <span class="co">#SC range</span>
 <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="no">NonDom_solutions</span>$<span class="no">SC.Fit</span>)
-<span class="co">#&gt; [1] 0.02640064 0.23860424</span>
+<span class="co">#&gt; [1] 0.04597384 0.13969177</span>
 
 <span class="co"># Survival fitnesss range</span>
 <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="no">NonDom_solutions</span>$<span class="no">Surv.Fit</span>)
-<span class="co">#&gt; [1] 454.2155 904.4585</span></pre></body></html></div>
+<span class="co">#&gt; [1] 422.3386 808.0637</span></pre></body></html></div>
 <p>###Select best performing solutions</p>
 <p>Now we select the best performing solutions for each number of partitions (k) according to C.Index</p>
-<div class="sourceCode" id="cb25"><html><body><pre class="r">
+<div class="sourceCode" id="cb26"><html><body><pre class="r">
 <span class="no">RESULT</span><span class="kw">&lt;-</span> <span class="fu"><a href="../reference/non_dominated_summary.html">non_dominated_summary</a></span>(<span class="kw">output</span><span class="kw">=</span><span class="no">output</span>,<span class="kw">OS</span><span class="kw">=</span><span class="no">train_surv</span>, <span class="kw">prob_matrix</span><span class="kw">=</span> <span class="no">train_expression</span>, <span class="kw">distancetype</span> <span class="kw">=</span><span class="no">distancetype</span>, <span class="kw">usegpu</span><span class="kw">=</span> <span class="no">usegpu</span> )
 
 
@@ -772,24 +614,19 @@
   }
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">best_sol</span>)
-<span class="co">#&gt; [1] "Solutions.3" "Solutions.4"</span>
-<span class="co"># [1] "Solutions.1" "Solutions.7" "Solutions.3" "Solutions.9"   </span></pre></body></html></div>
+<span class="co">#&gt; [1] "Solutions.4" "Solutions.2" "Solutions.3"</span></pre></body></html></div>
 </div>
 <div id="create-prototypic-centroids" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-prototypic-centroids" class="anchor"></a>Create prototypic centroids</h3>
 <p>Now we create the prototypic centroids of the selected solutions</p>
-<div class="sourceCode" id="cb26"><html><body><pre class="r">  <span class="no">CentroidsList</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_centroids.html">create_centroids</a></span>(<span class="no">output</span>, <span class="kw">solution_names</span> <span class="kw">=</span> <span class="no">best_sol</span>, <span class="kw">trainset</span> <span class="kw">=</span> <span class="no">train_expression</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb27"><html><body><pre class="r">  <span class="no">CentroidsList</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_centroids.html">create_centroids</a></span>(<span class="no">output</span>, <span class="kw">solution_names</span> <span class="kw">=</span> <span class="no">best_sol</span>, <span class="kw">trainset</span> <span class="kw">=</span> <span class="no">train_expression</span>)</pre></body></html></div>
 </div>
 </div>
 <div id="test-galgo-signatures-in-a-test-set" class="section level2">
 <h2 class="hasAnchor">
 <a href="#test-galgo-signatures-in-a-test-set" class="anchor"></a>Test Galgo signatures in a test set</h2>
-<p>We will test the Galgo signatures found with the TCGA training set in an independent test set</p>
-<div class="sourceCode" id="cb27"><html><body><pre class="r">#testSet=rna_luad$GSE68465
-#prob_matrix_test= testSet$expression_matrix
-#clinical_test=testSet$pheno_data
-#OS_test=Surv(time=clinical_test$time,event=clinical_test$status)</pre></body></html></div>
+<p>We will test the Galgo signatures found with the UPP training set in an independent test set (TRANSBIG)</p>
 <div id="classify-train-and-test-set-into-galgor-subtypes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#classify-train-and-test-set-into-galgor-subtypes" class="anchor"></a>Classify train and test set into galgoR subtypes</h3>
@@ -802,7 +639,7 @@
 <div id="calculate-train-and-test-set-c-index" class="section level3">
 <h3 class="hasAnchor">
 <a href="#calculate-train-and-test-set-c-index" class="anchor"></a>Calculate train and test set C.Index</h3>
-<p>To calculate the train and test C.Index, the risk coefficients are calculated for each subclass in the training set and are then used to predict the risk of the different groups in the test set. This is particularly important for signatures with high number of partitions, were the survival differences of different groups might overlap and change their relative order, which is of great importance in the C.Index calculation.</p>
+<p>To calculate the train and test C.Index, the risk coefficients are calculated for each subclass in the training set and then are used to predict the risk of the different groups in the test set. This is particularly important for signatures with high number of partitions, were the survival differences of different groups might overlap and change their relative order, which is of great importance in the C.Index calculation.</p>
 <div class="sourceCode" id="cb29"><html><body><pre class="r">
 <span class="no">Prediction.models</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>()
 
@@ -851,21 +688,15 @@
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">C.indexes</span>)
 <span class="co">#&gt;              train_CI   test_CI</span>
-<span class="co">#&gt; Solutions.3 0.6499647 0.5100592</span>
-<span class="co">#&gt; Solutions.4 0.6092852 0.5652071</span>
-
-<span class="co">#             train_CI   test_CI</span>
-<span class="co">#Solutions.1 0.6079561 0.5685536</span>
-<span class="co">#Solutions.7 0.6034458 0.6025023</span>
-<span class="co">#Solutions.3 0.6147336 0.6060875</span>
-<span class="co">#Solutions.9 0.6024516 0.5916318</span>
+<span class="co">#&gt; Solutions.4 0.5933058 0.5269822</span>
+<span class="co">#&gt; Solutions.2 0.6186612 0.5275345</span>
+<span class="co">#&gt; Solutions.3 0.6454280 0.5596844</span>
 
 
 <span class="no">best_signature</span><span class="kw">&lt;-</span> <span class="no">best_sol</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span>(<span class="no">C.indexes</span>$<span class="no">test_CI</span>)]
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">best_signature</span>)
-<span class="co">#&gt; [1] "Solutions.4"</span>
-<span class="co"># "Solutions.3"</span></pre></body></html></div>
+<span class="co">#&gt; [1] "Solutions.3"</span></pre></body></html></div>
 </div>
 <div id="evaluate-prediction-survival-of-galgo-signatures" class="section level3">
 <h3 class="hasAnchor">
@@ -879,7 +710,7 @@
 <span class="no">tumortotal1diff</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html">survdiff</a></span>(<span class="no">surv_formula</span>)
 <span class="no">tumortotal1pval</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">pchisq</a></span>(<span class="no">tumortotal1diff</span>$<span class="no">chisq</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">tumortotal1diff</span>$<span class="no">n</span>) - <span class="fl">1</span>, <span class="kw">lower.tail</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 
-  <span class="no">p</span><span class="kw">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span>(<span class="no">tumortotal1</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">train_clinic</span>,<span class="kw">risk.table</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">pval</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">palette</span><span class="kw">=</span><span class="st">"dark2"</span>, <span class="kw">title</span><span class="kw">=</span><span class="st">"TCGA Lung adenocarcinoma \n Galgo subtypes survival"</span>, <span class="kw">surv.scale</span><span class="kw">=</span><span class="st">"percent"</span>, <span class="kw">conf.int</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="kw">xlab</span><span class="kw">=</span><span class="st">"time (days)"</span>, <span class="kw">ylab</span><span class="kw">=</span><span class="st">"survival(%)"</span>, <span class="kw">xlim</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">3650</span>),<span class="kw">break.time.by</span> <span class="kw">=</span> <span class="fl">365</span>, <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>(), <span class="kw">risk.table.y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">risk.table.y.text</span> <span class="kw">=</span> <span class="fl">FALSE</span>,<span class="kw">censor</span><span class="kw">=</span><span class="fl">FALSE</span>)
+  <span class="no">p</span><span class="kw">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span>(<span class="no">tumortotal1</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">train_clinic</span>,<span class="kw">risk.table</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">pval</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">palette</span><span class="kw">=</span><span class="st">"dark2"</span>, <span class="kw">title</span><span class="kw">=</span><span class="st">"UPP breast cancer \n Galgo subtypes survival"</span>, <span class="kw">surv.scale</span><span class="kw">=</span><span class="st">"percent"</span>, <span class="kw">conf.int</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="kw">xlab</span><span class="kw">=</span><span class="st">"time (days)"</span>, <span class="kw">ylab</span><span class="kw">=</span><span class="st">"survival(%)"</span>, <span class="kw">xlim</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">3650</span>),<span class="kw">break.time.by</span> <span class="kw">=</span> <span class="fl">365</span>, <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>(), <span class="kw">risk.table.y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">risk.table.y.text</span> <span class="kw">=</span> <span class="fl">FALSE</span>,<span class="kw">censor</span><span class="kw">=</span><span class="fl">FALSE</span>)
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">p</span>)</pre></body></html></div>
 <p><img src="galgoR_files/figure-html/galgo_train_surv-1.png" width="100%"></p>
 <div class="sourceCode" id="cb32"><html><body><pre class="r">
@@ -890,15 +721,15 @@
 <span class="no">tumortotal1diff</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html">survdiff</a></span>(<span class="no">surv_formula</span>)
 <span class="no">tumortotal1pval</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">pchisq</a></span>(<span class="no">tumortotal1diff</span>$<span class="no">chisq</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">tumortotal1diff</span>$<span class="no">n</span>) - <span class="fl">1</span>, <span class="kw">lower.tail</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 
-  <span class="no">p</span><span class="kw">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span>(<span class="no">tumortotal1</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">test_clinic</span>,<span class="kw">risk.table</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">pval</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">palette</span><span class="kw">=</span><span class="st">"dark2"</span>, <span class="kw">title</span><span class="kw">=</span><span class="st">"GSE68465 Lung adenocarcinoma \n Galgo subtypes survival"</span>, <span class="kw">surv.scale</span><span class="kw">=</span><span class="st">"percent"</span>, <span class="kw">conf.int</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="kw">xlab</span><span class="kw">=</span><span class="st">"time (days)"</span>, <span class="kw">ylab</span><span class="kw">=</span><span class="st">"survival(%)"</span>, <span class="kw">xlim</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">3650</span>),<span class="kw">break.time.by</span> <span class="kw">=</span> <span class="fl">365</span>, <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>(), <span class="kw">risk.table.y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">risk.table.y.text</span> <span class="kw">=</span> <span class="fl">FALSE</span>,<span class="kw">censor</span><span class="kw">=</span><span class="fl">FALSE</span>)
+  <span class="no">p</span><span class="kw">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span>(<span class="no">tumortotal1</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">test_clinic</span>,<span class="kw">risk.table</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">pval</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">palette</span><span class="kw">=</span><span class="st">"dark2"</span>, <span class="kw">title</span><span class="kw">=</span><span class="st">"TRANSBIG breast cancer \n Galgo subtypes survival"</span>, <span class="kw">surv.scale</span><span class="kw">=</span><span class="st">"percent"</span>, <span class="kw">conf.int</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="kw">xlab</span><span class="kw">=</span><span class="st">"time (days)"</span>, <span class="kw">ylab</span><span class="kw">=</span><span class="st">"survival(%)"</span>, <span class="kw">xlim</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">3650</span>),<span class="kw">break.time.by</span> <span class="kw">=</span> <span class="fl">365</span>, <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>(), <span class="kw">risk.table.y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">risk.table.y.text</span> <span class="kw">=</span> <span class="fl">FALSE</span>,<span class="kw">censor</span><span class="kw">=</span><span class="fl">FALSE</span>)
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">p</span>)</pre></body></html></div>
 <p><img src="galgoR_files/figure-html/galgo_test_surv-1.png" width="100%"></p>
 </div>
 </div>
-<div id="comparison-of-galgo-vs-wilkerson-classifiers" class="section level2">
+<div id="comparison-of-galgo-vs-pam50-classifier" class="section level2">
 <h2 class="hasAnchor">
-<a href="#comparison-of-galgo-vs-wilkerson-classifiers" class="anchor"></a>Comparison of Galgo vs Wilkerson classifiers</h2>
-<p>Compare Wilkerson classification vs Galgo classification in the GSE68465 (test) dataset</p>
+<a href="#comparison-of-galgo-vs-pam50-classifier" class="anchor"></a>Comparison of Galgo vs PAM50 classifier</h2>
+<p>Compare PAM50 classification vs Galgo classification in the TRANSBIG (test) dataset</p>
 <div class="sourceCode" id="cb33"><html><body><pre class="r">
 
 <span class="no">surv_formula1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span>(<span class="st">"Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ test_class"</span>)
@@ -906,7 +737,7 @@
 <span class="no">tumortotal1diff</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html">survdiff</a></span>(<span class="no">surv_formula1</span>)
 <span class="no">tumortotal1pval</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">pchisq</a></span>(<span class="no">tumortotal1diff</span>$<span class="no">chisq</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">tumortotal1diff</span>$<span class="no">n</span>) - <span class="fl">1</span>, <span class="kw">lower.tail</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 
-<span class="no">surv_formula2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span>(<span class="st">"Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ Wilk.Class_test"</span>)
+<span class="no">surv_formula2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span>(<span class="st">"Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ PAM50_test"</span>)
 <span class="no">tumortotal2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survminer/man/surv_fit.html">surv_fit</a></span>(<span class="no">surv_formula2</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">test_clinic</span>)
 <span class="no">tumortotal2diff</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html">survdiff</a></span>(<span class="no">surv_formula2</span>)
 <span class="no">tumortotal2pval</span><span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">pchisq</a></span>(<span class="no">tumortotal1diff</span>$<span class="no">chisq</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">tumortotal2diff</span>$<span class="no">n</span>) - <span class="fl">1</span>, <span class="kw">lower.tail</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
@@ -914,10 +745,10 @@
 
 
 
-  <span class="no">SURV</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">GALGO</span><span class="kw">=</span><span class="no">tumortotal1</span>,<span class="kw">Wilk</span><span class="kw">=</span><span class="no">tumortotal2</span> )
+  <span class="no">SURV</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">GALGO</span><span class="kw">=</span><span class="no">tumortotal1</span>,<span class="kw">PAM50</span><span class="kw">=</span><span class="no">tumortotal2</span> )
   <span class="no">COLS</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>:<span class="fl">8</span>,<span class="fl">10</span>)
   <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">cex</span><span class="kw">=</span><span class="fl">1.35</span>, <span class="kw">mar</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3.8</span>, <span class="fl">3.8</span>, <span class="fl">2.5</span>, <span class="fl">2.5</span>) + <span class="fl">0.1</span>)
-  <span class="no">p</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span>(<span class="no">SURV</span>,<span class="kw">combine</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">test_clinic</span>,<span class="kw">risk.table</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">pval</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">palette</span><span class="kw">=</span><span class="st">"dark2"</span>, <span class="kw">title</span><span class="kw">=</span><span class="st">"Galgo vs. Wilkerson subtypes \n Lung survival comparison"</span>, <span class="kw">surv.scale</span><span class="kw">=</span><span class="st">"percent"</span>, <span class="kw">conf.int</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="kw">xlab</span><span class="kw">=</span><span class="st">"time (days)"</span>, <span class="kw">ylab</span><span class="kw">=</span><span class="st">"survival(%)"</span>, <span class="kw">xlim</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="no">period</span>),<span class="kw">break.time.by</span> <span class="kw">=</span> <span class="fl">365</span>, <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>(), <span class="kw">risk.table.y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">risk.table.y.text</span> <span class="kw">=</span> <span class="fl">FALSE</span>,<span class="kw">censor</span><span class="kw">=</span><span class="fl">FALSE</span>)
+  <span class="no">p</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span>(<span class="no">SURV</span>,<span class="kw">combine</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">data</span><span class="kw">=</span><span class="no">test_clinic</span>,<span class="kw">risk.table</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">pval</span><span class="kw">=</span><span class="fl">TRUE</span>,<span class="kw">palette</span><span class="kw">=</span><span class="st">"dark2"</span>, <span class="kw">title</span><span class="kw">=</span><span class="st">"Galgo vs. PAM50 subtypes \n BRCA survival comparison"</span>, <span class="kw">surv.scale</span><span class="kw">=</span><span class="st">"percent"</span>, <span class="kw">conf.int</span><span class="kw">=</span><span class="fl">FALSE</span>, <span class="kw">xlab</span><span class="kw">=</span><span class="st">"time (days)"</span>, <span class="kw">ylab</span><span class="kw">=</span><span class="st">"survival(%)"</span>, <span class="kw">xlim</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="no">period</span>),<span class="kw">break.time.by</span> <span class="kw">=</span> <span class="fl">365</span>, <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>(), <span class="kw">risk.table.y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">risk.table.y.text</span> <span class="kw">=</span> <span class="fl">FALSE</span>,<span class="kw">censor</span><span class="kw">=</span><span class="fl">FALSE</span>)
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">p</span>)</pre></body></html></div>
 <p><img src="galgoR_files/figure-html/test_pam50-1.png" width="100%"></p>
 </div>
@@ -956,7 +787,7 @@
 <span class="co">#&gt; [13] limma_3.45.4                mclust_5.4.6               </span>
 <span class="co">#&gt; [15] survcomp_1.39.0             prodlim_2019.11.13         </span>
 <span class="co">#&gt; [17] survival_3.1-12             Biobase_2.49.0             </span>
-<span class="co">#&gt; [19] BiocGenerics_0.35.4         galgoR_0.2.0               </span>
+<span class="co">#&gt; [19] BiocGenerics_0.35.4         galgoR_0.4.0               </span>
 <span class="co">#&gt; [21] breastCancerUPP_1.27.0      breastCancerTRANSBIG_1.27.0</span>
 <span class="co">#&gt; [23] BiocStyle_2.17.0           </span>
 <span class="co">#&gt; </span>

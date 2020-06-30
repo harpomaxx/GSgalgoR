@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -98,14 +98,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/galgoR_LUAD.html">GalgoR user Guide</a>
+      <a href="../articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/harpomaxx/galgo/">
+  <a href="https://github.com/harpomaxx/galgoR-package/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -124,7 +124,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Survival fitness function using the Restricted Mean Survival Time (RMST) of each group</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/galgo.R'><code>R/galgo.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgoR-package/blob/master/R/galgo.R'><code>R/galgo.R</code></a></small>
     <div class="hidden name"><code>surv_fitness.Rd</code></div>
     </div>
 
@@ -159,12 +159,34 @@
     <p>Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life expectancy difference and life expectancy ratio: two measures of treatment effects in randomized trials with non-proportional hazards BMJ 2017; 357 :j2250 <a href='https://www.bmj.com/content/357/bmj.j2250'>https://www.bmj.com/content/357/bmj.j2250</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>rna_luad</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='use_rna_luad.html'>use_rna_luad</a></span>()
-<span class='no'>clinical</span> <span class='kw'>&lt;-</span> <span class='no'>rna_luad</span>$<span class='no'>TCGA</span>$<span class='no'>pheno_data</span>
-<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>survival</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>time</span>, <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>status</span>)
-<span class='fu'>surv_fitness</span>(<span class='no'>OS</span>, <span class='kw'>clustclass</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>Wilk.Subtype</span>, <span class='fl'>1825</span>)
-}</div></pre>
+    <pre class="examples"><div class='input'>
+<span class='co'># load example dataset</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>breastCancerTRANSBIG</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>Biobase</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocGenerics</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: parallel</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘BiocGenerics’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:parallel’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
+#&gt; <span class='message'>    clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
+#&gt; <span class='message'>    parLapplyLB, parRapply, parSapply, parSapplyLB</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    IQR, mad, sd, var, xtabs</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span>
+#&gt; <span class='message'>    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span>
+#&gt; <span class='message'>    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span>
+#&gt; <span class='message'>    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span>
+#&gt; <span class='message'>    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span>
+#&gt; <span class='message'>    union, unique, unsplit, which.max, which.min</span></div><div class='output co'>#&gt; <span class='message'>Welcome to Bioconductor</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    Vignettes contain introductory material; view with</span>
+#&gt; <span class='message'>    'browseVignettes()'. To cite Bioconductor, see</span>
+#&gt; <span class='message'>    'citation("Biobase")', and for packages 'citation("pkgname")'.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>transbig</span>)
+<span class='no'>Train</span> <span class='kw'>&lt;-</span> <span class='no'>transbig</span>
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>transbig</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: object 'transbig' not found</span></div><div class='input'>
+<span class='no'>clinical</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/phenoData.html'>pData</a></span>(<span class='no'>Train</span>)
+<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>survival</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>t.rfs</span>, <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>e.rfs</span>)
+
+<span class='fu'>surv_fitness</span>(<span class='no'>OS</span>, <span class='kw'>clustclass</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>grade</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='fl'>3650</span>)</div><div class='output co'>#&gt; [1] 261.1064</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

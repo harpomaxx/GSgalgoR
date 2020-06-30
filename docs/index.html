@@ -12,11 +12,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="An Evolutionary Framework for the Identification and Study of Prognostic Gene Expression Signatures in Cancer">
-<meta property="og:description" content="A multi-objective optimization algorithm for disease sub-type discovery based on a 
-    non-dominated sorting genetic algorithm. The Galgo framework combines the advantages of 
-    clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic 
-    algorithms for feature selection and optimal number of clusters determination to find features that 
-    maximize the survival difference between sub-types while keeping cluster consistency high.">
+<meta property="og:description" content="A multi-objective optimization algorithm for disease sub-type discovery based on a non-dominated sorting genetic algorithm. 
+   The Galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of 
+   genetic algorithms for feature selection. The algorithm search for the  optimal number of clusters determination considering the features that 
+   maximize the survival difference between sub-types while keeping cluster consistency high.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -35,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -61,14 +60,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/galgoR_LUAD.html">GalgoR user Guide</a>
+      <a href="articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/harpomaxx/galgo/">
+  <a href="https://github.com/harpomaxx/galgoR-package/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -103,14 +102,14 @@
 <a href="#package-overview" class="anchor"></a>Package Overview</h2>
 <p>The <strong>galgoR</strong> package implements the Galgo algorithm as well as several helper functions for analyzing the results. The package also includes some example data sets useful for getting familiar with the package.</p>
 <p>In order to standardize the structure of genomic data, the package uses the <code>ExpressionSet</code> structure from the <strong>Biobase</strong> package. The <code>ExpressionSet</code> objects can hold different types of data in a single structure, but in this case, we opted for using a simplified format to facilitate the example to those not familiar with the <em>Biobase</em> package. The <em>ExpressionSet</em> objects are formed mainly by a matrix of genetic expression, usually derived from microarray or RNAseq experiments and the Phenotypic data containing information on the samples (condition, status, treatment, survival, and other covariates). Additionally, some annotations and feature Meta-data can also be included in the objects.</p>
-<p>For testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets ([TCGA] and [GSE68465]), that can be downloaded using the function <code><a href="reference/use_rna_luad.html">use_rna_luad()</a></code>. Additionally, <strong>galgoR</strong> provides the Wilkerson’s centroids to perform lung adenocarcinoma sample classification.</p>
+<p>For testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets ([TCGA] and [GSE68465]), that can be downloaded using the function <code>use_rna_luad()</code>. Additionally, <strong>galgoR</strong> provides the Wilkerson’s centroids to perform lung adenocarcinoma sample classification.</p>
 </div>
 </div>
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
 <p>You can install the released version of galgoR using devtools with:</p>
-<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("https://github.com/harpomaxx/galgo")
+<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("https://github.com/harpomaxx/galgoR-package")
 library(galgoR)</a></code></pre>
 <div id="executing-galgo" class="section level2">
 <h2 class="hasAnchor">
@@ -143,9 +142,9 @@ output&lt;-galgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/harpomaxx/galgo/">https://​github.com/​harpomaxx/​galgo/​</a>
+<li>Browse source code at <br><a href="https://github.com/harpomaxx/galgoR-package/">https://​github.com/​harpomaxx/​galgoR-package/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/harpomaxx/galgo/issues">https://​github.com/​harpomaxx/​galgo/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/harpomaxx/galgoR-package/issues">https://​github.com/​harpomaxx/​galgoR-package/​issues</a>
 </li>
 </ul>
 </div>

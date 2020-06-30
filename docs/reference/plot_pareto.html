@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -98,14 +98,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/galgoR_LUAD.html">GalgoR user Guide</a>
+      <a href="../articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/harpomaxx/galgo/">
+  <a href="https://github.com/harpomaxx/galgoR-package/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -124,7 +124,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot pareto front from an galgo.Obj</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/plot-functions.R'><code>R/plot-functions.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgoR-package/blob/master/R/plot-functions.R'><code>R/plot-functions.R</code></a></small>
     <div class="hidden name"><code>plot_pareto.Rd</code></div>
     </div>
 
@@ -149,17 +149,47 @@
 A line is drawn over all non-dominated solutions showing the estimated Pareto front</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='co'># Load data</span>
-<span class='no'>rna_luad</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='use_rna_luad.html'>use_rna_luad</a></span>()
-<span class='no'>TCGA_expr</span> <span class='kw'>&lt;-</span> <span class='no'>rna_luad</span>$<span class='no'>TCGA</span>$<span class='no'>expression_matrix</span>
-<span class='no'>TCGA_clinic</span> <span class='kw'>&lt;-</span> <span class='no'>rna_luad</span>$<span class='no'>TCGA</span>$<span class='no'>pheno_data</span>
-<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>survival</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>TCGA_clinic</span>$<span class='no'>time</span>, <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>TCGA_clinic</span>$<span class='no'>status</span>)
+    <pre class="examples"><div class='input'><span class='co'># load example dataset</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>breastCancerTRANSBIG</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>transbig</span>)
+<span class='no'>Train</span> <span class='kw'>&lt;-</span> <span class='no'>transbig</span>
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>transbig</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: object 'transbig' not found</span></div><div class='input'>
+<span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>Biobase</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/exprs.html'>exprs</a></span>(<span class='no'>Train</span>)
+<span class='no'>clinical</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>Biobase</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/phenoData.html'>pData</a></span>(<span class='no'>Train</span>)
+<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>survival</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>t.rfs</span>, <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>e.rfs</span>)
+
+<span class='co'># We will use a reduced dataset for the example</span>
+<span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='no'>expression</span>[<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>expression</span>), <span class='fl'>100</span>), ]
+
+<span class='co'># Now we scale the expression matrix</span>
+<span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>expression</span>)))
 
 <span class='co'># Run galgo</span>
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>galgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>TCGA_expr</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)
-<span class='fu'>plot_pareto</span>(<span class='no'>output</span>)
-}</div></pre>
+<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>galgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                       rnkIndex    CrowD
+#&gt; result.5  3  0.04104829 118.25666        1 1.144079
+#&gt; result.8  3  0.04350945  32.55516        1      Inf
+#&gt; result.10 7 -0.00144654 236.73553        1      Inf
+#&gt; result.13 4  0.03545995 229.59451        1 1.525520</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                        rnkIndex     CrowD
+#&gt; result.2  2  0.073167495  59.25478        1       Inf
+#&gt; result.13 9 -0.007440535 333.09924        1       Inf
+#&gt; result.8  6  0.050220061 263.66711        1 1.0720651
+#&gt; result.1  4  0.053290318 222.30424        1 0.8994007</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                        rnkIndex     CrowD
+#&gt; result.2  2  0.073167495  59.25478        1       Inf
+#&gt; result.13 9 -0.007440535 333.09924        1       Inf
+#&gt; result.8  6  0.050220061 263.66711        1 1.0415239
+#&gt; result.1  4  0.053290318 222.30424        1 0.8937899</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                        rnkIndex     CrowD
+#&gt; result.2  2  0.073167495  59.25478        1       Inf
+#&gt; result.13 9 -0.007440535 333.09924        1       Inf
+#&gt;           8  0.019642978 329.16112        1 0.9169983
+#&gt; result.1  4  0.053290318 222.30424        1 0.9038767
+#&gt; result.8  6  0.050220061 263.66711        1 0.7373528</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                        rnkIndex     CrowD
+#&gt; result.2  2  0.073167495  59.25478        1       Inf
+#&gt; result.13 9 -0.007440535 333.09924        1       Inf
+#&gt;           8  0.019642978 329.16112        1 0.9271466
+#&gt; result.8  6  0.050220061 263.66711        1 0.7434218
+#&gt;           2  0.058533123 107.48347        1 0.5462269
+#&gt;           4  0.057737497 175.55309        1 0.4153399
+#&gt; result.1  4  0.053290318 222.30424        1 0.3620804</div><div class='input'><span class='fu'>plot_pareto</span>(<span class='no'>output</span>)</div><div class='img'><img src='plot_pareto-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

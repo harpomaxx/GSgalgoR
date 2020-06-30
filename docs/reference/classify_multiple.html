@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -98,14 +98,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/galgoR_LUAD.html">GalgoR user Guide</a>
+      <a href="../articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/harpomaxx/galgo/">
+  <a href="https://github.com/harpomaxx/galgoR-package/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -124,7 +124,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Classify samples from multiple centroids</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgo/blob/master/R/results-functions.R'><code>R/results-functions.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgoR-package/blob/master/R/results-functions.R'><code>R/results-functions.R</code></a></small>
     <div class="hidden name"><code>classify_multiple.Rd</code></div>
     </div>
 
@@ -156,24 +156,70 @@
     <p>Returns a <code>data.frame</code> with the classes assigned to each sample in each signature, were samples are a rows and signatures in columns</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='co'># Load data</span>
-<span class='no'>rna_luad</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='use_rna_luad.html'>use_rna_luad</a></span>()
-<span class='no'>TCGA_expr</span> <span class='kw'>&lt;-</span> <span class='no'>rna_luad</span>$<span class='no'>TCGA</span>$<span class='no'>expression_matrix</span>
-<span class='no'>TCGA_clinic</span> <span class='kw'>&lt;-</span> <span class='no'>rna_luad</span>$<span class='no'>TCGA</span>$<span class='no'>pheno_data</span>
-<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>survival</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>TCGA_clinic</span>$<span class='no'>time</span>, <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>TCGA_clinic</span>$<span class='no'>status</span>)
+    <pre class="examples"><div class='input'><span class='co'># load example dataset</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>breastCancerTRANSBIG</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>transbig</span>)
+<span class='no'>Train</span> <span class='kw'>&lt;-</span> <span class='no'>transbig</span>
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>transbig</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: object 'transbig' not found</span></div><div class='input'>
+<span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>Biobase</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/exprs.html'>exprs</a></span>(<span class='no'>Train</span>)
+<span class='no'>clinical</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>Biobase</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/phenoData.html'>pData</a></span>(<span class='no'>Train</span>)
+<span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>survival</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>t.rfs</span>, <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>e.rfs</span>)
+
+<span class='co'># We will use a reduced dataset for the example</span>
+<span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='no'>expression</span>[<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>expression</span>), <span class='fl'>100</span>), ]
+
+<span class='co'># Now we scale the expression matrix</span>
+<span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>expression</span>)))
 
 <span class='co'># Run galgo</span>
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>galgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>TCGA_expr</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)
+<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>galgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
+#&gt; result.1   4  0.11278306  23.56196        1       Inf
+#&gt; result.2   8  0.01141385 222.57181        1 0.8254984
+#&gt; result.4   4  0.08268501  74.01163        1 0.5426797
+#&gt; result.7  10 -0.01179783 259.92567        1       Inf
+#&gt; result.10  2  0.09501885  28.27588        1 0.4390350
+#&gt; result.11  4  0.06875280 113.06815        1 0.3898698
+#&gt; result.13  9  0.02673983 128.03740        1 0.7636250
+#&gt; result.14  6  0.05433006 115.47383        1 0.3958183</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
+#&gt; result.1   4 0.112783057  23.56196        1       Inf
+#&gt; result.12 10 0.000283509 271.70962        1       Inf
+#&gt; result.2  10 0.019584412 167.21702        1 0.6215900
+#&gt; result.4   4 0.082685014  74.01163        1 0.5938833
+#&gt; result.2   8 0.011413854 222.57181        1 0.5458423
+#&gt; result.11  2 0.059499806 159.59322        1 0.4666480
+#&gt; result.10  2 0.095018850  28.27588        1 0.4303309
+#&gt; result.1   2 0.080086051 154.98218        1 0.3885443
+#&gt; result.15  4 0.072459559 155.93052        1 0.1824943</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
+#&gt; result.1   4 0.112783057  23.56196        1       Inf
+#&gt; result.12 10 0.000283509 271.70962        1       Inf
+#&gt;            3 0.101115208 128.56398        1 0.7584870
+#&gt;            7 0.049846175 195.49971        1 0.6881006
+#&gt; result.2   8 0.011413854 222.57181        1 0.6854810
+#&gt;            6 0.073630973 172.57983        1 0.3956618
+#&gt; result.1   2 0.080086051 154.98218        1 0.3867465</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;  k                      rnkIndex     CrowD
+#&gt;  3 0.13031964  44.33566        1       Inf
+#&gt;  6 0.02370174 338.29351        1       Inf
+#&gt;  7 0.04257734 218.49488        1 0.6292932
+#&gt;  3 0.10309314 145.49059        1 0.5280575
+#&gt;  3 0.09019366 195.27539        1 0.5096224
+#&gt;  7 0.04984617 195.49971        1 0.4074634
+#&gt;  3 0.10018432 145.66422        1 0.2460297</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;  k                      rnkIndex     CrowD
+#&gt;  3 0.13031964  44.33566        1       Inf
+#&gt;  6 0.02370174 338.29351        1       Inf
+#&gt;  7 0.04257734 218.49488        1 0.6366426
+#&gt;  3 0.11169441 109.19127        1 0.5122546
+#&gt;  3 0.09019366 195.27539        1 0.5121874
+#&gt;  7 0.04984617 195.49971        1 0.4086585
+#&gt;  3 0.10018432 145.66422        1 0.2485920
+#&gt;  3 0.10309314 145.49059        1 0.1966151</div><div class='input'><span class='no'>outputDF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='to_dataframe.html'>to_dataframe</a></span>(<span class='no'>output</span>)
+<span class='no'>outputList</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='to_list.html'>to_list</a></span>(<span class='no'>output</span>)
+
 <span class='no'>RESULTS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='non_dominated_summary.html'>non_dominated_summary</a></span>(
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='no'>output</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>,
-  <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>TCGA_expr</span>,
-  <span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
-  <span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
-<span class='no'>CentroidsList</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_centroids.html'>create_centroids</a></span>(<span class='no'>output</span>, <span class='no'>RESULTS</span>$<span class='no'>solution</span>, <span class='kw'>trainset</span> <span class='kw'>=</span> <span class='no'>TCGA_expr</span>)
-<span class='no'>TCGA_classes</span> <span class='kw'>&lt;-</span> <span class='fu'>classify_multiple</span>(<span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>TCGA_expr</span>, <span class='kw'>centroid_list</span> <span class='kw'>=</span> <span class='no'>CentroidsList</span>)
-}</div></pre>
+    <span class='kw'>output</span> <span class='kw'>=</span> <span class='no'>output</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>,
+    <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>,
+    <span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
+    <span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>CentroidsList</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_centroids.html'>create_centroids</a></span>(<span class='no'>output</span>, <span class='no'>RESULTS</span>$<span class='no'>solution</span>, <span class='kw'>trainset</span> <span class='kw'>=</span> <span class='no'>expression</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>classes</span> <span class='kw'>&lt;-</span> <span class='fu'>classify_multiple</span>(<span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>centroid_list</span> <span class='kw'>=</span> <span class='no'>CentroidsList</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
