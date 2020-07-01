@@ -16,7 +16,8 @@ author:
   - Institute of Biochemistry and Biotechnology, Medical School, National University
     of Cuyo, Mendoza, Argentina.
   name: Juan Manuel Fernandez-Muñoz
-- affiliation: Engineering School, National University of Cuyo, Mendoza, Argentina.
+- affiliation: LABSIN, Engineering School, National University of Cuyo, Mendoza, Argentina.
+  email: 'harpo@ingenieria.uncuyo.edu.ar'
   name: Carlos A. Catania
   package: galgoR
 date: "`r Sys.Date()`"

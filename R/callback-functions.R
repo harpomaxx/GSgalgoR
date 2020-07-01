@@ -33,11 +33,11 @@
 #' population = 15, 
 #' prob_matrix = expression, 
 #' OS = OS,
-#' end_galgo_callback = base_return_pop_callback
+#' end_galgo_callback = callback_base_return_pop
 #' )
 #' 
 #' 
-base_return_pop_callback <-
+callback_base_return_pop <-
     function(userdir = "",
              generation,
              pop_pool,
@@ -72,7 +72,7 @@ base_return_pop_callback <-
 #'
 #' @examples
 #' @noRd
-base_save_pop_callback <-
+callback_base_save_pop <-
     function(userdir = "",
              prefix,
              generation,
@@ -116,7 +116,7 @@ base_save_pop_callback <-
 #'
 #' @examples
 #' @noRd
-base_save_pop_partial_callback <-
+callback_base_save_pop_partial <-
     function(userdir = "",
              generation,
              pop_pool,
@@ -158,7 +158,7 @@ base_save_pop_partial_callback <-
 #'
 #' @examples
 #' @noRd
-base_save_pop_final_callback <-
+callback_base_save_pop_final <-
     function(userdir = "",
              generation,
              pop_pool,
@@ -223,9 +223,9 @@ base_save_pop_final_callback <-
 #' population = 15, 
 #' prob_matrix = expression, 
 #' OS = OS,
-#' report_callback = base_report_callback
+#' report_callback = callback_base_report
 #' )
-base_report_callback <-
+callback_base_report <-
     function(userdir = "",
              generation,
              pop_pool,
@@ -277,9 +277,9 @@ base_report_callback <-
 #' population = 15, 
 #' prob_matrix = expression, 
 #' OS = OS,
-#' report_callback = no_report_callback
+#' report_callback = callback_no_report
 #' )
-no_report_callback <-
+callback_no_report <-
     function(userdir = "",
              generation,
              pop_pool,
@@ -328,15 +328,15 @@ no_report_callback <-
 #' population = 15, 
 #' prob_matrix = expression, 
 #' OS = OS,
-#' start_galgo_callback = default_callback, # When Galgo is about to start.
-#' end_galgo_callback = default_callback,   # When Galgo is about to finish. 
-#' start_gen_callback = default_callback,   # At the beginning of each generation/iteration.
-#' end_gen_callback = default_callback,     # At the end of each generation/iteration.
-# 'report_callback = default_callback,      # In the middle of the generation 
+#' start_galgo_callback = callback_default, # When Galgo is about to start.
+#' end_galgo_callback = callback_default,   # When Galgo is about to finish. 
+#' start_gen_callback = callback_default,   # At the beginning of each generation/iteration.
+#' end_gen_callback = callback_default,     # At the end of each generation/iteration.
+# 'report_callback = callback_default,      # In the middle of the generation 
 #' )
 #' 
 #' 
-default_callback <-
+callback_default <-
     function(userdir = "",
              generation,
              pop_pool,

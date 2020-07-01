@@ -642,23 +642,23 @@ galgo <-
              # OS=Surv(time=clinical$time,event=clinical$status)
              prob_matrix,
              res_dir = "",
-             start_galgo_callback = default_callback,
-             end_galgo_callback = base_return_pop_callback,
-             report_callback = base_report_callback,
-             start_gen_callback = default_callback,
-             end_gen_callback = default_callback,
+             start_galgo_callback = callback_default,
+             end_galgo_callback = callback_base_return_pop,
+             report_callback = callback_base_report,
+             start_gen_callback = callback_default,
+             end_gen_callback = callback_default,
              verbose = 2) {
       
         if (verbose == 0) {
-            report_callback <- default_callback
-            start_gen_callback <- default_callback
-            end_gen_callback <- default_callback
+            report_callback <- callback_default
+            start_gen_callback <- callback_default
+            end_gen_callback <- callback_default
         }
 
         if (verbose == 1) {
-            report_callback <- no_report_callback
-            start_gen_callback <- default_callback
-            end_gen_callback <- default_callback
+            report_callback <- callback_no_report
+            start_gen_callback <- callback_default
+            end_gen_callback <- callback_default
         }
 
         # Support for parallel computing.
