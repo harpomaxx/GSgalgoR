@@ -106,17 +106,18 @@
 </ul>
 <p>Each one of the five possible hooks can be accessed through parameters with the *_callback* suffix in the <code><a href="../reference/galgo.html">galgo()</a></code> function.</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="../reference/galgo.html">galgo</a></span>(<span class="no">...</span>,
-  <span class="kw">start_galgo_callback</span> <span class="kw">=</span> <span class="no">default_callback</span>, <span class="co"># When Galgo is about to start.</span>
-  <span class="kw">end_galgo_callback</span> <span class="kw">=</span> <span class="no">default_callback</span>,   <span class="co"># When Galgo is about to finish. </span>
-  <span class="kw">start_gen_callback</span> <span class="kw">=</span> <span class="no">default_callback</span>,   <span class="co"># At the beginning of each generation/iteration.</span>
-  <span class="kw">end_gen_callback</span> <span class="kw">=</span> <span class="no">default_callback</span>,     <span class="co"># At the end of each generation/iteration.</span>
-  <span class="kw">report_callback</span> <span class="kw">=</span> <span class="no">default_callback</span>,      <span class="co"># In the middle of the generation, </span>
-                                           <span class="co"># right after the new mating pool have been created.</span>
+  <span class="kw">start_galgo_callback</span> <span class="kw">=</span> <span class="no">callback_default</span>, <span class="co"># Galgo is about to start.</span>
+  <span class="kw">end_galgo_callback</span> <span class="kw">=</span> <span class="no">callback_default</span>,   <span class="co"># Galgo is about to finish. </span>
+  <span class="kw">start_gen_callback</span> <span class="kw">=</span> <span class="no">callback_default</span>,   <span class="co"># At the beginning of each generation</span>
+  <span class="kw">end_gen_callback</span> <span class="kw">=</span> <span class="no">callback_default</span>,     <span class="co"># At the end of each generation</span>
+  <span class="kw">report_callback</span> <span class="kw">=</span> <span class="no">callback_default</span>,      <span class="co"># In the middle of the generation, </span>
+                                           <span class="co">#   right after the new mating pool </span>
+                                           <span class="co">#   have been created.</span>
       <span class="no">...</span>)</pre></body></html></div>
 </div>
-<div id="a-simple-custom-callback-function-definition" class="section level1">
+<div id="example-1-a-simple-custom-callback-function-definition" class="section level1">
 <h1 class="hasAnchor">
-<a href="#a-simple-custom-callback-function-definition" class="anchor"></a>A simple custom callback function definition</h1>
+<a href="#example-1-a-simple-custom-callback-function-definition" class="anchor"></a>Example 1: A simple custom callback function definition</h1>
 <p>A callback function definition can be any R function accepting six parameters.</p>
 <ul>
 <li>
@@ -145,7 +146,8 @@
 
     <span class="co"># code starts  here</span>
     <span class="kw">if</span> (<span class="no">generation</span><span class="kw">%%</span><span class="fl">2</span> <span class="kw">==</span> <span class="fl">0</span>)
-        <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"generation: "</span>,<span class="no">generation</span>,<span class="st">" current_time: "</span>,<span class="no">current_time</span>))
+        <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"generation: "</span>,<span class="no">generation</span>,
+                       <span class="st">" current_time: "</span>,<span class="no">current_time</span>))
     }</pre></body></html></div>
 <p>then, the <code>my_callback()</code> function needs to be assigned to some of the available hooks provided by the <code><a href="../reference/galgo.html">galgo()</a></code>. An example of such assignment and the resulting output is provided in the two snippets below.</p>
 <p>A reduced version of the <a href="bioconductor.org/packages/release/data/experiment/html/breastCancerTRANSBIG.html">TRANSBIG</a> dataset is used to setup the expression and clinical information required for the <code><a href="../reference/galgo.html">galgo()</a></code> function.</p>
@@ -161,25 +163,26 @@
 <span class="co"># scale the expression matrix</span>
  <span class="no">expression</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="no">expression</span>)))</pre></body></html></div>
 <p>Then, the <code><a href="../reference/galgo.html">galgo()</a></code> function is invoked and the recently defined function <code>my_callback()</code> is assigned to the <code>report_callback</code> hook-point.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># Run galgo</span>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># Running galgo</span>
 <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="fu"><a href="../reference/galgo.html">galgo</a></span>(<span class="kw">generations</span> <span class="kw">=</span> <span class="fl">6</span>,
               <span class="kw">population</span> <span class="kw">=</span> <span class="fl">15</span>,
               <span class="kw">prob_matrix</span> <span class="kw">=</span> <span class="no">expression</span>,
               <span class="kw">OS</span> <span class="kw">=</span> <span class="no">OS</span>,
-  <span class="kw">start_galgo_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback</a></span>,
-  <span class="kw">end_galgo_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback</a></span>,
-  <span class="kw">report_callback</span> <span class="kw">=</span> <span class="no">my_callback</span>,      <span class="co"># call `my_callback()` in the middle of of each generation/iteration.</span>
-  <span class="kw">start_gen_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback</a></span>,
-  <span class="kw">end_gen_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback</a></span>)
+  <span class="kw">start_galgo_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="../reference/callback_default.html">callback_default</a></span>,
+  <span class="kw">end_galgo_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="../reference/callback_default.html">callback_default</a></span>,
+  <span class="kw">report_callback</span> <span class="kw">=</span> <span class="no">my_callback</span>,      <span class="co"># call `my_callback()` in the middle </span>
+                                      <span class="co"># of each generation/iteration.</span>
+  <span class="kw">start_gen_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="../reference/callback_default.html">callback_default</a></span>,
+  <span class="kw">end_gen_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="../reference/callback_default.html">callback_default</a></span>)
 <span class="co">#&gt; Using CPU for computing pearson distance</span>
-<span class="co">#&gt; generation: 2 current_time: 2020-06-30 23:34:22</span>
-<span class="co">#&gt; generation: 4 current_time: 2020-06-30 23:34:23</span>
-<span class="co">#&gt; generation: 6 current_time: 2020-06-30 23:34:24</span>
+<span class="co">#&gt; generation: 2 current_time: 2020-07-01 11:33:58</span>
+<span class="co">#&gt; generation: 4 current_time: 2020-07-01 11:33:59</span>
+<span class="co">#&gt; generation: 6 current_time: 2020-07-01 11:33:59</span>
 <span class="co">#&gt; NULL</span></pre></body></html></div>
 </div>
-<div id="saving-the-partial-state-of-the-population-pool-through-a-custom-callback-function" class="section level1">
+<div id="example-2-saving-the-partial-state-of-the-population-pool-through-a-custom-callback-function" class="section level1">
 <h1 class="hasAnchor">
-<a href="#saving-the-partial-state-of-the-population-pool-through-a-custom-callback-function" class="anchor"></a>Saving the partial state of the population pool through a custom callback function</h1>
+<a href="#example-2-saving-the-partial-state-of-the-population-pool-through-a-custom-callback-function" class="anchor"></a>Example 2: Saving the partial state of the population pool through a custom callback function</h1>
 <p>The following callback function save in a temporary directory the solutions obtained every five generation/iteration. A file the number of the generation and with a <code>rda.</code> extension will be left in a directory defined by the <code><a href="https://rdrr.io/r/base/tempfile.html">tempdir()</a></code> function.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">my_save_pop_callback</span> <span class="kw">&lt;-</span>
     <span class="kw">function</span>(<span class="no">userdir</span> <span class="kw">=</span> <span class="st">""</span>,
@@ -200,61 +203,84 @@
         <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"solution file saved in"</span>,<span class="no">filename</span>))
     }</pre></body></html></div>
 <p>As usual, the <code><a href="../reference/galgo.html">galgo()</a></code> function is invoked and the recently defined function <code>my_save_pop_callback()</code> is assigned to the <code>end_gen_callback</code> hook-point. As a result, every five generation/iteration the complete solution obtained by galgo will be saved in a file.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># Run galgo</span>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># Running galgo</span>
 <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="fu"><a href="../reference/galgo.html">galgo</a></span>(
   <span class="kw">generations</span> <span class="kw">=</span> <span class="fl">6</span>,
   <span class="kw">population</span> <span class="kw">=</span> <span class="fl">15</span>,
   <span class="kw">prob_matrix</span> <span class="kw">=</span> <span class="no">expression</span>,
   <span class="kw">OS</span> <span class="kw">=</span> <span class="no">OS</span>,
-  <span class="kw">start_galgo_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback</a></span>,
-  <span class="kw">end_galgo_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback</a></span>,
-  <span class="kw">report_callback</span> <span class="kw">=</span> <span class="no">my_callback</span>,      <span class="co"># call `my_callback()` in the middle of of each generation/iteration.</span>
-  <span class="kw">start_gen_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback</a></span>,
-  <span class="kw">end_gen_callback</span> <span class="kw">=</span> <span class="no">my_save_pop_callback</span> , <span class="co"># call `my_save_pop_callback()` at the end of each generation/iteration</span>
+  <span class="kw">start_galgo_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="../reference/callback_default.html">callback_default</a></span>,
+  <span class="kw">end_galgo_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="../reference/callback_default.html">callback_default</a></span>,
+  <span class="kw">report_callback</span> <span class="kw">=</span> <span class="no">my_callback</span>,      <span class="co"># call `my_callback()` in the middle </span>
+                                      <span class="co"># of each generation/iteration.</span>
+  <span class="kw">start_gen_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="../reference/callback_default.html">callback_default</a></span>,
+  <span class="kw">end_gen_callback</span> <span class="kw">=</span> <span class="no">my_save_pop_callback</span> , <span class="co"># call `my_save_pop_callback()` at</span>
+                                          <span class="co">#the end of each generation/iteration</span>
   )
 <span class="co">#&gt; Using CPU for computing pearson distance</span>
-<span class="co">#&gt; solution file saved in /tmp/RtmpMWXS6a/1.rda</span>
-<span class="co">#&gt; generation: 2 current_time: 2020-06-30 23:34:27</span>
-<span class="co">#&gt; solution file saved in /tmp/RtmpMWXS6a/2.rda</span>
-<span class="co">#&gt; solution file saved in /tmp/RtmpMWXS6a/3.rda</span>
-<span class="co">#&gt; generation: 4 current_time: 2020-06-30 23:34:28</span>
-<span class="co">#&gt; solution file saved in /tmp/RtmpMWXS6a/4.rda</span>
-<span class="co">#&gt; solution file saved in /tmp/RtmpMWXS6a/5.rda</span>
-<span class="co">#&gt; generation: 6 current_time: 2020-06-30 23:34:28</span>
-<span class="co">#&gt; solution file saved in /tmp/RtmpMWXS6a/6.rda</span>
+<span class="co">#&gt; solution file saved in /tmp/RtmpBgAV0k/1.rda</span>
+<span class="co">#&gt; generation: 2 current_time: 2020-07-01 11:34:03</span>
+<span class="co">#&gt; solution file saved in /tmp/RtmpBgAV0k/2.rda</span>
+<span class="co">#&gt; solution file saved in /tmp/RtmpBgAV0k/3.rda</span>
+<span class="co">#&gt; generation: 4 current_time: 2020-07-01 11:34:03</span>
+<span class="co">#&gt; solution file saved in /tmp/RtmpBgAV0k/4.rda</span>
+<span class="co">#&gt; solution file saved in /tmp/RtmpBgAV0k/5.rda</span>
+<span class="co">#&gt; generation: 6 current_time: 2020-07-01 11:34:04</span>
+<span class="co">#&gt; solution file saved in /tmp/RtmpBgAV0k/6.rda</span>
 <span class="co">#&gt; NULL</span></pre></body></html></div>
 </div>
-<div id="galgo-implemented-callbacks" class="section level1">
+<div id="callbacks-implemented-in-galgor" class="section level1">
 <h1 class="hasAnchor">
-<a href="#galgo-implemented-callbacks" class="anchor"></a>Galgo implemented Callbacks</h1>
+<a href="#callbacks-implemented-in-galgor" class="anchor"></a>Callbacks implemented in GalgoR</h1>
 <p>By default, Galgo implements four callback functions</p>
-<p><code><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback()</a></code> a simple callback that does nothing at all. It is just used for setting the default behavior of some of the hook-points inside <code><a href="../reference/galgo.html">galgo()</a></code> <code><a href="../reference/base_report_callback.html">base_report_callback()</a></code> a report callback for printing basic information about the solution provided by <code><a href="../reference/galgo.html">galgo()</a></code> such as fitness and crowding distance. <code><a href="https://rdrr.io/pkg/galgoR/man/no_report_callback.html">no_report_callback()</a></code> a report callback for informing the user galgo is running. Not valuable information is shown. <code><a href="../reference/base_return_pop_callback.html">base_return_pop_callback()</a></code> a callback function for building and returning the <code>galgo.Obj</code> object.</p>
+<p><code><a href="../reference/callback_default.html">callback_default()</a></code> a simple callback that does nothing at all. It is just used for setting the default behavior of some of the hook-points inside <code><a href="../reference/galgo.html">galgo()</a></code> <code><a href="../reference/callback_base_report.html">callback_base_report()</a></code> a report callback for printing basic information about the solution provided by <code><a href="../reference/galgo.html">galgo()</a></code> such as fitness and crowding distance. <code><a href="../reference/callback_no_report.html">callback_no_report()</a></code> a report callback for informing the user galgo is running. Not valuable information is shown. <code><a href="../reference/callback_base_return_pop.html">callback_base_return_pop()</a></code> a callback function for building and returning the <code>galgo.Obj</code> object.</p>
 <p>In the the default definition of the <code><a href="../reference/galgo.html">galgo()</a></code> function the hook-points are defined as follow:</p>
 <ul>
-<li><code>start_galgo_callback = default_callback</code></li>
-<li><code>end_galgo_callback = base_return_pop_callback</code></li>
-<li><code>report_callback = base_report_callback</code></li>
-<li><code>start_gen_callback = default_callback</code></li>
-<li><code>end_gen_callback = default_callback</code></li>
+<li><code>start_galgo_callback = callback_default</code></li>
+<li><code>end_galgo_callback = callback_base_return_pop</code></li>
+<li><code>report_callback = callback_base_report</code></li>
+<li><code>start_gen_callback = callback_default</code></li>
+<li><code>end_gen_callback = callback_default</code></li>
 </ul>
-<p>Notice by using the callback mechanism it is possible to modify even the returning value of the <code><a href="../reference/galgo.html">galgo()</a></code> function. The default <code><a href="../reference/base_return_pop_callback.html">base_return_pop_callback()</a></code> returns a <code>galgo.Obj</code> object, however it would simple to change that behavior for something like the <code>my_save_pop_callback()</code> and the function will not returning any value.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co"># Run galgo</span>
+<p>Notice by using the callback mechanism it is possible to modify even the returning value of the <code><a href="../reference/galgo.html">galgo()</a></code> function. The default <code><a href="../reference/callback_base_return_pop.html">callback_base_return_pop()</a></code> returns a <code>galgo.Obj</code> object, however it would simple to change that behavior for something like the <code>my_save_pop_callback()</code> and the function will not returning any value.</p>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co"># Running galgo</span>
 <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="fu"><a href="../reference/galgo.html">galgo</a></span>(
   <span class="kw">generations</span> <span class="kw">=</span> <span class="fl">6</span>,
   <span class="kw">population</span> <span class="kw">=</span> <span class="fl">15</span>,
   <span class="kw">prob_matrix</span> <span class="kw">=</span> <span class="no">expression</span>,
   <span class="kw">OS</span> <span class="kw">=</span> <span class="no">OS</span>,
-  <span class="kw">start_galgo_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback</a></span>,
+  <span class="kw">start_galgo_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="../reference/callback_default.html">callback_default</a></span>,
   <span class="kw">end_galgo_callback</span> <span class="kw">=</span> <span class="no">my_save_pop_callback</span>,
-  <span class="kw">report_callback</span> <span class="kw">=</span> <span class="no">my_callback</span>,      <span class="co"># call `my_callback()` in the middle of of each generation/iteration.</span>
-  <span class="kw">start_gen_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback</a></span>,
-  <span class="kw">end_gen_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/galgoR/man/default_callback.html">default_callback</a></span>
+  <span class="kw">report_callback</span> <span class="kw">=</span> <span class="no">my_callback</span>,      <span class="co"># call `my_callback()` in the middle of </span>
+                                      <span class="co"># of each generation/iteration.</span>
+  <span class="kw">start_gen_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="../reference/callback_default.html">callback_default</a></span>,
+  <span class="kw">end_gen_callback</span> <span class="kw">=</span> <span class="kw pkg">galgoR</span><span class="kw ns">::</span><span class="no"><a href="../reference/callback_default.html">callback_default</a></span>
   )
 <span class="co">#&gt; Using CPU for computing pearson distance</span>
-<span class="co">#&gt; generation: 2 current_time: 2020-06-30 23:34:32</span>
-<span class="co">#&gt; generation: 4 current_time: 2020-06-30 23:34:32</span>
-<span class="co">#&gt; generation: 6 current_time: 2020-06-30 23:34:33</span>
-<span class="co">#&gt; solution file saved in /tmp/RtmpMWXS6a/6.rda</span></pre></body></html></div>
+<span class="co">#&gt; generation: 2 current_time: 2020-07-01 11:34:07</span>
+<span class="co">#&gt; generation: 4 current_time: 2020-07-01 11:34:08</span>
+<span class="co">#&gt; generation: 6 current_time: 2020-07-01 11:34:09</span>
+<span class="co">#&gt; solution file saved in /tmp/RtmpBgAV0k/6.rda</span></pre></body></html></div>
+<p>For preserving the return behavior of the <code><a href="../reference/galgo.html">galgo()</a></code> function, <code><a href="../reference/callback_base_return_pop.html">callback_base_return_pop()</a></code> should be called inside a custom callback. An example of such situation is shown below:</p>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">galgoR</span>)
+
+<span class="no">another_callback</span> <span class="kw">&lt;-</span>
+    <span class="kw">function</span>(<span class="no">userdir</span> <span class="kw">=</span> <span class="st">""</span>,
+             <span class="no">generation</span>,
+             <span class="no">pop_pool</span>,
+             <span class="no">pareto</span>,
+             <span class="no">prob_matrix</span>,
+             <span class="no">current_time</span>) {
+
+    <span class="co"># code starts  here</span>
+
+    <span class="co"># code ends here  </span>
+    <span class="fu"><a href="../reference/callback_base_return_pop.html">callback_base_return_pop</a></span>(<span class="no">userdir</span>,
+                             <span class="no">generation</span>,
+                             <span class="no">pop_pool</span>,
+                             <span class="no">prob_matrix</span>,
+                             <span class="no">current_time</span>)
+    }</pre></body></html></div>
 </div>
   </div>
 

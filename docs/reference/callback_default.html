@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Classify samples from multiple centroids — classify_multiple • galgoR</title>
+<title>A default call_back function that does nothing. — callback_default • galgoR</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Classify samples from multiple centroids — classify_multiple" />
-<meta property="og:description" content="Classify samples from multiple centroids" />
+<meta property="og:title" content="A default call_back function that does nothing. — callback_default" />
+<meta property="og:description" content="A default call_back function that does nothing." />
 
 
 
@@ -123,78 +123,121 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Classify samples from multiple centroids</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgoR-package/blob/master/R/results-functions.R'><code>R/results-functions.R</code></a></small>
-    <div class="hidden name"><code>classify_multiple.Rd</code></div>
+    <h1>A default call_back function that does nothing.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgoR-package/blob/master/R/callback-functions.R'><code>R/callback-functions.R</code></a></small>
+    <div class="hidden name"><code>callback_default.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Classify samples from multiple centroids</p>
+    <p>A default call_back function that does nothing.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>classify_multiple</span>(<span class='no'>prob_matrix</span>, <span class='no'>centroid_list</span>, <span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</pre>
+    <pre class="usage"><span class='fu'>callback_default</span>(
+  <span class='kw'>userdir</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='no'>generation</span>,
+  <span class='no'>pop_pool</span>,
+  <span class='no'>pareto</span>,
+  <span class='no'>prob_matrix</span>,
+  <span class='no'>current_time</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>userdir</th>
+      <td><p>the default directory used by <code><a href='galgo.html'>galgo()</a></code> to store files</p></td>
+    </tr>
+    <tr>
+      <th>generation</th>
+      <td><p>a number indicating the number of iterations of the galgo algorithm</p></td>
+    </tr>
+    <tr>
+      <th>pop_pool</th>
+      <td><p>a <code>data.frame</code> with the solution vectors, number of clusters and their ranking.</p></td>
+    </tr>
+    <tr>
+      <th>pareto</th>
+      <td><p>the solutions found by Galgo across all generations in the solution space</p></td>
+    </tr>
+    <tr>
       <th>prob_matrix</th>
       <td><p>a <code>matrix</code> or <code>data.frame</code>. Must be an expression matrix with features in rows and samples in columns</p></td>
     </tr>
     <tr>
-      <th>centroid_list</th>
-      <td><p>a<code>list</code> with the centroid matrix for each of the signatures to evaluate, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature. The output of <code><a href='create_centroids.html'>create_centroids</a></code> can be used.</p></td>
-    </tr>
-    <tr>
-      <th>distancetype</th>
-      <td><p>a <code>character</code> that can be either <code>'pearson'</code> (default), <code>'spearman'</code> or <code>'kendall'</code>.</p></td>
+      <th>current_time</th>
+      <td><p>an <code>POSIXct</code> object</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Returns a <code>data.frame</code> with the classes assigned to each sample in each signature, were samples are a rows and signatures in columns</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># load example dataset</span>
+
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>breastCancerTRANSBIG</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>transbig</span>)
 <span class='no'>Train</span> <span class='kw'>&lt;-</span> <span class='no'>transbig</span>
-<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>transbig</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: object 'transbig' not found</span></div><div class='input'>
-<span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>Biobase</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/exprs.html'>exprs</a></span>(<span class='no'>Train</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>transbig</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: object 'transbig' not found</span></div><div class='input'><span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>Biobase</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/exprs.html'>exprs</a></span>(<span class='no'>Train</span>)
 <span class='no'>clinical</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>Biobase</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/phenoData.html'>pData</a></span>(<span class='no'>Train</span>)
 <span class='no'>OS</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>survival</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>t.rfs</span>, <span class='kw'>event</span> <span class='kw'>=</span> <span class='no'>clinical</span>$<span class='no'>e.rfs</span>)
-
 <span class='co'># We will use a reduced dataset for the example</span>
 <span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='no'>expression</span>[<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>expression</span>), <span class='fl'>100</span>), ]
 
 <span class='co'># Now we scale the expression matrix</span>
 <span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>expression</span>)))
 
-<span class='co'># Run galgo</span>
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>galgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                     rnkIndex    CrowD
-#&gt; result.1  2 0.13820096 139.3294        1      Inf
-#&gt; result.5  9 0.02957247 306.9323        1      Inf
-#&gt; result.13 2 0.06096262 155.4601        1 1.423909</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;          k                     rnkIndex    CrowD
-#&gt; result.1 2 0.13820096 139.3294        1      Inf
-#&gt; result.5 9 0.02957247 306.9323        1      Inf
-#&gt; result.9 2 0.12893556 217.2990        1 1.334205</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;          k                     rnkIndex    CrowD
-#&gt; result.5 9 0.02957247 306.9323        1      Inf
-#&gt;          2 0.15361747 200.8407        1      Inf
-#&gt; result.9 2 0.12893556 217.2990        1 1.246685</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;          k                     rnkIndex    CrowD
-#&gt; result.5 9 0.02957247 306.9323        1      Inf
-#&gt;          2 0.15361747 200.8407        1      Inf
-#&gt; result.9 2 0.12893556 217.2990        1 1.181198</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;          k                     rnkIndex CrowD
-#&gt; result.5 9 0.02957247 306.9323        1   Inf
-#&gt;          2 0.17671211 231.1517        1   Inf</div><div class='input'><span class='no'>outputDF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='to_dataframe.html'>to_dataframe</a></span>(<span class='no'>output</span>)
-<span class='no'>outputList</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='to_list.html'>to_list</a></span>(<span class='no'>output</span>)
+<span class='co'># Run galgo with default_callback assigned to all the hook-points</span>
 
-<span class='no'>RESULTS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='non_dominated_summary.html'>non_dominated_summary</a></span>(
-    <span class='kw'>output</span> <span class='kw'>=</span> <span class='no'>output</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>,
-    <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>,
-    <span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
-    <span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>CentroidsList</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_centroids.html'>create_centroids</a></span>(<span class='no'>output</span>, <span class='no'>RESULTS</span>$<span class='no'>solution</span>, <span class='kw'>trainset</span> <span class='kw'>=</span> <span class='no'>expression</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>classes</span> <span class='kw'>&lt;-</span> <span class='fu'>classify_multiple</span>(<span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>centroid_list</span> <span class='kw'>=</span> <span class='no'>CentroidsList</span>)</div></pre>
+<span class='kw pkg'>galgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+<span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+<span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>,
+<span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>,
+<span class='kw'>start_galgo_callback</span> <span class='kw'>=</span> <span class='no'>callback_default</span>, <span class='co'># When Galgo is about to start.</span>
+<span class='kw'>end_galgo_callback</span> <span class='kw'>=</span> <span class='no'>callback_default</span>,   <span class='co'># When Galgo is about to finish. </span>
+<span class='kw'>start_gen_callback</span> <span class='kw'>=</span> <span class='no'>callback_default</span>,   <span class='co'># At the beginning of each generation/iteration.</span>
+<span class='kw'>end_gen_callback</span> <span class='kw'>=</span> <span class='no'>callback_default</span>,     <span class='co'># At the end of each generation/iteration.</span>
+)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
+#&gt; result.1   4  0.11278306  23.56196        1       Inf
+#&gt; result.2   8  0.01141385 222.57181        1 0.8254984
+#&gt; result.4   4  0.08268501  74.01163        1 0.5426797
+#&gt; result.7  10 -0.01179783 259.92567        1       Inf
+#&gt; result.10  2  0.09501885  28.27588        1 0.4390350
+#&gt; result.11  4  0.06875280 113.06815        1 0.3898698
+#&gt; result.13  9  0.02673983 128.03740        1 0.7636250
+#&gt; result.14  6  0.05433006 115.47383        1 0.3958183</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
+#&gt; result.1   4 0.112783057  23.56196        1       Inf
+#&gt; result.12 10 0.000283509 271.70962        1       Inf
+#&gt; result.2  10 0.019584412 167.21702        1 0.6215900
+#&gt; result.4   4 0.082685014  74.01163        1 0.5938833
+#&gt; result.2   8 0.011413854 222.57181        1 0.5458423
+#&gt; result.11  2 0.059499806 159.59322        1 0.4666480
+#&gt; result.10  2 0.095018850  28.27588        1 0.4303309
+#&gt; result.1   2 0.080086051 154.98218        1 0.3885443
+#&gt; result.15  4 0.072459559 155.93052        1 0.1824943</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
+#&gt; result.1   4 0.112783057  23.56196        1       Inf
+#&gt; result.12 10 0.000283509 271.70962        1       Inf
+#&gt;            3 0.101115208 128.56398        1 0.7584870
+#&gt;            7 0.049846175 195.49971        1 0.6881006
+#&gt; result.2   8 0.011413854 222.57181        1 0.6854810
+#&gt;            6 0.073630973 172.57983        1 0.3956618
+#&gt; result.1   2 0.080086051 154.98218        1 0.3867465</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;  k                      rnkIndex     CrowD
+#&gt;  3 0.13031964  44.33566        1       Inf
+#&gt;  6 0.02370174 338.29351        1       Inf
+#&gt;  7 0.04257734 218.49488        1 0.6292932
+#&gt;  3 0.10309314 145.49059        1 0.5280575
+#&gt;  3 0.09019366 195.27539        1 0.5096224
+#&gt;  7 0.04984617 195.49971        1 0.4074634
+#&gt;  3 0.10018432 145.66422        1 0.2460297</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;  k                      rnkIndex     CrowD
+#&gt;  3 0.13031964  44.33566        1       Inf
+#&gt;  6 0.02370174 338.29351        1       Inf
+#&gt;  7 0.04257734 218.49488        1 0.6366426
+#&gt;  3 0.11169441 109.19127        1 0.5122546
+#&gt;  3 0.09019366 195.27539        1 0.5121874
+#&gt;  7 0.04984617 195.49971        1 0.4086585
+#&gt;  3 0.10018432 145.66422        1 0.2485920
+#&gt;  3 0.10309314 145.49059        1 0.1966151</div><div class='output co'>#&gt; NULL</div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
