@@ -4,14 +4,8 @@
 \alias{callback_base_return_pop}
 \title{A base callback function that returns a galgo.Obj}
 \usage{
-callback_base_return_pop(
-  userdir = "",
-  generation,
-  pop_pool,
-  pareto,
-  prob_matrix,
-  current_time
-)
+callback_base_return_pop(userdir = "", generation, pop_pool, pareto,
+  prob_matrix, current_time)
 }
 \arguments{
 \item{userdir}{the default directory used by `galgo()` to store files}

@@ -4,14 +4,8 @@
 \alias{callback_no_report}
 \title{Print minimal information to the user about galgo execution.}
 \usage{
-callback_no_report(
-  userdir = "",
-  generation,
-  pop_pool,
-  pareto,
-  prob_matrix,
-  current_time
-)
+callback_no_report(userdir = "", generation, pop_pool, pareto,
+  prob_matrix, current_time)
 }
 \arguments{
 \item{userdir}{the default directory used by `galgo()` to store files}

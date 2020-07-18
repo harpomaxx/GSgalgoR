@@ -4,24 +4,13 @@
 \alias{galgo}
 \title{GalgoR main function}
 \usage{
-galgo(
-  population = 30,
-  generations = 2,
-  nCV = 5,
-  usegpu = FALSE,
-  distancetype = "pearson",
-  TournamentSize = 2,
-  period = 1825,
-  OS,
-  prob_matrix,
-  res_dir = "",
-  start_galgo_callback = callback_default,
+galgo(population = 30, generations = 2, nCV = 5, usegpu = FALSE,
+  distancetype = "pearson", TournamentSize = 2, period = 1825, OS,
+  prob_matrix, res_dir = "", start_galgo_callback = callback_default,
   end_galgo_callback = callback_base_return_pop,
   report_callback = callback_base_report,
   start_gen_callback = callback_default,
-  end_gen_callback = callback_default,
-  verbose = 2
-)
+  end_gen_callback = callback_default, verbose = 2)
 }
 \arguments{
 \item{population}{a number indicating the number of solutions in the population of solutions that will be evolved}
@@ -76,7 +65,7 @@ clinical <- Biobase::pData(Train)
 OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 
 # We will use a reduced dataset for the example
-expression <- expression[sample(1:nrow(expression), 100), ]
+expression <- expression[sample(seq_len(nrow(expression)), 100), ]
 
 # Now we scale the expression matrix
 expression <- t(scale(t(expression)))
