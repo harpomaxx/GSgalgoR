@@ -53,10 +53,10 @@ galgo.Obj <- setClass( # Set the name for the class
 #' @examples
 RMST <- function(ft, rmean) {
   nstrat <- length(ft$strata)
-  stemp <- rep(1:nstrat, ft$strata)
+  stemp <- rep(seq_len(nstrat), ft$strata)
 
   rmst <- NULL
-  for (i in 1:nstrat) {
+  for (i in seq_len(nstrat)) {
     who <- (stemp == i)
     idx <- ft$time[who] <= rmean
     wk.time <- sort(c(ft$time[who][idx], rmean))
@@ -111,19 +111,19 @@ create_folds <-
             y <- factor(as.character(y))
             numInClass <- table(y)
             foldVector <- vector(mode = "integer", length(y))
-            for (i in 1:length(numInClass)) {
+            for (i in seq_len(length(numInClass))) {
                 min_reps <- numInClass[i] %/% k
                 if (min_reps > 0) {
                     spares <- numInClass[i] %% k
-                    seqVector <- rep(1:k, min_reps)
+                    seqVector <- rep(seq_len(k), min_reps)
                     if (spares > 0) {
-                        seqVector <- c(seqVector, sample(1:k, spares))
+                        seqVector <- c(seqVector, sample(seq_len(k), spares))
                     }
                     foldVector[which(y == names(numInClass)[i])] <-
                         sample(seqVector)
                 }
                 else {
-                    foldVector[which(y == names(numInClass)[i])] <- sample(1:k,
+                    foldVector[which(y == names(numInClass)[i])] <- sample(seq_len(k),
                         size = numInClass[i]
                     )
                 }
@@ -183,7 +183,7 @@ consecutive_distance <- function(x) {
   l <- length(d) - 1
   c <- c(0, 1)
   dif <- as.numeric()
-  for (i in 1:l) {
+  for (i in seq_len(l)) {
     dif <- c(dif, diff(d[c + i]))
   }
   return(hmean(dif) * l)
@@ -345,7 +345,7 @@ crossvalidation <-
     centroids <- mapply(k_centroids, train_a, hc, SIMPLIFY = FALSE)
     centroids_cor <- mapply(stats::cor, centroids[1], centroids[2:nCV], SIMPLIFY = FALSE)
     cord <- lapply(centroids_cor, alloc2)
-    cord <- append(list(as.matrix(1:k, ncol = 1)), cord, 1)
+    cord <- append(list(as.matrix(seq_len(k), ncol = 1)), cord, 1)
     centroids <- mapply(reord, centroids, cord, SIMPLIFY = FALSE)
     class_results <- mapply(cluster_classify, test_a, centroids, SIMPLIFY = FALSE)
     cluster_class <- unlist(class_results)
@@ -396,12 +396,12 @@ multipoint_crossover <- function(a, b, n) {
   to <- c(points[order(points)][-n], l)
   from <- c(1, to[-length(to)] + 1)
   cutpoints <- list()
-  for (i in 1:n) {
+  for (i in seq_len(n)) {
     cutpoints[[i]] <- seq(from[i], to[i])
   }
   achild <- as.numeric()
   bchild <- as.numeric()
-  for (i in 1:n) {
+  for (i in seq_len(n)) {
     if (i %% 2 == 0) {
       achild <- c(achild, a[cutpoints[[i]]])
       bchild <- c(bchild, b[cutpoints[[i]]])
@@ -496,13 +496,13 @@ offsprings <- function(X1,
         count <- 0 # Count how many offsprings are still needed to reach the original population size
         while (anyNA(New)) {
             count <- count + 1
-            Pair <- sample(1:nrow(matingPool), 2, replace = FALSE) ## a.Select a pair of parent chromosomes from the matingPool
+            Pair <- sample(seq_len(nrow(matingPool)), 2, replace = FALSE) ## a.Select a pair of parent chromosomes from the matingPool
             # multiple point crossingover
-            offsprings <-uniform_crossover(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
+            offsprings <-uniform_crossover(matingPool[Pair[1], seq_len(chrom_length)], matingPool[Pair[2], seq_len(chrom_length)])
             off1 <- offsprings[[1]]
             off2 <- offsprings[[2]]
             ## c.Mutate the two offsprings at each locus with probability Mp (the mutation probability or mutation rate) and place the resulting chromosomes in the new population. Since the results are sparse strings, cosine similarity is more adequate. Mutation by asymmetric mutation: Analysis of an Asymmetric Mutation Operator; Jansen et al.
-            Mp <- cosine_similarity(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
+            Mp <- cosine_similarity(matingPool[Pair[1], seq_len(chrom_length)], matingPool[Pair[2], seq_len(chrom_length)])
             if (sample(c(1, 0), 1, prob = c(Mp, 1 - Mp)) == 1) {
                 off1 <- asymetric_mutation(off1)
             }
@@ -580,7 +580,7 @@ penalize <- function(x) {
 #' OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 #'
 #' # We will use a reduced dataset for the example
-#' expression <- expression[sample(1:nrow(expression), 100), ]
+#' expression <- expression[sample(seq_len(nrow(expression)), 100), ]
 #'
 #' # Now we scale the expression matrix
 #' expression <- t(scale(t(expression)))
@@ -641,7 +641,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
 
         # Matrix with random TRUE false with uniform distribution, representing solutions to test.
         X <- matrix(NA, nrow = population, ncol = chrom_length)
-        for (i in 1:population) {
+        for (i in seq_len(population)) {
             prob <- stats::runif(1, 0, 1)
             X[i, ] <-
                 sample(c(1, 0),
@@ -662,7 +662,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
           )
 
         ##### Main loop.
-        for (g in 1:generations) {
+        for (g in seq_len(generations)) {
             # Output for the generation callback
             #callback_data <- list()
             #environment(start_gen_callback) <- environment()
@@ -687,7 +687,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
 
             k <- Nclust
 
-            flds <- create_folds(1:ncol(prob_matrix), k = nCV)
+            flds <- create_folds(seq_len(ncol(prob_matrix)), k = nCV)
 
             `%dopar%` <- foreach::`%dopar%`
             `%do%` <- foreach::`%do%`
@@ -704,7 +704,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
 
             # Calculate Fitness 1 (silhouette) and 2 (Survival differences).
             Fit2 <- foreach::foreach(
-                    i = 1:nrow(X),
+                    i = seq_len(nrow(X)),
                     .packages = reqpkgs,
                     .combine = rbind
                 ) %dopar% {
@@ -797,12 +797,10 @@ galgo <- function(population = 30,# Number of individuals to evaluate
                 X1 <-
                     cbind(X1, CrowD) # data.frame with solution vector, number of clusters, ranking and crowding distance
                 X1 <- X1[X1[, "CrowD"] > 0, ]
-                O <- order(X1[, "rnkIndex"], X1[, "CrowD"] * -1)[1:population]
+                O <- order(X1[, "rnkIndex"], X1[, "CrowD"] * -1)[seq_len(population)]
                 X1 <- X1[O, ]
-
                 PARETO[[g]] <-
                     X1[, (chrom_length + 2):(chrom_length + 3)] # Saves the fitness of the solutions of the current generation
-
                 # Output for the generation callback
                 report_callback(
                     generation = g,
@@ -815,7 +813,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
                 # print(paste0("Generation ", g, " Non-dominated solutions:"))
                 # print(X1[X1[, "rnkIndex"] == 1, (chrom_length + 1):(chrom_length + 5)])
 
-                Xold <- X1[, 1:chrom_length]
+                Xold <- X1[, seq_len(chrom_length)]
                 Nclustold <- X1[, "k"]
 
                 NEW <-
