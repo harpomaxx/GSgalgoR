@@ -340,21 +340,17 @@ crossvalidation <-
     distance_data <- distance(data)
     train_a <- lapply(flds, build_train, data = data)
     test_a <- lapply(flds, build_test, data = data)
-    sub <-
-      lapply(flds, subset_distance, distance_data = distance_data)
+    sub <- lapply(flds, subset_distance, distance_data = distance_data)
     hc <- sapply(sub, cluster_algorithm, k = k)
     centroids <- mapply(k_centroids, train_a, hc, SIMPLIFY = FALSE)
-    centroids_cor <-
-      mapply(stats::cor, centroids[1], centroids[2:nCV], SIMPLIFY = FALSE)
+    centroids_cor <- mapply(stats::cor, centroids[1], centroids[2:nCV], SIMPLIFY = FALSE)
     cord <- lapply(centroids_cor, alloc2)
     cord <- append(list(as.matrix(1:k, ncol = 1)), cord, 1)
     centroids <- mapply(reord, centroids, cord, SIMPLIFY = FALSE)
-    class_results <-
-      mapply(cluster_classify, test_a, centroids, SIMPLIFY = FALSE)
+    class_results <- mapply(cluster_classify, test_a, centroids, SIMPLIFY = FALSE)
     cluster_class <- unlist(class_results)
     cluster_class <- cluster_class[order(as.vector(unlist(flds)))]
-    fit_silhouette <-
-      mean(cluster::silhouette(cluster_class, distance_data)[, 3])
+    fit_silhouette <- mean(cluster::silhouette(cluster_class, distance_data)[, 3])
     fit_differences <- surv_fitness(surv_obj, cluster_class, period)
     return(c(fit_silhouette, fit_differences))
   }
