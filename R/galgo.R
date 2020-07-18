@@ -490,61 +490,30 @@ asymetric_mutation <- function(x) {
 #'
 #' @examples
 #' @noRd
-offsprings <-
-    function(X1,
+offsprings <- function(X1,
              chrom_length,
              population,
              TournamentSize) {
-        New <-
-            matrix(NA, ncol = chrom_length, nrow = population) # Create empty matrix to add new individuals
-        NewK <-
-            matrix(NA, nrow = 1, ncol = population) # same for cluster chromosome
-
-        matingPool <-
-            nsga2R::tournamentSelection(X1, population, TournamentSize) # Use tournament selection, to select parents that will give offsprings
-
-        count <-
-            0 # Count how many offsprings are still needed to reach the original population size
+        New <- matrix(NA, ncol = chrom_length, nrow = population) # Create empty matrix to add new individuals
+        NewK <- matrix(NA, nrow = 1, ncol = population) # same for cluster chromosome
+        matingPool <- nsga2R::tournamentSelection(X1, population, TournamentSize) # Use tournament selection, to select parents that will give offsprings
+        count <- 0 # Count how many offsprings are still needed to reach the original population size
         while (anyNA(New)) {
             count <- count + 1
-            ## a.Select a pair of parent chromosomes from the matingPool
-            Pair <- sample(1:nrow(matingPool), 2, replace = FALSE)
-
-
-            ## b.With probability pc (the "crossover probability" or "crossover rate"), cross over the pair at a n randomly chosen points (with probability p, chosen randomly from uniform distribution) to form two offsprings. If no crossover takes place, exact copies of their respective parents are pass to the next generation.
-
-            Cp <-
-                1 # with elitism there is no need to add a crossover probability
-            if (sample(c(1, 0), 1, prob = c(Cp, 1 - Cp)) == 1) {
-                #
-                # multiple point crossingover
-                offsprings <-
-                    uniform_crossover(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
-                off1 <- offsprings[[1]]
-                off2 <- offsprings[[2]]
-            } else {
-                off1 <- matingPool[Pair[1], 1:chrom_length]
-                off2 <- matingPool[Pair[2], 1:chrom_length]
-            }
-
-            ## c.Mutate the two offsprings at each locus with probability Mp (the mutation probability or mutation rate),
-            # and place the resulting chromosomes in the new population.
-            # since the results are sparse strings, cosine similarity is more adequate
-            # Mutation by asymmetric mutation: Analysis of an Asymmetric Mutation Operator; Jansen et al.
-
-            Mp <-
-                cosine_similarity(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
-
+            Pair <- sample(1:nrow(matingPool), 2, replace = FALSE) ## a.Select a pair of parent chromosomes from the matingPool
+            # multiple point crossingover
+            offsprings <-uniform_crossover(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
+            off1 <- offsprings[[1]]
+            off2 <- offsprings[[2]]
+            ## c.Mutate the two offsprings at each locus with probability Mp (the mutation probability or mutation rate) and place the resulting chromosomes in the new population. Since the results are sparse strings, cosine similarity is more adequate. Mutation by asymmetric mutation: Analysis of an Asymmetric Mutation Operator; Jansen et al.
+            Mp <- cosine_similarity(matingPool[Pair[1], 1:chrom_length], matingPool[Pair[2], 1:chrom_length])
             if (sample(c(1, 0), 1, prob = c(Mp, 1 - Mp)) == 1) {
                 off1 <- asymetric_mutation(off1)
             }
             if (sample(c(1, 0), 1, prob = c(Mp, 1 - Mp)) == 1) {
                 off2 <- asymetric_mutation(off2)
             }
-
-            # Mutation for k (number of partitions)
-
-            p <- 0.3
+            p <- 0.3 # Mutation for k (number of partitions)
             probs <- rep((1 - p) / 9, 9)
             k1 <- matingPool[Pair[1], "k"]
             k2 <- matingPool[Pair[2], "k"]
@@ -552,7 +521,6 @@ offsprings <-
             probs[k2 - 1] <- probs[k2 - 1] + p / 2
             offk1 <- sample(2:10, 1, prob = probs)
             offk2 <- sample(2:10, 1, prob = probs)
-
             # Add offsprings to new generation
             New[count, ] <- off1
             New[count + 1, ] <- off2
@@ -625,21 +593,14 @@ penalize <- function(x) {
 #' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
-galgo <-
-    function(population = 30,
-             # Number of individuals to evaluate
-             generations = 2,
-             # Number of generations
-             nCV = 5,
-             # Number of crossvalidations for function "crossvalidation"
-             usegpu = FALSE,
-             # to use gpuR
-             distancetype = "pearson",
-             # Options are: "pearson","uncentered","spearman","euclidean"
+galgo <- function(population = 30,# Number of individuals to evaluate
+             generations = 2, # Number of generations
+             nCV = 5, # Number of crossvalidations for function "crossvalidation"
+             usegpu = FALSE, # to use gpuR
+             distancetype = "pearson",# Options are: "pearson","uncentered","spearman","euclidean"
              TournamentSize = 2,
              period = 1825,
-             OS,
-             # OS=Surv(time=clinical$time,event=clinical$status)
+             OS, # OS=Surv(time=clinical$time,event=clinical$status)
              prob_matrix,
              res_dir = "",
              start_galgo_callback = callback_default,
@@ -648,7 +609,7 @@ galgo <-
              start_gen_callback = callback_default,
              end_gen_callback = callback_default,
              verbose = 2) {
-      
+
         if (verbose == 0) {
             report_callback <- callback_default
             start_gen_callback <- callback_default
@@ -693,9 +654,9 @@ galgo <-
                     prob = c(prob, 1 - prob)
                 )
         }
-        
+
         X1<-X
-        
+
         start_galgo_callback(
             generation = 0,
             pop_pool = X1,
@@ -703,14 +664,14 @@ galgo <-
             prob_matrix = prob_matrix,
             current_time = start_time
           )
-        
+
         ##### Main loop.
         for (g in 1:generations) {
             # Output for the generation callback
             #callback_data <- list()
             #environment(start_gen_callback) <- environment()
             start_time <- Sys.time() # Measures generation time
-          
+
             start_gen_callback(
               generation = g,
               pop_pool = X1,
@@ -719,10 +680,9 @@ galgo <-
               current_time = start_time
             )
 
-     
+
             # 2.Calculate the fitness f(x) of each chromosome x in the population.
-            Fit1 <-
-                apply(X, 1, mininum_genes, chrom_length = chrom_length) # Apply constraints (min 10 genes per solution). #TODO: Check chrom_length parameter
+            Fit1 <- apply(X, 1, mininum_genes, chrom_length = chrom_length) # Apply constraints (min 10 genes per solution). #TODO: Check chrom_length parameter
             # Fit1 <- apply(X, 1, mininum_genes) # Apply constraints (min 10 genes per solution). #TODO: Check chrom_length parameter
             X <- X[Fit1, ]
             X <- apply(X, 2, as.logical)
@@ -747,8 +707,7 @@ galgo <-
             }
 
             # Calculate Fitness 1 (silhouette) and 2 (Survival differences).
-            Fit2 <-
-                foreach::foreach(
+            Fit2 <- foreach::foreach(
                     i = 1:nrow(X),
                     .packages = reqpkgs,
                     .combine = rbind
@@ -800,8 +759,8 @@ galgo <-
                     prob_matrix = prob_matrix,
                     current_time =  Sys.time()
                 )
-             
-                
+
+
 
                 # Save parent generation.
                 Xold <- X
@@ -871,7 +830,7 @@ galgo <-
 
             # 5.Go to step 2
             gc()
-            
+
             end_gen_callback(
                 userdir = res_dir,
                 generation = g,
