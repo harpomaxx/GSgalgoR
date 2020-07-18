@@ -50,8 +50,7 @@ non_dominated_summary <-
         }
         output_df <- to_dataframe(output)
         NonDom_solutions <- output_df[output_df$Rank == 1, ]
-        calculate_distance <-
-            select_distance(distancetype = distancetype, usegpu = usegpu)
+        calculate_distance <- select_distance(distancetype = distancetype, usegpu = usegpu)
         RESULT <- data.frame(
             solution = as.character(),
             k = as.numeric(),
@@ -60,36 +59,23 @@ non_dominated_summary <-
             C.Index = as.numeric(),
             stringsAsFactors = FALSE
         )
-
         for (i in seq_len(nrow(NonDom_solutions))) {
             name <- rownames(NonDom_solutions)[i]
             genes <- NonDom_solutions[i, "Genes"][[1]]
             k <- NonDom_solutions[i, "k"]
             Sub_matrix <- prob_matrix[genes, ]
-
             D <- calculate_distance(Sub_matrix)
-
             true_class <- cluster_algorithm(D, k)
-
             Centroids <- k_centroids(Sub_matrix, true_class$cluster)
-
-            predicted_class <-
-                cluster_classify(Sub_matrix, Centroids, method = distancetype)
-
+            predicted_class <- cluster_classify(Sub_matrix, Centroids, method = distancetype)
             predicted_class <- as.factor(predicted_class)
             predicted_classdf <- as.data.frame(predicted_class)
-
-
             surv_formula <- stats::as.formula("OS~ predicted_class")
             tumortotal <- survival::survfit(surv_formula)
             totalsdf <- survival::survdiff(surv_formula)
-            tumortotalpval <-
-                1 - stats::pchisq(totalsdf$chisq, length(totalsdf$n) - 1)
+            tumortotalpval <- 1 - stats::pchisq(totalsdf$chisq, length(totalsdf$n) - 1)
             tumortotalpval <- format(tumortotalpval, digits = 4)
-
-            coxsimple <-
-                survival::coxph(surv_formula, data = predicted_classdf)
-
+            coxsimple <- survival::coxph(surv_formula, data = predicted_classdf)
             CI <- survcomp::concordance.index(
                 stats::predict(coxsimple, new = predicted_classdf),
                 surv.time = OS[, 1],
@@ -97,12 +83,9 @@ non_dominated_summary <-
                 outx = FALSE
             )$c.index
             # CI <- intsurv::cIndex(risk_score = stats::predict(coxsimple,new=predicted_classdf), time = OS[, 1], event = OS[, 2])["index"]
-            mean_Sil <-
-                mean(cluster::silhouette(as.numeric(predicted_class), D)[, 3])
-
+            mean_Sil <- mean(cluster::silhouette(as.numeric(predicted_class), D)[, 3])
             row <- c(name, k, length(genes), mean_Sil, CI)
             RESULT[nrow(RESULT) + 1, ] <- row
-            # print(row)
         }
         return(RESULT)
     }
