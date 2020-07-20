@@ -132,7 +132,7 @@ callback_base_save_pop_partial <-
             dir.create(directory, recursive = TRUE)
         }
         if (generation %% 2 == 0) {
-            base_save_pop_callback(
+            callback_base_save_pop(
                 userdir = directory,
                 prefix = generation,
                 generation,
@@ -174,7 +174,7 @@ callback_base_save_pop_final <-
             dir.create(directory, recursive = TRUE)
         }
         output <-
-            base_save_pop_callback(
+            callback_base_save_pop(
                 userdir = directory,
                 prefix = "final",
                 generation,
