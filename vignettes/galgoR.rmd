@@ -48,8 +48,8 @@ knitr::opts_chunk$set(
 In the new era of omics data, precision medicine has become the new paradigm of cancer treatment. Among all available omics techniques, gene expression profiling, in particular, has been increasingly used to classify tumor subtypes with different biological behavior. 
 Cancer subtype discovery is usually approached from two possible perspectives:
 
--	Using the molecular data alone with unsupervised techniques such as clustering analysis.
--	Using supervised techniques focusing entirely on survival data.
+-Using the molecular data alone with unsupervised techniques such as clustering analysis.
+-Using supervised techniques focusing entirely on survival data.
 
 The problem of finding patients subgroups with survival differences while maintaining cluster consistency could be viewed as a bi-objective problem, where there is a trade-off between the separability of the different groups and the ability of a given signature to consistently distinguish patients with different clinical outcomes. This gives rise to a set of optimal solutions, also known as Pareto-optimal solutions.
 To overcome these issues, we combined the advantages of clustering methods for grouping heterogeneous omics data and the search properties of genetic algorithms in galgoR: A flexible yet robust multi-objective meta-heuristic for disease subtype discovery based on an elitist non-dominated sorting genetic algorithm (NSGA-II), driven by the underlying premise of maximizing survival differences between groups while getting high consistency and robustness of the clusters obtained.
