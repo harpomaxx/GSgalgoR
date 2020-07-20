@@ -8,11 +8,11 @@
 #'
 #'
 #' @return an object of class galgo
-#' @export 
+#' @export
 #'
 #' @examples
 #' # load example dataset
-#' 
+#'
 #' library(breastCancerTRANSBIG)
 #' data(transbig)
 #' Train <- transbig
@@ -29,14 +29,14 @@
 #' # Run galgo with base_return_pop_callback assigned to the end_galgo_callback
 #' # hook-point
 #' # By using this callback galgo() return a `galgo,Obj` object.
-#' output <- galgoR::galgo(generations = 5, 
-#' population = 15, 
-#' prob_matrix = expression, 
+#' output <- galgoR::galgo(generations = 5,
+#' population = 15,
+#' prob_matrix = expression,
 #' OS = OS,
 #' end_galgo_callback = callback_base_return_pop
 #' )
-#' 
-#' 
+#'
+#'
 callback_base_return_pop <-
     function(userdir = "",
              generation,
@@ -80,7 +80,7 @@ callback_base_save_pop <-
              pareto,
              prob_matrix,
              current_time) {
-        
+
         if (userdir == "") {
             directory <- paste0(tempdir(), "/")
         } else {
@@ -189,7 +189,7 @@ callback_base_save_pop_final <-
 
 
 #' Print basic info per generation
-#' 
+#'
 #' @param userdir the default directory used by `galgo()` to store files
 #' @param generation a number indicating the number of iterations of the galgo algorithm
 #' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
@@ -198,12 +198,12 @@ callback_base_save_pop_final <-
 #' @param current_time an \code{POSIXct} object
 #'
 #'
-#' 
+#'
 #' @export
 #'
 #' @examples
 #' # load example dataset
-#' 
+#'
 #' library(breastCancerTRANSBIG)
 #' data(transbig)
 #' Train <- transbig
@@ -219,9 +219,9 @@ callback_base_save_pop_final <-
 #'
 #' # Run galgo with base_report_callback assigned to the report_callback
 #' # hook-point
-#' galgoR::galgo(generations = 5, 
-#' population = 15, 
-#' prob_matrix = expression, 
+#' galgoR::galgo(generations = 5,
+#' population = 15,
+#' prob_matrix = expression,
 #' OS = OS,
 #' report_callback = callback_base_report
 #' )
@@ -234,16 +234,16 @@ callback_base_report <-
              current_time) {
         chrom_length <- nrow(prob_matrix)
         message(paste0("Generation ", generation, " Non-dominated solutions:"))
-        print(pop_pool[pop_pool[, "rnkIndex"] == 1, 
+        print(pop_pool[pop_pool[, "rnkIndex"] == 1,
                        (chrom_length + 1):(chrom_length + 5)])
         # print(Sys.time()- start_time)
     }
 
 #' Print minimal information to the user about galgo execution.
-#' 
-#' The main idea behind this callback function is to provide some feedback to the user about galgo execution. 
+#'
+#' The main idea behind this callback function is to provide some feedback to the user about galgo execution.
 #' No other relevant information is shown
-#' 
+#'
 #' @param userdir the default directory used by `galgo()` to store files
 #' @param generation a number indicating the number of iterations of the galgo algorithm
 #' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
@@ -252,12 +252,12 @@ callback_base_report <-
 #' @param current_time an \code{POSIXct} object
 #'
 #'
-#' 
+#'
 #' @export
 #'
 #' @examples
 #' # load example dataset
-#' 
+#'
 #' library(breastCancerTRANSBIG)
 #' data(transbig)
 #' Train <- transbig
@@ -273,9 +273,9 @@ callback_base_report <-
 #'
 #' # Run galgo with no_report_callback assigned to the report_callback
 #' # hook-point
-#' galgoR::galgo(generations = 5, 
-#' population = 15, 
-#' prob_matrix = expression, 
+#' galgoR::galgo(generations = 5,
+#' population = 15,
+#' prob_matrix = expression,
 #' OS = OS,
 #' report_callback = callback_no_report
 #' )
@@ -295,7 +295,7 @@ callback_no_report <-
 
 
 #' A default call_back function that does nothing.
-#' 
+#'
 #' @param userdir the default directory used by \code{galgo()} to store files
 #' @param generation a number indicating the number of iterations of the galgo algorithm
 #' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
@@ -303,12 +303,12 @@ callback_no_report <-
 #' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
-#' 
 #'
-#' @export 
+#'
+#' @export
 #' @examples
 #' # load example dataset
-#' 
+#'
 #' library(breastCancerTRANSBIG)
 #' data(transbig)
 #' Train <- transbig
@@ -323,19 +323,19 @@ callback_no_report <-
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo with default_callback assigned to all the hook-points
-#' 
-#' galgoR::galgo(generations = 5, 
-#' population = 15, 
-#' prob_matrix = expression, 
+#'
+#' galgoR::galgo(generations = 5,
+#' population = 15,
+#' prob_matrix = expression,
 #' OS = OS,
 #' start_galgo_callback = callback_default, # When Galgo is about to start.
-#' end_galgo_callback = callback_default,   # When Galgo is about to finish. 
+#' end_galgo_callback = callback_default,   # When Galgo is about to finish.
 #' start_gen_callback = callback_default,   # At the beginning of each generation/iteration.
 #' end_gen_callback = callback_default,     # At the end of each generation/iteration.
-# 'report_callback = callback_default,      # In the middle of the generation 
+# 'report_callback = callback_default,      # In the middle of the generation
 #' )
-#' 
-#' 
+#'
+#'
 callback_default <-
     function(userdir = "",
              generation,

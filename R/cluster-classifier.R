@@ -26,8 +26,8 @@
 #' Class <- cluster_classify(train.Exp, centroids)
 #' table(Class, IntClustMemb)
 cluster_classify <- function(data, centroid, method = "pearson") {
-  R <- stats::cor(data, centroid, method = method)
-  scores <- apply(R, 1, which.max)
+    R <- stats::cor(data, centroid, method = method)
+    scores <- apply(R, 1, which.max)
 }
 
 
@@ -93,7 +93,7 @@ cluster_algorithm <- function(c, k) {
 #' r2 <- cosine_similarity(solution1, solution2)
 #' # the cosine similarity (r2) equals 0
 cosine_similarity <- function(a, b) {
-  a %*% b / sqrt(a %*% a * b %*% b)
+    a %*% b / sqrt(a %*% a * b %*% b)
 } # Calculates the cosine distance between two solutions to estimate the mutational rate
 
 #' Function to calculate the centroids of different groups (classes)
@@ -119,15 +119,15 @@ cosine_similarity <- function(a, b) {
 #' table(Pam$cluster)
 #' centroids <- k_centroids(train.Exp, Pam)
 k_centroids <- function(data, class) {
-  L <- list()
-  c <- unique(unlist(class))
-  for (i in c) {
-    if (sum(unlist(class) == i) > 1) {
-      x <- rowMeans(data[, unlist(class) == i])
-      L[[i]] <- x
-    } else {
-      L[[i]] <- data[, unlist(class) == i]
+    L <- list()
+    c <- unique(unlist(class))
+    for (i in c) {
+        if (sum(unlist(class) == i) > 1) {
+            x <- rowMeans(data[, unlist(class) == i])
+            L[[i]] <- x
+        } else {
+            L[[i]] <- data[, unlist(class) == i]
+        }
     }
-  }
-  L <- t(do.call(rbind, L))
+    L <- t(do.call(rbind, L))
 }
