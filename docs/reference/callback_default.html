@@ -132,14 +132,8 @@
     <p>A default call_back function that does nothing.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>callback_default</span>(
-  <span class='kw'>userdir</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='no'>generation</span>,
-  <span class='no'>pop_pool</span>,
-  <span class='no'>pareto</span>,
-  <span class='no'>prob_matrix</span>,
-  <span class='no'>current_time</span>
-)</pre>
+    <pre class="usage"><span class='fu'>callback_default</span>(<span class='kw'>userdir</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>generation</span>, <span class='no'>pop_pool</span>, <span class='no'>pareto</span>, <span class='no'>prob_matrix</span>,
+  <span class='no'>current_time</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -196,46 +190,35 @@
 <span class='kw'>end_galgo_callback</span> <span class='kw'>=</span> <span class='no'>callback_default</span>,   <span class='co'># When Galgo is about to finish. </span>
 <span class='kw'>start_gen_callback</span> <span class='kw'>=</span> <span class='no'>callback_default</span>,   <span class='co'># At the beginning of each generation/iteration.</span>
 <span class='kw'>end_gen_callback</span> <span class='kw'>=</span> <span class='no'>callback_default</span>,     <span class='co'># At the end of each generation/iteration.</span>
-)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
-#&gt; result.1   4  0.11278306  23.56196        1       Inf
-#&gt; result.2   8  0.01141385 222.57181        1 0.8254984
-#&gt; result.4   4  0.08268501  74.01163        1 0.5426797
-#&gt; result.7  10 -0.01179783 259.92567        1       Inf
-#&gt; result.10  2  0.09501885  28.27588        1 0.4390350
-#&gt; result.11  4  0.06875280 113.06815        1 0.3898698
-#&gt; result.13  9  0.02673983 128.03740        1 0.7636250
-#&gt; result.14  6  0.05433006 115.47383        1 0.3958183</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
-#&gt; result.1   4 0.112783057  23.56196        1       Inf
-#&gt; result.12 10 0.000283509 271.70962        1       Inf
-#&gt; result.2  10 0.019584412 167.21702        1 0.6215900
-#&gt; result.4   4 0.082685014  74.01163        1 0.5938833
-#&gt; result.2   8 0.011413854 222.57181        1 0.5458423
-#&gt; result.11  2 0.059499806 159.59322        1 0.4666480
-#&gt; result.10  2 0.095018850  28.27588        1 0.4303309
-#&gt; result.1   2 0.080086051 154.98218        1 0.3885443
-#&gt; result.15  4 0.072459559 155.93052        1 0.1824943</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
-#&gt; result.1   4 0.112783057  23.56196        1       Inf
-#&gt; result.12 10 0.000283509 271.70962        1       Inf
-#&gt;            3 0.101115208 128.56398        1 0.7584870
-#&gt;            7 0.049846175 195.49971        1 0.6881006
-#&gt; result.2   8 0.011413854 222.57181        1 0.6854810
-#&gt;            6 0.073630973 172.57983        1 0.3956618
-#&gt; result.1   2 0.080086051 154.98218        1 0.3867465</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;  k                      rnkIndex     CrowD
-#&gt;  3 0.13031964  44.33566        1       Inf
-#&gt;  6 0.02370174 338.29351        1       Inf
-#&gt;  7 0.04257734 218.49488        1 0.6292932
-#&gt;  3 0.10309314 145.49059        1 0.5280575
-#&gt;  3 0.09019366 195.27539        1 0.5096224
-#&gt;  7 0.04984617 195.49971        1 0.4074634
-#&gt;  3 0.10018432 145.66422        1 0.2460297</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;  k                      rnkIndex     CrowD
-#&gt;  3 0.13031964  44.33566        1       Inf
-#&gt;  6 0.02370174 338.29351        1       Inf
-#&gt;  7 0.04257734 218.49488        1 0.6366426
-#&gt;  3 0.11169441 109.19127        1 0.5122546
-#&gt;  3 0.09019366 195.27539        1 0.5121874
-#&gt;  7 0.04984617 195.49971        1 0.4086585
-#&gt;  3 0.10018432 145.66422        1 0.2485920
-#&gt;  3 0.10309314 145.49059        1 0.1966151</div><div class='output co'>#&gt; NULL</div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
+#&gt; result.4  2 0.06285244  14.69993        1       Inf
+#&gt; result.7  8 0.02611886 242.55674        1 0.5709858
+#&gt; result.8  2 0.06223437  30.02692        1 1.2441679
+#&gt; result.9  8 0.01400487 259.18992        1       Inf
+#&gt; result.10 6 0.03488777 204.79137        1 1.4719630</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
+#&gt; result.9  8 0.01400487 259.18992        1       Inf
+#&gt; result.4  2 0.09351651  95.59225        1       Inf
+#&gt; result.11 9 0.04772567 178.76986        1 1.0701305
+#&gt; result.10 6 0.03488777 204.79137        1 0.4871484
+#&gt; result.7  8 0.02611886 242.55674        1 0.4422552</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
+#&gt; result.9  8 0.01400487 259.18992        1       Inf
+#&gt;           2 0.09476821  43.19902        1       Inf
+#&gt; result.11 9 0.04772567 178.76986        1 1.0341086
+#&gt; result.4  2 0.09351651  95.59225        1 1.0154582
+#&gt; result.10 6 0.03488777 204.79137        1 0.4722853
+#&gt; result.7  8 0.02611886 242.55674        1 0.4283791</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
+#&gt; result.9  8 0.01400487 259.18992        1       Inf
+#&gt;           2 0.09476821  43.19902        1       Inf
+#&gt; result.11 9 0.04772567 178.76986        1 0.9599861
+#&gt;           3 0.08423763  99.69524        1 0.8287517
+#&gt; result.10 6 0.03488777 204.79137        1 0.4971586
+#&gt; result.7  8 0.02611886 242.55674        1 0.4491480
+#&gt; result.4  2 0.09351651  95.59225        1 0.3521661</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                     rnkIndex     CrowD
+#&gt;           2 0.10086594 107.9363        1       Inf
+#&gt;           4 0.02213126 275.5217        1       Inf
+#&gt; result.11 9 0.04772567 178.7699        1 1.0404956
+#&gt; result.10 6 0.03488777 204.7914        1 0.4648585
+#&gt; result.7  8 0.02611886 242.5567        1 0.4024423</div><div class='output co'>#&gt; NULL</div><div class='input'>
 
 </div></pre>
   </div>

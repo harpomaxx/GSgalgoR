@@ -4,8 +4,14 @@
 \alias{callback_default}
 \title{A default call_back function that does nothing.}
 \usage{
-callback_default(userdir = "", generation, pop_pool, pareto, prob_matrix,
-  current_time)
+callback_default(
+  userdir = "",
+  generation,
+  pop_pool,
+  pareto,
+  prob_matrix,
+  current_time
+)
 }
 \arguments{
 \item{userdir}{the default directory used by \code{galgo()} to store files}

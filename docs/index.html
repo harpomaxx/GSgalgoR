@@ -100,9 +100,10 @@
 <div id="package-overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#package-overview" class="anchor"></a>Package Overview</h2>
-<p>The <strong>galgoR</strong> package implements the Galgo algorithm as well as several helper functions for analyzing the results. The package also includes some example data sets useful for getting familiar with the package.</p>
+<p>The <strong>galgoR</strong> package implements the Galgo algorithm as well as several helper functions for analyzing the results.</p>
 <p>In order to standardize the structure of genomic data, the package uses the <code>ExpressionSet</code> structure from the <strong>Biobase</strong> package. The <code>ExpressionSet</code> objects can hold different types of data in a single structure, but in this case, we opted for using a simplified format to facilitate the example to those not familiar with the <em>Biobase</em> package. The <em>ExpressionSet</em> objects are formed mainly by a matrix of genetic expression, usually derived from microarray or RNAseq experiments and the Phenotypic data containing information on the samples (condition, status, treatment, survival, and other covariates). Additionally, some annotations and feature Meta-data can also be included in the objects.</p>
-<p>For testing galgoR, the package contains two reduced lung adenocarcinoma gene expression datasets ([TCGA] and [GSE68465]), that can be downloaded using the function <code>use_rna_luad()</code>. Additionally, <strong>galgoR</strong> provides the Wilkerson’s centroids to perform lung adenocarcinoma sample classification.</p>
+<p>A complete and detailed explanation about galgo’s workflow is provided in the <a href="https://harpomaxx.github.io/galgoR-package/articles/galgoR.html">example Vignette</a></p>
+<p>The package provides a simple but robust callback mechanism to adapt the algorithm to adapt the algorithm to different needs (<a href="https://harpomaxx.github.io/galgoR-package/articles/galgo_callbacks.html">check the Vignette</a>). Additionally, <strong>galgoR</strong> provides the Wilkerson’s centroids to perform lung adenocarcinoma sample classification.</p>
 </div>
 </div>
 <div id="installation" class="section level1">
@@ -114,14 +115,18 @@ library(galgoR)</a></code></pre>
 <div id="executing-galgo" class="section level2">
 <h2 class="hasAnchor">
 <a href="#executing-galgo" class="anchor"></a>Executing Galgo</h2>
-<p>The main function in the package is <code><a href="reference/galgo.html">galgo()</a></code>. The function accepts an expression matrix in the previous detailed section and a survival object <strong>survival</strong> package) to find robust gene expression signatures related to a given outcome. Besides, <code><a href="reference/galgo.html">galgo()</a></code> accepts several other parameters such as the number of solutions in the population, the number of generations the algorithm must evolve, and the distance function used for the clustering algorithm, among others. The parameters facilitate the setup according to the characteristics of the analysis to be performed. All the Galgo evolutionary process is executed using a multicore architecture. Alternatively, to speed up the process, it is possible to execute Galgo on Graphics processor units (GPU). An example of a typical galgoR workflow is shown below:</p>
-<pre><code>rna_luad&lt;-use_rna_luad()
+<p>The main function in the package is <code><a href="reference/galgo.html">galgo()</a></code>. The function accepts an expression matrix in the previous detailed section and a survival object <strong>survival</strong> package) to find robust gene expression signatures related to a given outcome. Besides, <code><a href="reference/galgo.html">galgo()</a></code> accepts several other parameters such as the number of solutions in the population, the number of generations the algorithm must evolve, and the distance function used for the clustering algorithm, among others. The parameters facilitate the setup according to the characteristics of the analysis to be performed. All the Galgo evolutionary process is executed using a multicore architecture. Alternatively, to speed up the process, it is possible to execute Galgo on Graphics processor units (GPU).</p>
+<p>For a rapid testing of galgoR two reduced lung adenocarcinoma gene expression datasets ([TCGA] and [GSE68465]) can be downloaded from <a href="https://bit.ly/luad_data_galgo" class="uri">https://bit.ly/luad_data_galgo</a> <em>(md5sum 900a74e7c4fdd0dcb7a3f2ddb44bb680)</em> .</p>
+<p>An example of a typical galgoR workflow is shown below:</p>
+<pre><code><a href="https://rdrr.io/r/utils/download.file.html">download.file("https://bit.ly/luad_data_galgo",destfile="/tmp/luad.rds")
+rna_luad &lt;- readRDS("/tmp/luad.rds")
+
 prm &lt;- rna_luad$TCGA$expression_matrix
 clinical &lt;-rna_luad$TCGA$pheno_data
 OS &lt;- survival::Surv(time=clinical$time,event=clinical$status)
 
-output&lt;-galgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=OS, ,verbose = 2,usegpu = T)</code></pre>
-<p>An example of the results obtained by Galgo in the TCGA dataset is shown below. The first plot shows the Pareto front obtained by <em>Galgo</em> in terms of the Survival (Surv.Fit) and the cohesiveness (SC.Fit) fitness functions. On the second plots shows the different survival subtypes found by the algorithm.</p>
+output&lt;-galgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=OS, ,verbose = 2,usegpu = F)</a></code></pre>
+<p>An example of the results obtained by Galgo in the TCGA dataset. The first plot shows the Pareto front obtained by <em>Galgo</em> in terms of the Survival (Surv.Fit) and the cohesiveness (SC.Fit) fitness functions. On the second plots shows the different survival subtypes found by the algorithm.</p>
 <p><img src="./inst/extdata/images/pareto2.jpg"><img src="./inst/extdata/images/TCGA_galgo.jpg"></p>
 </div>
 <div id="gpu-support" class="section level2">
@@ -134,6 +139,13 @@ output&lt;-galgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=
        </code></pre>
 <p>For installing <a href="https://github.com/cdeterman/gpuR/wiki">gpuR</a> and enable GPU computing in different operating systems, follow <a href="https://github.com/cdeterman/gpuR/wiki" title="gpuR installation guide">gpuR installation guide</a>.</p>
 </div>
+</div>
+<div id="references" class="section level1">
+<h1 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h1>
+<ul>
+<li>Guerrero-Gimenez ME, Catania C, Fernandez-Muñoz JM et al. Genetic algorithm for the searching cancer subtypes with clinical significance according to their gene expression patterns , 9(ISCB Comm J 2018):664 (poster) (doi: 10.7490/f1000research.1118020.1)</li>
+</ul>
 </div>
 
   </div>

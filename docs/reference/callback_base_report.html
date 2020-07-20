@@ -132,14 +132,8 @@
     <p>Print basic info per generation</p>
     </div>
 
-    <pre class="usage"><span class='fu'>callback_base_report</span>(
-  <span class='kw'>userdir</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='no'>generation</span>,
-  <span class='no'>pop_pool</span>,
-  <span class='no'>pareto</span>,
-  <span class='no'>prob_matrix</span>,
-  <span class='no'>current_time</span>
-)</pre>
+    <pre class="usage"><span class='fu'>callback_base_report</span>(<span class='kw'>userdir</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>generation</span>, <span class='no'>pop_pool</span>, <span class='no'>pareto</span>,
+  <span class='no'>prob_matrix</span>, <span class='no'>current_time</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,334 +191,322 @@
 #&gt; result.7  2 0.10888047  14.49866        1       Inf
 #&gt; result.9  5 0.05056947 185.49095        1 0.7214049
 #&gt; result.10 2 0.06498447 160.66696        1 1.3679277
-#&gt; result.14 7 0.02128337 224.89984        1       Inf</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
-#&gt; result.7  2 0.10888047  14.49866        1       Inf
-#&gt; result.14 7 0.02128337 224.89984        1       Inf
-#&gt; result.9  5 0.05056947 185.49095        1 0.7175245
-#&gt; result.13 2 0.09296446  76.69576        1 0.6351903
-#&gt; result.8  2 0.07819196  87.59060        1 0.6134396
-#&gt; result.9  3 0.06559908 151.89572        1 0.4686648
-#&gt; result.10 2 0.06498447 160.66696        1 0.3007531</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
+#&gt; result.14 7 0.02128337 224.89984        1       Inf</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
 #&gt; result.7   2 0.10888047  14.49866        1       Inf
-#&gt;           10 0.00939784 294.48435        1       Inf
-#&gt;            7 0.02889464 237.78186        1 0.6442515
-#&gt; result.13  2 0.09296446  76.69576        1 0.5460982
-#&gt; result.8   2 0.07819196  87.59060        1 0.5224424
-#&gt;            5 0.03951537 192.15347        1 0.3880625
-#&gt; result.9   3 0.06559908 151.89572        1 0.3823506
-#&gt; result.9   5 0.05056947 185.49095        1 0.3499488
-#&gt; result.10  2 0.06498447 160.66696        1 0.2596578</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
+#&gt; result.14  7 0.02128337 224.89984        1       Inf
+#&gt; result.10  2 0.09127924  97.48479        1 1.0479639
+#&gt; result.10  2 0.06498447 160.66696        1 0.7587684
+#&gt; result.9   5 0.05056947 185.49095        1 0.6560957
+#&gt; result.12 10 0.02257438 222.37007        1 0.4387219</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
 #&gt; result.7   2 0.10888047  14.49866        1       Inf
-#&gt;           10 0.00939784 294.48435        1       Inf
-#&gt;            7 0.02889464 237.78186        1 0.6193555
-#&gt;            2 0.08554100 132.75042        1 0.4358089
-#&gt;            2 0.10800606  61.41323        1 0.3975359
-#&gt;            5 0.03951537 192.15347        1 0.3731564
-#&gt; result.9   5 0.05056947 185.49095        1 0.3366572
-#&gt; result.9   3 0.06559908 151.89572        1 0.2802297
-#&gt;            2 0.09556422  96.13645        1 0.2540836
-#&gt; result.10  2 0.06498447 160.66696        1 0.2496973
-#&gt;            2 0.09516738 102.11118        1 0.2148175</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
+#&gt;           10 0.01637632 254.46413        1       Inf
+#&gt; result.10  2 0.09127924  97.48479        1 0.9732332
+#&gt; result.10  2 0.06498447 160.66696        1 0.7145353
+#&gt; result.9   5 0.05056947 185.49095        1 0.6258221
+#&gt; result.12 10 0.02257438 222.37007        1 0.4195039
+#&gt; result.14  7 0.02128337 224.89984        1 0.1827214</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
 #&gt; result.7   2 0.10888047  14.49866        1       Inf
-#&gt;           10 0.00939784 294.48435        1       Inf
-#&gt;            7 0.02889464 237.78186        1 0.6231472
-#&gt;            2 0.08554100 132.75042        1 0.4385594
-#&gt;            2 0.10800606  61.41323        1 0.3999103
-#&gt;            5 0.03951537 192.15347        1 0.3754756
-#&gt; result.9   5 0.05056947 185.49095        1 0.3388079
-#&gt; result.9   3 0.06559908 151.89572        1 0.2820135
-#&gt;            2 0.09556422  96.13645        1 0.2556438
-#&gt; result.10  2 0.06498447 160.66696        1 0.2512543
-#&gt;            2 0.09516738 102.11118        1 0.2161284</div><div class='output co'>#&gt; An object of class "galgo.Obj"
+#&gt;           10 0.01637632 254.46413        1       Inf
+#&gt; result.10  2 0.09127924  97.48479        1 0.9524847
+#&gt; result.10  2 0.06498447 160.66696        1 0.6964094
+#&gt; result.9   5 0.05056947 185.49095        1 0.6076431
+#&gt; result.12 10 0.02257438 222.37007        1 0.4070256
+#&gt; result.14  7 0.02128337 224.89984        1 0.1795228</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
+#&gt; result.7   2 0.10888047  14.49866        1       Inf
+#&gt;           10 0.01637632 254.46413        1       Inf
+#&gt; result.10  2 0.09127924  97.48479        1 0.9381609
+#&gt; result.10  2 0.06498447 160.66696        1 0.6797534
+#&gt;            7 0.04094213 227.00361        1 0.5511496
+#&gt; result.9   5 0.05056947 185.49095        1 0.4589268</div><div class='output co'>#&gt; An object of class "galgo.Obj"
 #&gt; Slot "Solutions":
 #&gt;           205766_at 38241_at 207078_at 210843_s_at 200957_s_at 219627_at
 #&gt; result.7          0        0         1           0           0         1
 #&gt;                   1        1         0           1           1         1
-#&gt;                   0        0         1           0           0         1
-#&gt;                   1        0         0           0           1         1
-#&gt;                   0        0         0           0           0         1
-#&gt;                   1        1         1           1           1         1
-#&gt; result.9          1        0         0           0           1         0
-#&gt; result.9          1        1         1           1           1         1
-#&gt;                   0        0         1           1           1         1
+#&gt; result.10         0        0         1           0           0         1
 #&gt; result.10         1        1         1           1           1         1
+#&gt;                   1        0         0           1           1         1
+#&gt; result.9          1        0         0           0           1         0
 #&gt;                   0        0         1           0           0         1
-#&gt; result.13         1        0         1           1           1         1
-#&gt;                   1        1         0           1           1         1
-#&gt;                   1        1         0           1           1         1
+#&gt;                   0        0         1           0           0         1
+#&gt; result.7          0        0         1           1           0         0
+#&gt;                   1        0         1           1           1         1
+#&gt;                   0        1         1           1           1         1
+#&gt; result.8          1        1         0           1           1         1
 #&gt;                   1        1         1           1           1         1
+#&gt; result.14         0        0         1           0           0         1
+#&gt; result.12         0        1         0           1           1         1
 #&gt;           215890_at 218495_at 212079_s_at 202717_s_at 221636_s_at 213443_at
 #&gt; result.7          0         1           0           0           0         0
-#&gt;                   0         0           1           1           1         1
-#&gt;                   0         1           1           0           0         0
-#&gt;                   0         0           0           1           1         0
-#&gt;                   0         1           0           0           0         0
 #&gt;                   1         1           1           1           1         1
-#&gt; result.9          0         0           0           0           0         0
-#&gt; result.9          1         1           1           1           1         1
-#&gt;                   0         1           0           0           1         0
+#&gt; result.10         0         1           0           0           0         0
 #&gt; result.10         1         1           1           1           1         1
+#&gt;                   1         0           0           0           0         1
+#&gt; result.9          0         0           0           0           0         0
 #&gt;                   0         1           0           0           0         0
-#&gt; result.13         0         1           0           0           1         0
-#&gt;                   0         0           1           1           1         1
-#&gt;                   0         0           1           1           1         1
-#&gt;                   0         1           1           1           1         1
+#&gt;                   0         1           0           0           0         0
+#&gt; result.7          0         0           0           0           1         0
+#&gt;                   1         0           0           0           1         0
+#&gt;                   0         1           1           1           0         1
+#&gt; result.8          1         1           1           1           1         1
+#&gt;                   1         1           1           1           1         1
+#&gt; result.14         0         0           1           1           0         0
+#&gt; result.12         1         1           1           1           1         1
 #&gt;           204646_at 219635_at 212306_at 216050_at 213462_at 216458_at 203845_at
 #&gt; result.7          0         1         0         0         0         1         1
 #&gt;                   1         1         1         1         1         1         1
-#&gt;                   0         0         1         0         0         1         0
-#&gt;                   0         1         1         0         1         1         0
-#&gt;                   0         1         0         0         0         1         1
-#&gt;                   1         1         1         1         1         1         1
-#&gt; result.9          0         1         1         0         1         1         0
-#&gt; result.9          1         1         1         1         1         1         1
-#&gt;                   0         1         0         0         0         1         1
+#&gt; result.10         0         1         0         0         0         1         1
 #&gt; result.10         1         1         1         1         1         1         1
+#&gt;                   0         1         1         0         1         1         0
+#&gt; result.9          0         1         1         0         1         1         0
 #&gt;                   0         1         0         0         0         1         1
-#&gt; result.13         0         1         0         1         0         1         1
+#&gt;                   0         1         0         0         0         1         1
+#&gt; result.7          0         1         0         1         0         1         1
+#&gt;                   0         1         0         0         0         1         1
+#&gt;                   1         1         1         0         0         0         1
+#&gt; result.8          1         1         1         1         1         1         1
 #&gt;                   1         1         1         1         1         1         1
-#&gt;                   1         1         1         1         1         1         1
-#&gt;                   0         1         1         1         0         1         1
+#&gt; result.14         1         1         1         0         1         1         0
+#&gt; result.12         1         1         1         1         1         1         1
 #&gt;           202453_s_at 213453_x_at 212975_at 202519_at 215409_at 220352_x_at
 #&gt; result.7            0           0         0         0         1           0
-#&gt;                     1           0         1         0         1           1
-#&gt;                     1           1         0         1         1           1
-#&gt;                     0           0         0         0         0           1
-#&gt;                     0           0         0         0         1           1
-#&gt;                     1           1         0         1         1           1
-#&gt; result.9            0           0         0         0         0           1
-#&gt; result.9            0           1         1         0         1           1
-#&gt;                     0           1         0         0         1           1
+#&gt;                     1           1         1         0         1           1
+#&gt; result.10           0           0         0         0         1           0
 #&gt; result.10           1           1         1         1         1           1
+#&gt;                     0           0         1         0         0           1
+#&gt; result.9            0           0         0         0         0           1
 #&gt;                     0           0         0         0         1           0
-#&gt; result.13           0           1         0         0         1           1
-#&gt;                     1           0         1         0         1           1
-#&gt;                     1           0         1         0         1           1
-#&gt;                     0           1         1         1         1           1
+#&gt;                     0           0         0         0         1           0
+#&gt; result.7            1           0         0         0         1           0
+#&gt;                     1           1         1         0         1           1
+#&gt;                     0           1         0         0         1           0
+#&gt; result.8            0           1         1         0         1           1
+#&gt;                     1           1         1         1         1           1
+#&gt; result.14           1           1         0         1         1           1
+#&gt; result.12           0           1         1         0         1           1
 #&gt;           209451_at 214150_x_at 212434_at 214840_at 212423_at 209798_at
 #&gt; result.7          0           0         0         0         1         0
-#&gt;                   0           0         1         0         0         0
-#&gt;                   1           0         1         1         1         0
-#&gt;                   1           0         1         0         1         0
-#&gt;                   0           0         0         0         1         0
-#&gt;                   0           1         1         1         1         1
-#&gt; result.9          1           1         0         1         1         0
-#&gt; result.9          1           1         1         0         1         0
-#&gt;                   0           0         0         0         1         0
+#&gt;                   0           1         1         1         1         0
+#&gt; result.10         0           0         0         1         1         0
 #&gt; result.10         0           1         1         1         1         1
+#&gt;                   1           1         0         1         1         0
+#&gt; result.9          1           1         0         1         1         0
 #&gt;                   0           0         0         0         1         0
-#&gt; result.13         0           0         0         0         1         0
-#&gt;                   0           0         1         0         0         0
-#&gt;                   0           0         1         0         0         0
-#&gt;                   1           1         1         1         1         0
+#&gt;                   0           0         0         1         1         0
+#&gt; result.7          0           1         0         0         1         0
+#&gt;                   0           0         0         1         1         1
+#&gt;                   0           1         1         1         1         1
+#&gt; result.8          0           1         1         0         1         0
+#&gt;                   0           1         1         1         1         1
+#&gt; result.14         1           0         1         1         1         0
+#&gt; result.12         0           1         1         0         1         0
 #&gt;           211061_s_at 206768_at 218042_at 218309_at 221297_at 212062_at
 #&gt; result.7            0         0         0         0         0         1
 #&gt;                     1         1         1         1         1         1
-#&gt;                     1         1         0         0         1         0
-#&gt;                     0         0         1         0         1         1
-#&gt;                     1         0         0         0         0         1
-#&gt;                     0         1         1         1         1         1
-#&gt; result.9            0         0         0         0         1         1
-#&gt; result.9            1         1         1         1         1         1
-#&gt;                     1         0         1         0         1         1
+#&gt; result.10           0         0         0         1         0         1
 #&gt; result.10           1         1         1         1         1         1
+#&gt;                     0         0         1         0         1         1
+#&gt; result.9            0         0         0         0         1         1
 #&gt;                     0         0         0         0         0         1
-#&gt; result.13           1         0         1         0         1         1
+#&gt;                     0         0         0         1         0         1
+#&gt; result.7            0         0         0         0         0         1
+#&gt;                     1         1         1         1         0         1
+#&gt;                     1         0         1         0         0         1
+#&gt; result.8            1         1         1         1         1         1
 #&gt;                     1         1         1         1         1         1
-#&gt;                     1         1         1         1         1         1
-#&gt;                     1         1         1         1         1         0
+#&gt; result.14           1         1         1         1         1         0
+#&gt; result.12           0         1         1         1         1         1
 #&gt;           202542_s_at 218941_at 214003_x_at 214608_s_at 204748_at 221953_s_at
 #&gt; result.7            1         0           0           0         0           0
-#&gt;                     1         0           1           1         0           0
-#&gt;                     0         1           0           1         1           0
-#&gt;                     0         0           0           1         1           0
-#&gt;                     1         0           0           0         0           0
-#&gt;                     1         1           1           1         0           0
-#&gt; result.9            0         0           0           1         1           0
-#&gt; result.9            1         1           1           1         1           0
-#&gt;                     1         0           0           1         0           0
+#&gt;                     1         0           1           1         1           0
+#&gt; result.10           1         0           0           0         1           0
 #&gt; result.10           1         1           1           1         1           0
-#&gt;                     1         0           0           0         0           0
-#&gt; result.13           1         0           0           1         0           0
-#&gt;                     1         0           1           1         0           0
-#&gt;                     1         0           1           1         0           0
+#&gt;                     0         0           0           1         1           0
+#&gt; result.9            0         0           0           1         1           0
+#&gt;                     1         0           0           0         1           0
+#&gt;                     1         0           0           0         1           0
+#&gt; result.7            1         0           0           0         0           1
+#&gt;                     1         1           0           0         0           0
+#&gt;                     1         0           0           1         1           1
+#&gt; result.8            1         0           1           1         1           0
 #&gt;                     1         1           1           1         1           0
+#&gt; result.14           0         1           0           1         1           1
+#&gt; result.12           1         0           1           1         1           0
 #&gt;           218580_x_at 205064_at 44563_at 206783_at 213170_at 203257_s_at
 #&gt; result.7            0         0        0         0         0           0
-#&gt;                     1         0        1         0         1           1
-#&gt;                     0         1        0         0         1           1
-#&gt;                     0         0        1         1         1           1
-#&gt;                     0         0        0         0         0           0
-#&gt;                     1         1        1         1         1           1
-#&gt; result.9            0         0        1         1         1           0
-#&gt; result.9            1         1        1         1         1           1
-#&gt;                     0         0        1         0         0           0
+#&gt;                     1         0        1         1         1           1
+#&gt; result.10           0         0        0         0         0           0
 #&gt; result.10           1         1        1         1         1           1
+#&gt;                     0         0        1         1         1           0
+#&gt; result.9            0         0        1         1         1           0
 #&gt;                     0         0        0         0         0           0
-#&gt; result.13           0         0        1         0         0           0
-#&gt;                     1         0        1         0         1           1
-#&gt;                     1         0        1         0         1           1
-#&gt;                     0         1        1         1         1           1
+#&gt;                     0         0        0         0         0           0
+#&gt; result.7            0         1        0         0         0           0
+#&gt;                     1         1        1         0         1           1
+#&gt;                     0         0        0         0         0           1
+#&gt; result.8            1         0        1         1         1           1
+#&gt;                     1         1        1         1         1           1
+#&gt; result.14           0         1        1         0         1           1
+#&gt; result.12           1         0        1         1         1           1
 #&gt;           203397_s_at 218895_at 202312_s_at 201787_at 204400_at 202302_s_at
 #&gt; result.7            0         1           1         0         0           0
-#&gt;                     1         1           1         1         0           1
-#&gt;                     1         0           0         0         1           1
-#&gt;                     1         0           0         0         1           0
-#&gt;                     0         1           1         0         0           0
 #&gt;                     1         1           1         1         1           1
-#&gt; result.9            1         0           0         0         1           0
-#&gt; result.9            1         1           1         1         1           1
-#&gt;                     0         1           1         0         0           0
+#&gt; result.10           0         1           1         0         0           0
 #&gt; result.10           1         1           1         1         1           1
+#&gt;                     1         0           0         1         1           1
+#&gt; result.9            1         0           0         0         1           0
 #&gt;                     0         1           1         0         0           0
-#&gt; result.13           0         1           1         0         0           1
-#&gt;                     1         1           1         1         0           1
-#&gt;                     1         1           1         1         0           1
-#&gt;                     1         1           1         0         1           1
+#&gt;                     0         1           1         0         0           0
+#&gt; result.7            0         0           0         0         1           0
+#&gt;                     1         1           1         1         1           0
+#&gt;                     0         1           1         0         1           1
+#&gt; result.8            1         1           1         0         1           1
+#&gt;                     1         1           1         1         1           1
+#&gt; result.14           1         0           1         1         1           1
+#&gt; result.12           1         1           1         1         1           1
 #&gt;           207070_at 217765_at 219645_at 214593_at 211868_x_at 204315_s_at
 #&gt; result.7          0         0         0         0           1           0
-#&gt;                   0         0         1         0           1           1
-#&gt;                   0         0         0         0           1           1
-#&gt;                   0         1         0         0           1           1
-#&gt;                   0         0         0         0           1           0
-#&gt;                   1         1         0         1           1           1
-#&gt; result.9          0         1         0         0           1           0
-#&gt; result.9          1         0         1         0           1           1
-#&gt;                   0         0         0         0           0           1
+#&gt;                   1         0         1         0           0           1
+#&gt; result.10         0         0         0         0           0           0
 #&gt; result.10         1         1         1         1           1           1
+#&gt;                   0         1         1         0           1           0
+#&gt; result.9          0         1         0         0           1           0
 #&gt;                   0         0         0         0           1           0
-#&gt; result.13         0         0         0         0           0           1
-#&gt;                   0         0         1         0           1           1
-#&gt;                   0         0         1         0           1           1
-#&gt;                   1         0         1         0           1           1
+#&gt;                   0         0         0         0           0           0
+#&gt; result.7          0         1         0         0           1           0
+#&gt;                   1         1         0         0           1           1
+#&gt;                   1         1         1         0           1           1
+#&gt; result.8          1         0         1         0           0           1
+#&gt;                   1         1         1         1           1           1
+#&gt; result.14         0         1         0         0           0           1
+#&gt; result.12         1         0         1         0           0           1
 #&gt;           210288_at 201689_s_at 214930_at 216444_at 203557_s_at 39835_at
 #&gt; result.7          0           1         0         1           0        0
 #&gt;                   1           1         1         1           1        1
-#&gt;                   1           1         1         1           1        0
-#&gt;                   0           0         0         0           1        0
-#&gt;                   0           1         0         1           0        0
-#&gt;                   1           1         1         1           1        1
-#&gt; result.9          0           0         0         0           1        0
-#&gt; result.9          1           1         1         1           1        1
-#&gt;                   1           1         0         1           0        0
+#&gt; result.10         0           1         0         1           0        0
 #&gt; result.10         1           1         1         1           1        1
+#&gt;                   0           0         1         0           1        1
+#&gt; result.9          0           0         0         0           1        0
 #&gt;                   0           1         0         1           0        0
-#&gt; result.13         1           1         0         1           1        0
+#&gt;                   0           1         0         1           0        0
+#&gt; result.7          0           1         0         0           1        0
+#&gt;                   1           1         1         1           0        1
+#&gt;                   0           1         0         1           1        1
+#&gt; result.8          1           1         1         1           1        1
 #&gt;                   1           1         1         1           1        1
-#&gt;                   1           1         1         1           1        1
-#&gt;                   1           1         1         1           1        1
+#&gt; result.14         1           1         1         1           1        1
+#&gt; result.12         1           1         1         1           1        1
 #&gt;           202305_s_at 220670_at 221219_s_at 214941_s_at 211665_s_at 200974_at
 #&gt; result.7            1         0           0           0           0         0
 #&gt;                     1         1           0           1           1         1
-#&gt;                     0         1           0           0           1         1
-#&gt;                     1         1           1           1           0         1
-#&gt;                     1         1           0           1           0         0
-#&gt;                     1         1           1           1           1         1
-#&gt; result.9            1         1           1           1           0         1
-#&gt; result.9            1         1           1           1           1         1
-#&gt;                     1         0           1           0           0         0
+#&gt; result.10           1         0           0           0           0         0
 #&gt; result.10           1         1           1           1           1         1
+#&gt;                     1         1           1           1           0         1
+#&gt; result.9            1         1           1           1           0         1
+#&gt;                     0         0           0           0           0         0
 #&gt;                     1         0           0           0           0         0
-#&gt; result.13           1         0           1           0           0         0
-#&gt;                     1         1           0           1           1         1
-#&gt;                     1         1           0           1           1         1
-#&gt;                     1         1           1           1           1         1
+#&gt; result.7            1         1           0           0           0         0
+#&gt;                     1         1           0           0           1         0
+#&gt;                     1         0           1           1           0         1
+#&gt; result.8            1         1           0           1           1         1
+#&gt;                     0         1           1           1           1         1
+#&gt; result.14           0         1           1           0           1         1
+#&gt; result.12           1         1           0           1           1         1
 #&gt;           211066_x_at 201245_s_at 42361_g_at 214304_x_at 201225_s_at 1494_f_at
 #&gt; result.7            1           1          0           1           0         0
 #&gt;                     0           1          1           1           1         1
-#&gt;                     0           1          0           1           0         1
-#&gt;                     0           0          1           1           1         0
-#&gt;                     1           1          0           1           0         0
-#&gt;                     1           1          1           0           1         1
-#&gt; result.9            0           0          1           0           0         0
-#&gt; result.9            1           1          1           1           1         1
-#&gt;                     1           1          0           1           1         1
+#&gt; result.10           1           1          0           1           0         0
 #&gt; result.10           1           1          1           1           1         1
+#&gt;                     0           0          1           0           1         1
+#&gt; result.9            0           0          1           0           0         0
 #&gt;                     1           1          0           1           0         0
-#&gt; result.13           1           1          0           1           1         1
-#&gt;                     0           1          1           1           1         1
-#&gt;                     0           1          1           1           1         1
+#&gt;                     1           1          0           1           0         0
+#&gt; result.7            1           1          0           0           1         0
 #&gt;                     1           1          1           1           1         1
+#&gt;                     1           1          0           1           1         0
+#&gt; result.8            1           1          1           1           1         1
+#&gt;                     1           1          1           1           0         1
+#&gt; result.14           1           1          0           1           0         1
+#&gt; result.12           0           1          1           1           1         1
 #&gt;           218653_at 206010_at 209287_s_at 204857_at 217214_s_at 216919_at
 #&gt; result.7          0         0           1         1           0         0
-#&gt;                   1         0           1         0           1         0
-#&gt;                   0         0           0         1           1         0
-#&gt;                   1         0           1         0           1         0
-#&gt;                   0         0           1         1           0         0
 #&gt;                   1         1           1         1           1         1
-#&gt; result.9          1         0           1         0           1         0
-#&gt; result.9          1         1           1         1           1         0
-#&gt;                   1         0           1         1           1         0
+#&gt; result.10         0         0           1         1           0         1
 #&gt; result.10         1         1           1         1           1         1
-#&gt;                   0         0           1         1           0         0
-#&gt; result.13         1         0           1         1           1         0
-#&gt;                   1         0           1         0           1         0
-#&gt;                   1         0           1         0           1         0
 #&gt;                   1         0           1         1           1         0
+#&gt; result.9          1         0           1         0           1         0
+#&gt;                   0         0           1         1           0         1
+#&gt;                   0         0           1         1           0         1
+#&gt; result.7          0         0           1         0           0         0
+#&gt;                   1         0           1         1           1         1
+#&gt;                   0         0           1         1           0         1
+#&gt; result.8          1         1           1         1           1         0
+#&gt;                   1         1           1         1           1         1
+#&gt; result.14         1         1           1         1           1         1
+#&gt; result.12         1         1           0         1           0         0
 #&gt;           218306_s_at 208328_s_at 213379_at 211370_s_at 211263_s_at 203906_at
 #&gt; result.7            0           0         0           0           1         0
-#&gt;                     1           1         1           1           1         0
-#&gt;                     1           1         0           1           1         1
-#&gt;                     0           1         1           1           0         0
-#&gt;                     1           0         0           0           1         0
-#&gt;                     1           1         1           1           1         0
-#&gt; result.9            0           0         0           1           0         1
-#&gt; result.9            1           0         1           1           1         0
-#&gt;                     0           0         1           1           1         0
+#&gt;                     1           1         1           1           1         1
+#&gt; result.10           0           0         0           0           1         0
 #&gt; result.10           1           1         1           1           1         1
+#&gt;                     0           0         0           1           0         1
+#&gt; result.9            0           0         0           1           0         1
+#&gt;                     0           0         0           1           1         0
 #&gt;                     0           0         0           0           1         0
-#&gt; result.13           1           0         1           1           1         0
-#&gt;                     1           1         1           1           1         0
-#&gt;                     1           1         1           1           1         0
-#&gt;                     1           0         1           1           1         0
+#&gt; result.7            0           0         0           1           1         0
+#&gt;                     1           0         1           1           1         1
+#&gt;                     0           0         1           1           1         1
+#&gt; result.8            1           1         1           1           1         0
+#&gt;                     1           1         1           1           1         1
+#&gt; result.14           1           1         1           1           1         1
+#&gt; result.12           1           1         1           1           1         0
 #&gt;           205524_s_at 212900_at 216668_at 203398_s_at 205106_at 207812_s_at
 #&gt; result.7            0         0         0           0         0           0
-#&gt;                     1         1         0           1         1           1
-#&gt;                     0         1         1           0         1           0
-#&gt;                     0         1         1           1         1           0
-#&gt;                     0         0         0           1         0           0
-#&gt;                     1         1         1           1         0           1
-#&gt; result.9            0         1         1           1         1           0
-#&gt; result.9            0         1         1           1         1           1
-#&gt;                     0         1         1           1         1           0
+#&gt;                     1         1         1           1         1           1
+#&gt; result.10           0         0         0           0         0           0
 #&gt; result.10           1         1         1           1         1           1
-#&gt;                     0         0         0           0         0           0
-#&gt; result.13           0         1         1           1         1           0
-#&gt;                     1         1         0           1         1           1
-#&gt;                     1         1         0           1         1           1
 #&gt;                     0         1         1           1         1           1
+#&gt; result.9            0         1         1           1         1           0
+#&gt;                     0         0         0           0         0           0
+#&gt;                     0         0         0           0         0           0
+#&gt; result.7            0         0         0           0         0           0
+#&gt;                     1         1         1           1         1           1
+#&gt;                     0         0         1           0         1           1
+#&gt; result.8            1         1         1           1         1           1
+#&gt;                     1         1         1           1         1           1
+#&gt; result.14           0         1         1           1         1           1
+#&gt; result.12           1         1         1           1         1           1
 #&gt;           211921_x_at 202926_at 206606_at  k                        rnkIndex
 #&gt; result.7            0         1         0  2  0.108880468  14.49866        1
-#&gt;                     1         1         0 10  0.009397840 294.48435        1
-#&gt;                     0         1         1  7  0.028894640 237.78186        1
-#&gt;                     0         0         1  2  0.085541004 132.75042        1
-#&gt;                     0         1         0  2  0.108006062  61.41323        1
-#&gt;                     1         1         1  5  0.039515369 192.15347        1
-#&gt; result.9            0         0         1  5  0.050569465 185.49095        1
-#&gt; result.9            1         0         1  3  0.065599078 151.89572        1
-#&gt;                     0         1         0  2  0.095564224  96.13645        1
+#&gt;                     1         1         1 10  0.016376325 254.46413        1
+#&gt; result.10           0         1         0  2  0.091279244  97.48479        1
 #&gt; result.10           1         1         1  2  0.064984472 160.66696        1
-#&gt;                     0         1         0  2  0.095167382 102.11118        1
-#&gt; result.13           0         1         0  2  0.092964459  76.69576        2
-#&gt;                     1         1         0 10 -0.001285935 250.12797        2
-#&gt;                     1         1         0 10 -0.001285935 250.12797        2
-#&gt;                     1         0         1  4  0.051347347 138.06628        2
+#&gt;                     0         0         1  7  0.040942128 227.00361        1
+#&gt; result.9            0         0         1  5  0.050569465 185.49095        1
+#&gt;                     0         1         0  2  0.089521062  29.52722        2
+#&gt;                     0         1         0 10 -0.007287669 241.64255        2
+#&gt; result.7            0         1         0  4  0.046619935  75.54845        2
+#&gt;                     1         1         1  2  0.086513902  62.69761        2
+#&gt;                     1         1         1  7  0.029269549 171.27810        2
+#&gt; result.8            1         1         1  6  0.045637835 122.55207        2
+#&gt;                     1         1         1  3  0.039683388 145.01987        2
+#&gt; result.14           1         1         1  7  0.021283369 224.89984        2
+#&gt; result.12           1         1         1 10  0.022574382 222.37007        2
 #&gt;               CrowD
 #&gt; result.7        Inf
 #&gt;                 Inf
-#&gt;           0.6231472
-#&gt;           0.4385594
-#&gt;           0.3999103
-#&gt;           0.3754756
-#&gt; result.9  0.3388079
-#&gt; result.9  0.2820135
-#&gt;           0.2556438
-#&gt; result.10 0.2512543
-#&gt;           0.2161284
-#&gt; result.13       Inf
+#&gt; result.10 0.9381609
+#&gt; result.10 0.6797534
+#&gt;           0.5511496
+#&gt; result.9  0.4589268
 #&gt;                 Inf
 #&gt;                 Inf
-#&gt;           0.7055311
+#&gt; result.7  0.5684247
+#&gt;           0.5230166
+#&gt;           0.4472203
+#&gt; result.8  0.3338430
+#&gt;           0.3267032
+#&gt; result.14 0.3173944
+#&gt; result.12 0.2788557
 #&gt; 
 #&gt; Slot "ParetoFront":
 #&gt; [[1]]
@@ -545,76 +527,76 @@
 #&gt; result.14 0.021283369 224.89984
 #&gt; 
 #&gt; [[2]]
-#&gt;                                
-#&gt; result.7  0.108880468  14.49866
-#&gt; result.14 0.021283369 224.89984
-#&gt; result.9  0.050569465 185.49095
-#&gt; result.13 0.092964459  76.69576
-#&gt; result.8  0.078191962  87.59060
-#&gt; result.9  0.065599078 151.89572
-#&gt; result.10 0.064984472 160.66696
-#&gt; result.2  0.073458271  65.89272
-#&gt; result.14 0.006159749 198.78661
-#&gt; result.15 0.063970858 115.59789
-#&gt; result.6  0.024414391 181.19219
-#&gt; result.8  0.006243922 195.69724
-#&gt; result.12 0.004287988 119.05332
-#&gt; result.13 0.051706671  48.16061
-#&gt; result.1  0.046506341 100.24508
+#&gt;                                 
+#&gt; result.7  0.108880468  14.498664
+#&gt; result.14 0.021283369 224.899836
+#&gt; result.10 0.091279244  97.484791
+#&gt; result.10 0.064984472 160.666960
+#&gt; result.9  0.050569465 185.490954
+#&gt; result.12 0.022574382 222.370070
+#&gt; result.8  0.006243922 195.697243
+#&gt; result.1  0.066353108   1.783561
+#&gt; result.15 0.009783651 142.755291
+#&gt; result.8  0.045637835 122.552069
+#&gt; result.7  0.046619935  75.548449
+#&gt; result.3  0.058048682  36.272757
+#&gt; result.13 0.051706671  48.160610
+#&gt; result.6  0.052897230  18.820122
+#&gt; result.14 0.030435647 121.988320
 #&gt; 
 #&gt; [[3]]
-#&gt;                                
-#&gt; result.7  0.108880468  14.49866
-#&gt;           0.009397840 294.48435
-#&gt;           0.028894640 237.78186
-#&gt; result.13 0.092964459  76.69576
-#&gt; result.8  0.078191962  87.59060
-#&gt;           0.039515369 192.15347
-#&gt; result.9  0.065599078 151.89572
-#&gt; result.9  0.050569465 185.49095
-#&gt; result.10 0.064984472 160.66696
-#&gt;           0.002088606 246.68491
-#&gt;           0.075645449  59.48730
-#&gt;           0.051347347 138.06628
-#&gt; result.6  0.024414391 181.19219
-#&gt; result.15 0.063970858 115.59789
-#&gt;           0.023759291 230.56073
+#&gt;                                 
+#&gt; result.7  0.108880468  14.498664
+#&gt;           0.016376325 254.464130
+#&gt; result.10 0.091279244  97.484791
+#&gt; result.10 0.064984472 160.666960
+#&gt; result.9  0.050569465 185.490954
+#&gt; result.12 0.022574382 222.370070
+#&gt; result.14 0.021283369 224.899836
+#&gt; result.8  0.006243922 195.697243
+#&gt;           0.086300777  46.314727
+#&gt;           0.029269549 171.278104
+#&gt; result.13 0.051706671  48.160610
+#&gt; result.7  0.046619935  75.548449
+#&gt;           0.039683388 145.019866
+#&gt; result.8  0.045637835 122.552069
+#&gt; result.1  0.066353108   1.783561
 #&gt; 
 #&gt; [[4]]
-#&gt;                                
-#&gt; result.7  0.108880468  14.49866
-#&gt;           0.009397840 294.48435
-#&gt;           0.028894640 237.78186
-#&gt;           0.085541004 132.75042
-#&gt;           0.108006062  61.41323
-#&gt;           0.039515369 192.15347
-#&gt; result.9  0.050569465 185.49095
-#&gt; result.9  0.065599078 151.89572
-#&gt;           0.095564224  96.13645
-#&gt; result.10 0.064984472 160.66696
-#&gt;           0.095167382 102.11118
-#&gt; result.13 0.092964459  76.69576
-#&gt;           0.002088606 246.68491
-#&gt;           0.051347347 138.06628
-#&gt; result.6  0.024414391 181.19219
+#&gt;                                 
+#&gt; result.7   0.108880468  14.49866
+#&gt;            0.016376325 254.46413
+#&gt; result.10  0.091279244  97.48479
+#&gt; result.10  0.064984472 160.66696
+#&gt; result.9   0.050569465 185.49095
+#&gt; result.12  0.022574382 222.37007
+#&gt; result.14  0.021283369 224.89984
+#&gt;            0.089521062  29.52722
+#&gt;           -0.007287669 241.64255
+#&gt; result.7   0.046619935  75.54845
+#&gt;            0.086513902  62.69761
+#&gt;            0.014510663 217.47954
+#&gt; result.8   0.045637835 122.55207
+#&gt;            0.039683388 145.01987
+#&gt;            0.029269549 171.27810
 #&gt; 
 #&gt; [[5]]
 #&gt;                                 
 #&gt; result.7   0.108880468  14.49866
-#&gt;            0.009397840 294.48435
-#&gt;            0.028894640 237.78186
-#&gt;            0.085541004 132.75042
-#&gt;            0.108006062  61.41323
-#&gt;            0.039515369 192.15347
-#&gt; result.9   0.050569465 185.49095
-#&gt; result.9   0.065599078 151.89572
-#&gt;            0.095564224  96.13645
+#&gt;            0.016376325 254.46413
+#&gt; result.10  0.091279244  97.48479
 #&gt; result.10  0.064984472 160.66696
-#&gt;            0.095167382 102.11118
-#&gt; result.13  0.092964459  76.69576
-#&gt;           -0.001285935 250.12797
-#&gt;           -0.001285935 250.12797
-#&gt;            0.051347347 138.06628
+#&gt;            0.040942128 227.00361
+#&gt; result.9   0.050569465 185.49095
+#&gt;            0.089521062  29.52722
+#&gt;           -0.007287669 241.64255
+#&gt; result.7   0.046619935  75.54845
+#&gt;            0.086513902  62.69761
+#&gt;            0.029269549 171.27810
+#&gt; result.8   0.045637835 122.55207
+#&gt;            0.039683388 145.01987
+#&gt; result.14  0.021283369 224.89984
+#&gt; result.12  0.022574382 222.37007
 #&gt; 
 #&gt; </div></pre>
   </div>

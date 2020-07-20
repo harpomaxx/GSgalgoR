@@ -132,14 +132,8 @@
     <p>A base callback function that returns a galgo.Obj</p>
     </div>
 
-    <pre class="usage"><span class='fu'>callback_base_return_pop</span>(
-  <span class='kw'>userdir</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='no'>generation</span>,
-  <span class='no'>pop_pool</span>,
-  <span class='no'>pareto</span>,
-  <span class='no'>prob_matrix</span>,
-  <span class='no'>current_time</span>
-)</pre>
+    <pre class="usage"><span class='fu'>callback_base_return_pop</span>(<span class='kw'>userdir</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>generation</span>, <span class='no'>pop_pool</span>, <span class='no'>pareto</span>,
+  <span class='no'>prob_matrix</span>, <span class='no'>current_time</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,34 +191,30 @@
 <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>,
 <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>,
 <span class='kw'>end_galgo_callback</span> <span class='kw'>=</span> <span class='no'>callback_base_return_pop</span>
-)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex    CrowD
-#&gt; result.4   7 0.084590350 257.1524        1 1.195919
-#&gt; result.6   7 0.003680792 317.3117        1      Inf
-#&gt; result.8  10 0.005842896 292.0617        1 1.012713
-#&gt; result.11  6 0.099653514 216.1316        1      Inf</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
-#&gt; result.6   7 0.003680792 317.3117        1       Inf
-#&gt; result.11  6 0.099653514 216.1316        1       Inf
-#&gt; result.4   7 0.084590350 257.1524        1 0.9224728
-#&gt; result.13  7 0.014630474 269.6885        1 0.8038738
-#&gt; result.8  10 0.005842896 292.0617        1 0.2587913</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
-#&gt; result.6   7 0.003680792 317.3117        1       Inf
-#&gt; result.11  6 0.099653514 216.1316        1       Inf
-#&gt; result.4   7 0.084590350 257.1524        1 1.0030396
-#&gt; result.13  7 0.014630474 269.6885        1 0.8771233
-#&gt; result.8  10 0.005842896 292.0617        1 0.2729658</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
-#&gt; result.11  6 0.099653514 216.1316        1       Inf
-#&gt;           10 0.002507672 461.5718        1       Inf
-#&gt; result.4   7 0.084590350 257.1524        1 0.8639862
-#&gt; result.13  7 0.014630474 269.6885        1 0.7675283
-#&gt; result.6   7 0.003680792 317.3117        1 0.4062790
-#&gt; result.8  10 0.005842896 292.0617        1 0.2018596</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
-#&gt;           10 0.002507672 461.57176        1       Inf
-#&gt;            2 0.118741912  75.50483        1       Inf
-#&gt; result.4   7 0.084590350 257.15245        1 0.7624803
-#&gt; result.13  7 0.014630474 269.68853        1 0.6741793
-#&gt; result.11  6 0.099653514 216.13165        1 0.6552316
-#&gt; result.6   7 0.003680792 317.31173        1 0.3947242
-#&gt; result.8  10 0.005842896 292.06171        1 0.1869448</div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex    CrowD
+#&gt; result.8  4 0.02559570 206.82540        1      Inf
+#&gt; result.10 4 0.05791995  14.48178        1      Inf
+#&gt; result.13 2 0.05073109  32.45238        1 1.313193</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
+#&gt; result.1  6 0.03106352 210.57312        1       Inf
+#&gt; result.3  2 0.07486536  45.95706        1       Inf
+#&gt; result.13 4 0.05948496  95.64288        1 0.8823692
+#&gt; result.10 4 0.06508901  94.40352        1 0.3849673</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;          k                      rnkIndex     CrowD
+#&gt; result.1 6 0.03106352 210.57312        1       Inf
+#&gt; result.3 2 0.07486536  45.95706        1       Inf
+#&gt;          4 0.05252796 162.56503        1 0.8986327
+#&gt;          3 0.07290575 130.81743        1 0.8572644</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                       rnkIndex     CrowD
+#&gt;          10 -0.00671469 306.82977        1       Inf
+#&gt;           3  0.08651116  16.38125        1       Inf
+#&gt; result.1  6  0.03106352 210.57312        1 1.1094377
+#&gt;           4  0.05252796 162.56503        1 0.7108536
+#&gt;           3  0.07290575 130.81743        1 0.5564300
+#&gt;           3  0.08101525  86.20927        1 0.5219056</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;   k                       rnkIndex     CrowD
+#&gt;  10 -0.00671469 306.82977        1       Inf
+#&gt;   3  0.08651116  16.38125        1       Inf
+#&gt;   5  0.03436379 245.48002        1 1.1083379
+#&gt;   4  0.05252796 162.56503        1 0.7892608
+#&gt;   3  0.07290575 130.81743        1 0.5558479
+#&gt;   3  0.08101525  86.20927        1 0.5210333</div><div class='input'>
 
 </div></pre>
   </div>

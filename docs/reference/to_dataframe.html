@@ -172,34 +172,27 @@
 <span class='no'>expression</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>expression</span>)))
 
 <span class='co'># Run galgo</span>
-<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>galgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                       rnkIndex     CrowD
-#&gt; result.2  5 0.021830562 164.57928        1 0.5987851
-#&gt; result.5  5 0.034685670 134.95157        1 1.0551053
-#&gt; result.12 9 0.007478431 183.00847        1       Inf
-#&gt; result.13 6 0.067521670  75.00327        1       Inf</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                       rnkIndex     CrowD
-#&gt; result.12 9 0.007478431 183.00847        1       Inf
-#&gt; result.5  2 0.110461949  61.43327        1       Inf
-#&gt; result.10 5 0.081761112 158.86171        1 1.2782463
-#&gt; result.2  5 0.021830562 164.57928        1 0.7266147</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                       rnkIndex     CrowD
-#&gt; result.12 9 0.007478431 183.00847        1       Inf
-#&gt;           3 0.111914735  58.59945        1       Inf
-#&gt; result.10 5 0.081761112 158.86171        1 1.2676518
-#&gt; result.5  2 0.110461949  61.43327        1 0.8052578
-#&gt; result.2  5 0.021830562 164.57928        1 0.7049126</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                       rnkIndex     CrowD
-#&gt; result.12 9 0.007478431 183.00847        1       Inf
-#&gt;           2 0.118415843  20.68333        1       Inf
-#&gt; result.10 5 0.081761112 158.86171        1 1.0301460
-#&gt;           2 0.082181346  61.46111        1 0.7675857
-#&gt; result.2  5 0.021830562 164.57928        1 0.6781670
-#&gt;           3 0.111914735  58.59945        1 0.2916242
-#&gt; result.5  2 0.110461949  61.43327        1 0.2324091</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
-#&gt;           10 0.01036753 209.95849        1       Inf
-#&gt;            2 0.13655301  58.43868        1       Inf
-#&gt; result.10  5 0.08176111 158.86171        1 0.7648813
-#&gt;            4 0.05655958 182.28126        1 0.7553678
-#&gt;            2 0.08218135  61.46111        1 0.6741317
-#&gt; result.5   2 0.11046195  61.43327        1 0.2258418
-#&gt;            3 0.11191474  58.59945        1 0.2005058</div><div class='input'><span class='no'>outputDF</span> <span class='kw'>&lt;-</span> <span class='fu'>to_dataframe</span>(<span class='no'>output</span>)
+<span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>galgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;          k                      rnkIndex CrowD
+#&gt; result.6 2 0.13475022  75.17647        1   Inf
+#&gt; result.8 6 0.08097386 221.10851        1   Inf</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;          k                      rnkIndex    CrowD
+#&gt; result.6 2 0.13475022  75.17647        1      Inf
+#&gt; result.8 6 0.08097386 221.10851        1      Inf
+#&gt; result.6 2 0.13067741 115.20417        1 1.118927</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;          k                      rnkIndex     CrowD
+#&gt; result.8 6 0.08097386 221.10851        1       Inf
+#&gt;          2 0.15772653  35.86713        1       Inf
+#&gt; result.6 2 0.13067741 115.20417        1 1.0597222
+#&gt; result.6 2 0.13475022  75.17647        1 0.5630868</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;          k                      rnkIndex     CrowD
+#&gt;          2 0.15772653  35.86713        1       Inf
+#&gt;          7 0.02010858 231.07312        1       Inf
+#&gt; result.8 6 0.08097386 221.10851        1 1.1840778
+#&gt; result.6 2 0.13067741 115.20417        1 0.8233753
+#&gt;          2 0.13569288 111.35387        1 0.5206216</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;          k                      rnkIndex     CrowD
+#&gt;          2 0.15772653  35.86713        1       Inf
+#&gt;          7 0.01589945 255.30887        1       Inf
+#&gt; result.8 6 0.08097386 221.10851        1 1.1466026
+#&gt; result.6 2 0.13067741 115.20417        1 0.7878776
+#&gt;          7 0.02010858 231.07312        1 0.5318530
+#&gt;          2 0.13569288 111.35387        1 0.4949618</div><div class='input'><span class='no'>outputDF</span> <span class='kw'>&lt;-</span> <span class='fu'>to_dataframe</span>(<span class='no'>output</span>)
 <span class='no'>outputList</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='to_list.html'>to_list</a></span>(<span class='no'>output</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
