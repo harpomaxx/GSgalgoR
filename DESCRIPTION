@@ -12,7 +12,7 @@ Description: A multi-objective optimization algorithm for disease sub-type disco
    genetic algorithms for feature selection. The algorithm search for the  optimal number of clusters determination considering the features that 
    maximize the survival difference between sub-types while keeping cluster consistency high.
 License: MIT + file LICENSE
-biocViews: GeneExpression, GeneSignature, Clustering, Classification
+biocViews: GeneExpression, Transcription, Clustering, Classification, Survival
 Encoding: UTF-8
 LazyData: true
 Imports: cluster, doParallel, foreach, matchingR, nsga2R, survival, proxy, stats, methods,
