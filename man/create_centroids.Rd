@@ -5,11 +5,11 @@
 \title{Create Centroids}
 \usage{
 create_centroids(
-  output,
-  solution_names,
-  trainset,
-  distancetype = "pearson",
-  usegpu = FALSE
+    output,
+    solution_names,
+    trainset,
+    distancetype = "pearson",
+    usegpu = FALSE
 )
 }
 \arguments{

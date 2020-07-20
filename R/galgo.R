@@ -87,9 +87,9 @@ RMST <- function(ft, rmean) {
 #'
 create_folds <-
     function(y,
-             k = 10,
-             list = TRUE,
-             returnTrain = FALSE) {
+            k = 10,
+            list = TRUE,
+            returnTrain = FALSE) {
         if (class(y)[1] == "Surv") {
             y <- y[, "time"]
         }
@@ -122,7 +122,7 @@ create_folds <-
                 }
                 else {
                     foldVector[which(y == names(numInClass)[i])] <- sample(seq_len(k),
-                                                                           size = numInClass[i]
+                                                                        size = numInClass[i]
                     )
                 }
             }
@@ -134,7 +134,7 @@ create_folds <-
             out <- split(seq(along = y), foldVector)
             names(out) <-
                 paste("Fold", gsub(" ", "0", format(seq(along = out))),
-                      sep = ""
+                    sep = ""
                 )
             if (returnTrain) {
                 out <- lapply(out, function(data, y) {
@@ -327,13 +327,13 @@ reord <- function(C, ord) {
 #' @noRd
 crossvalidation <-
     function(data,
-             flds,
-             indv,
-             k,
-             surv_obj,
-             distance,
-             nCV,
-             period) {
+            flds,
+            indv,
+            k,
+            surv_obj,
+            distance,
+            nCV,
+            period) {
         data <- data[indv, ]
         distance_data <- distance(data)
         train_a <- lapply(flds, build_train, data = data)
@@ -456,20 +456,19 @@ asymetric_mutation <- function(x) {
     mutrate2 <- 1 / Deactive
     mutpoint1 <-
         sample(c(1, 0),
-               Deactive,
-               prob = c(mutrate2, 1 - mutrate2),
-               replace = TRUE
+            Deactive,
+            prob = c(mutrate2, 1 - mutrate2),
+            replace = TRUE
         )
     res[x == 0] <- abs(x[x == 0] - mutpoint1)
 
     mutpoint2 <-
         sample(c(1, 0),
-               Active,
-               prob = c(mutrate1, 1 - mutrate1),
-               replace = TRUE
+            Active,
+            prob = c(mutrate1, 1 - mutrate1),
+            replace = TRUE
         )
     res[x == 1] <- abs(x[x == 1] - mutpoint2)
-
     return(res)
 }
 
@@ -486,9 +485,9 @@ asymetric_mutation <- function(x) {
 #' @examples
 #' @noRd
 offsprings <- function(X1,
-                       chrom_length,
-                       population,
-                       TournamentSize) {
+                    chrom_length,
+                    population,
+                    TournamentSize) {
     New <- matrix(NA, ncol = chrom_length, nrow = population) # Create empty matrix to add new individuals
     NewK <- matrix(NA, nrow = 1, ncol = population) # same for cluster chromosome
     matingPool <- nsga2R::tournamentSelection(X1, population, TournamentSize) # Use tournament selection, to select parents that will give offsprings
@@ -589,22 +588,21 @@ penalize <- function(x) {
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
 galgo <- function(population = 30,# Number of individuals to evaluate
-                  generations = 2, # Number of generations
-                  nCV = 5, # Number of crossvalidations for function "crossvalidation"
-                  usegpu = FALSE, # to use gpuR
-                  distancetype = "pearson",# Options are: "pearson","uncentered","spearman","euclidean"
-                  TournamentSize = 2,
-                  period = 1825,
-                  OS, # OS=Surv(time=clinical$time,event=clinical$status)
-                  prob_matrix,
-                  res_dir = "",
-                  start_galgo_callback = callback_default,
-                  end_galgo_callback = callback_base_return_pop,
-                  report_callback = callback_base_report,
-                  start_gen_callback = callback_default,
-                  end_gen_callback = callback_default,
-                  verbose = 2) {
-
+                generations = 2, # Number of generations
+                nCV = 5, # Number of crossvalidations for function "crossvalidation"
+                usegpu = FALSE, # to use gpuR
+                distancetype = "pearson",# Options are: "pearson","uncentered","spearman","euclidean"
+                TournamentSize = 2,
+                period = 1825,
+                OS, # OS=Surv(time=clinical$time,event=clinical$status)
+                prob_matrix,
+                res_dir = "",
+                start_galgo_callback = callback_default,
+                end_galgo_callback = callback_base_return_pop,
+                report_callback = callback_base_report,
+                start_gen_callback = callback_default,
+                end_gen_callback = callback_default,
+                verbose = 2) {
     if (verbose == 0) {
         report_callback <- callback_default
         start_gen_callback <- callback_default
@@ -644,14 +642,12 @@ galgo <- function(population = 30,# Number of individuals to evaluate
         prob <- stats::runif(1, 0, 1)
         X[i, ] <-
             sample(c(1, 0),
-                   chrom_length,
-                   replace = TRUE,
-                   prob = c(prob, 1 - prob)
+                chrom_length,
+                replace = TRUE,
+                prob = c(prob, 1 - prob)
             )
     }
-
     X1<-X
-
     start_galgo_callback(
         generation = 0,
         pop_pool = X1,
@@ -784,9 +780,9 @@ galgo <- function(population = 30,# Number of individuals to evaluate
 
             X1 <-
                 cbind(oldnewfeature,
-                      k = oldnewK,
-                      oldnew,
-                      rnkIndex = rnkIndex2
+                    k = oldnewK,
+                    oldnew,
+                    rnkIndex = rnkIndex2
                 )
             objRange <-
                 apply(oldnew, 2, max) - apply(oldnew, 2, min) # Range of fitness of the solutions.

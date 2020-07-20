@@ -5,11 +5,11 @@
 \title{Summary of the non dominated solutions}
 \usage{
 non_dominated_summary(
-  output,
-  prob_matrix,
-  OS,
-  distancetype = "pearson",
-  usegpu = FALSE
+    output,
+    prob_matrix,
+    OS,
+    distancetype = "pearson",
+    usegpu = FALSE
 )
 }
 \arguments{

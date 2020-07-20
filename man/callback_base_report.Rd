@@ -5,12 +5,12 @@
 \title{Print basic info per generation}
 \usage{
 callback_base_report(
-  userdir = "",
-  generation,
-  pop_pool,
-  pareto,
-  prob_matrix,
-  current_time
+    userdir = "",
+    generation,
+    pop_pool,
+    pareto,
+    prob_matrix,
+    current_time
 )
 }
 \arguments{
@@ -47,9 +47,9 @@ expression <- t(scale(t(expression)))
 
 # Run galgo with base_report_callback assigned to the report_callback
 # hook-point
-galgoR::galgo(generations = 5, 
-population = 15, 
-prob_matrix = expression, 
+galgoR::galgo(generations = 5,
+population = 15,
+prob_matrix = expression,
 OS = OS,
 report_callback = callback_base_report
 )

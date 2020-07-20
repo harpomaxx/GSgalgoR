@@ -5,12 +5,12 @@
 \title{A base callback function that returns a galgo.Obj}
 \usage{
 callback_base_return_pop(
-  userdir = "",
-  generation,
-  pop_pool,
-  pareto,
-  prob_matrix,
-  current_time
+    userdir = "",
+    generation,
+    pop_pool,
+    pareto,
+    prob_matrix,
+    current_time
 )
 }
 \arguments{
@@ -51,9 +51,9 @@ expression <- t(scale(t(expression)))
 # Run galgo with base_return_pop_callback assigned to the end_galgo_callback
 # hook-point
 # By using this callback galgo() return a `galgo,Obj` object.
-output <- galgoR::galgo(generations = 5, 
-population = 15, 
-prob_matrix = expression, 
+output <- galgoR::galgo(generations = 5,
+population = 15,
+prob_matrix = expression,
 OS = OS,
 end_galgo_callback = callback_base_return_pop
 )

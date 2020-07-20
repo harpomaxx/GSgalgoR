@@ -3,15 +3,15 @@ title: "Galgo Callbacks Mechanism"
 output: 
     BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{Galgo Callbacks Mechanism}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{Galgo Callbacks Mechanism}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 ```
 
@@ -31,14 +31,12 @@ Each one of the five possible hooks can be accessed through parameters  with the
 
 ```{r eval=FALSE }
 galgo(...,
-  start_galgo_callback = callback_default, # Galgo is about to start.
-  end_galgo_callback = callback_default,   # Galgo is about to finish. 
-  start_gen_callback = callback_default,   # At the beginning of each generation
-  end_gen_callback = callback_default,     # At the end of each generation
-  report_callback = callback_default,      # In the middle of the generation, 
-                                           #   right after the new mating pool 
-                                           #   have been created.
-      ...) 
+    start_galgo_callback = callback_default, # Galgo is about to start.
+    end_galgo_callback = callback_default,   # Galgo is about to finish.
+    start_gen_callback = callback_default,   # At the beginning of each generation
+    end_gen_callback = callback_default,     # At the end of each generation
+    report_callback = callback_default,      # In the middle of the generation, right after the new mating pool have been created.
+    ...) 
 ```
 
 
@@ -46,12 +44,12 @@ galgo(...,
 
 A callback function definition can be any R function accepting six parameters. 
 
-- `userdir`: the directory ("character") where the user can save information into local filesystem. 
-- `generation`: the number ("integer") of the current generation/iteration.
-- `pop_pool`: the data.frame containing the resulting solutions for current iteration. 
-- `pareto`: the solutions found by Galgo accross all generations in the solution space
-- `prob_matrix`: the expression set ("matrix) where  features are rows and samples distributed in  columns.
-- `current_time`: The current time (an object of class "POSIXct").
+-`userdir`: the directory ("character") where the user can save information into local filesystem. 
+-`generation`: the number ("integer") of the current generation/iteration.
+-`pop_pool`: the data.frame containing the resulting solutions for current iteration. 
+-`pareto`: the solutions found by Galgo accross all generations in the solution space
+-`prob_matrix`: the expression set ("matrix) where  features are rows and samples distributed in  columns.
+-`current_time`: The current time (an object of class "POSIXct").
 
 The following callback function example prints the generation number and current time  every two iterations
 
@@ -60,16 +58,15 @@ library(galgoR)
 
 my_callback <-
     function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
-      
+        generation,
+            pop_pool,
+            pareto,
+            prob_matrix,
+            current_time) {
     # code starts  here
     if (generation%%2 == 0)
         message(paste0("generation: ",generation,
-                       " current_time: ",current_time))
+                    " current_time: ",current_time))
     }
 ```
 
@@ -79,17 +76,17 @@ then, the `my_callback()` function needs to be assigned to some of the available
 A reduced version of the [TRANSBIG](bioconductor.org/packages/release/data/experiment/html/breastCancerTRANSBIG.html) dataset is used to setup the expression and clinical information required for the `galgo()` function.
 
 ```{r}
- library(breastCancerTRANSBIG)
- data(transbig)
- train <- transbig
- rm(transbig)
- expression <- Biobase::exprs(train)
- clinical <- Biobase::pData(train)
- OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
+library(breastCancerTRANSBIG)
+data(transbig)
+train <- transbig
+rm(transbig)
+expression <- Biobase::exprs(train)
+clinical <- Biobase::pData(train)
+OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 # use a reduced dataset for the example
- expression <- expression[sample(1:nrow(expression), 100), ]
+expression <- expression[sample(1:nrow(expression), 100), ]
 # scale the expression matrix
- expression <- t(scale(t(expression)))
+expression <- t(scale(t(expression)))
 ```
 
 Then, the `galgo()` function is invoked and the recently defined function `my_callback()` is assigned to the `report_callback` hook-point.
@@ -97,16 +94,14 @@ Then, the `galgo()` function is invoked and the recently defined function `my_ca
 ```{r}
 # Running galgo
 galgoR::galgo(generations = 6, 
-              population = 15, 
-              prob_matrix = expression, 
-              OS = OS,
-  start_galgo_callback = galgoR::callback_default, 
-  end_galgo_callback = galgoR::callback_default,   
-  report_callback = my_callback,      # call `my_callback()` in the middle 
-                                      # of each generation/iteration.
-  start_gen_callback = galgoR::callback_default,  
-  end_gen_callback = galgoR::callback_default) 
-
+            population = 15, 
+            prob_matrix = expression, 
+            OS = OS,
+    start_galgo_callback = galgoR::callback_default, 
+    end_galgo_callback = galgoR::callback_default,
+    report_callback = my_callback,    # call `my_callback()` in the middle of each generation/iteration.
+    start_gen_callback = galgoR::callback_default,
+    end_gen_callback = galgoR::callback_default) 
 
 ```
 
@@ -118,19 +113,18 @@ The following callback function save in a temporary directory the solutions obta
 ```{r}
 my_save_pop_callback <-
     function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
-        
+            generation,
+            pop_pool,
+            pareto,
+            prob_matrix,
+            current_time) {
         directory <- paste0(tempdir(), "/")
         if (!dir.exists(directory)) {
             dir.create(directory, recursive = TRUE)
         }
         filename <- paste0(directory, generation, ".rda")
         if (generation%%2 == 0){
-               save(file = filename, pop_pool)
+            save(file = filename, pop_pool)
         }
         message(paste("solution file saved in",filename))
     }
@@ -141,20 +135,16 @@ As usual, the `galgo()` function is invoked and the recently defined function `m
 ```{r}
 # Running galgo
 galgoR::galgo(
-  generations = 6, 
-  population = 15, 
-  prob_matrix = expression, 
-  OS = OS,
-  start_galgo_callback = galgoR::callback_default, 
-  end_galgo_callback = galgoR::callback_default,   
-  report_callback = my_callback,      # call `my_callback()` in the middle 
-                                      # of each generation/iteration.
-  start_gen_callback = galgoR::callback_default,
-  end_gen_callback = my_save_pop_callback , # call `my_save_pop_callback()` at
-                                          #the end of each generation/iteration
-  ) 
-
-
+    generations = 6, 
+    population = 15, 
+    prob_matrix = expression, 
+    OS = OS,
+    start_galgo_callback = galgoR::callback_default, 
+    end_galgo_callback = galgoR::callback_default,   
+    report_callback = my_callback,      # call `my_callback()` in the middle of each generation/iteration.
+    start_gen_callback = galgoR::callback_default,
+    end_gen_callback = my_save_pop_callback # call `my_save_pop_callback()` at the end of each generation/iteration
+    ) 
 ```
 
 
@@ -169,11 +159,11 @@ By default, Galgo implements four callback functions
 
 In the the default definition of the `galgo()` function the hook-points are defined as follow:
 
-- `start_galgo_callback = callback_default`
-- `end_galgo_callback = callback_base_return_pop`
-- `report_callback = callback_base_report`
-- `start_gen_callback = callback_default`
-- `end_gen_callback = callback_default`
+-`start_galgo_callback = callback_default`
+-`end_galgo_callback = callback_base_return_pop`
+-`report_callback = callback_base_report`
+-`start_gen_callback = callback_default`
+-`end_gen_callback = callback_default`
 
 
 Notice by using the callback mechanism it is possible to modify even the returning value of the `galgo()` function. The default `callback_base_return_pop()` returns a `galgo.Obj` object, however it would simple to change that behavior for something like the `my_save_pop_callback()` and the function will not returning any value.
@@ -182,17 +172,16 @@ Notice by using the callback mechanism it is possible to modify even the returni
 ```{r}
 # Running galgo
 galgoR::galgo(
-  generations = 6, 
-  population = 15, 
-  prob_matrix = expression, 
-  OS = OS,
-  start_galgo_callback = galgoR::callback_default, 
-  end_galgo_callback = my_save_pop_callback,
-  report_callback = my_callback,      # call `my_callback()` in the middle of 
-                                      # of each generation/iteration.
-  start_gen_callback = galgoR::callback_default,
-  end_gen_callback = galgoR::callback_default
-  ) 
+    generations = 6, 
+    population = 15, 
+    prob_matrix = expression, 
+    OS = OS,
+    start_galgo_callback = galgoR::callback_default, 
+    end_galgo_callback = my_save_pop_callback,
+    report_callback = my_callback,      # call `my_callback()` in the middle of each generation/iteration.
+    start_gen_callback = galgoR::callback_default,
+    end_gen_callback = galgoR::callback_default
+    ) 
 
 ```
 
@@ -203,20 +192,19 @@ library(galgoR)
 
 another_callback <-
     function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
-      
+            generation,
+            pop_pool,
+            pareto,
+            prob_matrix,
+            current_time) {
     # code starts  here
-      
+
     # code ends here  
     callback_base_return_pop(userdir,
-                             generation,
-                             pop_pool,
-                             prob_matrix,
-                             current_time)
+                            generation,
+                            pop_pool,
+                            prob_matrix,
+                            current_time)
     }
 ```
 

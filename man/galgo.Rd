@@ -5,22 +5,22 @@
 \title{GalgoR main function}
 \usage{
 galgo(
-  population = 30,
-  generations = 2,
-  nCV = 5,
-  usegpu = FALSE,
-  distancetype = "pearson",
-  TournamentSize = 2,
-  period = 1825,
-  OS,
-  prob_matrix,
-  res_dir = "",
-  start_galgo_callback = callback_default,
-  end_galgo_callback = callback_base_return_pop,
-  report_callback = callback_base_report,
-  start_gen_callback = callback_default,
-  end_gen_callback = callback_default,
-  verbose = 2
+    population = 30,
+    generations = 2,
+    nCV = 5,
+    usegpu = FALSE,
+    distancetype = "pearson",
+    TournamentSize = 2,
+    period = 1825,
+    OS,
+    prob_matrix,
+    res_dir = "",
+    start_galgo_callback = callback_default,
+    end_galgo_callback = callback_base_return_pop,
+    report_callback = callback_base_report,
+    start_gen_callback = callback_default,
+    end_gen_callback = callback_default,
+    verbose = 2
 )
 }
 \arguments{

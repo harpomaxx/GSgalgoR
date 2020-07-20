@@ -5,12 +5,12 @@
 \title{A default call_back function that does nothing.}
 \usage{
 callback_default(
-  userdir = "",
-  generation,
-  pop_pool,
-  pareto,
-  prob_matrix,
-  current_time
+    userdir = "",
+    generation,
+    pop_pool,
+    pareto,
+    prob_matrix,
+    current_time
 )
 }
 \arguments{
@@ -47,12 +47,12 @@ expression <- t(scale(t(expression)))
 
 # Run galgo with default_callback assigned to all the hook-points
 
-galgoR::galgo(generations = 5, 
-population = 15, 
-prob_matrix = expression, 
+galgoR::galgo(generations = 5,
+population = 15,
+prob_matrix = expression,
 OS = OS,
 start_galgo_callback = callback_default, # When Galgo is about to start.
-end_galgo_callback = callback_default,   # When Galgo is about to finish. 
+end_galgo_callback = callback_default,   # When Galgo is about to finish.
 start_gen_callback = callback_default,   # At the beginning of each generation/iteration.
 end_gen_callback = callback_default,     # At the end of each generation/iteration.
 )

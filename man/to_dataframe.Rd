@@ -12,12 +12,12 @@ to_dataframe(output)
 \value{
 The current function restructurates a \code{galgo.Obj} to a more easy to understand an use \code{data.frame}. The output \code{data.frame} has \eqn{ m x n} dimensions, were the rownames (\eqn{m}) are the solutions obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm. The columns has the following structure:
 \enumerate{
- \item \strong{Genes}: The features included in each solution in form of a \code{list}
- \item \strong{k}: The number of partitions found in that solution
- \item \strong{SC.Fit}: The average silhouette coefficient of the partitions found
- \item \strong{Surv.Fit}: The survival fitness value
- \item \strong{Rank}: The solution rank
- \item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
+    \item \strong{Genes}: The features included in each solution in form of a \code{list}
+    \item \strong{k}: The number of partitions found in that solution
+    \item \strong{SC.Fit}: The average silhouette coefficient of the partitions found
+    \item \strong{Surv.Fit}: The survival fitness value
+    \item \strong{Rank}: The solution rank
+    \item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
 }
 }
 \description{

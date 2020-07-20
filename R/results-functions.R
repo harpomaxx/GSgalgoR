@@ -41,10 +41,10 @@
 #' )
 non_dominated_summary <-
     function(output,
-             prob_matrix,
-             OS,
-             distancetype = "pearson",
-             usegpu = FALSE) {
+            prob_matrix,
+            OS,
+            distancetype = "pearson",
+            usegpu = FALSE) {
         if (!methods::is(output, "galgo.Obj")) {
             stop("object must be of class 'galgo.Obj'")
         }
@@ -135,10 +135,10 @@ non_dominated_summary <-
 #' CentroidsList <- create_centroids(output, RESULTS$solution, trainset = expression)
 create_centroids <-
     function(output,
-             solution_names,
-             trainset,
-             distancetype = "pearson",
-             usegpu = FALSE) {
+            solution_names,
+            trainset,
+            distancetype = "pearson",
+            usegpu = FALSE) {
         calculate_distance <-
             select_distance(distancetype = distancetype, usegpu = usegpu)
 
@@ -202,8 +202,8 @@ create_centroids <-
 #' classes <- classify_multiple(prob_matrix = expression, centroid_list = CentroidsList)
 classify_multiple <-
     function(prob_matrix,
-             centroid_list,
-             distancetype = "pearson") {
+            centroid_list,
+            distancetype = "pearson") {
         classes <-
             matrix(rep(NA, ncol(prob_matrix) * length(centroid_list)), ncol = length(centroid_list))
         as.data.frame <- classes

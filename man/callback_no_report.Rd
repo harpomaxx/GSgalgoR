@@ -5,12 +5,12 @@
 \title{Print minimal information to the user about galgo execution.}
 \usage{
 callback_no_report(
-  userdir = "",
-  generation,
-  pop_pool,
-  pareto,
-  prob_matrix,
-  current_time
+    userdir = "",
+    generation,
+    pop_pool,
+    pareto,
+    prob_matrix,
+    current_time
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ callback_no_report(
 \item{current_time}{an \code{POSIXct} object}
 }
 \description{
-The main idea behind this callback function is to provide some feedback to the user about galgo execution. 
+The main idea behind this callback function is to provide some feedback to the user about galgo execution.
 No other relevant information is shown
 }
 \examples{
@@ -48,9 +48,9 @@ expression <- t(scale(t(expression)))
 
 # Run galgo with no_report_callback assigned to the report_callback
 # hook-point
-galgoR::galgo(generations = 5, 
-population = 15, 
-prob_matrix = expression, 
+galgoR::galgo(generations = 5,
+population = 15,
+prob_matrix = expression,
 OS = OS,
 report_callback = callback_no_report
 )

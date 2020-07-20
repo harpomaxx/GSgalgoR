@@ -39,11 +39,11 @@
 #'
 callback_base_return_pop <-
     function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
+            generation,
+            pop_pool,
+            pareto,
+            prob_matrix,
+            current_time) {
         colnames(pop_pool)[seq_len(ncol(pop_pool) - 5)] <-
             rownames(prob_matrix)
         output <- list(Solutions = pop_pool, ParetoFront = pareto)
@@ -74,13 +74,12 @@ callback_base_return_pop <-
 #' @noRd
 callback_base_save_pop <-
     function(userdir = "",
-             prefix,
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
-
+            prefix,
+            generation,
+            pop_pool,
+            pareto,
+            prob_matrix,
+            current_time) {
         if (userdir == "") {
             directory <- paste0(tempdir(), "/")
         } else {
@@ -93,10 +92,8 @@ callback_base_save_pop <-
             rownames(prob_matrix)
         output <- list(Solutions = pop_pool, ParetoFront = pareto)
         output <-
-            galgo.Obj(
-                Solutions = output$Solutions,
-                ParetoFront = output$ParetoFront
-            )
+            galgo.Obj(Solutions = output$Solutions,
+                    ParetoFront = output$ParetoFront)
         filename <- paste0(directory, prefix, ".rda")
         save(file = filename, output)
         return(output)
@@ -118,11 +115,11 @@ callback_base_save_pop <-
 #' @noRd
 callback_base_save_pop_partial <-
     function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
+            generation,
+            pop_pool,
+            pareto,
+            prob_matrix,
+            current_time) {
         if (userdir == "") {
             directory <- paste0(tempdir(), "/")
         } else {
@@ -160,11 +157,11 @@ callback_base_save_pop_partial <-
 #' @noRd
 callback_base_save_pop_final <-
     function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
+            generation,
+            pop_pool,
+            pareto,
+            prob_matrix,
+            current_time) {
         if (userdir == "") {
             directory <- paste0(tempdir(), "/")
         } else {
@@ -227,15 +224,15 @@ callback_base_save_pop_final <-
 #' )
 callback_base_report <-
     function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
+            generation,
+            pop_pool,
+            pareto,
+            prob_matrix,
+            current_time) {
         chrom_length <- nrow(prob_matrix)
         message(paste0("Generation ", generation, " Non-dominated solutions:"))
         print(pop_pool[pop_pool[, "rnkIndex"] == 1,
-                       (chrom_length + 1):(chrom_length + 5)])
+                    (chrom_length + 1):(chrom_length + 5)])
         # print(Sys.time()- start_time)
     }
 
@@ -281,11 +278,11 @@ callback_base_report <-
 #' )
 callback_no_report <-
     function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
+            generation,
+            pop_pool,
+            pareto,
+            prob_matrix,
+            current_time) {
         if (generation %% 5 == 0) {
             cat("*")
         } else {
@@ -338,10 +335,9 @@ callback_no_report <-
 #'
 callback_default <-
     function(userdir = "",
-             generation,
-             pop_pool,
-             pareto,
-             prob_matrix,
-             current_time) {
-
+            generation,
+            pop_pool,
+            pareto,
+            prob_matrix,
+            current_time) {
     }

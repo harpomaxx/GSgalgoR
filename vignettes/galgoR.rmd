@@ -2,24 +2,18 @@
 title: "GalgoR user Guide"
 author:
 - affiliation:
-  - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo
-    (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza,
-    Argentina.
-  - Institute of Biochemistry and Biotechnology, Medical School, National University
-    of Cuyo, Mendoza, Argentina.
-  email: 'mguerrero@mendoza-conicet.gob.ar '
-  name: Martin E. Guerrero-Gimenez
+    - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza, Argentina.
+    - Institute of Biochemistry and Biotechnology, Medical School, National University of Cuyo, Mendoza, Argentina.
+    email: 'mguerrero@mendoza-conicet.gob.ar '
+    name: Martin E. Guerrero-Gimenez
 - affiliation:
-  - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo
-    (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza,
-    Argentina.
-  - Institute of Biochemistry and Biotechnology, Medical School, National University
-    of Cuyo, Mendoza, Argentina.
-  name: Juan Manuel Fernandez-Muñoz
+    - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza, Argentina.
+    - Institute of Biochemistry and Biotechnology, Medical School, National University of Cuyo, Mendoza, Argentina.
+    name: Juan Manuel Fernandez-Muñoz
 - affiliation: LABSIN, Engineering School, National University of Cuyo, Mendoza, Argentina.
-  email: 'harpo@ingenieria.uncuyo.edu.ar'
-  name: Carlos A. Catania
-  package: galgoR
+    email: 'harpo@ingenieria.uncuyo.edu.ar'
+    name: Carlos A. Catania
+    package: galgoR
 date: "`r Sys.Date()`"
 output: 
     BiocStyle::html_document
@@ -29,16 +23,16 @@ vignette: >
     %\VignetteEncoding{UTF-8}
     
 abstract: >
-  We report a novel method to identify specific transcriptomic phenotypes based on an elitist non-dominated sorting genetic algorithm that combines the advantages of clustering methods and the exploratory properties of genetic algorithms to discover biologically and clinically relevant molecular subtypes in different cancers.
+    We report a novel method to identify specific transcriptomic phenotypes based on an elitist non-dominated sorting genetic algorithm that combines the advantages of clustering methods and the exploratory properties of genetic algorithms to discover biologically and clinically relevant molecular subtypes in different cancers.
 ---
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  eval=TRUE,
-  warning=FALSE,
-  message = FALSE
+    collapse = TRUE,
+    comment = "#>",
+    eval=TRUE,
+    warning=FALSE,
+    message = FALSE
 )
 ```
 
@@ -115,25 +109,25 @@ library(ggplot2)
 To access the `ExpressionSets` we use:
 
 ```{r load_data2}
-  data(upp)
-  Train<- upp
-  rm(upp)
-  
-  data(transbig)
-  Test<- transbig
-  rm(transbig)
+data(upp)
+Train<- upp
+rm(upp)
 
-  #To access gene expression data
-  train_expr<- exprs(Train)
-  test_expr<- exprs(Test)
+data(transbig)
+Test<- transbig
+rm(transbig)
 
-  #To access feature data
-  train_features<- fData(Train)
-  test_features<- fData(Test)
+#To access gene expression data
+train_expr<- exprs(Train)
+test_expr<- exprs(Test)
 
-  #To access clinical data
-  train_clinic <- pData(Train) 
-  test_clinic <- pData(Test) 
+#To access feature data
+train_features<- fData(Train)
+test_features<- fData(Test)
+
+#To access clinical data
+train_clinic <- pData(Train) 
+test_clinic <- pData(Test) 
 
 ```
 
@@ -149,24 +143,24 @@ For PAM50 classification, Gene Symbols are expected, so probesets are mapped int
 #Custom function to drop duplicated genes (keep genes with highest variance)
 
 DropDuplicates<- function(eset, map= "Gene.symbol"){
-  
-  #Drop NA's
-  drop <- which(is.na(fData(eset)[,map]))
-  eset <- eset[-drop,]
-  
-  #Drop duplicates
-  drop <- NULL
-  Dup <- as.character(unique(fData(eset)[which(duplicated(fData(eset)[,map])),map]))
-  Var <- apply(exprs(eset),1,var)
-  for(j in Dup){
-   pos <- which(fData(eset)[,map]==j)
-    drop <- c(drop,pos[-which.max(Var[pos])])
-    
-  }
-  eset <- eset[-drop,]
 
-featureNames(eset) <- fData(eset)[,map]
-return(eset)
+    #Drop NA's
+    drop <- which(is.na(fData(eset)[,map]))
+    eset <- eset[-drop,]
+
+    #Drop duplicates
+    drop <- NULL
+    Dup <- as.character(unique(fData(eset)[which(duplicated(fData(eset)[,map])),map]))
+    Var <- apply(exprs(eset),1,var)
+    for(j in Dup){
+        pos <- which(fData(eset)[,map]==j)
+        drop <- c(drop,pos[-which.max(Var[pos])])
+    }
+
+    eset <- eset[-drop,]
+
+    featureNames(eset) <- fData(eset)[,map]
+    return(eset)
 }
 
 ```
@@ -177,27 +171,24 @@ return(eset)
 ```{r expandprobesets}
 
 # Custom function to expand probesets mapping to multiple genes
-expandProbesets <- function (eset, sep = "///", map="Gene.symbol")
-{
-  x <- lapply(featureNames(eset), function(x) strsplit(x, sep)[[1]])
-  y<- lapply(as.character(fData(eset)[,map]), function(x) strsplit(x, sep))
-  eset <- eset[order(sapply(x, length)), ]
-  x <- lapply(featureNames(eset), function(x) strsplit(x, sep)[[1]])
-  y<- lapply(as.character(fData(eset)[,map]), function(x) strsplit(x, sep))
-  idx <- unlist(sapply(1:length(x), function(i) rep(i, length(x[[i]]))))
-  idy <- unlist(sapply(1:length(y), function(i) rep(i, length(y[[i]]))))
-  xx <- !duplicated(unlist(x))
-  idx <- idx[xx]
-  idy <- idy[xx]
-  x <- unlist(x)[xx]
-  y <- unlist(y)[xx]
-  
-  eset <- eset[idx, ]
-  featureNames(eset) <- x
-  fData(eset)[,map] <- x
-  fData(eset)$gene <- y
-  return(eset)
-  
+expandProbesets <- function (eset, sep = "///", map="Gene.symbol"){
+    x <- lapply(featureNames(eset), function(x) strsplit(x, sep)[[1]])
+    y<- lapply(as.character(fData(eset)[,map]), function(x) strsplit(x,sep))
+    eset <- eset[order(sapply(x, length)), ]
+    x <- lapply(featureNames(eset), function(x) strsplit(x, sep)[[1]])
+    y<- lapply(as.character(fData(eset)[,map]), function(x) strsplit(x,sep))
+    idx <- unlist(sapply(1:length(x), function(i) rep(i,length(x[[i]]))))
+    idy <- unlist(sapply(1:length(y), function(i) rep(i,length(y[[i]]))))
+    xx <- !duplicated(unlist(x))
+    idx <- idx[xx]
+    idy <- idy[xx]
+    x <- unlist(x)[xx]
+    y <- unlist(y)[xx]
+    eset <- eset[idx, ]
+    featureNames(eset) <- x
+    fData(eset)[,map] <- x
+    fData(eset)$gene <- y
+    return(eset)
 }
 
 ```
@@ -209,12 +200,9 @@ Train=expandProbesets(Train)
 
 Train <- Train[,!is.na(survival::Surv(time=pData(Train)$t.rfs,event=pData(Train)$e.rfs))] #Drop NAs in survival
 
-
-
 Test=DropDuplicates(Test)
 Test=expandProbesets(Test)
 Test <- Test[,!is.na(survival::Surv(time=pData(Test)$t.rfs,event=pData(Test)$e.rfs))] #Drop NAs in survival
-
 
 #Determine common probes (Genes)
 Int= intersect(rownames(Train),rownames(Test))
@@ -232,7 +220,7 @@ For simplicity and speed, we will create a reduced expression matrix for the exa
 ```{r reduced_expr}
 
 #First we will get PAM50 centroids from genefu package
- 
+
 PAM50Centroids <- pam50$centroids
 PAM50Genes <- pam50$centroids.map$probe
 PAM50Genes<- featureNames(Train)[ featureNames(Train) %in% PAM50Genes]
@@ -451,8 +439,8 @@ tumortotal1 <- surv_fit(surv_formula,data=train_clinic)
 tumortotal1diff <- survdiff(surv_formula)
 tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, lower.tail = FALSE) 
 
-  p<-ggsurvplot(tumortotal1,data=train_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="UPP breast cancer \n PAM50 subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
-  print(p)
+p<-ggsurvplot(tumortotal1,data=train_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="UPP breast cancer \n PAM50 subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
+print(p)
 ```
 
 
@@ -464,8 +452,8 @@ tumortotal2 <- surv_fit(surv_formula,data=test_clinic)
 tumortotal2diff <- survdiff(surv_formula)
 tumortotal2pval<- pchisq(tumortotal2diff$chisq, length(tumortotal2diff$n) - 1, lower.tail = FALSE) 
 
-  p<-ggsurvplot(tumortotal2,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="TRANSBIG breast cancer \n PAM50 subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
-  print(p)
+p<-ggsurvplot(tumortotal2,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="TRANSBIG breast cancer \n PAM50 subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
+print(p)
 ```
 
 ## Find breast cancer gene signatures with GalgoR
@@ -504,7 +492,6 @@ plot_pareto(output)
 ```{r, summary_results, eval=TRUE}
 
 output_df<- to_dataframe(output)
-
 NonDom_solutions<- output_df[output_df$Rank==1,]
 
 # N of non-dominated solutions 
@@ -534,9 +521,9 @@ RESULT<- non_dominated_summary(output=output,OS=train_surv, prob_matrix= train_e
 
 
 best_sol=NULL
-  for(i in unique(RESULT$k)){
-  best_sol=c(best_sol,RESULT[RESULT$k==i,"solution"][which.max(RESULT[RESULT$k==i,"C.Index"])])
-  }
+for(i in unique(RESULT$k)){
+    best_sol=c(best_sol,RESULT[RESULT$k==i,"solution"][which.max(RESULT[RESULT$k==i,"C.Index"])])
+}
 
 print(best_sol)
 ```
@@ -546,7 +533,7 @@ print(best_sol)
 Now we create the prototypic centroids of the selected solutions
 
 ```{r centroid_list}
-  CentroidsList <- create_centroids(output, solution_names = best_sol, trainset = train_expression)
+CentroidsList <- create_centroids(output, solution_names = best_sol, trainset = train_expression)
 ```
 
 
@@ -567,25 +554,21 @@ test_classes<- classify_multiple(prob_matrix=test_expression,centroid_list= Cent
 
 ### Calculate train and test set C.Index
 
- To calculate the train and test C.Index, the risk coefficients are calculated for each subclass in the training set and then are used to predict the risk of the different groups in the test set. This is particularly important for signatures with high number of partitions, were the survival differences of different groups might overlap and change their relative order, which is of great importance in the C.Index calculation.
- 
+To calculate the train and test C.Index, the risk coefficients are calculated for each subclass in the training set and then are used to predict the risk of the different groups in the test set. This is particularly important for signatures with high number of partitions, were the survival differences of different groups might overlap and change their relative order, which is of great importance in the C.Index calculation.
+
 ``` {r pred_model}
 
 Prediction.models<- list()
 
 for(i in best_sol){
-  
-  OS<- train_surv
-  predicted_class<- as.factor(train_classes[,i])
-  predicted_classdf <- as.data.frame(predicted_class)
-  colnames(predicted_classdf)<- i
-  
-  surv_formula <- as.formula(paste0("OS~ ",i))
-  coxsimple=coxph(surv_formula,data=predicted_classdf)
 
-
-Prediction.models[[i]]<- coxsimple
-  
+    OS<- train_surv
+    predicted_class<- as.factor(train_classes[,i])
+    predicted_classdf <- as.data.frame(predicted_class)
+    colnames(predicted_classdf)<- i
+    surv_formula <- as.formula(paste0("OS~ ",i))
+    coxsimple=coxph(surv_formula,data=predicted_classdf)
+    Prediction.models[[i]]<- coxsimple
 }
 
 ```
@@ -597,28 +580,19 @@ C.indexes<- data.frame(train_CI=rep(NA,length(best_sol)),test_CI=rep(NA,length(b
 rownames(C.indexes)<- best_sol
 
 for(i in best_sol){
-
-predicted_class_train<- as.factor(train_classes[,i])
+    predicted_class_train<- as.factor(train_classes[,i])
     predicted_class_train_df <- as.data.frame(predicted_class_train)
     colnames(predicted_class_train_df)<- i
- 
-CI_train<- concordance.index(predict(Prediction.models[[i]],predicted_class_train_df),surv.time=train_surv[,1],surv.event=train_surv[,2],outx=FALSE)$c.index
-
-C.indexes[i,"train_CI"]<- CI_train
-
-predicted_class_test<- as.factor(test_classes[,i])
+    CI_train<- concordance.index(predict(Prediction.models[[i]],predicted_class_train_df),surv.time=train_surv[,1],surv.event=train_surv[,2],outx=FALSE)$c.index
+    C.indexes[i,"train_CI"]<- CI_train
+    predicted_class_test<- as.factor(test_classes[,i])
     predicted_class_test_df <- as.data.frame(predicted_class_test)
     colnames(predicted_class_test_df)<- i
- 
-
-CI_test<- concordance.index(predict(Prediction.models[[i]],predicted_class_test_df),surv.time=test_surv[,1],surv.event=test_surv[,2],outx=FALSE)$c.index
-
-C.indexes[i,"test_CI"]<- CI_test
-
-}
+    CI_test<- concordance.index(predict(Prediction.models[[i]],predicted_class_test_df),surv.time=test_surv[,1],surv.event=test_surv[,2],outx=FALSE)$c.index
+    C.indexes[i,"test_CI"]<- CI_test
+    }
 
 print(C.indexes)
-
 
 best_signature<- best_sol[which.max(C.indexes$test_CI)]
 
@@ -637,8 +611,8 @@ tumortotal1 <- surv_fit(surv_formula,data=train_clinic)
 tumortotal1diff <- survdiff(surv_formula)
 tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, lower.tail = FALSE) 
 
-  p<-ggsurvplot(tumortotal1,data=train_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="UPP breast cancer \n Galgo subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
-  print(p)
+p<-ggsurvplot(tumortotal1,data=train_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="UPP breast cancer \n Galgo subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
+print(p)
 
 ```
 
@@ -651,8 +625,8 @@ tumortotal1 <- surv_fit(surv_formula,data=test_clinic)
 tumortotal1diff <- survdiff(surv_formula)
 tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, lower.tail = FALSE) 
 
-  p<-ggsurvplot(tumortotal1,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="TRANSBIG breast cancer \n Galgo subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
-  print(p)
+p<-ggsurvplot(tumortotal1,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="TRANSBIG breast cancer \n Galgo subtypes survival", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,3650),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
+print(p)
 
 ```
 
@@ -661,7 +635,6 @@ tumortotal1pval<- pchisq(tumortotal1diff$chisq, length(tumortotal1diff$n) - 1, l
 Compare PAM50 classification vs Galgo classification in the TRANSBIG (test) dataset
 
 ```{r test_pam50, eval=TRUE, out.width='100%'}
-
 
 surv_formula1 <- as.formula("Surv(test_clinic$t.rfs,test_clinic$e.rfs)~ test_class")
 tumortotal1 <- surv_fit(surv_formula1,data=test_clinic)
@@ -675,12 +648,11 @@ tumortotal2pval<- pchisq(tumortotal1diff$chisq, length(tumortotal2diff$n) - 1, l
 
 
 
-  
-  SURV=list(GALGO=tumortotal1,PAM50=tumortotal2 )
-  COLS=c(1:8,10)
-  par(cex=1.35, mar=c(3.8, 3.8, 2.5, 2.5) + 0.1)
-  p=ggsurvplot(SURV,combine=TRUE,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="Galgo vs. PAM50 subtypes \n BRCA survival comparison", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,period),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
-  print(p)
+SURV=list(GALGO=tumortotal1,PAM50=tumortotal2 )
+COLS=c(1:8,10)
+par(cex=1.35, mar=c(3.8, 3.8, 2.5, 2.5) + 0.1)
+p=ggsurvplot(SURV,combine=TRUE,data=test_clinic,risk.table=TRUE,pval=TRUE,palette="dark2", title="Galgo vs. PAM50 subtypes \n BRCA survival comparison", surv.scale="percent", conf.int=FALSE, xlab="time (days)", ylab="survival(%)", xlim=c(0,period),break.time.by = 365, ggtheme = theme_minimal(), risk.table.y.text.col = TRUE, risk.table.y.text = FALSE,censor=FALSE)
+print(p)
 
 ```
 
