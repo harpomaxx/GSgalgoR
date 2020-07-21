@@ -3,6 +3,8 @@ galgoR <img src="inst/extdata/GalgoR.png" align="right" alt="" width="120" />
 ================================================================================
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/harpomaxx/galgoR-package/branch/master/graph/badge.svg)](https://codecov.io/gh/harpomaxx/galgoR-package?branch=master)![GitHub release (latest by date)](https://img.shields.io/github/v/release/harpomaxx/galgoR-package)
+[![Travis build status](https://travis-ci.com/harpomaxx/galgoR-package.svg?branch=master)](https://travis-ci.com/harpomaxx/galgoR-package)
+[![Travis build status](https://travis-ci.org/harpomaxx/galgoR-package.svg?branch=master)](https://travis-ci.org/harpomaxx/galgoR-package)
 <!-- badges: end -->
 
 A multi-objective optimization algorithm for disease subtype discovery based on a  non-dominated sorting genetic algorithm. The galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic algorithms for feature selection and optimal number of clusters determination to find features that maximize the survival difference between subtypes while keeping cluster consistency high.
