@@ -2,18 +2,24 @@
 title: "GalgoR user Guide"
 author:
 - affiliation:
-    - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza, Argentina.
-    - Institute of Biochemistry and Biotechnology, Medical School, National University of Cuyo, Mendoza, Argentina.
-    email: 'mguerrero@mendoza-conicet.gob.ar '
-    name: Martin E. Guerrero-Gimenez
+  - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo
+    (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza,
+    Argentina.
+  - Institute of Biochemistry and Biotechnology, Medical School, National University
+    of Cuyo, Mendoza, Argentina.
+  email: 'mguerrero@mendoza-conicet.gob.ar '
+  name: Martin E. Guerrero-Gimenez
 - affiliation:
-    - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza, Argentina.
-    - Institute of Biochemistry and Biotechnology, Medical School, National University of Cuyo, Mendoza, Argentina.
-    name: Juan Manuel Fernandez-Muñoz
+  - Laboratory of Oncology, Institute of Medicine and Experimental Biology of Cuyo
+    (IMBECU), National Scientific and Technical Research Council (CONICET), Mendoza,
+    Argentina.
+  - Institute of Biochemistry and Biotechnology, Medical School, National University
+    of Cuyo, Mendoza, Argentina.
+  name: Juan Manuel Fernandez-Muñoz
 - affiliation: LABSIN, Engineering School, National University of Cuyo, Mendoza, Argentina.
-    email: 'harpo@ingenieria.uncuyo.edu.ar'
-    name: Carlos A. Catania
-    package: galgoR
+  email: 'harpo@ingenieria.uncuyo.edu.ar'
+  name: Carlos A. Catania
+  package: galgoR
 date: "`r Sys.Date()`"
 output: 
     BiocStyle::html_document
@@ -23,7 +29,7 @@ vignette: >
     %\VignetteEncoding{UTF-8}
     
 abstract: >
-    We report a novel method to identify specific transcriptomic phenotypes based on an elitist non-dominated sorting genetic algorithm that combines the advantages of clustering methods and the exploratory properties of genetic algorithms to discover biologically and clinically relevant molecular subtypes in different cancers.
+  We report a novel method to identify specific transcriptomic phenotypes based on an elitist non-dominated sorting genetic algorithm that combines the advantages of clustering methods and the exploratory properties of genetic algorithms to discover biologically and clinically relevant molecular subtypes in different cancers.
 ---
 
 ```{r setup, include = FALSE}
