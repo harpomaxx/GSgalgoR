@@ -649,6 +649,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
     }
     X1<-X
     start_galgo_callback(
+        userdir = res_dir,
         generation = 0,
         pop_pool = X1,
         pareto = PARETO,
@@ -664,6 +665,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
         start_time <- Sys.time() # Measures generation time
 
         start_gen_callback(
+            userdir = res_dir,
             generation = g,
             pop_pool = X1,
             pareto = PARETO,
@@ -744,6 +746,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
 
             # Output for the generation callback
             report_callback(
+                userdir = res_dir,
                 generation = g,
                 pop_pool = X1,
                 pareto = PARETO,
@@ -798,6 +801,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
                 X1[, (chrom_length + 2):(chrom_length + 3)] # Saves the fitness of the solutions of the current generation
             # Output for the generation callback
             report_callback(
+                userdir = res_dir,
                 generation = g,
                 pop_pool = X1,
                 pareto = PARETO,
