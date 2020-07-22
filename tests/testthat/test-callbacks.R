@@ -20,24 +20,24 @@ test_that("final population is saved in /tmp/", {
   expect_true(file.exists("/tmp/final.rda"))
 })
 
-test_that("partial population is saved in /tmp/", {
-  # load example dataset
-  library(breastCancerTRANSBIG)
-  data(transbig)
-  Train <- transbig
-  expression <- Biobase::exprs(Train)
-  clinical <- Biobase::pData(Train)
-  OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
-  expression <- expression[sample(seq_len(nrow(expression)), 100), ]
-  expression <- t(scale(t(expression)))
-  output <- galgoR::galgo(res_dir = "/tmp/",
-                          generations = 3, 
-                          population = 3, 
-                          prob_matrix = expression, 
-                          OS = OS,
-                          verbose = 0,
-                          end_gen_callback = callback_base_save_pop_partial )
-  expect_true(file.exists("/tmp/2.rda"))
-})
+#test_that("partial population is saved in /tmp/", {
+#  # load example dataset
+#  library(breastCancerTRANSBIG)
+#  data(transbig)
+#  Train <- transbig
+#  expression <- Biobase::exprs(Train)
+#  clinical <- Biobase::pData(Train)
+#  OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
+#  expression <- expression[sample(seq_len(nrow(expression)), 100), ]
+#  expression <- t(scale(t(expression)))
+#  output <- galgoR::galgo(res_dir = "/tmp/",
+#                          generations = 3, 
+#                          population = 3, 
+#                          prob_matrix = expression, 
+#                          OS = OS,
+#                          verbose = 0,
+#                          end_gen_callback = callback_base_save_pop_partial )
+#  expect_true(file.exists("/tmp/2.rda"))
+#})
 
 
