@@ -55,4 +55,5 @@ plot_pareto <- function(output) {
     PlotPareto <-
         PlotPareto + ggplot2::ggtitle("Galgo run Pareto front")
     print(PlotPareto)
+    return(PlotPareto)
 }

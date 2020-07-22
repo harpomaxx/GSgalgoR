@@ -3,3 +3,4 @@
 language: R
 r: bioc-devel
 cache: packages
+bioc_check: true
