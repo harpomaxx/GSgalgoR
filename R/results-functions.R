@@ -12,7 +12,8 @@
 #' @return Returns a \code{data.frame} with 5 columns and a number of rows equals to the non-dominated solutions found by GalgoR.
 #' The first column has the name of the non-dominated solutions, the second the number of partitions found for each solution \code{(k)}, the third, the number of genes, the fourth the mean silhouette coefficient of the solution and the last columns has the estimated C.Index for each one.
 #' @export
-#'
+#' @usage non_dominated_summary (output, prob_matrix, OS,
+#' distancetype = "pearson", usegpu = FALSE) 
 #' @examples
 #' # load example dataset
 #' library(breastCancerTRANSBIG)
@@ -103,6 +104,8 @@ non_dominated_summary <-
 #'
 #' @return Returns a list with the centroid matrix for each of the solutions in \code{solution_names}, where each column represents the prototypic centroid of a subtype and each row the constituents features of the solution signature
 #' @export
+#' @usage create_centroids (output, solution_names, trainset, 
+#' distancetype = "pearson", usegpu = FALSE)
 #'
 #' @examples
 #' # load example dataset

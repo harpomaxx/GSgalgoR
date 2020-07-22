@@ -4,14 +4,8 @@
 \alias{callback_no_report}
 \title{Print minimal information to the user about galgo execution.}
 \usage{
-callback_no_report(
-    userdir = "",
-    generation,
-    pop_pool,
-    pareto,
-    prob_matrix,
-    current_time
-)
+callback_no_report (userdir = "",generation, pop_pool, 
+pareto, prob_matrix, current_time)
 }
 \arguments{
 \item{userdir}{the default directory used by `galgo()` to store files}
@@ -25,6 +19,9 @@ callback_no_report(
 \item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns}
 
 \item{current_time}{an \code{POSIXct} object}
+}
+\value{
+Nothing.
 }
 \description{
 The main idea behind this callback function is to provide some feedback to the user about galgo execution.

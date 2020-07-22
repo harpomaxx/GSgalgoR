@@ -563,6 +563,15 @@ penalize <- function(x) {
 #' For easier interpretation of the \code{'galgo.Obj'}, the output can be reshaped using the \code{\link[galgoR:to_list]{to_list}} and \code{\link[galgoR:to_dataframe]{to_dataframe}} functions
 #'
 #' @export
+#' 
+#' @usage galgo (population = 30, generations = 2, nCV = 5,
+#' usegpu = FALSE, distancetype = "pearson", TournamentSize = 2, period = 1825,
+#' OS, prob_matrix, res_dir = "", start_galgo_callback = callback_default,
+#' end_galgo_callback = callback_base_return_pop,
+#' report_callback = callback_base_report,
+#' start_gen_callback = callback_default,
+#' end_gen_callback = callback_default,
+#' verbose = 2)
 #'
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #'

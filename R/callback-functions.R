@@ -8,8 +8,9 @@
 #'
 #'
 #' @return an object of class galgo
-#' @export
-#'
+#' @export 
+#' @usage  callback_base_return_pop (userdir = "",generation, pop_pool, 
+#' pareto, prob_matrix, current_time)
 #' @examples
 #' # load example dataset
 #'
@@ -68,7 +69,9 @@ callback_base_return_pop <-
 #'
 #'
 #' @return an object of class galgo
-#'
+#' 
+#' @usage  callback_base_save_pop (userdir = "",generation, pop_pool, 
+#' pareto, prob_matrix, current_time)
 #'
 #' @examples
 #' @noRd
@@ -110,6 +113,8 @@ callback_base_save_pop <-
 #'
 #' @return an object of class galgo
 #'
+#' @usage  callback_base_save_pop_partial (userdir = "",generation,
+#' pop_pool, pareto, prob_matrix, current_time)
 #'
 #' @examples
 #' @noRd
@@ -152,6 +157,8 @@ callback_base_save_pop_partial <-
 #'
 #' @return
 #'
+#' @usage  callback_base_save_pop_final <- function(userdir = "",generation, 
+#' pop_pool, pareto, prob_matrix, current_time)
 #'
 #' @examples
 #' @noRd
@@ -194,10 +201,11 @@ callback_base_save_pop_final <-
 #' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
-#'
+#' @return Nothing.
 #'
 #' @export
-#'
+#' @usage  callback_base_report (userdir, generation, pop_pool, 
+#' pareto, prob_matrix, current_time)
 #' @examples
 #' # load example dataset
 #'
@@ -222,6 +230,8 @@ callback_base_save_pop_final <-
 #' OS = OS,
 #' report_callback = callback_base_report
 #' )
+
+
 callback_base_report <-
     function(userdir = "",
             generation,
@@ -248,10 +258,12 @@ callback_base_report <-
 #' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
-#'
+#' @return Nothing.
 #'
 #' @export
-#'
+#' 
+#' @usage  callback_no_report (userdir = "",generation, pop_pool, 
+#' pareto, prob_matrix, current_time)
 #' @examples
 #' # load example dataset
 #'
@@ -301,7 +313,10 @@ callback_no_report <-
 #' @param current_time an \code{POSIXct} object
 #'
 #'
-#'
+#' @return Nothing
+#' 
+#' @usage  callback_default (userdir = "",generation, pop_pool, 
+#' pareto, prob_matrix, current_time)
 #' @export
 #' @examples
 #' # load example dataset

@@ -4,14 +4,8 @@
 \alias{callback_default}
 \title{A default call_back function that does nothing.}
 \usage{
-callback_default(
-    userdir = "",
-    generation,
-    pop_pool,
-    pareto,
-    prob_matrix,
-    current_time
-)
+callback_default (userdir = "",generation, pop_pool, 
+pareto, prob_matrix, current_time)
 }
 \arguments{
 \item{userdir}{the default directory used by \code{galgo()} to store files}
@@ -25,6 +19,9 @@ callback_default(
 \item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns}
 
 \item{current_time}{an \code{POSIXct} object}
+}
+\value{
+Nothing
 }
 \description{
 A default call_back function that does nothing.

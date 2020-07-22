@@ -42,8 +42,8 @@ cluster_classify <- function(data, centroid, method = "pearson") {
 #' @details The function runs the \code{\link[cluster:pam]{pam}} function of the \code{'cluster'} package with options \code{cluster.only =TRUE}, \code{diss = TRUE}, \code{do.swap=TRUE}, \code{keep.diss=FALSE}, \code{keep.data = FALSE}, \code{pamonce= 2}
 #' @references
 #' \itemize{
-#'   \item Reynolds, A., Richards, G., de la Iglesia, B. and Rayward-Smith, V. (1992) Clustering rules: A comparison of partitioning and hierarchical clustering algorithms; Journal of Mathematical Modelling and Algorithms 5, 475--504. 10.1007/s10852-005-9022-1.
-#'   \item Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, (\url{https://arxiv.org/abs/1810.05691}).
+#' \item Reynolds, A., Richards, G., de la Iglesia, B. and Rayward-Smith, V. (1992) Clustering rules: A comparison of partitioning and hierarchical clustering algorithms; Journal of Mathematical Modelling and Algorithms 5, 475--504. 10.1007/s10852-005-9022-1.
+#' \item Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, (\url{https://arxiv.org/abs/1810.05691}).
 #' }
 #'
 #' @export
