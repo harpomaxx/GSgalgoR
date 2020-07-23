@@ -21,7 +21,7 @@ In order to standardize the structure of genomic data, the package uses the `Exp
 A complete and detailed explanation about galgo's workflow is provided in the 
 [example Vignette](https://harpomaxx.github.io/galgoR-package/articles/galgoR.html)
 
-The package provides a simple but robust callback mechanism to adapt the algorithm to adapt the algorithm to different needs ([check the Vignette](https://harpomaxx.github.io/galgoR-package/articles/galgo_callbacks.html)). Additionally, **galgoR** provides the Wilkerson's centroids to perform lung adenocarcinoma sample classification.
+The package provides a simple but robust callback mechanism to adapt the algorithm to different needs ([check the Vignette](https://harpomaxx.github.io/galgoR-package/articles/galgo_callbacks.html)). Additionally, **galgoR** provides the Wilkerson's centroids to perform lung adenocarcinoma sample classification.
 
 # Installation
 
