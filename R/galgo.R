@@ -368,51 +368,6 @@ mininum_genes <- function(x, chrom_length) {
     sum(x) >= 10 & sum(x) < chrom_length
 }
 
-#' Multiple point crossover
-#'
-#' http://ictactjournals.in/paper/IJSC_V6_I1_paper_4_pp_1083_1092.pdf
-#'
-#' a and b is solution 1 and 2 respectively (binary vectors)
-#' n is the number of cut points
-#'
-#' @param a
-#' @param b
-#' @param n
-#'
-#' @return
-#'
-#' @examples
-#' @noRd
-multipoint_crossover <- function(a, b, n) {
-    if (length(a) != length(b)) {
-        stop("vectors of unequal length")
-    }
-    l <- length(a)
-    if (n >= (length(a) - 1)) {
-        stop("number of cut points bigger than possible sites")
-    }
-    points <- sample(2:(l - 1), n, replace = FALSE)
-    to <- c(points[order(points)][-n], l)
-    from <- c(1, to[-length(to)] + 1)
-    cutpoints <- list()
-    for (i in seq_len(n)) {
-        cutpoints[[i]] <- seq(from[i], to[i])
-    }
-    achild <- as.numeric()
-    bchild <- as.numeric()
-    for (i in seq_len(n)) {
-        if (i %% 2 == 0) {
-            achild <- c(achild, a[cutpoints[[i]]])
-            bchild <- c(bchild, b[cutpoints[[i]]])
-        } else {
-            achild <- c(achild, b[cutpoints[[i]]])
-            bchild <- c(bchild, a[cutpoints[[i]]])
-        }
-    }
-    return(list(achild, bchild))
-}
-
-
 #' Uniform crossover
 #'
 #' @param a
