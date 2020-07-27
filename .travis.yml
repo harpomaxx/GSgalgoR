@@ -1,6 +1,14 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
+
 r: bioc-devel
-cache: packages
+
+cache: packagesr_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
+
 bioc_check: true
+
