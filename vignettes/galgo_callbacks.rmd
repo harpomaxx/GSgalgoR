@@ -207,4 +207,9 @@ another_callback <-
                             current_time)
     }
 ```
+# Session info
+
+```{r sess_info, eval=TRUE}
+sessionInfo()
+```
 
