@@ -7,16 +7,30 @@
 cosine_similarity(a, b)
 }
 \arguments{
-\item{a, b}{A string of numbers with equal length. It can also be two binary strings of 0's and 1's}
+\item{a, b}{A string of numbers with equal length. It can also be two 
+binary strings of 0's and 1's}
 }
 \value{
-In practice, the function can return numeric values from -1 to 1 according the vector orientations, where a cosine similarity of 1 implies same orientation of the vectors while -1 imply vector of oposing directions. In the binary application, values range from 0 to 1, where 0 are totally discordant vectors while 1 are identical binary vectors.
+In practice, the function can return numeric values from -1 to 1 
+according the vector orientations, where a cosine similarity of 1 implies 
+same orientation of the vectors while -1 imply vector of opposing directions.
+In the binary application, values range from 0 to 1, where 0 are totally 
+discordant vectors while 1 are identical binary vectors.
 }
 \description{
-Cosine similarity is a metric of similarity between two non-zero vectors of an inner product space that measures the cosine of the angle between them.
-Two vectors with the same orientation have a cosine similarity of 1, if they are perpendicular they have a similarity of 0, and if they have opposing directions the cosine similarity is -1, independent of their magnitude.
-One advantage of cosine similarity is its low-complexity, especially for sparse vectors where only the non-zero dimensions need to be considered, which is a common case in \code{galgoR}.
-Other names of cosine similarity are Otuska-Orchini similarity when it is applied to binary data, which is the case for \code{galgoR}, where individual solutions represented as strings of 0 and 1 are compared with this metric.
+Cosine similarity is a metric of similarity between two non-zero vectors 
+of an inner product space that measures the cosine of the angle between them.
+Two vectors with the same orientation have a cosine similarity of 1, if 
+they are perpendicular they have a similarity of 0, and if they have 
+opposing directions the cosine similarity is -1, independent of their
+magnitude.
+One advantage of cosine similarity is its low-complexity, especially for 
+sparse vectors where only the non-zero dimensions need to be considered, 
+which is a common case in \code{galgoR}.
+Other names of cosine similarity are Otuska-Orchini similarity when it is 
+applied to binary data, which is the case for \code{galgoR}, where 
+individual solutions represented as strings of 0 and 1 are compared with t
+his metric.
 }
 \examples{
 solution1 <- c(1, 0, 0, 1, 0, 0, 1)

@@ -7,17 +7,24 @@
 cluster_classify(data, centroid, method = "pearson")
 }
 \arguments{
-\item{data}{a \code{data.frame} of dimensions \eqn{n x p} with the samples to classify, were \eqn{n} are the same set of features as in the centroids}
+\item{data}{a \code{data.frame} of dimensions \eqn{n x p} with the samples 
+to classify, were \eqn{n} are the same set of features as in the centroids}
 
-\item{centroid}{a \code{data.frame} of dimensions \eqn{n x m}, where each column is a prototypic centroid to classify the samples}
+\item{centroid}{a \code{data.frame} of dimensions \eqn{n x m}, where each 
+column is a prototypic centroid to classify the samples}
 
-\item{method}{Character string indicating which method to use to calculate distance to centroid. Options are \code{"pearson"} (default), \code{"kendall"}, or \code{"spearman"}}
+\item{method}{Character string indicating which method to use to calculate 
+distance to centroid. Options are \code{"pearson"} (default), 
+\code{"kendall"}, or \code{"spearman"}}
 }
 \value{
-Returns a numeric vector of length \eqn{p} with the class assigned to each sample according to the shortest distance to centroid
+Returns a numeric vector of length \eqn{p} with the class assigned 
+to each sample according to the shortest distance to centroid
 }
 \description{
-Given an \eqn{n x m} matrix of centroids, where \eqn{m} are the prototypic centroids with \eqn{n} features, classify new samples according to the distance to the centroids.
+Given an \eqn{n x m} matrix of centroids, where \eqn{m} are the prototypic 
+centroids with \eqn{n} features, classify new samples according to the 
+distance to the centroids.
 }
 \examples{
 

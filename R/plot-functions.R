@@ -2,8 +2,11 @@
 #'
 #' @param output An object of class \code{galgo.Obj}
 #'
-#' @return This function returns a scatterplot showing the solutions found by Galgo accross all generations in the solution space, where the Silhouette Fitness is in the x-axis and the survival fitness in the y-axis.
-#' A line is drawn over all non-dominated solutions showing the estimated Pareto front
+#' @return This function returns a scatterplot showing the solutions found by 
+#' Galgo accross all generations in the solution space, where the Silhouette 
+#' Fitness is in the x-axis and the survival fitness in the y-axis.
+#' A line is drawn over all non-dominated solutions showing the estimated 
+#' Pareto front
 #' @export
 #'
 #' @examples
@@ -24,7 +27,8 @@
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
+#' output <- galgoR::galgo(generations = 5, population = 15, 
+#' prob_matrix = expression, OS = OS)
 #' plot_pareto(output)
 plot_pareto <- function(output) {
     SC.Fit <- Surv.Fit <- Gen <- NULL
@@ -42,7 +46,8 @@ plot_pareto <- function(output) {
     output_df <- output_df[order(output_df$SC.Fit), ]
 
     PlotPareto <-
-        ggplot2::ggplot(PARETO, ggplot2::aes(x = SC.Fit, y = Surv.Fit, colour = Gen)) +
+        ggplot2::ggplot(PARETO, ggplot2::aes(x = SC.Fit, 
+                                        y = Surv.Fit, colour = Gen)) +
         ggplot2::geom_point() +
         ggplot2::theme_bw()
     PlotPareto <-
@@ -51,7 +56,8 @@ plot_pareto <- function(output) {
             colour = "black",
             size = 2,
             output_df
-        ) + ggplot2::geom_line(ggplot2::aes(x = SC.Fit, y = Surv.Fit), colour = "black", output_df)
+        ) + ggplot2::geom_line(ggplot2::aes(x = SC.Fit, y = Surv.Fit), 
+                        colour = "black", output_df)
     PlotPareto <-
         PlotPareto + ggplot2::ggtitle("Galgo run Pareto front")
     print(PlotPareto)

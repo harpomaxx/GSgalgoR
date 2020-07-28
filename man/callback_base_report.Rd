@@ -10,13 +10,17 @@ pareto, prob_matrix, current_time)
 \arguments{
 \item{userdir}{the default directory used by `galgo()` to store files}
 
-\item{generation}{a number indicating the number of iterations of the galgo algorithm}
+\item{generation}{a number indicating the number of iterations of the galgo
+algorithm}
 
-\item{pop_pool}{a \code{data.frame} with the solution vectors, number of clusters and their ranking.}
+\item{pop_pool}{a \code{data.frame} with the solution vectors, number of 
+clusters and their ranking.}
 
-\item{pareto}{the solutions found by Galgo across all generations in the solution space}
+\item{pareto}{the solutions found by Galgo across all generations in the 
+solution space}
 
-\item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns}
+\item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an 
+expression matrix with features in rows and samples in columns}
 
 \item{current_time}{an \code{POSIXct} object}
 }

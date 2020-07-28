@@ -9,16 +9,24 @@ cluster_algorithm(c, k)
 \arguments{
 \item{c}{a dissimilarity matrix object of type \code{'dist'}}
 
-\item{k}{positive integer specifying the number of clusters, less than the number of observations}
+\item{k}{positive integer specifying the number of clusters, less than the 
+number of observations}
 }
 \value{
-Returns a \code{'list'} with the value \code{'$cluster'} which contains the cluster assignment of each of the samples evaluated
+Returns a \code{'list'} with the value \code{'$cluster'} which 
+contains the cluster assignment of each of the samples evaluated
 }
 \description{
-In \code{galgoR}, the partition around medioids (PAM) algorithm is the default clustering process used under the evolutionary process.
+In \code{galgoR}, the partition around medioids (PAM) algorithm is the 
+default clustering process used under the evolutionary process.
 }
 \details{
-The function runs the \code{\link[cluster:pam]{pam}} function of the \code{'cluster'} package with options \code{cluster.only =TRUE}, \code{diss = TRUE}, \code{do.swap=TRUE}, \code{keep.diss=FALSE}, \code{keep.data = FALSE}, \code{pamonce= 2}
+The function runs the \code{\link[cluster:pam]{pam}} function of 
+the \code{'cluster'} package 
+with options \code{cluster.only =TRUE}, 
+\code{diss = TRUE}, \code{do.swap=TRUE}, 
+\code{keep.diss=FALSE}, \code{keep.data = FALSE}, 
+\code{pamonce= 2}
 }
 \examples{
 # load example dataset
@@ -26,7 +34,8 @@ require(iC10TrainingData)
 require(pamr)
 data(train.Exp)
 
-calculate_distance <- select_distance(distancetype = "pearson", usegpu = FALSE)
+calculate_distance <- select_distance(distancetype = "pearson", 
+usegpu = FALSE)
 Dist <- calculate_distance(train.Exp)
 k <- 4
 Pam <- cluster_algorithm(Dist, k)
@@ -34,7 +43,12 @@ table(Pam$cluster)
 }
 \references{
 \itemize{
-\item Reynolds, A., Richards, G., de la Iglesia, B. and Rayward-Smith, V. (1992) Clustering rules: A comparison of partitioning and hierarchical clustering algorithms; Journal of Mathematical Modelling and Algorithms 5, 475--504. 10.1007/s10852-005-9022-1.
-\item Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, (\url{https://arxiv.org/abs/1810.05691}).
+\item Reynolds, A., Richards, G., de la Iglesia, B. and Rayward-Smith, V. 
+(1992) Clustering rules: A comparison of partitioning and 
+hierarchical clustering algorithms; Journal of Mathematical Modelling and 
+Algorithms 5, 475--504. 10.1007/s10852-005-9022-1.
+\item Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids 
+Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, 
+(\url{https://arxiv.org/abs/1810.05691}).
 }
 }

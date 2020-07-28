@@ -1,27 +1,37 @@
 #' Functions to calculate distance matrices using cpu or gpu computing
 #'
-#' @param distancetype a \code{character} that can be either \code{'pearson'}, \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}
+#' @param distancetype a \code{character} that can be either \code{'pearson'}, 
+#' \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}
 #' @param usegpu \code{logical} \code{TRUE} or \code{FALSE}
 #' @param x an expression matrix with features as rows and samples as columns
 #'
 #' @return
-#' \code{select_distance(distancetype, usegpu)} assigns global function calculate_distance according to the parameters specified
+#' \code{select_distance(distancetype, usegpu)} assigns global function 
+#' calculate_distance according to the parameters specified
 #'
-#' \code{calculate_distance_pearson_gpu(x)} returns columnwise pearson distance calculated using the GPU
+#' \code{calculate_distance_pearson_gpu(x)} returns columnwise pearson 
+#' distance calculated using the GPU
 #'
-#' \code{calculate_distance_pearson_cpu(x)} returns columnwise pearson distance calculated using the CPU
+#' \code{calculate_distance_pearson_cpu(x)} returns columnwise pearson 
+#' distance calculated using the CPU
 #'
-#' \code{calculate_distance_uncentered_gpu(x)} returns columnwise uncentered pearson distance calculated using the GPU
+#' \code{calculate_distance_uncentered_gpu(x)} returns columnwise 
+#' uncentered pearson distance calculated using the GPU
 #'
-#' \code{calculate_distance_uncentered_cpu(x)} returns columnwise uncentered pearson distance calculated using the CPU
+#' \code{calculate_distance_uncentered_cpu(x)} returns columnwise 
+#' uncentered pearson distance calculated using the CPU
 #'
-#' \code{calculate_distance_spearman_gpu(x)} returns columnwise spearman distance calculated using the GPU
+#' \code{calculate_distance_spearman_gpu(x)} returns columnwise 
+#' spearman distance calculated using the GPU
 #'
-#' \code{calculate_distance_spearman_cpu(x)} returns columnwise spearman distance calculated using the CPU
+#' \code{calculate_distance_spearman_cpu(x)} returns columnwise 
+#' spearman distance calculated using the CPU
 #'
-#' \code{calculate_distance_euclidean_gpu(x)} returns columnwise euclidean distance calculated using the GPU
+#' \code{calculate_distance_euclidean_gpu(x)} returns columnwise 
+#' euclidean distance calculated using the GPU
 #'
-#' \code{calculate_distance_euclidean_cpu(x)} returns columnwise euclidean distance calculated using the CPU
+#' \code{calculate_distance_euclidean_cpu(x)} returns columnwise 
+#' euclidean distance calculated using the CPU
 #'
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #' @name calculate_distance
@@ -32,7 +42,8 @@
 #'
 #' data(train.Exp)
 #'
-#' calculate_distance <- select_distance(distancetype = "pearson", usegpu = FALSE)
+#' calculate_distance <- select_distance(distancetype = "pearson", 
+#' usegpu = FALSE)
 #' Dist <- calculate_distance(train.Exp)
 #' k <- 4
 #' Pam <- cluster_algorithm(Dist, k)
@@ -99,7 +110,8 @@ calculate_distance_uncentered_gpu <- function(x) {
 calculate_distance_euclidean_gpu <- function(x) {
     if (requireNamespace("gpuR", quietly = TRUE)) {
         mgpu <- gpuR::vclMatrix(t(x))
-        pDist <- suppressWarnings(gpuR::distance(mgpu, mgpu, method = "euclidean"))
+        pDist <- suppressWarnings(gpuR::distance(mgpu, mgpu, 
+                                                    method = "euclidean"))
         pDist <- as.matrix(pDist)
         stats::as.dist(pDist)
     } else {
@@ -151,7 +163,8 @@ calculate_distance_euclidean_cpu <- function(x) {
 #' @rdname calculate_distance
 #' @export
 select_distance <- function(distancetype = "pearson", usegpu = TRUE) {
-    distancetype <- match.arg(distancetype, c("pearson", "uncentered", "euclidean", "spearman"))
+    distancetype <- match.arg(distancetype, c("pearson", "uncentered", 
+                                                "euclidean", "spearman"))
 
     if (usegpu == FALSE) {
         computingtype <- "Using CPU for computing"

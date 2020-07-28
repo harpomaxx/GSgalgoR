@@ -10,13 +10,17 @@ pareto, prob_matrix, current_time)
 \arguments{
 \item{userdir}{the default directory used by \code{galgo()} to store files}
 
-\item{generation}{a number indicating the number of iterations of the galgo algorithm}
+\item{generation}{a number indicating the number of iterations of the 
+galgo algorithm}
 
-\item{pop_pool}{a \code{data.frame} with the solution vectors, number of clusters and their ranking.}
+\item{pop_pool}{a \code{data.frame} with the solution vectors, number 
+of clusters and their ranking.}
 
-\item{pareto}{the solutions found by Galgo across all generations in the solution space}
+\item{pareto}{the solutions found by Galgo across all generations in 
+the solution space}
 
-\item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns}
+\item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an 
+expression matrix with features in rows and samples in columns}
 
 \item{current_time}{an \code{POSIXct} object}
 }
@@ -48,10 +52,10 @@ galgoR::galgo(generations = 5,
 population = 15,
 prob_matrix = expression,
 OS = OS,
-start_galgo_callback = callback_default, # When Galgo is about to start.
-end_galgo_callback = callback_default,   # When Galgo is about to finish.
-start_gen_callback = callback_default,   # At the beginning of each generation/iteration.
-end_gen_callback = callback_default,     # At the end of each generation/iteration.
+start_galgo_callback = callback_default,# When Galgo is about to start.
+end_galgo_callback = callback_default,  # When Galgo is about to finish.
+start_gen_callback = callback_default,  # At the beginning of each iteration.
+end_gen_callback = callback_default,    # At the end of each iteration.
 )
 
 

@@ -4,16 +4,28 @@
 #'
 #' @param output An object of class \code{galgo.Obj}
 #'
-#' @return The current function restructurates a \code{galgo.Obj} to a more easy to understand an use \code{list}. This output is particularly useful if one wants to select a given solution and use its outputs in a new classifier. The output of type \code{list} has a length equals to the number of solutions obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm.
+#' @return The current function restructurates a \code{galgo.Obj} to a more 
+#' easy to understand an use \code{list}. This output is particularly useful 
+#' if one wants to select a given solution and use its outputs in a new 
+#' classifier. The output of type \code{list} has a length equals to the 
+#' number of solutions obtained by the \code{\link[galgoR:galgo]{galgo}} 
+#' algorithm.
 #'
-#' Basically this output is a list of lists, where each element of the output is named after the solution's name (\code{solution.n}, where \code{n} is the number assigned to that solution), and inside of it, it has all the constituents for that given solution with the following structure:
+#' Basically this output is a list of lists, where each element of the output 
+#' is named after the solution's name (\code{solution.n}, where \code{n} is 
+#' the number assigned to that solution), and inside of it, it has all the 
+#' constituents for that given solution with the following structure:
 #' \enumerate{
-#' \item \strong{output$solution.n$Genes}: A vector of the features included in the solution
-#' \item \strong{output$solution.n$k}: The number of partitions found in that solution
-#' \item \strong{output$solution.n$SC.Fit}: The average silhouette coefficient of the partitions found
+#' \item \strong{output$solution.n$Genes}: A vector of the features included 
+#' in the solution
+#' \item \strong{output$solution.n$k}: The number of partitions found in that 
+#' solution
+#' \item \strong{output$solution.n$SC.Fit}: The average silhouette coefficient 
+#' of the partitions found
 #' \item \strong{output$solution.n$Surv.Fit}: The survival fitness value
 #' \item \strong{output$solution.n$Rank}: The solution rank
-#' \item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
+#' \item \strong{CrowD}: The solution crowding distance related to the rest 
+#' of the solutions
 #' }
 #' @export
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
@@ -36,7 +48,8 @@
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
+#' output <- galgoR::galgo(generations = 5, population = 15, 
+#' prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
 to_list <- function(output) {
@@ -68,14 +81,21 @@ to_list <- function(output) {
 #'
 #' @param output An object of class \code{galgo.Obj}
 #'
-#' @return The current function restructurates a \code{galgo.Obj} to a more easy to understand an use \code{data.frame}. The output \code{data.frame} has \eqn{ m x n} dimensions, were the rownames (\eqn{m}) are the solutions obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm. The columns has the following structure:
+#' @return The current function restructurates a \code{galgo.Obj} to a more 
+#' easy to understand an use \code{data.frame}. The output \code{data.frame} 
+#' has \eqn{ m x n} dimensions, were the rownames (\eqn{m}) are the solutions 
+#' obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm. 
+#' The columns has the following structure:
 #' \enumerate{
-#' \item \strong{Genes}: The features included in each solution in form of a \code{list}
+#' \item \strong{Genes}: The features included in each solution in form 
+#' of a \code{list}
 #' \item \strong{k}: The number of partitions found in that solution
-#' \item \strong{SC.Fit}: The average silhouette coefficient of the partitions found
+#' \item \strong{SC.Fit}: The average silhouette coefficient of the 
+#' partitions found
 #' \item \strong{Surv.Fit}: The survival fitness value
 #' \item \strong{Rank}: The solution rank
-#' \item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
+#' \item \strong{CrowD}: The solution crowding distance related to the 
+#' rest of the solutions
 #' }
 #' @export
 #'
@@ -99,7 +119,8 @@ to_list <- function(output) {
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
+#' output <- galgoR::galgo(generations = 5, population = 15, 
+#' prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
 to_dataframe <- function(output) {

@@ -1,9 +1,13 @@
 #' A base callback function that returns a galgo.Obj
 #' @param userdir the default directory used by `galgo()` to store files
-#' @param generation a number indicating the number of iterations of the galgo algorithm
-#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
-#' @param pareto the solutions found by Galgo across all generations in the solution space
-#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param generation a number indicating the number of iterations of the galgo 
+#' algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of 
+#' clusters and their ranking.
+#' @param pareto the solutions found by Galgo across all generations in the 
+#' solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an 
+#' expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
 #'
@@ -60,11 +64,15 @@ callback_base_return_pop <-
 #'
 #'
 #'
-#' @param generation a number indicating the number of iterations of the galgo algorithm
+#' @param generation a number indicating the number of iterations of the galgo 
+#' algorithm
 #' @param prefix a prefix used for the file name
-#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
-#' @param pareto the solutions found by Galgo across all generations in the solution space
-#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of 
+#' clusters and their ranking.
+#' @param pareto the solutions found by Galgo across all generations in the 
+#' solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an 
+#' expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
 #'
@@ -104,10 +112,14 @@ callback_base_save_pop <-
 
 #' A callback for saving partial galgo.Obj (every 2 generations)
 #'
-#' @param generation a number indicating the number of iterations of the galgo algorithm
-#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
-#' @param pareto the solutions found by Galgo accross all generations in the solution space
-#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param generation a number indicating the number of iterations of the galgo 
+#' algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of 
+#' clusters and their ranking.
+#' @param pareto the solutions found by Galgo accross all generations in the 
+#' solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an 
+#' expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
 #'
@@ -148,10 +160,14 @@ callback_base_save_pop_partial <-
 
 #' A callback for saving final galgo.Obj
 #'
-#' @param generation a number indicating the number of iterations of the galgo algorithm
-#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
-#' @param pareto the solutions found by Galgo accross all generations in the solution space
-#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param generation a number indicating the number of iterations of the 
+#' galgo algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of 
+#' clusters and their ranking.
+#' @param pareto the solutions found by Galgo accross all generations in the 
+#' solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an 
+#' expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
 #'
@@ -195,10 +211,14 @@ callback_base_save_pop_final <-
 #' Print basic info per generation
 #'
 #' @param userdir the default directory used by `galgo()` to store files
-#' @param generation a number indicating the number of iterations of the galgo algorithm
-#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
-#' @param pareto the solutions found by Galgo across all generations in the solution space
-#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param generation a number indicating the number of iterations of the galgo
+#'  algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of 
+#' clusters and their ranking.
+#' @param pareto the solutions found by Galgo across all generations in the 
+#' solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an 
+#' expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
 #' @return Nothing.
@@ -248,14 +268,19 @@ callback_base_report <-
 
 #' Print minimal information to the user about galgo execution.
 #'
-#' The main idea behind this callback function is to provide some feedback to the user about galgo execution.
+#' The main idea behind this callback function is to provide some feedback to 
+#' the user about galgo execution.
 #' No other relevant information is shown
 #'
 #' @param userdir the default directory used by `galgo()` to store files
-#' @param generation a number indicating the number of iterations of the galgo algorithm
-#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
-#' @param pareto the solutions found by Galgo across all generations in the solution space
-#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param generation a number indicating the number of iterations of the galgo 
+#' algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number of 
+#' clusters and their ranking.
+#' @param pareto the solutions found by Galgo across all generations in the 
+#' solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an 
+#' expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
 #' @return Nothing.
@@ -306,10 +331,14 @@ callback_no_report <-
 #' A default call_back function that does nothing.
 #'
 #' @param userdir the default directory used by \code{galgo()} to store files
-#' @param generation a number indicating the number of iterations of the galgo algorithm
-#' @param pop_pool a \code{data.frame} with the solution vectors, number of clusters and their ranking.
-#' @param pareto the solutions found by Galgo across all generations in the solution space
-#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an expression matrix with features in rows and samples in columns
+#' @param generation a number indicating the number of iterations of the 
+#' galgo algorithm
+#' @param pop_pool a \code{data.frame} with the solution vectors, number 
+#' of clusters and their ranking.
+#' @param pareto the solutions found by Galgo across all generations in 
+#' the solution space
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an 
+#' expression matrix with features in rows and samples in columns
 #' @param current_time an \code{POSIXct} object
 #'
 #'
@@ -340,11 +369,11 @@ callback_no_report <-
 #' population = 15,
 #' prob_matrix = expression,
 #' OS = OS,
-#' start_galgo_callback = callback_default, # When Galgo is about to start.
-#' end_galgo_callback = callback_default,   # When Galgo is about to finish.
-#' start_gen_callback = callback_default,   # At the beginning of each generation/iteration.
-#' end_gen_callback = callback_default,     # At the end of each generation/iteration.
-# 'report_callback = callback_default,      # In the middle of the generation
+#' start_galgo_callback = callback_default,# When Galgo is about to start.
+#' end_galgo_callback = callback_default,  # When Galgo is about to finish.
+#' start_gen_callback = callback_default,  # At the beginning of each iteration.
+#' end_gen_callback = callback_default,    # At the end of each iteration.
+# 'report_callback = callback_default,     # In the middle of the generation
 #' )
 #'
 #'

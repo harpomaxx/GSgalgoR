@@ -7,15 +7,18 @@
 k_centroids(data, class)
 }
 \arguments{
-\item{data}{a scaled gene expression \code{matrix} or \code{data.frame} with samples as columns and features as rows}
+\item{data}{a scaled gene expression \code{matrix} or \code{data.frame} 
+with samples as columns and features as rows}
 
 \item{class}{a vector with the samples classes}
 }
 \value{
-returns a \code{data.frame} with the estimated prototypic centroids for each class with the features names as rownames
+returns a \code{data.frame} with the estimated prototypic centroids 
+for each class with the features names as rownames
 }
 \description{
-This function calculates the mean value for each feature of each class to calculate the prototypic centroids of the different groups
+This function calculates the mean value for each feature of each class to 
+calculate the prototypic centroids of the different groups
 }
 \examples{
 # load example dataset
@@ -24,7 +27,8 @@ require(pamr)
 
 data(train.Exp)
 
-calculate_distance <- select_distance(distancetype = "pearson", usegpu = FALSE)
+calculate_distance <- select_distance(distancetype = "pearson", 
+usegpu = FALSE)
 Dist <- calculate_distance(train.Exp)
 k <- 4
 Pam <- cluster_algorithm(Dist, k)

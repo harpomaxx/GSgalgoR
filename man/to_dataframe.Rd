@@ -10,14 +10,21 @@ to_dataframe(output)
 \item{output}{An object of class \code{galgo.Obj}}
 }
 \value{
-The current function restructurates a \code{galgo.Obj} to a more easy to understand an use \code{data.frame}. The output \code{data.frame} has \eqn{ m x n} dimensions, were the rownames (\eqn{m}) are the solutions obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm. The columns has the following structure:
+The current function restructurates a \code{galgo.Obj} to a more 
+easy to understand an use \code{data.frame}. The output \code{data.frame} 
+has \eqn{ m x n} dimensions, were the rownames (\eqn{m}) are the solutions 
+obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm. 
+The columns has the following structure:
 \enumerate{
-\item \strong{Genes}: The features included in each solution in form of a \code{list}
+\item \strong{Genes}: The features included in each solution in form 
+of a \code{list}
 \item \strong{k}: The number of partitions found in that solution
-\item \strong{SC.Fit}: The average silhouette coefficient of the partitions found
+\item \strong{SC.Fit}: The average silhouette coefficient of the 
+partitions found
 \item \strong{Surv.Fit}: The survival fitness value
 \item \strong{Rank}: The solution rank
-\item \strong{CrowD}: The solution crowding distance related to the rest of the solutions
+\item \strong{CrowD}: The solution crowding distance related to the 
+rest of the solutions
 }
 }
 \description{
@@ -41,7 +48,8 @@ expression <- expression[sample(1:nrow(expression), 100), ]
 expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 5, population = 15, prob_matrix = expression, OS = OS)
+output <- galgoR::galgo(generations = 5, population = 15, 
+prob_matrix = expression, OS = OS)
 outputDF <- to_dataframe(output)
 outputList <- to_list(output)
 }
