@@ -1,27 +1,27 @@
-#' @title GalgoR:  A bi-objective evolutionary meta-heuristic to identify 
-#' robust transcriptomic classifiers associated with patient outcome across 
+#' @title GalgoR:  A bi-objective evolutionary meta-heuristic to identify
+#' robust transcriptomic classifiers associated with patient outcome across
 #' multiple cancer types.
 #'
-#' @description This package was developed to provide a simple to use set of 
-#' functions to use the galgo algorithm. A multi-objective optimization 
-#' algorithm for disease subtype discovery based on a non-dominated sorting 
+#' @description This package was developed to provide a simple to use set of
+#' functions to use the galgo algorithm. A multi-objective optimization
+#' algorithm for disease subtype discovery based on a non-dominated sorting
 #' genetic algorithm.
 #'
-#' Different statistical and machine learning approaches have long been 
-#' used to identify gene expression/molecular signatures with prognostic 
-#' potential in different cancer types. Nonetheless, the molecular 
-#' classification of tumors is a difficult task and the results obtained 
-#' via the current statistical methods are highly dependent on the features 
-#' analyzed, the number of possible tumor subtypes under consideration, and 
-#' the underlying assumptions made about the data. In addition, some cancer 
-#' types are still lacking prognostic signatures and/or of subtype-specific 
+#' Different statistical and machine learning approaches have long been
+#' used to identify gene expression/molecular signatures with prognostic
+#' potential in different cancer types. Nonetheless, the molecular
+#' classification of tumors is a difficult task and the results obtained
+#' via the current statistical methods are highly dependent on the features
+#' analyzed, the number of possible tumor subtypes under consideration, and
+#' the underlying assumptions made about the data. In addition, some cancer
+#' types are still lacking prognostic signatures and/or of subtype-specific
 #' predictors which are continually needed to further dissect tumor biology.
-#' In order to identify specific molecular phenotypes to develop precision 
-#' medicine strategies we present Galgo: A multi-objective optimization 
-#' process based on a non-dominated sorting genetic algorithm that combines 
-#' the advantages of clustering methods for grouping heterogeneous omics data 
-#' and the exploratory properties of genetic algorithms (GA) in order to find 
-#' features that maximize the survival difference between subtypes while 
+#' In order to identify specific molecular phenotypes to develop precision
+#' medicine strategies we present Galgo: A multi-objective optimization
+#' process based on a non-dominated sorting genetic algorithm that combines
+#' the advantages of clustering methods for grouping heterogeneous omics data
+#' and the exploratory properties of genetic algorithms (GA) in order to find
+#' features that maximize the survival difference between subtypes while
 #' keeping high cluster consistency.
 #'
 #' \tabular{ll}{ Package: \tab galgoR\cr Type: \tab Package\cr
@@ -31,7 +31,7 @@
 #' }
 #'
 #'
-#' @note Ideally, \pkg{galgoR} works faster using \code{gpuR} by C. Determan 
+#' @note Ideally, \pkg{galgoR} works faster using \code{gpuR} by C. Determan
 #' that provides wrappers functions for OpenCL
 #' programming.
 #' @author
@@ -96,13 +96,13 @@ RMST <- function(ft, rmean) {
 #' @param y a vector of outcomes
 #' @param k an integer for the number of folds
 #' @param list logical - should the results be in a list (TRUE) or in a vector
-#' @param returnTrain a logical. When true, the values returned are the sample 
-#' positions correspondingto the data used during training. This argument only 
+#' @param returnTrain a logical. When true, the values returned are the sample
+#' positions correspondingto the data used during training. This argument only
 #' works in conjunction withlist = TRUE
 #'
-#' @return if list=TRUE, it returns a list with k elements were each element 
-#' of the list has the position of the outcomes included in said fold, 
-#' if list=FALSE the function returns a vector where each outcome is assigned 
+#' @return if list=TRUE, it returns a list with k elements were each element
+#' of the list has the position of the outcomes included in said fold,
+#' if list=FALSE the function returns a vector where each outcome is assigned
 #' to a given fold from 1 to k
 #'
 #' @examples
@@ -112,21 +112,12 @@ RMST <- function(ft, rmean) {
 #' @noRd
 #'
 create_folds <-
-    function(y,
-            k = 10,
-            list = TRUE,
-            returnTrain = FALSE) {
-        if (class(y)[1] == "Surv") {
-            y <- y[, "time"]
-        }
+    function(y, k = 10, list = TRUE, returnTrain = FALSE) {
+        if (class(y)[1] == "Surv") {y <- y[, "time"]}
         if (is.numeric(y)) {
             cuts <- floor(length(y) / k)
-            if (cuts < 2) {
-                cuts <- 2
-            }
-            if (cuts > 5) {
-                cuts <- 5
-            }
+            if (cuts < 2) {cuts <- 2}
+            if (cuts > 5) {cuts <- 5}
             breaks <-
                 unique(stats::quantile(y, probs = seq(0, 1, length = cuts)))
             y <- cut(y, breaks, include.lowest = TRUE)
@@ -147,9 +138,9 @@ create_folds <-
                         sample(seqVector)
                 }
                 else {
-                    foldVector[which(y == names(numInClass)[i])] <- 
+                    foldVector[which(y == names(numInClass)[i])] <-
                         sample(seq_len(k), size = numInClass[i]
-                    )
+                        )
                 }
             }
         }
@@ -159,13 +150,10 @@ create_folds <-
         if (list) {
             out <- split(seq(along = y), foldVector)
             names(out) <-
-                paste("Fold", gsub(" ", "0", format(seq(along = out))),
-                    sep = ""
-                )
+                paste("Fold", gsub(" ", "0", format(seq(along = out))),sep = "")
             if (returnTrain) {
-                out <- lapply(out, function(data, y) {
-                    y[-data]
-                }, y = seq(along = y))
+                out <- lapply(out, function(data, y) {y[-data]},
+                              y = seq(along = y))
             }
         }
         else {
@@ -174,14 +162,13 @@ create_folds <-
         out
     }
 
-
 #' Harmonic mean
 #'
-#' The harmonic mean can be expressed as the reciprocal of the arithmetic 
-#' mean of the reciprocals of a given set of observations.  
-#' Since the harmonic mean of a list of numbers tends strongly toward 
-#' the least elements of the list, it tends (compared to the arithmetic mean) 
-#' to mitigate the impact of large outliers and aggravate the impact 
+#' The harmonic mean can be expressed as the reciprocal of the arithmetic
+#' mean of the reciprocals of a given set of observations.
+#' Since the harmonic mean of a list of numbers tends strongly toward
+#' the least elements of the list, it tends (compared to the arithmetic mean)
+#' to mitigate the impact of large outliers and aggravate the impact
 #' of small ones.
 #'
 #' @param a a numeric vector of length > 1
@@ -198,15 +185,15 @@ hmean <- function(a) {
 
 #' Harmonic mean of the distance between consecutive groups
 #'
-#' Implements the harmonic mean of the distance between consecutive 
-#' groups multiplied by the number of comparisons: 
-#' \eqn{consecutive_distance = [n/ (1/x1-x2 + 1/x2-x3 + 1/x3-x4 +...1/xn-1 - xn)] * n-1}
+#' Implements the harmonic mean of the distance between consecutive
+#' groups multiplied by the number of comparisons:
+#' \eqn{consecutive_distance = [n/ (1/x1-x2 + 1/x2-x3 +...1/xn-1 - xn)] * n-1}
 #'
 #' @param x A numeric vector of length > 1
 #'
-#' @return The function computes the harmonic mean of the differences 
-#' between consecutive groups multiplied by the number of comparisons and 
-#' returns a positive number. This function is used inside \code{fitness} 
+#' @return The function computes the harmonic mean of the differences
+#' between consecutive groups multiplied by the number of comparisons and
+#' returns a positive number. This function is used inside \code{fitness}
 #' function.
 #' @noRd
 #' @examples
@@ -226,25 +213,25 @@ consecutive_distance <- function(x) {
 
 
 
-#' Survival fitness function using the Restricted Mean Survival Time (RMST) 
+#' Survival fitness function using the Restricted Mean Survival Time (RMST)
 #' of each group
 #'
-#' Survival fitness function using the Restricted Mean Survival Time (RMST) 
+#' Survival fitness function using the Restricted Mean Survival Time (RMST)
 #' of each group as proposed by \emph{Dehbi & Royston et al. (2017)}.
 #'
-#' @param OS a \code{survival} object with survival data of the patients 
+#' @param OS a \code{survival} object with survival data of the patients
 #' evaluated
 #' @param clustclass a numeric vector with the group label for each patient
-#' @param period a number representing the period of time to evaluate in the 
+#' @param period a number representing the period of time to evaluate in the
 #' RMST calculation
 #'
-#' @return The function computes the Harmonic mean of the differences 
-#' between Restricted Mean Survival Time (RMST) of consecutive survival 
+#' @return The function computes the Harmonic mean of the differences
+#' between Restricted Mean Survival Time (RMST) of consecutive survival
 #' curves multiplied by the number of comparisons.
 #'
-#' @references Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life 
-#' expectancy difference and life expectancy ratio: two measures of treatment 
-#' effects in randomized trials with non-proportional 
+#' @references Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life
+#' expectancy difference and life expectancy ratio: two measures of treatment
+#' effects in randomized trials with non-proportional
 #' hazards BMJ 2017; 357 :j2250 \url{https://www.bmj.com/content/357/bmj.j2250}
 #' @author Martin E Guerrero-Gimenez, \email{mguerrero@mendoza-conicet.gob.ar}
 #' @export
@@ -266,14 +253,14 @@ surv_fitness <- function(OS, clustclass, period) {
     score <- tryCatch(
         {   # This function calculates the RMST (comes from package survival)
             t <-
-                RMST(survival::survfit(OS ~ clustclass), rmean = period) 
-            
+                RMST(survival::survfit(OS ~ clustclass), rmean = period)
+
             consecutive_distance(t)
         },
         error = function(e) {
             return(0)
         }
-    )       # If consecutive_distance cannot be calculated, 
+    )       # If consecutive_distance cannot be calculated,
             #the difference is set to 0 (no difference between curves)
     return(score)
 }
@@ -353,13 +340,13 @@ reord <- function(C, ord) {
 
 #' Survival crossvalidation
 #'
-#' crossvalidation function based on: 
+#' crossvalidation function based on:
 #' https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3105299/
 #' Data is the expression matrix
 #' flds is a list with the indexes to partition the data in n different folds
-#' indv is the solution to test, namely, a binary vector to subset the genes 
+#' indv is the solution to test, namely, a binary vector to subset the genes
 #' to test
-#' The function returns two fitness: fit_1 (the mean silhouette) and 
+#' The function returns two fitness: fit_1 (the mean silhouette) and
 #' fit_2 (the ad-hoc function to estimate the differences between curves)
 
 #' @param Data
@@ -392,16 +379,16 @@ crossvalidation <-
         #hc <- sapply(sub, cluster_algorithm, k = k)
         hc <- lapply(sub, function(x,k)cluster_algorithm(x,k)$cluster, k = k)
         centroids <- mapply(k_centroids, train_a, hc, SIMPLIFY = FALSE)
-        centroids_cor <- mapply(stats::cor, centroids[1], centroids[2:nCV], 
+        centroids_cor <- mapply(stats::cor, centroids[1], centroids[2:nCV],
                                 SIMPLIFY = FALSE)
         cord <- lapply(centroids_cor, alloc2)
         cord <- append(list(as.matrix(seq_len(k), ncol = 1)), cord, 1)
         centroids <- mapply(reord, centroids, cord, SIMPLIFY = FALSE)
-        class_results <- mapply(cluster_classify, test_a, centroids, 
+        class_results <- mapply(cluster_classify, test_a, centroids,
                                 SIMPLIFY = FALSE)
         cluster_class <- unlist(class_results)
         cluster_class <- cluster_class[order(as.vector(unlist(flds)))]
-        fit_silhouette <- mean(cluster::silhouette(cluster_class, 
+        fit_silhouette <- mean(cluster::silhouette(cluster_class,
                                         distance_data)[, 3])
         fit_differences <- surv_fitness(surv_obj, cluster_class, period)
         return(c(fit_silhouette, fit_differences))
@@ -497,31 +484,26 @@ offsprings <- function(X1,
                     population,
                     TournamentSize) {
     # Create empty matrix to add new individuals
-    New <- matrix(NA, ncol = chrom_length, nrow = population) 
+    New <- matrix(NA, ncol = chrom_length, nrow = population)
     # same for cluster chromosome
-    NewK <- matrix(NA, nrow = 1, ncol = population) 
+    NewK <- matrix(NA, nrow = 1, ncol = population)
     # Use tournament selection, to select parents that will give offsprings
-    matingPool <- nsga2R::tournamentSelection(X1, population, TournamentSize) 
-    # Count how many offsprings are still needed to reach 
-    # the original population size
-    count <- 0 
+    matingPool <- nsga2R::tournamentSelection(X1, population, TournamentSize)
+    # Count how many offsprings are still needed to reach population size
+    count <- 0
     while (anyNA(New)) {
         count <- count + 1
         ## a.Select a pair of parent chromosomes from the matingPool
-        Pair <- sample(seq_len(nrow(matingPool)), 2, replace = FALSE) 
+        Pair <- sample(seq_len(nrow(matingPool)), 2, replace = FALSE)
         # multiple point crossingover
-        offsprings <-uniform_crossover(matingPool[Pair[1], 
-                                            seq_len(chrom_length)], 
-                                            matingPool[Pair[2], 
+        offsprings <-uniform_crossover(matingPool[Pair[1],
+                                            seq_len(chrom_length)],
+                                            matingPool[Pair[2],
                                             seq_len(chrom_length)])
         off1 <- offsprings[[1]]
         off2 <- offsprings[[2]]
-        ## c.Mutate the two offsprings at each locus with probability Mp 
-        ## (the mutation probability or mutation rate) and place the resulting 
-        ## chromosomes in the new population. Since the results are sparse 
-        ## strings, cosine similarity is more adequate. Mutation by asymmetric
-        ## mutation: Analysis of an Asymmetric Mutation Operator; Jansen et al.
-        Mp <- cosine_similarity(matingPool[Pair[1], seq_len(chrom_length)], 
+        ## c.Mutate the two offsprings at each locus with probability Mp
+        Mp <- cosine_similarity(matingPool[Pair[1], seq_len(chrom_length)],
                                 matingPool[Pair[2], seq_len(chrom_length)])
         if (sample(c(1, 0), 1, prob = c(Mp, 1 - Mp)) == 1) {
             off1 <- asymetric_mutation(off1)
@@ -561,58 +543,58 @@ penalize <- function(x) {
 
 #' GalgoR main function
 #'
-#' \code{\link[galgoR:galgo]{galgo}} accepts an expression matrix and a 
-#' survival object to find robust gene expression signatures related to a 
+#' \code{\link[galgoR:galgo]{galgo}} accepts an expression matrix and a
+#' survival object to find robust gene expression signatures related to a
 #' given outcome
 #'
-#' @param population  a number indicating the number of solutions in the 
+#' @param population  a number indicating the number of solutions in the
 #' population of solutions that will be evolved
-#' @param generations a number indicating the number of iterations of the 
+#' @param generations a number indicating the number of iterations of the
 #' galgo algorithm
 #' @param nCV number of cross-validation sets
-#' @param usegpu \code{logical} default to \code{FALSE}, set to \code{TRUE} 
-#' if you wish to use gpu computing (\code{gpuR} package must be properly 
+#' @param usegpu \code{logical} default to \code{FALSE}, set to \code{TRUE}
+#' if you wish to use gpu computing (\code{gpuR} package must be properly
 #' installed and loaded)
-#' @param distancetype character, it can be 
-#' \code{'pearson'} (centered pearson), \code{'uncentered'} 
+#' @param distancetype character, it can be
+#' \code{'pearson'} (centered pearson), \code{'uncentered'}
 #' (uncentered pearson), \code{'spearman'} or \code{'euclidean'}
-#' @param TournamentSize a number indicating the size of the tournaments for 
+#' @param TournamentSize a number indicating the size of the tournaments for
 #' the selection procedure
 #' @param period a number indicating the outcome period to evaluate the RMST
-#' @param OS a \code{survival} object (see \code{ \link[survival]{Surv} } 
+#' @param OS a \code{survival} object (see \code{ \link[survival]{Surv} }
 #' function from the \code{\link{survival}} package)
-#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an 
+#' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an
 #' expression matrix with features in rows and samples in columns
-#' @param res_dir a \code{character} string indicating where to save the 
+#' @param res_dir a \code{character} string indicating where to save the
 #' intermediate and final output of the algorithm
-#' @param start_galgo_callback optional callback function for the start 
+#' @param start_galgo_callback optional callback function for the start
 #' of the galgo execution
-#' @param end_galgo_callback optional callback function for the end of the 
+#' @param end_galgo_callback optional callback function for the end of the
 #' galgo execution
 #' @param report_callback optional callback function
-#' @param start_gen_callback optional callback function for the beginning 
+#' @param start_gen_callback optional callback function for the beginning
 #' of the run
 #' @param end_gen_callback optional callback function for the end of the run
-#' @param verbose select the level of information printed during galgo 
+#' @param verbose select the level of information printed during galgo
 #' execution
 #'
-#' @return an object of type \code{'galgo.Obj'} that corresponds to a list 
-#' with the elements \code{$Solutions} and \code{$ParetoFront}. 
-#' \code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number 
+#' @return an object of type \code{'galgo.Obj'} that corresponds to a list
+#' with the elements \code{$Solutions} and \code{$ParetoFront}.
+#' \code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number
 #' of features evaluated and \eqn{l} is the number of solutions obtained.
-#' The submatrix \eqn{l x n} is a binary matrix where each row represents 
+#' The submatrix \eqn{l x n} is a binary matrix where each row represents
 #' the chromosome of an evolved solution from the solution population, where
-#' each feature can be present (1) or absent (0) in the solution. 
-#' Column \eqn{n +1} represent the  \eqn{k} number of clusters for each 
-#' solutions. Column \eqn{n+2} to \eqn{n+5} shows the SC Fitness and 
-#' Survival Fitness values, the solution rank, and the crowding distance of 
+#' each feature can be present (1) or absent (0) in the solution.
+#' Column \eqn{n +1} represent the  \eqn{k} number of clusters for each
+#' solutions. Column \eqn{n+2} to \eqn{n+5} shows the SC Fitness and
+#' Survival Fitness values, the solution rank, and the crowding distance of
 #' the solution in the final pareto front respectively.
-#' For easier interpretation of the \code{'galgo.Obj'}, the output can be 
-#' reshaped using the \code{\link[galgoR:to_list]{to_list}} and 
+#' For easier interpretation of the \code{'galgo.Obj'}, the output can be
+#' reshaped using the \code{\link[galgoR:to_list]{to_list}} and
 #' \code{\link[galgoR:to_dataframe]{to_dataframe}} functions
 #'
 #' @export
-#' 
+#'
 #' @usage galgo (population = 30, generations = 2, nCV = 5,
 #' usegpu = FALSE, distancetype = "pearson", TournamentSize = 2, period = 1825,
 #' OS, prob_matrix, res_dir = "", start_galgo_callback = callback_default,
@@ -642,13 +624,13 @@ penalize <- function(x) {
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15, 
+#' output <- galgoR::galgo(generations = 5, population = 15,
 #' prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
 galgo <- function(population = 30,# Number of individuals to evaluate
                 generations = 2, # Number of generations
-                nCV = 5,# Number of crossvalidations for function 
+                nCV = 5,# Number of crossvalidations for function
                         # "crossvalidation"
                 usegpu = FALSE, # to use gpuR
                 distancetype = "pearson",
@@ -686,7 +668,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
     }
     cluster <-
         # convention to leave 1 core for OS
-        parallel::makeCluster(num_workers - 1) 
+        parallel::makeCluster(num_workers - 1)
     doParallel::registerDoParallel(cluster)
     calculate_distance <- select_distance(distancetype, usegpu)
     # Empty list to save the solutions.
@@ -697,7 +679,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
     # Creating random clusters from 2-10.
     Nclust <- sample(2:10, population, replace = TRUE)
 
-    # Matrix with random TRUE false with uniform distribution, 
+    # Matrix with random TRUE false with uniform distribution,
     # representing solutions to test.
     X <- matrix(NA, nrow = population, ncol = chrom_length)
     for (i in seq_len(population)) {
@@ -737,11 +719,11 @@ galgo <- function(population = 30,# Number of individuals to evaluate
 
 
         # 2.Calculate the fitness f(x) of each chromosome x in the population.
-        # Apply constraints (min 10 genes per solution). 
+        # Apply constraints (min 10 genes per solution).
         # TODO: Check chrom_length parameter
-        Fit1 <- apply(X, 1, mininum_genes, chrom_length = chrom_length) 
-        # Fit1 <- apply(X, 1, mininum_genes) 
-        # Apply constraints (min 10 genes per solution). 
+        Fit1 <- apply(X, 1, mininum_genes, chrom_length = chrom_length)
+        # Fit1 <- apply(X, 1, mininum_genes)
+        # Apply constraints (min 10 genes per solution).
         # TODO: Check chrom_length parameter
         X <- X[Fit1, ]
         message(Fit1)
@@ -763,7 +745,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
             if (requireNamespace("gpuR", quietly = TRUE)) {
                 reqpkgs <- c(reqpkgs, "gpuR")
             } else {
-                message("package gpuR not available in your 
+                message("package gpuR not available in your
                         platform. Fallback to CPU")
             }
         }
@@ -792,13 +774,13 @@ galgo <- function(population = 30,# Number of individuals to evaluate
 
         if (g == 1) {
             PARETO[[g]] <-
-                Fit2    # Saves the fitness of the solutions of the 
+                Fit2    # Saves the fitness of the solutions of the
                         #current generation.
-            # NonDominatedSorting from package nsga2R. -1 
-            # multiplication to alter the sign of the fitness 
+            # NonDominatedSorting from package nsga2R. -1
+            # multiplication to alter the sign of the fitness
             # (function sorts from min to max).
             ranking <-
-                nsga2R::fastNonDominatedSorting(Fit2 * -1) 
+                nsga2R::fastNonDominatedSorting(Fit2 * -1)
             rnkIndex <- integer(n)
             i <- 1
             while (i <= length(ranking)) {
@@ -808,19 +790,19 @@ galgo <- function(population = 30,# Number of individuals to evaluate
             }
             # Data.frame with solution vector, number of clusters and ranking.
             X1 <-
-                cbind(X, k, Fit2, rnkIndex) 
+                cbind(X, k, Fit2, rnkIndex)
             # Range of fitness of the solutions.
             objRange <-
-                apply(Fit2, 2, max) - apply(Fit2, 2, min) 
+                apply(Fit2, 2, max) - apply(Fit2, 2, min)
             # Crowding distance of each front (nsga2R package).
             CrowD <-
-                nsga2R::crowdingDist4frnt(X1, ranking, objRange) 
+                nsga2R::crowdingDist4frnt(X1, ranking, objRange)
             CrowD <- apply(CrowD, 1, sum)
-            # data.frame with solution vector, number of clusters, 
+            # data.frame with solution vector, number of clusters,
             # ranking and crowding distance.
-            
+
             X1 <-
-                cbind(X1, CrowD) 
+                cbind(X1, CrowD)
             # Output for the generation callback
             report_callback(
                 userdir = res_dir,
@@ -847,11 +829,11 @@ galgo <- function(population = 30,# Number of individuals to evaluate
             oldnewfeature <- rbind(Xold, X)
             oldnewNclust <- c(Nclustold, Nclust)
             oldnewK <- oldnewNclust
-            # NonDominatedSorting from package nsga2R. -1 multiplication to 
+            # NonDominatedSorting from package nsga2R. -1 multiplication to
             # alter the sign of the fitness (function sorts from min to max).
             rnkIndex2 <- integer(nrow(oldnew))
             ranking2 <-
-                nsga2R::fastNonDominatedSorting(oldnew * -1) 
+                nsga2R::fastNonDominatedSorting(oldnew * -1)
             i <- 1
             while (i <= length(ranking2)) {
                 # saves the rank of each solution.
@@ -867,22 +849,22 @@ galgo <- function(population = 30,# Number of individuals to evaluate
                 )
             # Range of fitness of the solutions.
             objRange <-
-                apply(oldnew, 2, max) - apply(oldnew, 2, min) 
+                apply(oldnew, 2, max) - apply(oldnew, 2, min)
             # Crowding distance of each front (nsga2R package).
             CrowD <-
-                nsga2R::crowdingDist4frnt(X1, ranking2, objRange) 
+                nsga2R::crowdingDist4frnt(X1, ranking2, objRange)
             CrowD <- apply(CrowD, 1, sum)
-            # data.frame with solution vector, number of clusters, 
+            # data.frame with solution vector, number of clusters,
             # ranking and crowding distance
             X1 <-
                 cbind(X1, CrowD)
             X1 <- X1[X1[, "CrowD"] > 0, ]
-            O <- order(X1[, "rnkIndex"], 
+            O <- order(X1[, "rnkIndex"],
                     X1[, "CrowD"] * -1)[seq_len(population)]
             X1 <- X1[O, ]
             # Saves the fitness of the solutions of the current generation
             PARETO[[g]] <-
-                X1[, (chrom_length + 2):(chrom_length + 3)] 
+                X1[, (chrom_length + 2):(chrom_length + 3)]
             # Output for the generation callback
             report_callback(
                 userdir = res_dir,
