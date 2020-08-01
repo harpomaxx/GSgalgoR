@@ -153,7 +153,7 @@ create_folds <-
                 paste("Fold", gsub(" ", "0", format(seq(along = out))),sep = "")
             if (returnTrain) {
                 out <- lapply(out, function(data, y) {y[-data]},
-                              y = seq(along = y))
+                            y = seq(along = y))
             }
         }
         else {

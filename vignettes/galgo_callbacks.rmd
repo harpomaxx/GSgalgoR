@@ -95,8 +95,7 @@ the resulting output is provided in the two snippets below.
 
 
 A reduced version of the 
-[TRANSBIG](bioconductor.org/packages/release/data/experiment/html/breastCancerTRANSBIG.html) 
-dataset is used to setup the expression and clinical information 
+[TRANSBIG](bioconductor.org/packages/release/data/experiment/html/breastCancerTRANSBIG.html) dataset is used to setup the expression and clinical information 
 required for the `galgo()` function.
 
 ```{r}
@@ -224,8 +223,8 @@ galgoR::galgo(
     OS = OS,
     start_galgo_callback = galgoR::callback_default, 
     end_galgo_callback = my_save_pop_callback,
-    report_callback = my_callback,      # call `my_callback()` 
-                                        # in the middle of each generation/iteration.
+    report_callback = my_callback,  # call `my_callback()` 
+                                    # in the middle of each generation/iteration
     start_gen_callback = galgoR::callback_default,
     end_gen_callback = galgoR::callback_default
     ) 
