@@ -1,5 +1,5 @@
 
-galgoR <img src="inst/extdata/GalgoR.png" align="right" alt="" width="120" />
+GalgoR <img src="inst/extdata/GalgoR.png" align="right" alt="" width="120" />
 ================================================================================
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/harpomaxx/galgoR-package/branch/master/graph/badge.svg)](https://codecov.io/gh/harpomaxx/galgoR-package?branch=master)![GitHub release (latest by date)](https://img.shields.io/github/v/release/harpomaxx/galgoR-package)
@@ -7,6 +7,13 @@ galgoR <img src="inst/extdata/GalgoR.png" align="right" alt="" width="120" />
 <!-- badges: end -->
 
 A multi-objective optimization algorithm for disease subtype discovery based on a  non-dominated sorting genetic algorithm. The galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic algorithms for feature selection and optimal number of clusters determination to find features that maximize the survival difference between subtypes while keeping cluster consistency high.
+
+## Citation
+
+GalgoR is covered in [*Galgo: A bi-objective evolutionary meta-heuristic identifies robust transcriptomic classifiers associated with patient outcome across multiple cancer types*](https://academic.oup.com/bioinformatics/article-abstract/doi/10.1093/bioinformatics/btaa619/5868557).
+
+Please cite:
+> M E Guerrero-Gimenez, J M Fernandez-Muñoz, B J Lang, K M Holton, D R Ciocca, C A Catania, F C M Zoppino, Galgo: A bi-objective evolutionary meta-heuristic identifies robust transcriptomic classifiers associated with patient outcome across multiple cancer types, Bioinformatics, , btaa619, https://doi.org/10.1093/bioinformatics/btaa619
 
 ## Documentation
 
@@ -71,4 +78,5 @@ For installing [gpuR](https://github.com/cdeterman/gpuR/wiki) and enable GPU com
 
 # References
 
-* Guerrero-Gimenez ME, Catania C, Fernandez-Muñoz JM et al. Genetic algorithm for the searching cancer subtypes with clinical significance according to their gene expression patterns , 9(ISCB Comm J 2018):664 (poster) (doi: 10.7490/f1000research.1118020.1)
+* Guerrero-Gimenez ME, Fernandez-Muñoz JM, Lang BJ, Holton KM, Ciocca DR, Catania CA, Zoppino FCM. Galgo: A bi-objective evolutionary meta-heuristic identifies robust transcriptomic classifiers associated with patient outcome across multiple cancer types, Bioinformatics, 2020, btaa619, https://doi.org/10.1093/bioinformatics/btaa619
+* Guerrero-Gimenez ME, Catania CA, Fernandez-Muñoz JM et al. Genetic algorithm for the searching cancer subtypes with clinical significance according to their gene expression patterns , 9(ISCB Comm J 2018):664 (poster) (doi: 10.7490/f1000research.1118020.1)
