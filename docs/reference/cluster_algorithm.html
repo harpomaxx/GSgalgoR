@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper function to perform partition around medioids (PAM) for GalgoR — cluster_algorithm • galgoR</title>
+<title>Wrapper function to perform partition around medioids (PAM) for GalgoR — cluster_algorithm • GSgalgoR</title>
 
 
 <!-- jquery -->
@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Wrapper function to perform partition around medioids (PAM) for GalgoR — cluster_algorithm" />
-<meta property="og:description" content="In galgoR, the partition around medioids (PAM) algorithm is the default clustering process used under the evolutionary process." />
+<meta property="og:description" content="In GSgalgoR, the partition around medioids (PAM) algorithm is the 
+default clustering process used under the evolutionary process." />
 
 
 
@@ -71,8 +72,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <a class="navbar-link" href="../index.html">GSgalgoR</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -85,7 +86,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/galgoR.html">Get started</a>
+  <a href="../articles/GSgalgoR.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -98,14 +99,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
+      <a href="../articles/GSgalgoR_callbacks.html">GSgalgoR Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/harpomaxx/galgoR-package/">
+  <a href="https://github.com/harpomaxx/GSgalgoR/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -124,12 +125,13 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Wrapper function to perform partition around medioids (PAM) for GalgoR</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgoR-package/blob/master/R/cluster-classifier.R'><code>R/cluster-classifier.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/GSgalgoR/blob/master/R/cluster-classifier.R'><code>R/cluster-classifier.R</code></a></small>
     <div class="hidden name"><code>cluster_algorithm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>In <code>galgoR</code>, the partition around medioids (PAM) algorithm is the default clustering process used under the evolutionary process.</p>
+    <p>In <code>GSgalgoR</code>, the partition around medioids (PAM) algorithm is the 
+default clustering process used under the evolutionary process.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cluster_algorithm</span>(<span class='no'>c</span>, <span class='no'>k</span>)</pre>
@@ -143,22 +145,34 @@
     </tr>
     <tr>
       <th>k</th>
-      <td><p>positive integer specifying the number of clusters, less than the number of observations</p></td>
+      <td><p>positive integer specifying the number of clusters, less than the 
+number of observations</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a <code>'list'</code> with the value <code>'$cluster'</code> which contains the cluster assignment of each of the samples evaluated</p>
+    <p>Returns a <code>'list'</code> with the value <code>'$cluster'</code> which 
+contains the cluster assignment of each of the samples evaluated</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function runs the <code><a href='https://rdrr.io/pkg/cluster/man/pam.html'>pam</a></code> function of the <code>'cluster'</code> package with options <code>cluster.only =TRUE</code>, <code>diss = TRUE</code>, <code>do.swap=TRUE</code>, <code>keep.diss=FALSE</code>, <code>keep.data = FALSE</code>, <code>pamonce= 2</code></p>
+    <p>The function runs the <code><a href='https://rdrr.io/pkg/cluster/man/pam.html'>pam</a></code> function of 
+the <code>'cluster'</code> package 
+with options <code>cluster.only =TRUE</code>, 
+<code>diss = TRUE</code>, <code>do.swap=TRUE</code>, 
+<code>keep.diss=FALSE</code>, <code>keep.data = FALSE</code>, 
+<code>pamonce= 2</code></p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
 <ul>
-<li><p>Reynolds, A., Richards, G., de la Iglesia, B. and Rayward-Smith, V. (1992) Clustering rules: A comparison of partitioning and hierarchical clustering algorithms; Journal of Mathematical Modelling and Algorithms 5, 475--504. 10.1007/s10852-005-9022-1.</p></li>
-<li><p>Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, (<a href='https://arxiv.org/abs/1810.05691'>https://arxiv.org/abs/1810.05691</a>).</p></li>
+<li><p>Reynolds, A., Richards, G., de la Iglesia, B. and Rayward-Smith, V. 
+(1992) Clustering rules: A comparison of partitioning and 
+hierarchical clustering algorithms; Journal of Mathematical Modelling and 
+Algorithms 5, 475--504. 10.1007/s10852-005-9022-1.</p></li>
+<li><p>Erich Schubert and Peter J. Rousseeuw (2019) Faster k-Medoids 
+Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint, 
+(<a href='https://arxiv.org/abs/1810.05691'>https://arxiv.org/abs/1810.05691</a>).</p></li>
 </ul>
 
 
@@ -168,7 +182,8 @@
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>pamr</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>train.Exp</span>)
 
-<span class='no'>calculate_distance</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>select_distance</a></span>(<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>Dist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>calculate_distance</a></span>(<span class='no'>train.Exp</span>)
+<span class='no'>calculate_distance</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>select_distance</a></span>(<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
+<span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>Dist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>calculate_distance</a></span>(<span class='no'>train.Exp</span>)
 <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
 <span class='no'>Pam</span> <span class='kw'>&lt;-</span> <span class='fu'>cluster_algorithm</span>(<span class='no'>Dist</span>, <span class='no'>k</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>Pam</span>$<span class='no'>cluster</span>)</div><div class='output co'>#&gt; 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function for calculating the cosine similarity — cosine_similarity • galgoR</title>
+<title>Function for calculating the cosine similarity — cosine_similarity • GSgalgoR</title>
 
 
 <!-- jquery -->
@@ -40,10 +40,19 @@
 
 
 <meta property="og:title" content="Function for calculating the cosine similarity — cosine_similarity" />
-<meta property="og:description" content="Cosine similarity is a metric of similarity between two non-zero vectors of an inner product space that measures the cosine of the angle between them.
-Two vectors with the same orientation have a cosine similarity of 1, if they are perpendicular they have a similarity of 0, and if they have opposing directions the cosine similarity is -1, independent of their magnitude.
-One advantage of cosine similarity is its low-complexity, especially for sparse vectors where only the non-zero dimensions need to be considered, which is a common case in galgoR.
-Other names of cosine similarity are Otuska-Orchini similarity when it is applied to binary data, which is the case for galgoR, where individual solutions represented as strings of 0 and 1 are compared with this metric." />
+<meta property="og:description" content="Cosine similarity is a metric of similarity between two non-zero vectors 
+of an inner product space that measures the cosine of the angle between them.
+Two vectors with the same orientation have a cosine similarity of 1, if 
+they are perpendicular they have a similarity of 0, and if they have 
+opposing directions the cosine similarity is -1, independent of their
+magnitude.
+One advantage of cosine similarity is its low-complexity, especially for 
+sparse vectors where only the non-zero dimensions need to be considered, 
+which is a common case in GSgalgoR.
+Other names of cosine similarity are Otuska-Orchini similarity when it is 
+applied to binary data, which is the case for GSgalgoR, where 
+individual solutions represented as strings of 0 and 1 are compared with t
+his metric." />
 
 
 
@@ -74,8 +83,8 @@ Other names of cosine similarity are Otuska-Orchini similarity when it is applie
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <a class="navbar-link" href="../index.html">GSgalgoR</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -88,7 +97,7 @@ Other names of cosine similarity are Otuska-Orchini similarity when it is applie
   </a>
 </li>
 <li>
-  <a href="../articles/galgoR.html">Get started</a>
+  <a href="../articles/GSgalgoR.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -101,14 +110,14 @@ Other names of cosine similarity are Otuska-Orchini similarity when it is applie
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
+      <a href="../articles/GSgalgoR_callbacks.html">GSgalgoR Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/harpomaxx/galgoR-package/">
+  <a href="https://github.com/harpomaxx/GSgalgoR/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -127,15 +136,24 @@ Other names of cosine similarity are Otuska-Orchini similarity when it is applie
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Function for calculating the cosine similarity</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgoR-package/blob/master/R/cluster-classifier.R'><code>R/cluster-classifier.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/GSgalgoR/blob/master/R/cluster-classifier.R'><code>R/cluster-classifier.R</code></a></small>
     <div class="hidden name"><code>cosine_similarity.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Cosine similarity is a metric of similarity between two non-zero vectors of an inner product space that measures the cosine of the angle between them.
-Two vectors with the same orientation have a cosine similarity of 1, if they are perpendicular they have a similarity of 0, and if they have opposing directions the cosine similarity is -1, independent of their magnitude.
-One advantage of cosine similarity is its low-complexity, especially for sparse vectors where only the non-zero dimensions need to be considered, which is a common case in <code>galgoR</code>.
-Other names of cosine similarity are Otuska-Orchini similarity when it is applied to binary data, which is the case for <code>galgoR</code>, where individual solutions represented as strings of 0 and 1 are compared with this metric.</p>
+    <p>Cosine similarity is a metric of similarity between two non-zero vectors 
+of an inner product space that measures the cosine of the angle between them.
+Two vectors with the same orientation have a cosine similarity of 1, if 
+they are perpendicular they have a similarity of 0, and if they have 
+opposing directions the cosine similarity is -1, independent of their
+magnitude.
+One advantage of cosine similarity is its low-complexity, especially for 
+sparse vectors where only the non-zero dimensions need to be considered, 
+which is a common case in <code>GSgalgoR</code>.
+Other names of cosine similarity are Otuska-Orchini similarity when it is 
+applied to binary data, which is the case for <code>GSgalgoR</code>, where 
+individual solutions represented as strings of 0 and 1 are compared with t
+his metric.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cosine_similarity</span>(<span class='no'>a</span>, <span class='no'>b</span>)</pre>
@@ -145,13 +163,18 @@ Other names of cosine similarity are Otuska-Orchini similarity when it is applie
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>a, b</th>
-      <td><p>A string of numbers with equal length. It can also be two binary strings of 0's and 1's</p></td>
+      <td><p>A string of numbers with equal length. It can also be two 
+binary strings of 0's and 1's</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>In practice, the function can return numeric values from -1 to 1 according the vector orientations, where a cosine similarity of 1 implies same orientation of the vectors while -1 imply vector of oposing directions. In the binary application, values range from 0 to 1, where 0 are totally discordant vectors while 1 are identical binary vectors.</p>
+    <p>In practice, the function can return numeric values from -1 to 1 
+according the vector orientations, where a cosine similarity of 1 implies 
+same orientation of the vectors while -1 imply vector of opposing directions.
+In the binary application, values range from 0 to 1, where 0 are totally 
+discordant vectors while 1 are identical binary vectors.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>solution1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)

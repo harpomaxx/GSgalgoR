@@ -6,7 +6,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Distance to centroid classifier function — cluster_classify • GSgalgoR</title>
+<title>GalgoR:  A bi-objective evolutionary meta-heuristic to identify
+robust transcriptomic classifiers associated with patient outcome across
+multiple cancer types. — GSgalgoR-package • GSgalgoR</title>
 
 
 <!-- jquery -->
@@ -39,10 +41,41 @@
 
 
 
-<meta property="og:title" content="Distance to centroid classifier function — cluster_classify" />
-<meta property="og:description" content="Given an \(n x m\) matrix of centroids, where \(m\) are the prototypic 
-centroids with \(n\) features, classify new samples according to the 
-distance to the centroids." />
+<meta property="og:title" content="GalgoR:  A bi-objective evolutionary meta-heuristic to identify
+robust transcriptomic classifiers associated with patient outcome across
+multiple cancer types. — GSgalgoR-package" />
+<meta property="og:description" content="This package was developed to provide a simple to use set of
+functions to use the galgo algorithm. A multi-objective optimization
+algorithm for disease subtype discovery based on a non-dominated sorting
+genetic algorithm.
+Different statistical and machine learning approaches have long been
+used to identify gene expression/molecular signatures with prognostic
+potential in different cancer types. Nonetheless, the molecular
+classification of tumors is a difficult task and the results obtained
+via the current statistical methods are highly dependent on the features
+analyzed, the number of possible tumor subtypes under consideration, and
+the underlying assumptions made about the data. In addition, some cancer
+types are still lacking prognostic signatures and/or of subtype-specific
+predictors which are continually needed to further dissect tumor biology.
+In order to identify specific molecular phenotypes to develop precision
+medicine strategies we present Galgo: A multi-objective optimization
+process based on a non-dominated sorting genetic algorithm that combines
+the advantages of clustering methods for grouping heterogeneous omics data
+and the exploratory properties of genetic algorithms (GA) in order to find
+features that maximize the survival difference between subtypes while
+keeping high cluster consistency.
+
+Package:GSgalgoR
+Type:Package
+Version:1.0.0
+Date:2020-05-06
+License:GPL-3
+Copyright:(c) 2020 Martin E. Guerrero-Gimenez.
+URL:https://www.github.com/harpomaxx/galgo
+LazyLoad:yes
+
+
+" />
 
 
 
@@ -125,71 +158,56 @@ distance to the centroids." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Distance to centroid classifier function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/GSgalgoR/blob/master/R/cluster-classifier.R'><code>R/cluster-classifier.R</code></a></small>
-    <div class="hidden name"><code>cluster_classify.Rd</code></div>
+    <h1>GalgoR:  A bi-objective evolutionary meta-heuristic to identify
+robust transcriptomic classifiers associated with patient outcome across
+multiple cancer types.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/GSgalgoR/blob/master/R/galgo.R'><code>R/galgo.R</code></a></small>
+    <div class="hidden name"><code>GSgalgoR-package.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Given an \(n x m\) matrix of centroids, where \(m\) are the prototypic 
-centroids with \(n\) features, classify new samples according to the 
-distance to the centroids.</p>
+    <p>This package was developed to provide a simple to use set of
+functions to use the galgo algorithm. A multi-objective optimization
+algorithm for disease subtype discovery based on a non-dominated sorting
+genetic algorithm.</p>
+<p>Different statistical and machine learning approaches have long been
+used to identify gene expression/molecular signatures with prognostic
+potential in different cancer types. Nonetheless, the molecular
+classification of tumors is a difficult task and the results obtained
+via the current statistical methods are highly dependent on the features
+analyzed, the number of possible tumor subtypes under consideration, and
+the underlying assumptions made about the data. In addition, some cancer
+types are still lacking prognostic signatures and/or of subtype-specific
+predictors which are continually needed to further dissect tumor biology.
+In order to identify specific molecular phenotypes to develop precision
+medicine strategies we present Galgo: A multi-objective optimization
+process based on a non-dominated sorting genetic algorithm that combines
+the advantages of clustering methods for grouping heterogeneous omics data
+and the exploratory properties of genetic algorithms (GA) in order to find
+features that maximize the survival difference between subtypes while
+keeping high cluster consistency.</p>
+<table class='table'>
+<tr><td>Package:</td><td>GSgalgoR</td></tr>
+<tr><td>Type:</td><td>Package</td></tr>
+<tr><td>Version:</td><td>1.0.0</td></tr>
+<tr><td>Date:</td><td>2020-05-06</td></tr>
+<tr><td>License:</td><td>GPL-3</td></tr>
+<tr><td>Copyright:</td><td>(c) 2020 Martin E. Guerrero-Gimenez.</td></tr>
+<tr><td>URL:</td><td><a href='https://www.github.com/harpomaxx/galgo'>https://www.github.com/harpomaxx/galgo</a></td></tr>
+<tr><td>LazyLoad:</td><td>yes</td></tr>
+</table>
+
+
     </div>
 
-    <pre class="usage"><span class='fu'>cluster_classify</span>(<span class='no'>data</span>, <span class='no'>centroid</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>data</th>
-      <td><p>a <code>data.frame</code> of dimensions \(n x p\) with the samples 
-to classify, were \(n\) are the same set of features as in the centroids</p></td>
-    </tr>
-    <tr>
-      <th>centroid</th>
-      <td><p>a <code>data.frame</code> of dimensions \(n x m\), where each 
-column is a prototypic centroid to classify the samples</p></td>
-    </tr>
-    <tr>
-      <th>method</th>
-      <td><p>Character string indicating which method to use to calculate 
-distance to centroid. Options are <code>"pearson"</code> (default), 
-<code>"kendall"</code>, or <code>"spearman"</code></p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Returns a numeric vector of length \(p\) with the class assigned 
-to each sample according to the shortest distance to centroid</p>
+    <p>Ideally, <span class="pkg">GSgalgoR</span> works faster using <code>gpuR</code> by C. Determan
+that provides wrappers functions for OpenCL
+programming.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># load example dataset</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>iC10TrainingData</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>pamr</span>)
-
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>train.Exp</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>IntClustMemb</span>)
-<span class='no'>TrainData</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>train.Exp</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>IntClustMemb</span>)
-
-<span class='co'># Create prototypic centroids</span>
-<span class='no'>pam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/pamr/man/pamr.train.html'>pamr.train</a></span>(<span class='no'>TrainData</span>)</div><div class='output co'>#&gt; 123456789101112131415161718192021222324252627282930</div><div class='input'><span class='no'>centroids</span> <span class='kw'>&lt;-</span> <span class='no'>pam</span>$<span class='no'>centroids</span>
-
-<span class='no'>Class</span> <span class='kw'>&lt;-</span> <span class='fu'>cluster_classify</span>(<span class='no'>train.Exp</span>, <span class='no'>centroids</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>Class</span>, <span class='no'>IntClustMemb</span>)</div><div class='output co'>#&gt;      IntClustMemb
-#&gt; Class   1   2   3   4   5   6   7   8   9  10
-#&gt;    1   69   0   5   7   1   0   4   0   0   1
-#&gt;    2    0  40   2   2   0   0   0   0   1   0
-#&gt;    3    1   1 114   5   1   1   0  10   0   1
-#&gt;    4    0   1   2 110   1   0   1   0   0   0
-#&gt;    5    1   1   0   8  84   0   1   0   1   0
-#&gt;    6    0   0   1   3   0  42   3   0   0   0
-#&gt;    7    1   1   0  12   0   0  95   2   3   0
-#&gt;    8    0   0  27   0   1   0   1 129   1   0
-#&gt;    9    0   1   2   5   2   1   3   1  56   0
-#&gt;    10   4   0   3  15   4   0   1   1   5  94</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Survival fitness function using the Restricted Mean Survival Time (RMST) of each group — surv_fitness • galgoR</title>
+<title>Survival fitness function using the Restricted Mean Survival Time (RMST)
+of each group — surv_fitness • GSgalgoR</title>
 
 
 <!-- jquery -->
@@ -39,8 +40,10 @@
 
 
 
-<meta property="og:title" content="Survival fitness function using the Restricted Mean Survival Time (RMST) of each group — surv_fitness" />
-<meta property="og:description" content="Survival fitness function using the Restricted Mean Survival Time (RMST) of each group as proposed by Dehbi &amp;amp; Royston et al. (2017)." />
+<meta property="og:title" content="Survival fitness function using the Restricted Mean Survival Time (RMST)
+of each group — surv_fitness" />
+<meta property="og:description" content="Survival fitness function using the Restricted Mean Survival Time (RMST)
+of each group as proposed by Dehbi &amp;amp; Royston et al. (2017)." />
 
 
 
@@ -71,8 +74,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <a class="navbar-link" href="../index.html">GSgalgoR</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -85,7 +88,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/galgoR.html">Get started</a>
+  <a href="../articles/GSgalgoR.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -98,14 +101,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
+      <a href="../articles/GSgalgoR_callbacks.html">GSgalgoR Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/harpomaxx/galgoR-package/">
+  <a href="https://github.com/harpomaxx/GSgalgoR/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -123,13 +126,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Survival fitness function using the Restricted Mean Survival Time (RMST) of each group</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgoR-package/blob/master/R/galgo.R'><code>R/galgo.R</code></a></small>
+    <h1>Survival fitness function using the Restricted Mean Survival Time (RMST)
+of each group</h1>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/GSgalgoR/blob/master/R/galgo.R'><code>R/galgo.R</code></a></small>
     <div class="hidden name"><code>surv_fitness.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Survival fitness function using the Restricted Mean Survival Time (RMST) of each group as proposed by <em>Dehbi &amp; Royston et al. (2017)</em>.</p>
+    <p>Survival fitness function using the Restricted Mean Survival Time (RMST)
+of each group as proposed by <em>Dehbi &amp; Royston et al. (2017)</em>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>surv_fitness</span>(<span class='no'>OS</span>, <span class='no'>clustclass</span>, <span class='no'>period</span>)</pre>
@@ -139,7 +144,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>OS</th>
-      <td><p>a <code>survival</code> object with survival data of the patients evaluated</p></td>
+      <td><p>a <code>survival</code> object with survival data of the patients
+evaluated</p></td>
     </tr>
     <tr>
       <th>clustclass</th>
@@ -147,16 +153,22 @@
     </tr>
     <tr>
       <th>period</th>
-      <td><p>a number representing the period of time to evaluate in the RMST calculation</p></td>
+      <td><p>a number representing the period of time to evaluate in the
+RMST calculation</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function computes the Harmonic mean of the differences between Restricted Mean Survival Time (RMST) of consecutive survival curves multiplied by the number of comparisons.</p>
+    <p>The function computes the Harmonic mean of the differences
+between Restricted Mean Survival Time (RMST) of consecutive survival
+curves multiplied by the number of comparisons.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life expectancy difference and life expectancy ratio: two measures of treatment effects in randomized trials with non-proportional hazards BMJ 2017; 357 :j2250 <a href='https://www.bmj.com/content/357/bmj.j2250'>https://www.bmj.com/content/357/bmj.j2250</a></p>
+    <p>Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life
+expectancy difference and life expectancy ratio: two measures of treatment
+effects in randomized trials with non-proportional
+hazards BMJ 2017; 357 :j2250 <a href='https://www.bmj.com/content/357/bmj.j2250'>https://www.bmj.com/content/357/bmj.j2250</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>

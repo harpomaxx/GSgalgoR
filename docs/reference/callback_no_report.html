@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Print minimal information to the user about galgo execution. — callback_no_report • galgoR</title>
+<title>Print minimal information to the user about galgo execution. — callback_no_report • GSgalgoR</title>
 
 
 <!-- jquery -->
@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Print minimal information to the user about galgo execution. — callback_no_report" />
-<meta property="og:description" content="The main idea behind this callback function is to provide some feedback to the user about galgo execution. 
+<meta property="og:description" content="The main idea behind this callback function is to provide some feedback to 
+the user about galgo execution.
 No other relevant information is shown" />
 
 
@@ -72,8 +73,8 @@ No other relevant information is shown" />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <a class="navbar-link" href="../index.html">GSgalgoR</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -86,7 +87,7 @@ No other relevant information is shown" />
   </a>
 </li>
 <li>
-  <a href="../articles/galgoR.html">Get started</a>
+  <a href="../articles/GSgalgoR.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -99,14 +100,14 @@ No other relevant information is shown" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
+      <a href="../articles/GSgalgoR_callbacks.html">GSgalgoR Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/harpomaxx/galgoR-package/">
+  <a href="https://github.com/harpomaxx/GSgalgoR/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -125,17 +126,18 @@ No other relevant information is shown" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Print minimal information to the user about galgo execution.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/galgoR-package/blob/master/R/callback-functions.R'><code>R/callback-functions.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/harpomaxx/GSgalgoR/blob/master/R/callback-functions.R'><code>R/callback-functions.R</code></a></small>
     <div class="hidden name"><code>callback_no_report.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The main idea behind this callback function is to provide some feedback to the user about galgo execution. 
+    <p>The main idea behind this callback function is to provide some feedback to 
+the user about galgo execution.
 No other relevant information is shown</p>
     </div>
 
-    <pre class="usage"><span class='fu'>callback_no_report</span>(<span class='kw'>userdir</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>generation</span>, <span class='no'>pop_pool</span>, <span class='no'>pareto</span>,
-  <span class='no'>prob_matrix</span>, <span class='no'>current_time</span>)</pre>
+    <pre class="usage"><span class='fu'>callback_no_report</span> (<span class='kw'>userdir</span> <span class='kw'>=</span> <span class='st'>""</span>,<span class='no'>generation</span>, <span class='no'>pop_pool</span>,
+<span class='no'>pareto</span>, <span class='no'>prob_matrix</span>, <span class='no'>current_time</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,19 +148,23 @@ No other relevant information is shown</p>
     </tr>
     <tr>
       <th>generation</th>
-      <td><p>a number indicating the number of iterations of the galgo algorithm</p></td>
+      <td><p>a number indicating the number of iterations of the galgo 
+algorithm</p></td>
     </tr>
     <tr>
       <th>pop_pool</th>
-      <td><p>a <code>data.frame</code> with the solution vectors, number of clusters and their ranking.</p></td>
+      <td><p>a <code>data.frame</code> with the solution vectors, number of 
+clusters and their ranking.</p></td>
     </tr>
     <tr>
       <th>pareto</th>
-      <td><p>the solutions found by Galgo across all generations in the solution space</p></td>
+      <td><p>the solutions found by Galgo across all generations in the 
+solution space</p></td>
     </tr>
     <tr>
       <th>prob_matrix</th>
-      <td><p>a <code>matrix</code> or <code>data.frame</code>. Must be an expression matrix with features in rows and samples in columns</p></td>
+      <td><p>a <code>matrix</code> or <code>data.frame</code>. Must be an 
+expression matrix with features in rows and samples in columns</p></td>
     </tr>
     <tr>
       <th>current_time</th>
@@ -166,6 +172,9 @@ No other relevant information is shown</p>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Nothing.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># load example dataset</span>
@@ -184,12 +193,12 @@ No other relevant information is shown</p>
 
 <span class='co'># Run galgo with no_report_callback assigned to the report_callback</span>
 <span class='co'># hook-point</span>
-<span class='kw pkg'>galgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+<span class='kw pkg'>GSgalgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>5</span>,
 <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>15</span>,
 <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>,
 <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>,
 <span class='kw'>report_callback</span> <span class='kw'>=</span> <span class='no'>callback_no_report</span>
-)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; ....*</div><div class='output co'>#&gt; An object of class "galgo.Obj"
+)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUEFALSETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>14100</span></div><div class='output co'>#&gt; .</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; .</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; .</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; .</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; *</div><div class='output co'>#&gt; An object of class "galgo.Obj"
 #&gt; Slot "Solutions":
 #&gt;           208276_at 211240_x_at 201006_at 209307_at 215845_x_at 201596_x_at
 #&gt; result.15         1           1         0         1           1           0

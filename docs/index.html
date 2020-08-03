@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>An Evolutionary Framework for the Identification and Study of Prognostic Gene Expression Signatures in Cancer • galgoR</title>
+<title>An Evolutionary Framework for the Identification and Study of Prognostic Gene Expression Signatures in Cancer • GSgalgoR</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -33,8 +33,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">galgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <a class="navbar-link" href="index.html">GSgalgoR</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -47,7 +47,7 @@
   </a>
 </li>
 <li>
-  <a href="articles/galgoR.html">Get started</a>
+  <a href="articles/GSgalgoR.html">Get started</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
@@ -60,14 +60,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/galgo_callbacks.html">Galgo Callbacks Mechanism</a>
+      <a href="articles/GSgalgoR_callbacks.html">GSgalgoR Callbacks Mechanism</a>
     </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/harpomaxx/galgoR-package/">
+  <a href="https://github.com/harpomaxx/GSgalgoR/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -85,39 +85,48 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="galgor-" class="section level1">
+<div id="gsgalgor-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#galgor-" class="anchor"></a>galgoR <img src="inst/extdata/GalgoR.png" align="right" alt="" width="120">
+<a href="#gsgalgor-" class="anchor"></a>GSgalgoR <img src="inst/extdata/GSgalgoR.png" align="right" alt="" width="120">
 </h1></div>
 <!-- badges: start -->
-<!-- badges: end -->
+
 <p>A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm. The galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic algorithms for feature selection and optimal number of clusters determination to find features that maximize the survival difference between subtypes while keeping cluster consistency high.</p>
+<div id="citation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#citation" class="anchor"></a>Citation</h2>
+<p>GSgalgoR is covered in <a href="https://academic.oup.com/bioinformatics/article-abstract/doi/10.1093/bioinformatics/btaa619/5868557"><em>Galgo: A bi-objective evolutionary meta-heuristic identifies robust transcriptomic classifiers associated with patient outcome across multiple cancer types</em></a>.</p>
+<p>Please cite:</p>
+<blockquote>
+<p>M E Guerrero-Gimenez, J M Fernandez-Muñoz, B J Lang, K M Holton, D R Ciocca, C A Catania, F C M Zoppino, Galgo: A bi-objective evolutionary meta-heuristic identifies robust transcriptomic classifiers associated with patient outcome across multiple cancer types, Bioinformatics, , btaa619, <a href="https://doi.org/10.1093/bioinformatics/btaa619" class="uri">https://doi.org/10.1093/bioinformatics/btaa619</a></p>
+</blockquote>
+</div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
-<p>The full documentation of the package is available at <a href="https://harpomaxx.github.io/galgoR-package/" class="uri">https://harpomaxx.github.io/galgoR-package/</a></p>
+<p>The full documentation of the package is available at <a href="https://harpomaxx.github.io/GSgalgoR/" class="uri">https://harpomaxx.github.io/GSgalgoR/</a></p>
 </div>
 <div id="package-overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#package-overview" class="anchor"></a>Package Overview</h2>
-<p>The <strong>galgoR</strong> package implements the Galgo algorithm as well as several helper functions for analyzing the results.</p>
+<p>The <strong>GSgalgoR</strong> package implements the Galgo algorithm as well as several helper functions for analyzing the results.</p>
 <p>In order to standardize the structure of genomic data, the package uses the <code>ExpressionSet</code> structure from the <strong>Biobase</strong> package. The <code>ExpressionSet</code> objects can hold different types of data in a single structure, but in this case, we opted for using a simplified format to facilitate the example to those not familiar with the <em>Biobase</em> package. The <em>ExpressionSet</em> objects are formed mainly by a matrix of genetic expression, usually derived from microarray or RNAseq experiments and the Phenotypic data containing information on the samples (condition, status, treatment, survival, and other covariates). Additionally, some annotations and feature Meta-data can also be included in the objects.</p>
-<p>A complete and detailed explanation about galgo’s workflow is provided in the <a href="https://harpomaxx.github.io/galgoR-package/articles/galgoR.html">example Vignette</a></p>
-<p>The package provides a simple but robust callback mechanism to adapt the algorithm to adapt the algorithm to different needs (<a href="https://harpomaxx.github.io/galgoR-package/articles/galgo_callbacks.html">check the Vignette</a>). Additionally, <strong>galgoR</strong> provides the Wilkerson’s centroids to perform lung adenocarcinoma sample classification.</p>
+<p>A complete and detailed explanation about galgo’s workflow is provided in the <a href="https://harpomaxx.github.io/GSgalgoR/articles/GSgalgoR.html">example Vignette</a></p>
+<p>The package provides a simple but robust callback mechanism to adapt the algorithm to different needs (<a href="https://harpomaxx.github.io/GSgalgoR/articles/GSgalgoR_callbacks.html">check the Vignette</a>). Additionally, <strong>GSgalgoR</strong> provides the Wilkerson’s centroids to perform lung adenocarcinoma sample classification.</p>
 </div>
 </div>
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
-<p>You can install the released version of galgoR using devtools with:</p>
-<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("https://github.com/harpomaxx/galgoR-package")
-library(galgoR)</a></code></pre>
+<p>You can install the released version of GSgalgoR using devtools with:</p>
+<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("https://github.com/harpomaxx/GSgalgoR")
+library(GSgalgoR)</a></code></pre>
 <div id="executing-galgo" class="section level2">
 <h2 class="hasAnchor">
 <a href="#executing-galgo" class="anchor"></a>Executing Galgo</h2>
 <p>The main function in the package is <code><a href="reference/galgo.html">galgo()</a></code>. The function accepts an expression matrix in the previous detailed section and a survival object <strong>survival</strong> package) to find robust gene expression signatures related to a given outcome. Besides, <code><a href="reference/galgo.html">galgo()</a></code> accepts several other parameters such as the number of solutions in the population, the number of generations the algorithm must evolve, and the distance function used for the clustering algorithm, among others. The parameters facilitate the setup according to the characteristics of the analysis to be performed. All the Galgo evolutionary process is executed using a multicore architecture. Alternatively, to speed up the process, it is possible to execute Galgo on Graphics processor units (GPU).</p>
-<p>For a rapid testing of galgoR two reduced lung adenocarcinoma gene expression datasets ([TCGA] and [GSE68465]) can be downloaded from <a href="https://bit.ly/luad_data_galgo" class="uri">https://bit.ly/luad_data_galgo</a> <em>(md5sum 900a74e7c4fdd0dcb7a3f2ddb44bb680)</em> .</p>
-<p>An example of a typical galgoR workflow is shown below:</p>
+<p>For a rapid testing of GSgalgoR two reduced lung adenocarcinoma gene expression datasets ([TCGA] and [GSE68465]) can be downloaded from <a href="https://bit.ly/luad_data_galgo" class="uri">https://bit.ly/luad_data_galgo</a> <em>(md5sum 900a74e7c4fdd0dcb7a3f2ddb44bb680)</em> .</p>
+<p>An example of a typical GSgalgoR workflow is shown below:</p>
 <pre><code><a href="https://rdrr.io/r/utils/download.file.html">download.file("https://bit.ly/luad_data_galgo",destfile="/tmp/luad.rds")
 rna_luad &lt;- readRDS("/tmp/luad.rds")
 
@@ -125,14 +134,14 @@ prm &lt;- rna_luad$TCGA$expression_matrix
 clinical &lt;-rna_luad$TCGA$pheno_data
 OS &lt;- survival::Surv(time=clinical$time,event=clinical$status)
 
-output&lt;-galgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=OS, ,verbose = 2,usegpu = F)</a></code></pre>
-<p>An example of the results obtained by Galgo in the TCGA dataset. The first plot shows the Pareto front obtained by <em>Galgo</em> in terms of the Survival (Surv.Fit) and the cohesiveness (SC.Fit) fitness functions. On the second plots shows the different survival subtypes found by the algorithm.</p>
+output&lt;-GSgalgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=OS, ,verbose = 2,usegpu = F)</a></code></pre>
+<p>An example of the results obtained by Galgo in the TCGA dataset. The first plot shows the Pareto front obtained by <em>GSgalgoR</em> in terms of the Survival (Surv.Fit) and the cohesiveness (SC.Fit) fitness functions. On the second plots shows the different survival subtypes found by the algorithm.</p>
 <p><img src="./inst/extdata/images/pareto2.jpg"><img src="./inst/extdata/images/TCGA_galgo.jpg"></p>
 </div>
 <div id="gpu-support" class="section level2">
 <h2 class="hasAnchor">
 <a href="#gpu-support" class="anchor"></a>GPU support</h2>
-<p>Galgo is able to fasten its execution using GPU computing utilizing the <a href="https://cran.r-project.org/package=gpuR" title="gpuR R package">gpuR package</a> . Before installing <a href="https://cran.r-project.org/package=gpuR" title="gpuR R package">gpuR</a>, the opencl backend should be configured.</p>
+<p>GSgalgoR is able to fasten its execution using GPU computing utilizing the <a href="https://cran.r-project.org/package=gpuR" title="gpuR R package">gpuR package</a> . Before installing <a href="https://cran.r-project.org/package=gpuR" title="gpuR R package">gpuR</a>, the opencl backend should be configured.</p>
 <p>In linux systems install latest nvidia cuda drivers and the opencl backend.</p>
 <pre><code>       apt-get install nvidia-418 nvidia-opencl-icd-418 libcuda1-418
        apt-get install opencl-headers  ocl-icd-opencl-dev
@@ -144,7 +153,9 @@ output&lt;-galgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
 <ul>
-<li>Guerrero-Gimenez ME, Catania C, Fernandez-Muñoz JM et al. Genetic algorithm for the searching cancer subtypes with clinical significance according to their gene expression patterns , 9(ISCB Comm J 2018):664 (poster) (doi: 10.7490/f1000research.1118020.1)</li>
+<li>Guerrero-Gimenez ME, Fernandez-Muñoz JM, Lang BJ, Holton KM, Ciocca DR, Catania CA, Zoppino FCM. Galgo: A bi-objective evolutionary meta-heuristic identifies robust transcriptomic classifiers associated with patient outcome across multiple cancer types, Bioinformatics, 2020, btaa619, <a href="https://doi.org/10.1093/bioinformatics/btaa619" class="uri">https://doi.org/10.1093/bioinformatics/btaa619</a>
+</li>
+<li>Guerrero-Gimenez ME, Catania CA, Fernandez-Muñoz JM et al. Genetic algorithm for the searching cancer subtypes with clinical significance according to their gene expression patterns , 9(ISCB Comm J 2018):664 (poster) (doi: 10.7490/f1000research.1118020.1)</li>
 </ul>
 </div>
 
@@ -154,9 +165,9 @@ output&lt;-galgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/harpomaxx/galgoR-package/">https://​github.com/​harpomaxx/​galgoR-package/​</a>
+<li>Browse source code at <br><a href="https://github.com/harpomaxx/GSgalgoR/">https://​github.com/​harpomaxx/​GSgalgoR/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/harpomaxx/galgoR-package/issues">https://​github.com/​harpomaxx/​galgoR-package/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/harpomaxx/GSgalgoR/issues">https://​github.com/​harpomaxx/​GSgalgoR/​issues</a>
 </li>
 </ul>
 </div>
@@ -176,7 +187,14 @@ output&lt;-galgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://codecov.io/gh/harpomaxx/GSgalgoR?branch=master"><img src="https://codecov.io/gh/harpomaxx/GSgalgoR/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://travis-ci.org/harpomaxx/GSgalgoR"><img src="https://travis-ci.org/harpomaxx/GSgalgoR.svg?branch=master" alt="Travis build status"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
