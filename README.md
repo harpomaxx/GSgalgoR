@@ -54,7 +54,8 @@ prm <- rna_luad$TCGA$expression_matrix
 clinical <-rna_luad$TCGA$pheno_data
 OS <- survival::Surv(time=clinical$time,event=clinical$status)
 
-output<-GSgalgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=OS, ,verbose = 2,usegpu = F)
+output<-GSgalgoR::galgo(generations = 5, population = 30,
+       prob_matrix = prm, OS=OS, ,verbose = 2,usegpu = F)
 ```   
 
 An example of the results obtained by Galgo in the TCGA dataset. The first plot shows the Pareto front obtained by *GSgalgoR* in terms of the Survival (Surv.Fit) and the cohesiveness (SC.Fit) fitness functions. On the second plots shows the different survival subtypes found by the algorithm.
