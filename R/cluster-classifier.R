@@ -40,7 +40,7 @@ cluster_classify <- function(data, centroid, method = "pearson") {
 
 #' Wrapper function to perform partition around medioids (PAM) for GalgoR
 #'
-#' In \code{galgoR}, the partition around medioids (PAM) algorithm is the 
+#' In \code{GSgalgoR}, the partition around medioids (PAM) algorithm is the 
 #' default clustering process used under the evolutionary process.
 #'
 #' @param c a dissimilarity matrix object of type \code{'dist'}
@@ -104,9 +104,9 @@ cluster_algorithm <- function(c, k) {
 #' magnitude.
 #' One advantage of cosine similarity is its low-complexity, especially for 
 #' sparse vectors where only the non-zero dimensions need to be considered, 
-#' which is a common case in \code{galgoR}.
+#' which is a common case in \code{GSgalgoR}.
 #' Other names of cosine similarity are Otuska-Orchini similarity when it is 
-#' applied to binary data, which is the case for \code{galgoR}, where 
+#' applied to binary data, which is the case for \code{GSgalgoR}, where 
 #' individual solutions represented as strings of 0 and 1 are compared with t
 #' his metric.
 #'

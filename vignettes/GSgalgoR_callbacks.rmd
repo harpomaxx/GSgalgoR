@@ -1,9 +1,9 @@
 ---
-title: "Galgo Callbacks Mechanism"
+title: "GSgalgoR Callbacks Mechanism"
 output: 
     BiocStyle::html_document
 vignette: >
-    %\VignetteIndexEntry{Galgo Callbacks Mechanism}
+    %\VignetteIndexEntry{GSgalgoR Callbacks Mechanism}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
@@ -17,20 +17,21 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-The galgoR package provides a practical but straightforward callback mechanism 
-for adapting different Galgo execution sections to final user needs. The Galgo 
-callbacks mechanism enables adding custom functions to change the Galgo behavior
-by including minor modification to Galgo's workflow. A common application of 
-the callback mechanism is to implement personalized reports, saving partial 
-information during the evolution process or compute the execution time.
+The GSgalgoR package provides a practical but straightforward callback mechanism
+for adapting different `galgo()` execution sections to final user needs. The 
+GSgalgoR callbacks mechanism enables adding custom functions to change the 
+`galgo()` function behavior by including minor modification to galgo's workflow.
+A common application of the callback mechanism is to implement personalized 
+reports, saving partial information during the evolution process or compute the 
+execution time.
 
 There are five possible  points where the user can hook its own code inside
-Galgo execution process.
+`galgo()` execution process.
 
-* At the beginning of the Galgo execution process. (i.e. when Galgo is about 
-to  start.)
-* At the end of the Galgo execution process. (i.e. when Galgo is about to 
-finish. )
+* At the beginning of the `galgo()` execution process. (i.e. when `galgo()` 
+is about to  start.)
+* At the end of the `galgo()` execution process. (i.e. when `galgo()` is about 
+to finish. )
 * At the beginning of the evolution process. (i.e. at the beginning of each 
 generation/iteration. )
 * At the end of the evolution process. 
@@ -43,8 +44,8 @@ with the *_callback* suffix in the `galgo()` function.
 
 ```{r eval=FALSE }
 galgo(...,
-    start_galgo_callback = callback_default,# Galgo is about to start.
-    end_galgo_callback = callback_default,  # Galgo is about to finish.
+    start_galgo_callback = callback_default,# `galgo()` is about to start.
+    end_galgo_callback = callback_default,  # `galgo()` is about to finish.
     start_gen_callback = callback_default, # At the beginning of each generation
     end_gen_callback = callback_default,    # At the end of each generation
     report_callback = callback_default,     # In the middle of the generation,
@@ -63,7 +64,7 @@ into local filesystem.
 -`generation`: the number ("integer") of the current generation/iteration.
 -`pop_pool`: the data.frame containing the resulting solutions for current 
 iteration. 
--`pareto`: the solutions found by Galgo accross all generations in the 
+-`pareto`: the solutions found by `galgo()` accross all generations in the 
 solution space
 -`prob_matrix`: the expression set ("matrix) where  features are rows and 
 samples distributed in  columns.
@@ -73,7 +74,7 @@ The following callback function example prints the generation number and
 current time  every two iterations
 
 ```{r}
-library(galgoR)
+library(GSgalgoR)
 
 my_callback <-
     function(userdir = "",
@@ -95,7 +96,8 @@ the resulting output is provided in the two snippets below.
 
 
 A reduced version of the 
-[TRANSBIG](bioconductor.org/packages/release/data/experiment/html/breastCancerTRANSBIG.html) dataset is used to setup the expression and clinical information 
+[TRANSBIG](bioconductor.org/packages/release/data/experiment/html/breastCancerTRANSBIG.html) 
+dataset is used to setup the expression and clinical information 
 required for the `galgo()` function.
 
 ```{r}
@@ -117,16 +119,16 @@ Then, the `galgo()` function is invoked and the recently defined function
 
 ```{r}
 # Running galgo
-galgoR::galgo(generations = 6, 
+GSgalgoR::galgo(generations = 6, 
             population = 15, 
             prob_matrix = expression, 
             OS = OS,
-    start_galgo_callback = galgoR::callback_default, 
-    end_galgo_callback = galgoR::callback_default,
+    start_galgo_callback = GSgalgoR::callback_default, 
+    end_galgo_callback = GSgalgoR::callback_default,
     report_callback = my_callback,      # call `my_callback()` in the mile 
                                         # of each generation/iteration.
-    start_gen_callback = galgoR::callback_default,
-    end_gen_callback = galgoR::callback_default) 
+    start_gen_callback = GSgalgoR::callback_default,
+    end_gen_callback = GSgalgoR::callback_default) 
 
 ```
 
@@ -166,16 +168,16 @@ solution obtained by galgo will be saved in a file.
 
 ```{r}
 # Running galgo
-galgoR::galgo(
+GSgalgoR::galgo(
     generations = 6, 
     population = 15, 
     prob_matrix = expression, 
     OS = OS,
-    start_galgo_callback = galgoR::callback_default, 
-    end_galgo_callback = galgoR::callback_default,   
+    start_galgo_callback = GSgalgoR::callback_default, 
+    end_galgo_callback = GSgalgoR::callback_default,   
     report_callback = my_callback,# call `my_callback()` 
                                 #  in the middle of each generation/iteration.
-    start_gen_callback = galgoR::callback_default,
+    start_gen_callback = GSgalgoR::callback_default,
     end_gen_callback = my_save_pop_callback # call `my_save_pop_callback()` 
                                             # at the end of each 
                                             #   generation/iteration
@@ -183,9 +185,9 @@ galgoR::galgo(
 ```
 
 
-# Callbacks implemented in GalgoR
+# Callbacks implemented in GSgalgoR
 
-By default, Galgo implements four callback functions
+By default, GSfalgoR implements four callback functions
 
 `callback_default()` a simple callback that does nothing at all. It is just 
 used for setting the default behavior of some of the hook-points 
@@ -216,17 +218,17 @@ and the function will not returning any value.
 
 ```{r}
 # Running galgo
-galgoR::galgo(
+GSgalgoR::galgo(
     generations = 6, 
     population = 15, 
     prob_matrix = expression, 
     OS = OS,
-    start_galgo_callback = galgoR::callback_default, 
+    start_galgo_callback = GSgalgoR::callback_default, 
     end_galgo_callback = my_save_pop_callback,
     report_callback = my_callback,  # call `my_callback()` 
                                     # in the middle of each generation/iteration
-    start_gen_callback = galgoR::callback_default,
-    end_gen_callback = galgoR::callback_default
+    start_gen_callback = GSgalgoR::callback_default,
+    end_gen_callback = GSgalgoR::callback_default
     ) 
 
 ```
@@ -236,7 +238,7 @@ For preserving the return behavior of the `galgo()` function,
 An example of such situation is shown below:
 
 ```{r eval=FALSE}
-library(galgoR)
+library(GSgalgoR)
 
 another_callback <-
     function(userdir = "",

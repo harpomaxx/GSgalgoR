@@ -1,5 +1,5 @@
 ---
-title: "GalgoR user Guide"
+title: "GSgalgoR user Guide"
 author:
 - affiliation:
   - Laboratory of Oncology,
@@ -22,12 +22,12 @@ author:
     Mendoza, Argentina.
   email: 'harpo@ingenieria.uncuyo.edu.ar'
   name: Carlos A. Catania
-  package: galgoR
+  package: GSgalgoR
 date: "`r Sys.Date()`"
 output: 
     BiocStyle::html_document
 vignette: >
-    %\VignetteIndexEntry{GalgoR user Guide}
+    %\VignetteIndexEntry{GSgalgoR user Guide}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
     
@@ -68,7 +68,7 @@ ability of a given signature to consistently distinguish patients with different
 clinical outcomes. This gives rise to a set of optimal solutions, also known as
 Pareto-optimal solutions. To overcome these issues, we combined the advantages
 of clustering methods for grouping heterogeneous omics data and the search
-properties of genetic algorithms in galgoR: A flexible yet robust
+properties of genetic algorithms in GSgalgoR: A flexible yet robust
 multi-objective meta-heuristic for disease subtype discovery based on an elitist
 non-dominated sorting genetic algorithm (NSGA-II), driven by the underlying
 premise of maximizing survival differences between groups while getting high
@@ -76,7 +76,7 @@ consistency and robustness of the clusters obtained.
 
 # Algorithm
 
-In the galgoR package, the NSGA-II framework was used for finding multiple
+In the GSgalgoR package, the NSGA-II framework was used for finding multiple
 Pareto-optimal solutions to classify patients according to their gene expression
 patterns. Basically, NSGA-II starts with a population of competing individuals
 which are evaluated under a set of fitness functions that estimate the survival
@@ -96,9 +96,9 @@ process again.
 
 To install galgoR package, start R and enter:
 ```{r install, eval=FALSE}
-devtools::install_github("https://github.com/harpomaxx/galgoR-package")
+devtools::install_github("https://github.com/harpomaxx/GSgalgoR")
 
-library(galgoR)
+library(GSgalgoR)
 ```
 
 ## Examples datasets
@@ -114,12 +114,12 @@ experiments. - Phenotypic data, where we find information on the samples
 objects can also contain Annotations and feature Meta-data.
 
 
-To start testing galgoR, we will use two Breast Cancer datasets. Namely, the
+To start testing GSgalgoR, we will use two Breast Cancer datasets. Namely, the
 [UPP](bioconductor.org/packages/release/data/experiment/html/breastCancerUPP.html)
 and the
 [TRANSBIG](bioconductor.org/packages/release/data/experiment/html/breastCancerTRANSBIG.html)
-datasets. Additionally, we will use PAM50 centroids to perform breas cancer
-sample classification. The datasets can be accesed from the following
+datasets. Additionally, we will use PAM50 centroids to perform breast cancer
+sample classification. The datasets can be accessed from the following
 [Bioconductor](https://bioconductor.org/) packages:
 
 ```{r datasets, eval=FALSE}
@@ -141,7 +141,7 @@ library(breastCancerUPP)
 
 Also, some basic packages are needed to run the example in this vignette 
 ```{r libraries}
-library(galgoR)
+library(GSgalgoR)
 library(Biobase)
 library(genefu)
 library(survival)
@@ -202,7 +202,8 @@ DropDuplicates<- function(eset, map= "Gene.symbol"){
 
     #Drop duplicates
     drop <- NULL
-    Dup <- as.character(unique(fData(eset)[which(duplicated(fData(eset)[,map])),map]))
+    Dup <- as.character(unique(fData(eset)[which(duplicated
+            (fData(eset)[,map])),map]))
     Var <- apply(exprs(eset),1,var)
     for(j in Dup){
         pos <- which(fData(eset)[,map]==j)
@@ -249,12 +250,16 @@ expandProbesets <- function (eset, sep = "///", map="Gene.symbol"){
 ```{r adapted_expression}
 Train=DropDuplicates(Train)
 Train=expandProbesets(Train)
-
-Train <- Train[,!is.na(survival::Surv(time=pData(Train)$t.rfs,event=pData(Train)$e.rfs))] #Drop NAs in survival
+#Drop NAs in survival
+Train <- Train[,!is.na(
+    survival::Surv(time=pData(Train)$t.rfs,event=pData(Train)$e.rfs))] 
 
 Test=DropDuplicates(Test)
 Test=expandProbesets(Test)
-Test <- Test[,!is.na(survival::Surv(time=pData(Test)$t.rfs,event=pData(Test)$e.rfs))] #Drop NAs in survival
+#Drop NAs in survival
+Test <- 
+    Test[,!is.na(survival::Surv(
+        time=pData(Test)$t.rfs,event=pData(Test)$e.rfs))] 
 
 #Determine common probes (Genes)
 Int= intersect(rownames(Train),rownames(Test))
@@ -293,7 +298,8 @@ Test<- Test[reduced_set,]
 ```
 
 ### Rescale expression matrix
-Apply robust linear scaling as proposed in [paper reference](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3283537/#bib61)
+Apply robust linear scaling as proposed in 
+[paper reference](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3283537/#bib61)
 
 ```{r robust_scaling}
 
@@ -345,9 +351,9 @@ selection procedure
 - period: a number indicating the outcome period to evaluate the RMST
 
 ```{r parameters, eval=TRUE}
-# For testing reasons it is set to a low number but ideally should be above 100            
+# For testing reasons it is set to a low number but ideally should be above 100         
 population <- 30 
-# For testing reasons it is set to a low number but ideally should be above 150            
+# For testing reasons it is set to a low number but ideally should be above 150
 generations <-15
 nCV <- 5                      
 distancetype <- "pearson"     
@@ -359,7 +365,7 @@ period <- 3650
 
 ```{r galgo_run, eval= TRUE,results='hide'}
 set.seed(264)
-output <- galgoR::galgo(generations = generations, 
+output <- GSgalgoR::galgo(generations = generations, 
                         population = population, 
                         prob_matrix = train_expr, 
                         OS = train_surv,
@@ -437,7 +443,7 @@ outputList[["Solution.1"]]
 
 ## to_dataframe() function
 
-The current function restructurates a `galgo.Obj` to a more easy to understand
+The current function restructures a `galgo.Obj` to a more easy to understand
 an use `data.frame`. The output data frame has m x n dimensions, were the
 rownames (m) are the solutions obtained by the galgo algorithm. The columns has
 the following structure:
@@ -445,7 +451,7 @@ the following structure:
 - Genes: The features included in each solution in form of a list
 - k: The number of partitions found in that solution
 - SC.Fit: The average silhouette coefficient of the partitions found
-- Surv.Fit: The survival fitnes value
+- Surv.Fit: The survival fitness value
 - Rank: The solution rank
 - CrowD: The solution crowding distance related to the rest of the solutions
 
@@ -474,9 +480,9 @@ al.](https://pubmed.ncbi.nlm.nih.gov/10963602/) proposed one of the first
 molecular subtype classification according to transcriptomic profiles of the
 tumor, which recapitulates naturally-occurring gene expression patterns that
 encompass different functional pathways and patient outcomes. These subtypes,
-(LumA, LumB, Basal-like, HER2 and Normal-Like) have a strong overap with the
-classical histopathological classification of BRCA tumors and migh affect
-decission making when used to decided chemotherapy in certain cases.
+(LumA, LumB, Basal-like, HER2 and Normal-Like) have a strong overlap with the
+classical histopathological classification of BRCA tumors and might affect
+decision making when used to decided chemotherapy in certain cases.
 
 ## Data Preprocessing
 
@@ -484,9 +490,9 @@ To evaluate Galgo's performance along with PAM50 classification, we will use the
 two already scaled and reduced BRCA gene expression datasets and will compare
 Galgo performance with the widely used intrinsic molecular subtype PAM50
 classification. Galgo performs feature selection by design, so this step is not
-strictly necessary to use galgoR (although feature selection might fasten GalgoR
-runs), nevertheless, appropiate gene expression scaling is critical when runing
-galgoR.
+strictly necessary to use galgoR (although feature selection might fasten 
+GSgalgoRruns), nevertheless, appropriate gene expression scaling is critical 
+when running GSgalgoR.
 
 ## Breast cancer classification
 
@@ -592,7 +598,7 @@ p<-ggsurvplot(tumortotal2,
 print(p)
 ```
 
-## Find breast cancer gene signatures with GalgoR
+## Find breast cancer gene signatures with GSgalgoR
 
 Now we run Galgo to find cohesive and clinically meaningful signatures for BRCA
 using UPP data as training set and TRANSBIG data as test set
@@ -612,7 +618,7 @@ usegpu <- FALSE
 Run Galgo on the training set
 
 ```{r galgo_train, results='hide'}
-output= galgoR::galgo(generations = generations,
+output= GSgalgoR::galgo(generations = generations,
                     population = population,
                     prob_matrix = train_expression,
                     OS=train_surv,
@@ -671,7 +677,9 @@ RESULT<- non_dominated_summary(output=output,
 
 best_sol=NULL
 for(i in unique(RESULT$k)){
-    best_sol=c(best_sol,RESULT[RESULT$k==i,"solution"][which.max(RESULT[RESULT$k==i,"C.Index"])])
+    best_sol=c(
+    best_sol,
+    RESULT[RESULT$k==i,"solution"][which.max(RESULT[RESULT$k==i,"C.Index"])])
 }
 
 print(best_sol)
@@ -693,7 +701,7 @@ CentroidsList <- create_centroids(output,
 We will test the Galgo signatures found with the UPP training set in an
 independent test set (TRANSBIG)
 
-### Classify train and test  set into galgoR subtypes 
+### Classify train and test  set into GSgalgoR subtypes 
 
 ```{r class}
 
@@ -745,7 +753,8 @@ for(i in best_sol){
     predicted_class_train_df <- as.data.frame(predicted_class_train)
     colnames(predicted_class_train_df)<- i
     CI_train<- 
-        concordance.index(predict(Prediction.models[[i]],predicted_class_train_df),
+        concordance.index(predict(Prediction.models[[i]],
+                                predicted_class_train_df),
                                 surv.time=train_surv[,1],
                                 surv.event=train_surv[,2],
                                 outx=FALSE)$c.index
@@ -754,7 +763,8 @@ for(i in best_sol){
     predicted_class_test_df <- as.data.frame(predicted_class_test)
     colnames(predicted_class_test_df)<- i
     CI_test<- 
-        concordance.index(predict(Prediction.models[[i]],predicted_class_test_df),
+        concordance.index(predict(Prediction.models[[i]],
+                                predicted_class_test_df),
                                 surv.time=test_surv[,1],
                                 surv.event=test_surv[,2],
                                 outx=FALSE)$c.index

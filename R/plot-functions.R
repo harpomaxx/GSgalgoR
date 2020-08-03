@@ -27,7 +27,7 @@
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15, 
+#' output <- GSgalgoR::galgo(generations = 5, population = 15, 
 #' prob_matrix = expression, OS = OS)
 #' plot_pareto(output)
 plot_pareto <- function(output) {

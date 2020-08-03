@@ -18,7 +18,7 @@ test_that("a valid galgo.Obj is generated", {
    expression <- t(scale(t(expression)))
   
    # Run galgo
-   output <- galgoR::galgo(generations = 3, population = 5, prob_matrix = expression, OS = OS)
+   output <- GSgalgoR::galgo(generations = 3, population = 5, prob_matrix = expression, OS = OS)
    expect_is(output,"galgo.Obj")
   
 })
@@ -42,7 +42,7 @@ test_that("a valid galgo.Obj is generated using verbose 1", {
    expression <- t(scale(t(expression)))
    
    # Run galgo
-   output <- galgoR::galgo(generations = 3, 
+   output <- GSgalgoR::galgo(generations = 3, 
                            population = 5, 
                            prob_matrix = expression,
                            OS = OS,
@@ -69,7 +69,7 @@ test_that("a valid galgo.Obj is generated using verbose 0", {
    expression <- t(scale(t(expression)))
    
    # Run galgo
-   output <- galgoR::galgo(generations = 3, 
+   output <- GSgalgoR::galgo(generations = 3, 
                            population = 5, 
                            prob_matrix = expression,
                            OS = OS,

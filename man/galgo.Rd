@@ -14,71 +14,71 @@ end_gen_callback = callback_default,
 verbose = 2)
 }
 \arguments{
-\item{population}{a number indicating the number of solutions in the 
+\item{population}{a number indicating the number of solutions in the
 population of solutions that will be evolved}
 
-\item{generations}{a number indicating the number of iterations of the 
+\item{generations}{a number indicating the number of iterations of the
 galgo algorithm}
 
 \item{nCV}{number of cross-validation sets}
 
-\item{usegpu}{\code{logical} default to \code{FALSE}, set to \code{TRUE} 
-if you wish to use gpu computing (\code{gpuR} package must be properly 
+\item{usegpu}{\code{logical} default to \code{FALSE}, set to \code{TRUE}
+if you wish to use gpu computing (\code{gpuR} package must be properly
 installed and loaded)}
 
-\item{distancetype}{character, it can be 
-\code{'pearson'} (centered pearson), \code{'uncentered'} 
+\item{distancetype}{character, it can be
+\code{'pearson'} (centered pearson), \code{'uncentered'}
 (uncentered pearson), \code{'spearman'} or \code{'euclidean'}}
 
-\item{TournamentSize}{a number indicating the size of the tournaments for 
+\item{TournamentSize}{a number indicating the size of the tournaments for
 the selection procedure}
 
 \item{period}{a number indicating the outcome period to evaluate the RMST}
 
-\item{OS}{a \code{survival} object (see \code{ \link[survival]{Surv} } 
+\item{OS}{a \code{survival} object (see \code{ \link[survival]{Surv} }
 function from the \code{\link{survival}} package)}
 
-\item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an 
+\item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an
 expression matrix with features in rows and samples in columns}
 
-\item{res_dir}{a \code{character} string indicating where to save the 
+\item{res_dir}{a \code{character} string indicating where to save the
 intermediate and final output of the algorithm}
 
-\item{start_galgo_callback}{optional callback function for the start 
+\item{start_galgo_callback}{optional callback function for the start
 of the galgo execution}
 
-\item{end_galgo_callback}{optional callback function for the end of the 
+\item{end_galgo_callback}{optional callback function for the end of the
 galgo execution}
 
 \item{report_callback}{optional callback function}
 
-\item{start_gen_callback}{optional callback function for the beginning 
+\item{start_gen_callback}{optional callback function for the beginning
 of the run}
 
 \item{end_gen_callback}{optional callback function for the end of the run}
 
-\item{verbose}{select the level of information printed during galgo 
+\item{verbose}{select the level of information printed during galgo
 execution}
 }
 \value{
-an object of type \code{'galgo.Obj'} that corresponds to a list 
-with the elements \code{$Solutions} and \code{$ParetoFront}. 
-\code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number 
+an object of type \code{'galgo.Obj'} that corresponds to a list
+with the elements \code{$Solutions} and \code{$ParetoFront}.
+\code{$Solutions} is a \eqn{l x (n + 5)} matrix where \eqn{n} is the number
 of features evaluated and \eqn{l} is the number of solutions obtained.
-The submatrix \eqn{l x n} is a binary matrix where each row represents 
+The submatrix \eqn{l x n} is a binary matrix where each row represents
 the chromosome of an evolved solution from the solution population, where
-each feature can be present (1) or absent (0) in the solution. 
-Column \eqn{n +1} represent the  \eqn{k} number of clusters for each 
-solutions. Column \eqn{n+2} to \eqn{n+5} shows the SC Fitness and 
-Survival Fitness values, the solution rank, and the crowding distance of 
+each feature can be present (1) or absent (0) in the solution.
+Column \eqn{n +1} represent the  \eqn{k} number of clusters for each
+solutions. Column \eqn{n+2} to \eqn{n+5} shows the SC Fitness and
+Survival Fitness values, the solution rank, and the crowding distance of
 the solution in the final pareto front respectively.
-For easier interpretation of the \code{'galgo.Obj'}, the output can be 
-reshaped using the \code{\link[galgoR:to_list]{to_list}} and 
-\code{\link[galgoR:to_dataframe]{to_dataframe}} functions
+For easier interpretation of the \code{'galgo.Obj'}, the output can be
+reshaped using the \code{\link[GSgalgoR:to_list]{to_list}} and
+\code{\link[GSgalgoR:to_dataframe]{to_dataframe}} functions
 }
 \description{
-\code{\link[galgoR:galgo]{galgo}} accepts an expression matrix and a 
-survival object to find robust gene expression signatures related to a 
+\code{\link[GSgalgoR:galgo]{galgo}} accepts an expression matrix and a
+survival object to find robust gene expression signatures related to a
 given outcome
 }
 \examples{
@@ -99,7 +99,7 @@ expression <- expression[sample(seq_len(nrow(expression)), 100), ]
 expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 5, population = 15, 
+output <- GSgalgoR::galgo(generations = 5, population = 15,
 prob_matrix = expression, OS = OS)
 outputDF <- to_dataframe(output)
 outputList <- to_list(output)

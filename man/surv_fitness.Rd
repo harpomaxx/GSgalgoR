@@ -2,27 +2,27 @@
 % Please edit documentation in R/galgo.R
 \name{surv_fitness}
 \alias{surv_fitness}
-\title{Survival fitness function using the Restricted Mean Survival Time (RMST) 
+\title{Survival fitness function using the Restricted Mean Survival Time (RMST)
 of each group}
 \usage{
 surv_fitness(OS, clustclass, period)
 }
 \arguments{
-\item{OS}{a \code{survival} object with survival data of the patients 
+\item{OS}{a \code{survival} object with survival data of the patients
 evaluated}
 
 \item{clustclass}{a numeric vector with the group label for each patient}
 
-\item{period}{a number representing the period of time to evaluate in the 
+\item{period}{a number representing the period of time to evaluate in the
 RMST calculation}
 }
 \value{
-The function computes the Harmonic mean of the differences 
-between Restricted Mean Survival Time (RMST) of consecutive survival 
+The function computes the Harmonic mean of the differences
+between Restricted Mean Survival Time (RMST) of consecutive survival
 curves multiplied by the number of comparisons.
 }
 \description{
-Survival fitness function using the Restricted Mean Survival Time (RMST) 
+Survival fitness function using the Restricted Mean Survival Time (RMST)
 of each group as proposed by \emph{Dehbi & Royston et al. (2017)}.
 }
 \examples{
@@ -40,9 +40,9 @@ OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 surv_fitness(OS, clustclass = clinical$grade, period = 3650)
 }
 \references{
-Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life 
-expectancy difference and life expectancy ratio: two measures of treatment 
-effects in randomized trials with non-proportional 
+Dehbi Hakim-Moulay, Royston Patrick, Hackshaw Allan. Life
+expectancy difference and life expectancy ratio: two measures of treatment
+effects in randomized trials with non-proportional
 hazards BMJ 2017; 357 :j2250 \url{https://www.bmj.com/content/357/bmj.j2250}
 }
 \author{

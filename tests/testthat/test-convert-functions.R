@@ -18,7 +18,7 @@ test_that("galgo.Obj can be converted to list", {
   expression <- t(scale(t(expression)))
   
   # Run galgo
-  output <- galgoR::galgo(generations = 2, population = 5, prob_matrix = expression, OS = OS, verbose = 1)
+  output <- GSgalgoR::galgo(generations = 2, population = 5, prob_matrix = expression, OS = OS, verbose = 1)
   output_dataframe <- to_list(output)
   expect_is(output_dataframe,"list")
   
@@ -44,7 +44,7 @@ test_that("galgo.Obj can be converted to data.frame", {
   expression <- t(scale(t(expression)))
   
   # Run galgo
-  output <- galgoR::galgo(generations = 3, population = 5, prob_matrix = expression, OS = OS, verbose = 1 )
+  output <- GSgalgoR::galgo(generations = 3, population = 5, prob_matrix = expression, OS = OS, verbose = 1 )
   output_dataframe <- to_dataframe(output)
   expect_is(output_dataframe,"data.frame")
   

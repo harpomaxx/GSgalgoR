@@ -13,7 +13,7 @@ to_dataframe(output)
 The current function restructurates a \code{galgo.Obj} to a more 
 easy to understand an use \code{data.frame}. The output \code{data.frame} 
 has \eqn{ m x n} dimensions, were the rownames (\eqn{m}) are the solutions 
-obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm. 
+obtained by the \code{\link[GSgalgoR:galgo]{galgo}} algorithm. 
 The columns has the following structure:
 \enumerate{
 \item \strong{Genes}: The features included in each solution in form 
@@ -48,7 +48,7 @@ expression <- expression[sample(1:nrow(expression), 100), ]
 expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 5, population = 15, 
+output <- GSgalgoR::galgo(generations = 5, population = 15, 
 prob_matrix = expression, OS = OS)
 outputDF <- to_dataframe(output)
 outputList <- to_list(output)

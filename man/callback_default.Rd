@@ -48,7 +48,7 @@ expression <- t(scale(t(expression)))
 
 # Run galgo with default_callback assigned to all the hook-points
 
-galgoR::galgo(generations = 5,
+GSgalgoR::galgo(generations = 5,
 population = 15,
 prob_matrix = expression,
 OS = OS,

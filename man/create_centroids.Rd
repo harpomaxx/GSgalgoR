@@ -4,31 +4,31 @@
 \alias{create_centroids}
 \title{Create Centroids}
 \usage{
-create_centroids (output, solution_names, trainset, 
+create_centroids (output, solution_names, trainset,
 distancetype = "pearson", usegpu = FALSE)
 }
 \arguments{
 \item{output}{@param output An object of class \code{galgo.Obj}}
 
-\item{solution_names}{A \code{character} vector with the names of the 
+\item{solution_names}{A \code{character} vector with the names of the
 solutions for which the centroids are to be calculated}
 
-\item{trainset}{a \code{matrix} or \code{data.frame}. Must be an expression 
+\item{trainset}{a \code{matrix} or \code{data.frame}. Must be an expression
 matrix with features in rows and samples in columns}
 
-\item{distancetype}{a \code{character} that can be either \code{'pearson'}, 
+\item{distancetype}{a \code{character} that can be either \code{'pearson'},
 \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}}
 
 \item{usegpu}{\code{logical} \code{TRUE} or \code{FALSE}}
 }
 \value{
-Returns a list with the centroid matrix for each of the solutions 
-in \code{solution_names}, where each column represents the prototypic 
-centroid of a subtype and each row the constituents features of the 
+Returns a list with the centroid matrix for each of the solutions
+in \code{solution_names}, where each column represents the prototypic
+centroid of a subtype and each row the constituents features of the
 solution signature
 }
 \description{
-This functions create the signature centroids estimated from the 
+This functions create the signature centroids estimated from the
 GalgoR output and the expression matrix of the training sets.
 }
 \examples{
@@ -49,7 +49,7 @@ expression <- expression[sample(1:nrow(expression), 100), ]
 expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 5, population = 15, 
+output <- GSgalgoR::galgo(generations = 5, population = 15,
 prob_matrix = expression, OS = OS)
 outputDF <- to_dataframe(output)
 outputList <- to_list(output)
@@ -60,6 +60,6 @@ RESULTS <- non_dominated_summary(
     distancetype = "pearson",
     usegpu = FALSE
 )
-CentroidsList <- create_centroids(output, RESULTS$solution, 
+CentroidsList <- create_centroids(output, RESULTS$solution,
 trainset = expression)
 }

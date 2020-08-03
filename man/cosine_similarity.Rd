@@ -26,9 +26,9 @@ opposing directions the cosine similarity is -1, independent of their
 magnitude.
 One advantage of cosine similarity is its low-complexity, especially for 
 sparse vectors where only the non-zero dimensions need to be considered, 
-which is a common case in \code{galgoR}.
+which is a common case in \code{GSgalgoR}.
 Other names of cosine similarity are Otuska-Orchini similarity when it is 
-applied to binary data, which is the case for \code{galgoR}, where 
+applied to binary data, which is the case for \code{GSgalgoR}, where 
 individual solutions represented as strings of 0 and 1 are compared with t
 his metric.
 }

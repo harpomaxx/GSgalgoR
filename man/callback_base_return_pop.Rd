@@ -49,7 +49,7 @@ expression <- t(scale(t(expression)))
 # Run galgo with base_return_pop_callback assigned to the end_galgo_callback
 # hook-point
 # By using this callback galgo() return a `galgo,Obj` object.
-output <- galgoR::galgo(generations = 5,
+output <- GSgalgoR::galgo(generations = 5,
 population = 15,
 prob_matrix = expression,
 OS = OS,

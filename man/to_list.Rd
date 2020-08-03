@@ -14,7 +14,7 @@ The current function restructurates a \code{galgo.Obj} to a more
 easy to understand an use \code{list}. This output is particularly useful 
 if one wants to select a given solution and use its outputs in a new 
 classifier. The output of type \code{list} has a length equals to the 
-number of solutions obtained by the \code{\link[galgoR:galgo]{galgo}} 
+number of solutions obtained by the \code{\link[GSgalgoR:galgo]{galgo}} 
 algorithm.
 
 Basically this output is a list of lists, where each element of the output 
@@ -55,7 +55,7 @@ expression <- expression[sample(1:nrow(expression), 100), ]
 expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 5, population = 15, 
+output <- GSgalgoR::galgo(generations = 5, population = 15, 
 prob_matrix = expression, OS = OS)
 outputDF <- to_dataframe(output)
 outputList <- to_list(output)

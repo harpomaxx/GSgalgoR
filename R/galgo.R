@@ -24,14 +24,14 @@
 #' features that maximize the survival difference between subtypes while
 #' keeping high cluster consistency.
 #'
-#' \tabular{ll}{ Package: \tab galgoR\cr Type: \tab Package\cr
+#' \tabular{ll}{ Package: \tab GSgalgoR\cr Type: \tab Package\cr
 #' Version: \tab 1.0.0\cr Date: \tab 2020-05-06 \cr License: \tab GPL-3\cr
 #' Copyright: \tab (c) 2020 Martin E. Guerrero-Gimenez.\cr URL: \tab
 #' \url{https://www.github.com/harpomaxx/galgo}\cr LazyLoad: \tab yes\cr
 #' }
 #'
 #'
-#' @note Ideally, \pkg{galgoR} works faster using \code{gpuR} by C. Determan
+#' @note Ideally, \pkg{GSgalgoR} works faster using \code{gpuR} by C. Determan
 #' that provides wrappers functions for OpenCL
 #' programming.
 #' @author
@@ -39,8 +39,8 @@
 #'
 #' Maintainer: Carlos A. Catania \email{harpomaxx@@gmail.com }
 #' @docType package
-#' @name galgoR-package
-#' @aliases galgoR-package galgoR
+#' @name GSgalgoR-package
+#' @aliases GSgalgoR-package GSgalgoR
 #' @importFrom  methods new
 NULL
 
@@ -543,7 +543,7 @@ penalize <- function(x) {
 
 #' GalgoR main function
 #'
-#' \code{\link[galgoR:galgo]{galgo}} accepts an expression matrix and a
+#' \code{\link[GSgalgoR:galgo]{galgo}} accepts an expression matrix and a
 #' survival object to find robust gene expression signatures related to a
 #' given outcome
 #'
@@ -590,8 +590,8 @@ penalize <- function(x) {
 #' Survival Fitness values, the solution rank, and the crowding distance of
 #' the solution in the final pareto front respectively.
 #' For easier interpretation of the \code{'galgo.Obj'}, the output can be
-#' reshaped using the \code{\link[galgoR:to_list]{to_list}} and
-#' \code{\link[galgoR:to_dataframe]{to_dataframe}} functions
+#' reshaped using the \code{\link[GSgalgoR:to_list]{to_list}} and
+#' \code{\link[GSgalgoR:to_dataframe]{to_dataframe}} functions
 #'
 #' @export
 #'
@@ -624,7 +624,7 @@ penalize <- function(x) {
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15,
+#' output <- GSgalgoR::galgo(generations = 5, population = 15,
 #' prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
@@ -739,7 +739,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
         `%dopar%` <- foreach::`%dopar%`
         `%do%` <- foreach::`%do%`
         reqpkgs <-
-            c("cluster", "proxy", "survival", "matchingR", "galgoR")
+            c("cluster", "proxy", "survival", "matchingR", "GSgalgoR")
         # reqpkgs <- c("cluster","cba", "survival", "matchingR")
         if (usegpu == TRUE) {
             if (requireNamespace("gpuR", quietly = TRUE)) {

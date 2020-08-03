@@ -48,7 +48,7 @@ expression <- t(scale(t(expression)))
 
 # Run galgo with base_report_callback assigned to the report_callback
 # hook-point
-galgoR::galgo(generations = 5,
+GSgalgoR::galgo(generations = 5,
 population = 15,
 prob_matrix = expression,
 OS = OS,

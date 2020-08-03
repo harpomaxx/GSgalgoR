@@ -40,7 +40,7 @@
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15,
+#' output <- GSgalgoR::galgo(generations = 5, population = 15,
 #' prob_matrix = expression, OS = OS)
 #' non_dominated_summary(
 #'     output = output,
@@ -139,7 +139,7 @@ non_dominated_summary <-
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15,
+#' output <- GSgalgoR::galgo(generations = 5, population = 15,
 #' prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
@@ -188,7 +188,7 @@ create_centroids <-
 #' the signatures to evaluate, where each column represents the prototypic
 #' centroid of a subtype and each row the constituents features of the
 #' solution signature. The output of
-#' \code{\link[galgoR:create_centroids]{create_centroids}} can be used.
+#' \code{\link[GSgalgoR:create_centroids]{create_centroids}} can be used.
 #' @param distancetype  a \code{character} that can be either
 #' \code{'pearson'} (default), \code{'spearman'} or \code{'kendall'}.
 #'
@@ -215,7 +215,7 @@ create_centroids <-
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15,
+#' output <- GSgalgoR::galgo(generations = 5, population = 15,
 #' prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)

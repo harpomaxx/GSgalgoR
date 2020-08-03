@@ -11,7 +11,7 @@ test_that("classifiy_multiple returns a list", {
     
     expression <- expression[sample(seq_len(nrow(expression)), 100), ]
     expression <- t(scale(t(expression)))
-    output <- galgoR::galgo(generations = 2, population = 3, prob_matrix = expression, OS = OS, 
+    output <- GSgalgoR::galgo(generations = 2, population = 3, prob_matrix = expression, OS = OS, 
                             distancetype = "pearson", verbose = 1)
     summary_results<-non_dominated_summary(output = output,OS = OS,
                                            prob_matrix = expression, 

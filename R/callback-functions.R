@@ -34,7 +34,7 @@
 #' # Run galgo with base_return_pop_callback assigned to the end_galgo_callback
 #' # hook-point
 #' # By using this callback galgo() return a `galgo,Obj` object.
-#' output <- galgoR::galgo(generations = 5,
+#' output <- GSgalgoR::galgo(generations = 5,
 #' population = 15,
 #' prob_matrix = expression,
 #' OS = OS,
@@ -244,7 +244,7 @@ callback_base_save_pop_final <-
 #'
 #' # Run galgo with base_report_callback assigned to the report_callback
 #' # hook-point
-#' galgoR::galgo(generations = 5,
+#' GSgalgoR::galgo(generations = 5,
 #' population = 15,
 #' prob_matrix = expression,
 #' OS = OS,
@@ -307,7 +307,7 @@ callback_base_report <-
 #'
 #' # Run galgo with no_report_callback assigned to the report_callback
 #' # hook-point
-#' galgoR::galgo(generations = 5,
+#' GSgalgoR::galgo(generations = 5,
 #' population = 15,
 #' prob_matrix = expression,
 #' OS = OS,
@@ -365,7 +365,7 @@ callback_no_report <-
 #'
 #' # Run galgo with default_callback assigned to all the hook-points
 #'
-#' galgoR::galgo(generations = 5,
+#' GSgalgoR::galgo(generations = 5,
 #' population = 15,
 #' prob_matrix = expression,
 #' OS = OS,

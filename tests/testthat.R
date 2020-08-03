@@ -1,4 +1,4 @@
 library(testthat)
-library(galgoR)
+library(GSgalgoR)
 
-test_check("galgoR")
+test_check("GSgalgoR")

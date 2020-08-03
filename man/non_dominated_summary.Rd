@@ -10,10 +10,10 @@ distancetype = "pearson", usegpu = FALSE)
 \arguments{
 \item{output}{An object of class \code{galgo.Obj}}
 
-\item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an 
+\item{prob_matrix}{a \code{matrix} or \code{data.frame}. Must be an
 expression matrix with features in rows and samples in columns}
 
-\item{OS}{a \code{survival} object (see \code{\link[survival]{Surv}} 
+\item{OS}{a \code{survival} object (see \code{\link[survival]{Surv}}
 function from the \code{\link{survival}} package)}
 
 \item{distancetype}{a \code{character} that can be either \code{'pearson'},
@@ -22,15 +22,15 @@ function from the \code{\link{survival}} package)}
 \item{usegpu}{\code{logical} \code{TRUE} or \code{FALSE}}
 }
 \value{
-Returns a \code{data.frame} with 5 columns and a number of rows 
+Returns a \code{data.frame} with 5 columns and a number of rows
 equals to the non-dominated solutions found by GalgoR.
-The first column has the name of the non-dominated solutions, the second 
-the number of partitions found for each solution \code{(k)}, the third, 
-the number of genes, the fourth the mean silhouette coefficient of the 
+The first column has the name of the non-dominated solutions, the second
+the number of partitions found for each solution \code{(k)}, the third,
+the number of genes, the fourth the mean silhouette coefficient of the
 solution and the last columns has the estimated C.Index for each one.
 }
 \description{
-The function uses a \code{'galgo.Obj'} as input an the training dataset to 
+The function uses a \code{'galgo.Obj'} as input an the training dataset to
 evaluate the non-dominated solutions found by GalgoR
 }
 \examples{
@@ -51,7 +51,7 @@ expression <- expression[sample(1:nrow(expression), 100), ]
 expression <- t(scale(t(expression)))
 
 # Run galgo
-output <- galgoR::galgo(generations = 5, population = 15, 
+output <- GSgalgoR::galgo(generations = 5, population = 15,
 prob_matrix = expression, OS = OS)
 non_dominated_summary(
     output = output,

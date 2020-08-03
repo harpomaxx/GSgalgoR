@@ -17,7 +17,7 @@ Returns a \code{'list'} with the value \code{'$cluster'} which
 contains the cluster assignment of each of the samples evaluated
 }
 \description{
-In \code{galgoR}, the partition around medioids (PAM) algorithm is the 
+In \code{GSgalgoR}, the partition around medioids (PAM) algorithm is the 
 default clustering process used under the evolutionary process.
 }
 \details{

@@ -8,7 +8,7 @@
 #' easy to understand an use \code{list}. This output is particularly useful 
 #' if one wants to select a given solution and use its outputs in a new 
 #' classifier. The output of type \code{list} has a length equals to the 
-#' number of solutions obtained by the \code{\link[galgoR:galgo]{galgo}} 
+#' number of solutions obtained by the \code{\link[GSgalgoR:galgo]{galgo}} 
 #' algorithm.
 #'
 #' Basically this output is a list of lists, where each element of the output 
@@ -48,7 +48,7 @@
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15, 
+#' output <- GSgalgoR::galgo(generations = 5, population = 15, 
 #' prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)
@@ -84,7 +84,7 @@ to_list <- function(output) {
 #' @return The current function restructurates a \code{galgo.Obj} to a more 
 #' easy to understand an use \code{data.frame}. The output \code{data.frame} 
 #' has \eqn{ m x n} dimensions, were the rownames (\eqn{m}) are the solutions 
-#' obtained by the \code{\link[galgoR:galgo]{galgo}} algorithm. 
+#' obtained by the \code{\link[GSgalgoR:galgo]{galgo}} algorithm. 
 #' The columns has the following structure:
 #' \enumerate{
 #' \item \strong{Genes}: The features included in each solution in form 
@@ -119,7 +119,7 @@ to_list <- function(output) {
 #' expression <- t(scale(t(expression)))
 #'
 #' # Run galgo
-#' output <- galgoR::galgo(generations = 5, population = 15, 
+#' output <- GSgalgoR::galgo(generations = 5, population = 15, 
 #' prob_matrix = expression, OS = OS)
 #' outputDF <- to_dataframe(output)
 #' outputList <- to_list(output)

@@ -10,7 +10,7 @@ test_that("final population is saved in /tmp/", {
   OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
   expression <- expression[sample(seq_len(nrow(expression)), 100), ]
   expression <- t(scale(t(expression)))
-  output <- galgoR::galgo(res_dir = "/tmp/",
+  output <- GSgalgoR::galgo(res_dir = "/tmp/",
                           generations = 3, 
                           population = 3, 
                           prob_matrix = expression, 
@@ -30,7 +30,7 @@ test_that("final population is saved in /tmp/", {
 #  OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
 #  expression <- expression[sample(seq_len(nrow(expression)), 100), ]
 #  expression <- t(scale(t(expression)))
-#  output <- galgoR::galgo(res_dir = "/tmp/",
+#  output <- GSgalgoR::galgo(res_dir = "/tmp/",
 #                          generations = 3, 
 #                          population = 3, 
 #                          prob_matrix = expression, 
