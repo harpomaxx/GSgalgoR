@@ -63,19 +63,6 @@ An example of the results obtained by Galgo in the TCGA dataset. The first plot 
 ![](./inst/extdata/images/pareto2.jpg)
 ![](./inst/extdata/images/TCGA_galgo.jpg)
 
-## GPU support
-
-GSgalgoR is able to fasten its execution using GPU computing utilizing the [gpuR package](https://cran.r-project.org/package=gpuR "gpuR R package") . Before installing [gpuR](https://cran.r-project.org/package=gpuR "gpuR R package"), the opencl backend should be configured. 
-
-In linux systems install latest nvidia cuda drivers and the opencl backend.
-
-```
-       apt-get install nvidia-418 nvidia-opencl-icd-418 libcuda1-418
-       apt-get install opencl-headers  ocl-icd-opencl-dev
-       
-```
-
-For installing [gpuR](https://github.com/cdeterman/gpuR/wiki) and enable GPU computing in different operating systems, follow [gpuR installation guide](https://github.com/cdeterman/gpuR/wiki "gpuR installation guide").
 
 # References
 
