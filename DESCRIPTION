@@ -1,7 +1,7 @@
 Package: GSgalgoR
 Type: Package
 Title: An Evolutionary Framework for the Identification and Study of Prognostic Gene Expression Signatures in Cancer
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: c(person("Martin", "Guerrero", role = c("aut"),
                      email = "mguerrero@conicet-mendoza.gob.ar"),
               person("Carlos", "Catania", role = "cre",email="harpomaxx@gmail.com"))
