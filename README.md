@@ -4,6 +4,7 @@ GSgalgoR <img src="inst/extdata/GSgalgoR.png" align="right" alt="" width="120" /
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/harpomaxx/GSgalgoR/branch/master/graph/badge.svg)](https://codecov.io/gh/harpomaxx/GSgalgoR?branch=master)![GitHub release (latest by date)](https://img.shields.io/github/v/release/harpomaxx/GSgalgoR)
 [![Travis build status](https://travis-ci.org/harpomaxx/GSgalgoR.svg?branch=master)](https://travis-ci.org/harpomaxx/GSgalgoR)
+![DOI](https://zenodo.org/badge/270110167.svg)](https://zenodo.org/badge/latestdoi/270110167)
 <!-- badges: end -->
 
 GSgalgoR is a R package implementing a multi-objective optimization algorithm for disease subtype discovery based on a  non-dominated sorting genetic algorithm (galgo). The galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic algorithms for feature selection and optimal number of clusters determination to find features that maximize the survival difference between subtypes while keeping cluster consistency high.
