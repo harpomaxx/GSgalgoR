@@ -5,7 +5,7 @@
 \title{Create Centroids}
 \usage{
 create_centroids (output, solution_names, trainset,
-distancetype = "pearson", usegpu = FALSE)
+distancetype = "pearson")
 }
 \arguments{
 \item{output}{@param output An object of class \code{galgo.Obj}}
@@ -18,8 +18,6 @@ matrix with features in rows and samples in columns}
 
 \item{distancetype}{a \code{character} that can be either \code{'pearson'},
 \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}}
-
-\item{usegpu}{\code{logical} \code{TRUE} or \code{FALSE}}
 }
 \value{
 Returns a list with the centroid matrix for each of the solutions
@@ -57,8 +55,7 @@ outputList <- to_list(output)
 RESULTS <- non_dominated_summary(
     output = output, OS = OS,
     prob_matrix = expression,
-    distancetype = "pearson",
-    usegpu = FALSE
+    distancetype = "pearson"
 )
 CentroidsList <- create_centroids(output, RESULTS$solution,
 trainset = expression)

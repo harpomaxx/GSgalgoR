@@ -11,7 +11,6 @@
 #' function from the \code{\link{survival}} package)
 #' @param distancetype a \code{character} that can be either \code{'pearson'},
 #'  \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}
-#' @param usegpu \code{logical} \code{TRUE} or \code{FALSE}
 #'
 #' @return Returns a \code{data.frame} with 5 columns and a number of rows
 #' equals to the non-dominated solutions found by GalgoR.
@@ -21,7 +20,7 @@
 #' solution and the last columns has the estimated C.Index for each one.
 #' @export
 #' @usage non_dominated_summary (output, prob_matrix, OS,
-#' distancetype = "pearson", usegpu = FALSE)
+#' distancetype = "pearson")
 #' @examples
 #' # load example dataset
 #' library(breastCancerTRANSBIG)
@@ -46,18 +45,17 @@
 #'     output = output,
 #'     OS = OS,
 #'     prob_matrix = expression,
-#'     distancetype = "pearson",
-#'     usegpu = FALSE
+#'     distancetype = "pearson"
 #' )
 non_dominated_summary <-
-    function(output, prob_matrix, OS, distancetype = "pearson",usegpu = FALSE) {
+    function(output, prob_matrix, OS, distancetype = "pearson") {
         if (!methods::is(output, "galgo.Obj")) {
             stop("object must be of class 'galgo.Obj'")
         }
         output_df <- to_dataframe(output)
         NonDom_solutions <- output_df[output_df$Rank == 1, ]
-        calculate_distance <- select_distance(distancetype = distancetype,
-                                    usegpu = usegpu)
+        calculate_distance <- select_distance(distancetype = distancetype
+                                    )
         RESULT <- data.frame(
             solution = as.character(),
             k = as.numeric(),
@@ -111,7 +109,6 @@ non_dominated_summary <-
 #' matrix with features in rows and samples in columns
 #' @param distancetype a \code{character} that can be either \code{'pearson'},
 #' \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}
-#' @param usegpu \code{logical} \code{TRUE} or \code{FALSE}
 #'
 #' @return Returns a list with the centroid matrix for each of the solutions
 #' in \code{solution_names}, where each column represents the prototypic
@@ -119,7 +116,7 @@ non_dominated_summary <-
 #' solution signature
 #' @export
 #' @usage create_centroids (output, solution_names, trainset,
-#' distancetype = "pearson", usegpu = FALSE)
+#' distancetype = "pearson")
 #'
 #' @examples
 #' # load example dataset
@@ -147,8 +144,7 @@ non_dominated_summary <-
 #' RESULTS <- non_dominated_summary(
 #'     output = output, OS = OS,
 #'     prob_matrix = expression,
-#'     distancetype = "pearson",
-#'     usegpu = FALSE
+#'     distancetype = "pearson"
 #' )
 #' CentroidsList <- create_centroids(output, RESULTS$solution,
 #' trainset = expression)
@@ -156,10 +152,9 @@ create_centroids <-
     function(output,
             solution_names,
             trainset,
-            distancetype = "pearson",
-            usegpu = FALSE) {
+            distancetype = "pearson") {
         calculate_distance <-
-            select_distance(distancetype = distancetype, usegpu = usegpu)
+            select_distance(distancetype = distancetype)
 
         CentroidsList <- list()
         output_df <- to_dataframe(output)
@@ -223,8 +218,7 @@ create_centroids <-
 #' RESULTS <- non_dominated_summary(
 #'     output = output, OS = OS,
 #'     prob_matrix = expression,
-#'     distancetype = "pearson",
-#'     usegpu = FALSE
+#'     distancetype = "pearson"
 #' )
 #' CentroidsList <- create_centroids(output, RESULTS$solution,
 #' trainset = expression)

@@ -53,8 +53,7 @@ outputList <- to_list(output)
 RESULTS <- non_dominated_summary(
     output = output, OS = OS,
     prob_matrix = expression,
-    distancetype = "pearson",
-    usegpu = FALSE
+    distancetype = "pearson"
 )
 CentroidsList <- create_centroids(output, RESULTS$solution,
 trainset = expression)

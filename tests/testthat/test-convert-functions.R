@@ -44,7 +44,7 @@ test_that("galgo.Obj can be converted to data.frame", {
   expression <- t(scale(t(expression)))
   
   # Run galgo
-  output <- GSgalgoR::galgo(generations = 3, population = 5, prob_matrix = expression, OS = OS, verbose = 1 )
+  output <- GSgalgoR::galgo(generations = 2, population = 5, prob_matrix = expression, OS = OS, verbose = 1 )
   output_dataframe <- to_dataframe(output)
   expect_is(output_dataframe,"data.frame")
   

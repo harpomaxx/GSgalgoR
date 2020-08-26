@@ -5,7 +5,7 @@
 \title{Summary of the non dominated solutions}
 \usage{
 non_dominated_summary (output, prob_matrix, OS,
-distancetype = "pearson", usegpu = FALSE)
+distancetype = "pearson")
 }
 \arguments{
 \item{output}{An object of class \code{galgo.Obj}}
@@ -18,8 +18,6 @@ function from the \code{\link{survival}} package)}
 
 \item{distancetype}{a \code{character} that can be either \code{'pearson'},
 \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}}
-
-\item{usegpu}{\code{logical} \code{TRUE} or \code{FALSE}}
 }
 \value{
 Returns a \code{data.frame} with 5 columns and a number of rows
@@ -57,7 +55,6 @@ non_dominated_summary(
     output = output,
     OS = OS,
     prob_matrix = expression,
-    distancetype = "pearson",
-    usegpu = FALSE
+    distancetype = "pearson"
 )
 }

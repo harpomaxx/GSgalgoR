@@ -4,3 +4,6 @@ language: R
 r: bioc-devel
 cache: packages
 bioc_check: true
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'

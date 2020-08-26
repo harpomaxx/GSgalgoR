@@ -2,25 +2,13 @@
 % Please edit documentation in R/distance-functions.R
 \name{calculate_distance}
 \alias{calculate_distance}
-\alias{calculate_distance_pearson_gpu}
-\alias{calculate_distance_spearman_gpu}
-\alias{calculate_distance_uncentered_gpu}
-\alias{calculate_distance_euclidean_gpu}
 \alias{calculate_distance_pearson_cpu}
 \alias{calculate_distance_spearman_cpu}
 \alias{calculate_distance_uncentered_cpu}
 \alias{calculate_distance_euclidean_cpu}
 \alias{select_distance}
-\title{Functions to calculate distance matrices using cpu or gpu computing}
+\title{Functions to calculate distance matrices using cpu computing}
 \usage{
-calculate_distance_pearson_gpu(x)
-
-calculate_distance_spearman_gpu(x)
-
-calculate_distance_uncentered_gpu(x)
-
-calculate_distance_euclidean_gpu(x)
-
 calculate_distance_pearson_cpu(x)
 
 calculate_distance_spearman_cpu(x)
@@ -29,46 +17,32 @@ calculate_distance_uncentered_cpu(x)
 
 calculate_distance_euclidean_cpu(x)
 
-select_distance(distancetype = "pearson", usegpu = TRUE)
+select_distance(distancetype = "pearson")
 }
 \arguments{
 \item{x}{an expression matrix with features as rows and samples as columns}
 
 \item{distancetype}{a \code{character} that can be either \code{'pearson'}, 
 \code{'uncentered'}, \code{'spearman'} or \code{'euclidean'}}
-
-\item{usegpu}{\code{logical} \code{TRUE} or \code{FALSE}}
 }
 \value{
-\code{select_distance(distancetype, usegpu)} assigns global function 
+\code{select_distance(distancetype)} assigns global function 
 calculate_distance according to the parameters specified
-
-\code{calculate_distance_pearson_gpu(x)} returns columnwise pearson 
-distance calculated using the GPU
 
 \code{calculate_distance_pearson_cpu(x)} returns columnwise pearson 
 distance calculated using the CPU
 
-\code{calculate_distance_uncentered_gpu(x)} returns columnwise 
-uncentered pearson distance calculated using the GPU
-
 \code{calculate_distance_uncentered_cpu(x)} returns columnwise 
 uncentered pearson distance calculated using the CPU
 
-\code{calculate_distance_spearman_gpu(x)} returns columnwise 
-spearman distance calculated using the GPU
-
 \code{calculate_distance_spearman_cpu(x)} returns columnwise 
 spearman distance calculated using the CPU
-
-\code{calculate_distance_euclidean_gpu(x)} returns columnwise 
-euclidean distance calculated using the GPU
 
 \code{calculate_distance_euclidean_cpu(x)} returns columnwise 
 euclidean distance calculated using the CPU
 }
 \description{
-Functions to calculate distance matrices using cpu or gpu computing
+Functions to calculate distance matrices using cpu computing
 }
 \examples{
 # load example dataset
@@ -77,8 +51,7 @@ require(pamr)
 
 data(train.Exp)
 
-calculate_distance <- select_distance(distancetype = "pearson", 
-usegpu = FALSE)
+calculate_distance <- select_distance(distancetype = "pearson")
 Dist <- calculate_distance(train.Exp)
 k <- 4
 Pam <- cluster_algorithm(Dist, k)

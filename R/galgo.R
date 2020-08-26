@@ -1,4 +1,4 @@
-#' @title GalgoR:  A bi-objective evolutionary meta-heuristic to identify
+#' @title GSgalgoR:  A bi-objective evolutionary meta-heuristic to identify
 #' robust transcriptomic classifiers associated with patient outcome across
 #' multiple cancer types.
 #'
@@ -30,10 +30,6 @@
 #' \url{https://www.github.com/harpomaxx/galgo}\cr LazyLoad: \tab yes\cr
 #' }
 #'
-#'
-#' @note Ideally, \pkg{GSgalgoR} works faster using \code{gpuR} by C. Determan
-#' that provides wrappers functions for OpenCL
-#' programming.
 #' @author
 #' Martin E. Guerrero-Gimenez \email{mguerrero@@mendoza-conicet.gob.ar}
 #'
@@ -541,7 +537,7 @@ penalize <- function(x) {
 }
 
 
-#' GalgoR main function
+#' GSgalgoR main function
 #'
 #' \code{\link[GSgalgoR:galgo]{galgo}} accepts an expression matrix and a
 #' survival object to find robust gene expression signatures related to a
@@ -552,9 +548,6 @@ penalize <- function(x) {
 #' @param generations a number indicating the number of iterations of the
 #' galgo algorithm
 #' @param nCV number of cross-validation sets
-#' @param usegpu \code{logical} default to \code{FALSE}, set to \code{TRUE}
-#' if you wish to use gpu computing (\code{gpuR} package must be properly
-#' installed and loaded)
 #' @param distancetype character, it can be
 #' \code{'pearson'} (centered pearson), \code{'uncentered'}
 #' (uncentered pearson), \code{'spearman'} or \code{'euclidean'}
@@ -596,7 +589,7 @@ penalize <- function(x) {
 #' @export
 #'
 #' @usage galgo (population = 30, generations = 2, nCV = 5,
-#' usegpu = FALSE, distancetype = "pearson", TournamentSize = 2, period = 1825,
+#' distancetype = "pearson", TournamentSize = 2, period = 1825,
 #' OS, prob_matrix, res_dir = "", start_galgo_callback = callback_default,
 #' end_galgo_callback = callback_base_return_pop,
 #' report_callback = callback_base_report,
@@ -632,7 +625,6 @@ galgo <- function(population = 30,# Number of individuals to evaluate
                 generations = 2, # Number of generations
                 nCV = 5,# Number of crossvalidations for function
                         # "crossvalidation"
-                usegpu = FALSE, # to use gpuR
                 distancetype = "pearson",
                 TournamentSize = 2,
                 period = 1825,
@@ -670,7 +662,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
         # convention to leave 1 core for OS
         parallel::makeCluster(num_workers - 1)
     doParallel::registerDoParallel(cluster)
-    calculate_distance <- select_distance(distancetype, usegpu)
+    calculate_distance <- select_distance(distancetype)
     # Empty list to save the solutions.
     PARETO <- list()
     chrom_length <- nrow(prob_matrix)
@@ -722,12 +714,9 @@ galgo <- function(population = 30,# Number of individuals to evaluate
         # Apply constraints (min 10 genes per solution).
         # TODO: Check chrom_length parameter
         Fit1 <- apply(X, 1, mininum_genes, chrom_length = chrom_length)
-        # Fit1 <- apply(X, 1, mininum_genes)
-        # Apply constraints (min 10 genes per solution).
-        # TODO: Check chrom_length parameter
         X <- X[Fit1, ]
-        message(Fit1)
-        message(dim(X))
+        #message(Fit1)
+        #message(dim(X))
         X <- apply(X, 2, as.logical)
         n <- nrow(X)
         Nclust <- Nclust[Fit1]
@@ -741,14 +730,6 @@ galgo <- function(population = 30,# Number of individuals to evaluate
         reqpkgs <-
             c("cluster", "proxy", "survival", "matchingR", "GSgalgoR")
         # reqpkgs <- c("cluster","cba", "survival", "matchingR")
-        if (usegpu == TRUE) {
-            if (requireNamespace("gpuR", quietly = TRUE)) {
-                reqpkgs <- c(reqpkgs, "gpuR")
-            } else {
-                message("package gpuR not available in your
-                        platform. Fallback to CPU")
-            }
-        }
 
         # Calculate Fitness 1 (silhouette) and 2 (Survival differences).
         Fit2 <- foreach::foreach(

@@ -27,8 +27,7 @@ require(pamr)
 
 data(train.Exp)
 
-calculate_distance <- select_distance(distancetype = "pearson", 
-usegpu = FALSE)
+calculate_distance <- select_distance(distancetype = "pearson")
 Dist <- calculate_distance(train.Exp)
 k <- 4
 Pam <- cluster_algorithm(Dist, k)

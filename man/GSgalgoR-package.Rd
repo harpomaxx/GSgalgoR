@@ -4,7 +4,7 @@
 \name{GSgalgoR-package}
 \alias{GSgalgoR-package}
 \alias{GSgalgoR}
-\title{GalgoR:  A bi-objective evolutionary meta-heuristic to identify
+\title{GSgalgoR:  A bi-objective evolutionary meta-heuristic to identify
 robust transcriptomic classifiers associated with patient outcome across
 multiple cancer types.}
 \description{
@@ -35,11 +35,6 @@ Version: \tab 1.0.0\cr Date: \tab 2020-05-06 \cr License: \tab GPL-3\cr
 Copyright: \tab (c) 2020 Martin E. Guerrero-Gimenez.\cr URL: \tab
 \url{https://www.github.com/harpomaxx/galgo}\cr LazyLoad: \tab yes\cr
 }
-}
-\note{
-Ideally, \pkg{GSgalgoR} works faster using \code{gpuR} by C. Determan
-that provides wrappers functions for OpenCL
-programming.
 }
 \author{
 Martin E. Guerrero-Gimenez \email{mguerrero@mendoza-conicet.gob.ar}

@@ -2,10 +2,10 @@
 % Please edit documentation in R/galgo.R
 \name{galgo}
 \alias{galgo}
-\title{GalgoR main function}
+\title{GSgalgoR main function}
 \usage{
 galgo (population = 30, generations = 2, nCV = 5,
-usegpu = FALSE, distancetype = "pearson", TournamentSize = 2, period = 1825,
+distancetype = "pearson", TournamentSize = 2, period = 1825,
 OS, prob_matrix, res_dir = "", start_galgo_callback = callback_default,
 end_galgo_callback = callback_base_return_pop,
 report_callback = callback_base_report,
@@ -21,10 +21,6 @@ population of solutions that will be evolved}
 galgo algorithm}
 
 \item{nCV}{number of cross-validation sets}
-
-\item{usegpu}{\code{logical} default to \code{FALSE}, set to \code{TRUE}
-if you wish to use gpu computing (\code{gpuR} package must be properly
-installed and loaded)}
 
 \item{distancetype}{character, it can be
 \code{'pearson'} (centered pearson), \code{'uncentered'}

@@ -342,8 +342,6 @@ solutions that will be evolved
 - generations: a number indicating the number of iterations of the galgo
 algorithm
 - nCV: number of cross-validation sets
-- usegpu: logical default to FALSE, set to TRUE if you wish to use gpu computing
-(gpuR package must be properly installed and loaded)
 - distancetype: character, it can be 'pearson' (centered pearson), 'uncentered'
 (uncentered pearson), 'spearman' or 'euclidean'
 - TournamentSize: a number indicating the size of the tournaments for the
@@ -351,7 +349,7 @@ selection procedure
 - period: a number indicating the outcome period to evaluate the RMST
 
 ```{r parameters, eval=TRUE}
-# For testing reasons it is set to a low number but ideally should be above 100         
+# For testing reasons it is set to a low number but ideally should be above 100
 population <- 30 
 # For testing reasons it is set to a low number but ideally should be above 150
 generations <-15
@@ -533,7 +531,8 @@ table(PAM50_test)
 # Classify samples using genefu
 #annot<- fData(Train)
 #colnames(annot)[3]="Gene.Symbol"
-#PAM50_train<- molecular.subtyping(sbt.model = "pam50",data = t(train_expression), annot = annot,do.mapping = TRUE)
+#PAM50_train<- molecular.subtyping(sbt.model = "pam50",
+#         data = t(train_expression), annot = annot,do.mapping = TRUE)
 
 ```
 
@@ -612,7 +611,6 @@ nCV <- 5
 distancetype <- "pearson"     
 TournamentSize <- 2
 period <- 3650
-usegpu <- FALSE
 ```
 
 Run Galgo on the training set
@@ -622,7 +620,6 @@ output= GSgalgoR::galgo(generations = generations,
                     population = population,
                     prob_matrix = train_expression,
                     OS=train_surv,
-                    usegpu=usegpu,
                     nCV= nCV, 
                     distancetype=distancetype,
                     TournamentSize=TournamentSize,
@@ -672,8 +669,8 @@ according to C.Index
 RESULT<- non_dominated_summary(output=output,
                             OS=train_surv, 
                             prob_matrix= train_expression,
-                            distancetype =distancetype, 
-                            usegpu= usegpu )
+                            distancetype =distancetype 
+                            )
 
 best_sol=NULL
 for(i in unique(RESULT$k)){

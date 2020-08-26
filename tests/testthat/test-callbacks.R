@@ -11,8 +11,8 @@ test_that("final population is saved in /tmp/", {
   expression <- expression[sample(seq_len(nrow(expression)), 100), ]
   expression <- t(scale(t(expression)))
   output <- GSgalgoR::galgo(res_dir = "/tmp/",
-                          generations = 3, 
-                          population = 3, 
+                          generations = 2, 
+                          population = 5, 
                           prob_matrix = expression, 
                           OS = OS,
                           verbose = 0,
