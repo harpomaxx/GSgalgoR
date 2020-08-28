@@ -2,6 +2,7 @@ context("callback functions")
 
 
 test_that("final population is saved in /tmp/", {
+  set.seed(29042010)
   library(breastCancerTRANSBIG)
   data(transbig)
   Train <- transbig
@@ -10,9 +11,10 @@ test_that("final population is saved in /tmp/", {
   OS <- survival::Surv(time = clinical$t.rfs, event = clinical$e.rfs)
   expression <- expression[sample(seq_len(nrow(expression)), 100), ]
   expression <- t(scale(t(expression)))
+  
   output <- GSgalgoR::galgo(res_dir = "/tmp/",
                           generations = 2, 
-                          population = 5, 
+                          population = 3, 
                           prob_matrix = expression, 
                           OS = OS,
                           verbose = 0,

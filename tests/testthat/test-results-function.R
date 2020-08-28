@@ -1,7 +1,7 @@
 context("results-functions")
 
 test_that("classifiy_multiple returns a list", {
-    
+    set.seed(29042010)
     library(breastCancerTRANSBIG)
     data(transbig)
     Train <- transbig
@@ -11,6 +11,7 @@ test_that("classifiy_multiple returns a list", {
     
     expression <- expression[sample(seq_len(nrow(expression)), 100), ]
     expression <- t(scale(t(expression)))
+   
     output <- GSgalgoR::galgo(generations = 2, population = 5, prob_matrix = expression, OS = OS, 
                             distancetype = "pearson", verbose = 1)
     summary_results<-non_dominated_summary(output = output,OS = OS,

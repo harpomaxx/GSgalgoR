@@ -694,6 +694,7 @@ galgo <- function(population = 30,# Number of individuals to evaluate
     )
 
     ##### Main loop.
+    end_OK <- TRUE
     for (g in seq_len(generations)) {
         # Output for the generation callback
         #callback_data <- list()
@@ -715,6 +716,12 @@ galgo <- function(population = 30,# Number of individuals to evaluate
         # TODO: Check chrom_length parameter
         Fit1 <- apply(X, 1, mininum_genes, chrom_length = chrom_length)
         X <- X[Fit1, ]
+        if (is.null(dim(X))){
+            message("Galgo was unable to find a suitable solution. Consider 
+                    using a bigger population.")
+            end_OK <- FALSE
+            break;
+        }
         #message(Fit1)
         #message(dim(X))
         X <- apply(X, 2, as.logical)
@@ -880,12 +887,14 @@ galgo <- function(population = 30,# Number of individuals to evaluate
     }
 
     parallel::stopCluster(cluster)
-    end_galgo_callback(
-        userdir = res_dir,
-        generation = g,
-        pop_pool = X1,
-        pareto = PARETO,
-        prob_matrix = prob_matrix,
-        current_time = Sys.time()
-    )
+    if( end_OK == TRUE ){
+        end_galgo_callback(
+            userdir = res_dir,
+            generation = g,
+            pop_pool = X1,
+            pareto = PARETO,
+            prob_matrix = prob_matrix,
+            current_time = Sys.time()
+        )
+    }
 }

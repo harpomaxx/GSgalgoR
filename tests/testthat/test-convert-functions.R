@@ -1,7 +1,7 @@
 context("convert-functions")
 
 test_that("galgo.Obj can be converted to list", {
-  
+  set.seed(29042010)
   # load example dataset
   library(breastCancerTRANSBIG)
   data(transbig)
@@ -27,7 +27,7 @@ test_that("galgo.Obj can be converted to list", {
 
 
 test_that("galgo.Obj can be converted to data.frame", {
-  
+  set.seed(29042010)
   # load example dataset
   library(breastCancerTRANSBIG)
   data(transbig)
@@ -44,6 +44,7 @@ test_that("galgo.Obj can be converted to data.frame", {
   expression <- t(scale(t(expression)))
   
   # Run galgo
+
   output <- GSgalgoR::galgo(generations = 2, population = 5, prob_matrix = expression, OS = OS, verbose = 1 )
   output_dataframe <- to_dataframe(output)
   expect_is(output_dataframe,"data.frame")
