@@ -1,0 +1,17 @@
+structure(list(`10.1093/bioinformatics/btaa619` = structure(list(
+    author = structure(list(list(given = c("M", "E"), family = "Guerrero-Gimenez", 
+        role = NULL, email = NULL, comment = NULL), list(given = c("J", 
+    "M"), family = "Fernandez-Munoz", role = NULL, email = NULL, 
+        comment = NULL), list(given = c("B", "J"), family = "Lang", 
+        role = NULL, email = NULL, comment = NULL), list(given = c("K", 
+    "M"), family = "Holton", role = NULL, email = NULL, comment = NULL), 
+        list(given = c("D", "R"), family = "Ciocca", role = NULL, 
+            email = NULL, comment = NULL), list(given = c("C", 
+        "A"), family = "Catania", role = NULL, email = NULL, 
+            comment = NULL), list(given = c("F", "C", "M"), family = "Zoppino", 
+            role = NULL, email = NULL, comment = NULL)), class = "person"), 
+    title = "Galgo: A bi-objective evolutionary meta-heuristic identifies robust transcriptomic classifiers associated with patient outcome across multiple cancer types", 
+    journal = "Bioinformatics", year = "2020", month = "07", 
+    issn = "1367-4803", doi = "10.1093/bioinformatics/btaa619", 
+    url = "https://doi.org/10.1093/bioinformatics/btaa619", note = "btaa619", 
+    eprint = "https://academic.oup.com/bioinformatics/advance-article-pdf/doi/10.1093/bioinformatics/btaa619/33472708/btaa619.pdf"), bibtype = "Article", key = "10.1093/bioinformatics/btaa619")), class = "bibentry", strings = structure(character(0), .Names = character(0)))
