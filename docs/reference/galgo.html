@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GalgoR main function — galgo • GSgalgoR</title>
+<title>GSgalgoR main function — galgo • GSgalgoR</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="GalgoR main function — galgo" />
+<meta property="og:title" content="GSgalgoR main function — galgo" />
 <meta property="og:description" content="galgo accepts an expression matrix and a
 survival object to find robust gene expression signatures related to a
 given outcome" />
@@ -74,7 +74,7 @@ given outcome" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GSgalgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
       </span>
     </div>
 
@@ -125,7 +125,7 @@ given outcome" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>GalgoR main function</h1>
+    <h1>GSgalgoR main function</h1>
     <small class="dont-index">Source: <a href='https://github.com/harpomaxx/GSgalgoR/blob/master/R/galgo.R'><code>R/galgo.R</code></a></small>
     <div class="hidden name"><code>galgo.Rd</code></div>
     </div>
@@ -137,7 +137,7 @@ given outcome</p>
     </div>
 
     <pre class="usage"><span class='fu'>galgo</span> (<span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>nCV</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-<span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>TournamentSize</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='fl'>1825</span>,
+<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>TournamentSize</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='fl'>1825</span>,
 <span class='no'>OS</span>, <span class='no'>prob_matrix</span>, <span class='kw'>res_dir</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>start_galgo_callback</span> <span class='kw'>=</span> <span class='no'>callback_default</span>,
 <span class='kw'>end_galgo_callback</span> <span class='kw'>=</span> <span class='no'>callback_base_return_pop</span>,
 <span class='kw'>report_callback</span> <span class='kw'>=</span> <span class='no'>callback_base_report</span>,
@@ -161,12 +161,6 @@ galgo algorithm</p></td>
     <tr>
       <th>nCV</th>
       <td><p>number of cross-validation sets</p></td>
-    </tr>
-    <tr>
-      <th>usegpu</th>
-      <td><p><code>logical</code> default to <code>FALSE</code>, set to <code>TRUE</code>
-if you wish to use gpu computing (<code>gpuR</code> package must be properly
-installed and loaded)</p></td>
     </tr>
     <tr>
       <th>distancetype</th>
@@ -263,24 +257,24 @@ reshaped using the <code><a href='to_list.html'>to_list</a></code> and
 
 <span class='co'># Run galgo</span>
 <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>GSgalgoR</span><span class='kw ns'>::</span><span class='fu'>galgo</span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-<span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex    CrowD
+<span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex    CrowD
 #&gt; result.3  2 0.14882360  69.46322        1      Inf
 #&gt; result.4  9 0.00656122 264.62890        1      Inf
-#&gt; result.10 4 0.07773017 192.97399        1 1.695167</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex    CrowD
+#&gt; result.10 4 0.07773017 192.97399        1 1.695167</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex    CrowD
 #&gt; result.3  2 0.14882360  69.46322        1      Inf
 #&gt; result.1  7 0.02571842 372.07256        1      Inf
 #&gt; result.10 4 0.07773017 192.97399        1 1.106057
-#&gt; result.13 5 0.03596436 205.87446        1 0.824781</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
+#&gt; result.13 5 0.03596436 205.87446        1 0.824781</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
 #&gt; result.3  2 0.14882360  69.46322        1       Inf
 #&gt; result.1  7 0.02571842 372.07256        1       Inf
 #&gt;           4 0.06304767 212.49021        1 0.8401363
 #&gt;           3 0.08357203  77.11589        1 0.8206758
-#&gt; result.10 4 0.07773017 192.97399        1 0.5063178</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
+#&gt; result.10 4 0.07773017 192.97399        1 0.5063178</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
 #&gt; result.3  2 0.14882360  69.46322        1       Inf
 #&gt; result.1  7 0.02571842 372.07256        1       Inf
 #&gt;           4 0.06304767 212.49021        1 0.8494499
 #&gt;           3 0.08357203  77.11589        1 0.8334064
-#&gt; result.10 4 0.07773017 192.97399        1 0.5099930</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
+#&gt; result.10 4 0.07773017 192.97399        1 0.5099930</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;           k                      rnkIndex     CrowD
 #&gt; result.1  7 0.02571842 372.07256        1       Inf
 #&gt;           2 0.16568616  44.93058        1       Inf
 #&gt;           2 0.13112577  85.75740        1 0.6696392

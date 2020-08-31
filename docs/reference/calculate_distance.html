@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Functions to calculate distance matrices using cpu or gpu computing — calculate_distance • GSgalgoR</title>
+<title>Functions to calculate distance matrices using cpu computing — calculate_distance • GSgalgoR</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Functions to calculate distance matrices using cpu or gpu computing — calculate_distance" />
-<meta property="og:description" content="Functions to calculate distance matrices using cpu or gpu computing" />
+<meta property="og:title" content="Functions to calculate distance matrices using cpu computing — calculate_distance" />
+<meta property="og:description" content="Functions to calculate distance matrices using cpu computing" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GSgalgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
       </span>
     </div>
 
@@ -123,24 +123,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Functions to calculate distance matrices using cpu or gpu computing</h1>
+    <h1>Functions to calculate distance matrices using cpu computing</h1>
     <small class="dont-index">Source: <a href='https://github.com/harpomaxx/GSgalgoR/blob/master/R/distance-functions.R'><code>R/distance-functions.R</code></a></small>
     <div class="hidden name"><code>calculate_distance.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Functions to calculate distance matrices using cpu or gpu computing</p>
+    <p>Functions to calculate distance matrices using cpu computing</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_distance_pearson_gpu</span>(<span class='no'>x</span>)
-
-<span class='fu'>calculate_distance_spearman_gpu</span>(<span class='no'>x</span>)
-
-<span class='fu'>calculate_distance_uncentered_gpu</span>(<span class='no'>x</span>)
-
-<span class='fu'>calculate_distance_euclidean_gpu</span>(<span class='no'>x</span>)
-
-<span class='fu'>calculate_distance_pearson_cpu</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>calculate_distance_pearson_cpu</span>(<span class='no'>x</span>)
 
 <span class='fu'>calculate_distance_spearman_cpu</span>(<span class='no'>x</span>)
 
@@ -148,7 +140,7 @@
 
 <span class='fu'>calculate_distance_euclidean_cpu</span>(<span class='no'>x</span>)
 
-<span class='fu'>select_distance</span>(<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>select_distance</span>(<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,30 +154,18 @@
       <td><p>a <code>character</code> that can be either <code>'pearson'</code>, 
 <code>'uncentered'</code>, <code>'spearman'</code> or <code>'euclidean'</code></p></td>
     </tr>
-    <tr>
-      <th>usegpu</th>
-      <td><p><code>logical</code> <code>TRUE</code> or <code>FALSE</code></p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>select_distance(distancetype, usegpu)</code> assigns global function 
+    <p><code>select_distance(distancetype)</code> assigns global function 
 calculate_distance according to the parameters specified</p>
-<p><code>calculate_distance_pearson_gpu(x)</code> returns columnwise pearson 
-distance calculated using the GPU</p>
 <p><code>calculate_distance_pearson_cpu(x)</code> returns columnwise pearson 
 distance calculated using the CPU</p>
-<p><code>calculate_distance_uncentered_gpu(x)</code> returns columnwise 
-uncentered pearson distance calculated using the GPU</p>
 <p><code>calculate_distance_uncentered_cpu(x)</code> returns columnwise 
 uncentered pearson distance calculated using the CPU</p>
-<p><code>calculate_distance_spearman_gpu(x)</code> returns columnwise 
-spearman distance calculated using the GPU</p>
 <p><code>calculate_distance_spearman_cpu(x)</code> returns columnwise 
 spearman distance calculated using the CPU</p>
-<p><code>calculate_distance_euclidean_gpu(x)</code> returns columnwise 
-euclidean distance calculated using the GPU</p>
 <p><code>calculate_distance_euclidean_cpu(x)</code> returns columnwise 
 euclidean distance calculated using the CPU</p>
 
@@ -194,8 +174,7 @@ euclidean distance calculated using the CPU</p>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>iC10TrainingData</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: iC10TrainingData</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>pamr</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: pamr</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: cluster</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: survival</span></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>train.Exp</span>)
 
-<span class='no'>calculate_distance</span> <span class='kw'>&lt;-</span> <span class='fu'>select_distance</span>(<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
-<span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>Dist</span> <span class='kw'>&lt;-</span> <span class='fu'>calculate_distance</span>(<span class='no'>train.Exp</span>)
+<span class='no'>calculate_distance</span> <span class='kw'>&lt;-</span> <span class='fu'>select_distance</span>(<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>Dist</span> <span class='kw'>&lt;-</span> <span class='fu'>calculate_distance</span>(<span class='no'>train.Exp</span>)
 <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
 <span class='no'>Pam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cluster_algorithm.html'>cluster_algorithm</a></span>(<span class='no'>Dist</span>, <span class='no'>k</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>Pam</span>$<span class='no'>cluster</span>)</div><div class='output co'>#&gt; 

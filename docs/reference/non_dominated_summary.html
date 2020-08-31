@@ -73,7 +73,7 @@ evaluate the non-dominated solutions found by GalgoR" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GSgalgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@ evaluate the non-dominated solutions found by GalgoR</p>
     </div>
 
     <pre class="usage"><span class='fu'>non_dominated_summary</span> (<span class='no'>output</span>, <span class='no'>prob_matrix</span>, <span class='no'>OS</span>,
-<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,10 +158,6 @@ function from the <code>survival</code> package)</p></td>
       <th>distancetype</th>
       <td><p>a <code>character</code> that can be either <code>'pearson'</code>,
 <code>'uncentered'</code>, <code>'spearman'</code> or <code>'euclidean'</code></p></td>
-    </tr>
-    <tr>
-      <th>usegpu</th>
-      <td><p><code>logical</code> <code>TRUE</code> or <code>FALSE</code></p></td>
     </tr>
     </table>
 
@@ -192,18 +188,18 @@ solution and the last columns has the estimated C.Index for each one.</p>
 
 <span class='co'># Run galgo</span>
 <span class='no'>output</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>GSgalgoR</span><span class='kw ns'>::</span><span class='fu'><a href='galgo.html'>galgo</a></span>(<span class='kw'>generations</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>population</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-<span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
+<span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>, <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt; <span class='message'>Generation 1 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
 #&gt; result.3  10 0.007732375 300.22227        1       Inf
 #&gt; result.6   2 0.079683053 114.82603        1 0.9345213
 #&gt; result.7   3 0.046522310 258.96886        1 0.9969431
 #&gt; result.8   2 0.054135993 139.64458        1 0.8164309
-#&gt; result.10  2 0.108544837  17.61128        1       Inf</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
+#&gt; result.10  2 0.108544837  17.61128        1       Inf</div><div class='output co'>#&gt; <span class='message'>Generation 2 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                       rnkIndex     CrowD
 #&gt; result.3  10 0.007732375 300.22227        1       Inf
 #&gt; result.10  2 0.108544837  17.61128        1       Inf
 #&gt; result.7   3 0.046522310 258.96886        1 0.8936328
 #&gt; result.15  3 0.055867534 173.36262        1 0.8164309
 #&gt; result.6   2 0.079683053 114.82603        1 0.7214736
-#&gt; result.7   2 0.079895228  32.20750        1 0.6106585</div><div class='output co'>#&gt; <span class='message'>TRUEFALSETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>14100</span></div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
+#&gt; result.7   2 0.079895228  32.20750        1 0.6106585</div><div class='output co'>#&gt; <span class='message'>Generation 3 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
 #&gt; result.10  2 0.10854484  17.61128        1       Inf
 #&gt;           10 0.01096230 362.04141        1       Inf
 #&gt;            9 0.01867938 262.60431        1 0.6172496
@@ -211,7 +207,7 @@ solution and the last columns has the estimated C.Index for each one.</p>
 #&gt;            2 0.09044218  67.58557        1 0.5389540
 #&gt;            3 0.06219391 194.75203        1 0.5291710
 #&gt; result.7   3 0.04652231 258.96886        1 0.4483810
-#&gt;            4 0.05300474 215.75086        1 0.3246603</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
+#&gt;            4 0.05300474 215.75086        1 0.3246603</div><div class='output co'>#&gt; <span class='message'>Generation 4 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
 #&gt; result.10  2 0.10854484  17.61128        1       Inf
 #&gt;           10 0.01096230 362.04141        1       Inf
 #&gt; result.6   2 0.07968305 114.82603        1 0.6023189
@@ -219,7 +215,7 @@ solution and the last columns has the estimated C.Index for each one.</p>
 #&gt;            2 0.09044218  67.58557        1 0.5223930
 #&gt;            3 0.06219391 194.75203        1 0.5143302
 #&gt; result.7   3 0.04652231 258.96886        1 0.4257805
-#&gt;            4 0.05300474 215.75086        1 0.3161506</div><div class='output co'>#&gt; <span class='message'>TRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUETRUE</span></div><div class='output co'>#&gt; <span class='message'>15100</span></div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
+#&gt;            4 0.05300474 215.75086        1 0.3161506</div><div class='output co'>#&gt; <span class='message'>Generation 5 Non-dominated solutions:</span></div><div class='output co'>#&gt;            k                      rnkIndex     CrowD
 #&gt; result.10  2 0.10854484  17.61128        1       Inf
 #&gt;           10 0.01096230 362.04141        1       Inf
 #&gt; result.6   2 0.07968305 114.82603        1 0.6472026
@@ -232,8 +228,7 @@ solution and the last columns has the estimated C.Index for each one.</p>
     <span class='kw'>output</span> <span class='kw'>=</span> <span class='no'>output</span>,
     <span class='kw'>OS</span> <span class='kw'>=</span> <span class='no'>OS</span>,
     <span class='kw'>prob_matrix</span> <span class='kw'>=</span> <span class='no'>expression</span>,
-    <span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
-    <span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+    <span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>
 )</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='output co'>#&gt;      solution  k ngenes    mean.Silhouette           C.Index
 #&gt; 1 Solutions.1  2     31  0.112025114443578 0.507455621301775
 #&gt; 2 Solutions.2 10     97 0.0364310198749159 0.569546351084813

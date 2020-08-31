@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">GSgalgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>A multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm. The galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic algorithms for feature selection and optimal number of clusters determination to find features that maximize the survival difference between subtypes while keeping cluster consistency high.</p>
+<p>GSgalgoR is a R package implementing a multi-objective optimization algorithm for disease subtype discovery based on a non-dominated sorting genetic algorithm (galgo). The galgo framework combines the advantages of clustering algorithms for grouping heterogeneous omics data and the searching properties of genetic algorithms for feature selection and optimal number of clusters determination to find features that maximize the survival difference between subtypes while keeping cluster consistency high.</p>
 <div id="citation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
@@ -134,19 +134,10 @@ prm &lt;- rna_luad$TCGA$expression_matrix
 clinical &lt;-rna_luad$TCGA$pheno_data
 OS &lt;- survival::Surv(time=clinical$time,event=clinical$status)
 
-output&lt;-GSgalgoR::galgo(generations = 5, population = 30,prob_matrix = prm, OS=OS, ,verbose = 2,usegpu = F)</a></code></pre>
+output&lt;-GSgalgoR::galgo(generations = 5, population = 30,
+       prob_matrix = prm, OS=OS, ,verbose = 2,usegpu = F)</a></code></pre>
 <p>An example of the results obtained by Galgo in the TCGA dataset. The first plot shows the Pareto front obtained by <em>GSgalgoR</em> in terms of the Survival (Surv.Fit) and the cohesiveness (SC.Fit) fitness functions. On the second plots shows the different survival subtypes found by the algorithm.</p>
 <p><img src="./inst/extdata/images/pareto2.jpg"><img src="./inst/extdata/images/TCGA_galgo.jpg"></p>
-</div>
-<div id="gpu-support" class="section level2">
-<h2 class="hasAnchor">
-<a href="#gpu-support" class="anchor"></a>GPU support</h2>
-<p>GSgalgoR is able to fasten its execution using GPU computing utilizing the <a href="https://cran.r-project.org/package=gpuR" title="gpuR R package">gpuR package</a> . Before installing <a href="https://cran.r-project.org/package=gpuR" title="gpuR R package">gpuR</a>, the opencl backend should be configured.</p>
-<p>In linux systems install latest nvidia cuda drivers and the opencl backend.</p>
-<pre><code>       apt-get install nvidia-418 nvidia-opencl-icd-418 libcuda1-418
-       apt-get install opencl-headers  ocl-icd-opencl-dev
-       </code></pre>
-<p>For installing <a href="https://github.com/cdeterman/gpuR/wiki">gpuR</a> and enable GPU computing in different operating systems, follow <a href="https://github.com/cdeterman/gpuR/wiki" title="gpuR installation guide">gpuR installation guide</a>.</p>
 </div>
 </div>
 <div id="references" class="section level1">
@@ -179,6 +170,12 @@ output&lt;-GSgalgoR::galgo(generations = 5, population = 30,prob_matrix = prm, O
 </li>
 </ul>
 </div>
+<div class="citation">
+<h2>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html">Citing GSgalgoR</a></li>
+</ul>
+</div>
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
@@ -192,6 +189,7 @@ output&lt;-GSgalgoR::galgo(generations = 5, population = 30,prob_matrix = prm, O
 <ul class="list-unstyled">
 <li><a href="https://codecov.io/gh/harpomaxx/GSgalgoR?branch=master"><img src="https://codecov.io/gh/harpomaxx/GSgalgoR/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://travis-ci.org/harpomaxx/GSgalgoR"><img src="https://travis-ci.org/harpomaxx/GSgalgoR.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://zenodo.org/badge/latestdoi/270110167"><img src="https://zenodo.org/badge/270110167.svg" alt="DOI"></a></li>
 </ul>
 </div>
 </div>

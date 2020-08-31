@@ -73,7 +73,7 @@ default clustering process used under the evolutionary process." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GSgalgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
       </span>
     </div>
 
@@ -182,8 +182,7 @@ Clustering: Improving the PAM, CLARA, and CLARANS Algorithms; Preprint,
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>pamr</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>train.Exp</span>)
 
-<span class='no'>calculate_distance</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>select_distance</a></span>(<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
-<span class='kw'>usegpu</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>Dist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>calculate_distance</a></span>(<span class='no'>train.Exp</span>)
+<span class='no'>calculate_distance</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>select_distance</a></span>(<span class='kw'>distancetype</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</div><div class='output co'>#&gt; <span class='message'>Using CPU for computing pearson distance</span></div><div class='input'><span class='no'>Dist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_distance.html'>calculate_distance</a></span>(<span class='no'>train.Exp</span>)
 <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
 <span class='no'>Pam</span> <span class='kw'>&lt;-</span> <span class='fu'>cluster_algorithm</span>(<span class='no'>Dist</span>, <span class='no'>k</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>Pam</span>$<span class='no'>cluster</span>)</div><div class='output co'>#&gt; 

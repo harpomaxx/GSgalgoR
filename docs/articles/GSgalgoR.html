@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GSgalgoR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       LABSIN, Engineering School, National University of Cuyo, Mendoza, Argentina.<br><a class="author_email" href="mailto:#"></a><a href="mailto:harpo@ingenieria.uncuyo.edu.ar" class="email">harpo@ingenieria.uncuyo.edu.ar</a>
       </address>
                   
-            <h4 class="date">2020-08-03</h4>
+            <h4 class="date">2020-08-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/harpomaxx/GSgalgoR/blob/master/vignettes/GSgalgoR.rmd"><code>vignettes/GSgalgoR.rmd</code></a></small>
       <div class="hidden name"><code>GSgalgoR.rmd</code></div>
@@ -312,12 +312,11 @@
 <li>population: a number indicating the number of solutions in the population of solutions that will be evolved</li>
 <li>generations: a number indicating the number of iterations of the galgo algorithm</li>
 <li>nCV: number of cross-validation sets</li>
-<li>usegpu: logical default to FALSE, set to TRUE if you wish to use gpu computing (gpuR package must be properly installed and loaded)</li>
 <li>distancetype: character, it can be ‘pearson’ (centered pearson), ‘uncentered’ (uncentered pearson), ‘spearman’ or ‘euclidean’</li>
 <li>TournamentSize: a number indicating the size of the tournaments for the selection procedure</li>
 <li>period: a number indicating the outcome period to evaluate the RMST</li>
 </ul>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co"># For testing reasons it is set to a low number but ideally should be above 100         </span>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co"># For testing reasons it is set to a low number but ideally should be above 100</span>
 <span class="no">population</span> <span class="kw">&lt;-</span> <span class="fl">30</span>
 <span class="co"># For testing reasons it is set to a low number but ideally should be above 150</span>
 <span class="no">generations</span> <span class="kw">&lt;-</span><span class="fl">15</span>
@@ -392,32 +391,29 @@
 <p>To evaluate the structure of the first solution we can run:</p>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">outputList</span><span class="kw">[[</span><span class="st">"Solution.1"</span>]]
 <span class="co">#&gt; $Genes</span>
-<span class="co">#&gt;  [1] "PHGDH"     "RRM2"      "MYC"       "CDC20"     "UBE2C"     "PTTG1"    </span>
-<span class="co">#&gt;  [7] "BCL2"      "MMP11"     "CDC6"      "EXO1"      "MIA"       "CENPF"    </span>
-<span class="co">#&gt; [13] "PGR"       "KRT14"     "KIF2C"     "FGFR4"     "FOXC1"     "ACTR3B"   </span>
-<span class="co">#&gt; [19] "CCNB1"     "BAG1"      "RNASET2"   "CYB561D2"  "DPAGT1"    "QRSL1"    </span>
-<span class="co">#&gt; [25] "GPR6"      "HPN"       "SLC25A17"  "HSPA1B"    "RRP12"     "MCM3"     </span>
-<span class="co">#&gt; [31] "CCL13"     "HLA-F"     "ERN1"      "BHMT2"     "SERINC3"   "NAGLU"    </span>
-<span class="co">#&gt; [37] "PDE8B"     "KAT2B"     "SNX17"     "FAM76A"    "KIF1A"     "NACAD"    </span>
-<span class="co">#&gt; [43] "G3BP1"     "GPR157"    "THUMPD2"   "CRYM"      "ARMC7"     "OVGP1"    </span>
-<span class="co">#&gt; [49] "MSH6"      "VGLL3"     "EEF1G"     "COL6A3"    "FRG1B"     "MFSD11"   </span>
-<span class="co">#&gt; [55] "DEF8"      "PGAP1"     "TMEM123"   "FAM193A"   "AKAP8"     "AKR1B10"  </span>
-<span class="co">#&gt; [61] "LILRA4"    "SSR2"      "GADD45B"   "AP3S2"     "GTF3C2"    "SLC25A4"  </span>
-<span class="co">#&gt; [67] "CEP68"     "UGT2B17"   "FOXH1"     "C8orf17"   "FLT3LG"    "CREM"     </span>
-<span class="co">#&gt; [73] "SLC25A1"   "SEPW1"     "SYT1"      "FAM32A"    "BFSP1"     "TMEM33"   </span>
-<span class="co">#&gt; [79] "IFI27"     "FBXL8"     "CDK14"     "CELSR2"    "USP9Y"     "B4GALT3"  </span>
-<span class="co">#&gt; [85] "MPG"       "TBC1D12"   "PHACTR2"   "TUBBP5"    "LRRC8E"    "SIRPA"    </span>
-<span class="co">#&gt; [91] "ORM2"      "POPDC3"    "ALDH4A1"   "TMEM158"   "VPS54"     "LOC642131"</span>
-<span class="co">#&gt; [97] "HOXA9"     "RPRD1A"    "FBP2"     </span>
+<span class="co">#&gt;  [1] "MYBL2"     "BIRC5"     "CDC20"     "UBE2C"     "CDH3"      "CDC6"     </span>
+<span class="co">#&gt;  [7] "MAPT"      "PGR"       "KRT14"     "KIF2C"     "FGFR4"     "MLPH"     </span>
+<span class="co">#&gt; [13] "ACTR3B"    "ORC6L"     "DOK5"      "CYP7B1"    "IPPK"      "SMURF1"   </span>
+<span class="co">#&gt; [19] "RFTN1"     "FBXW11"    "UNC45A"    "TPM2"      "TCL6"      "TFCP2"    </span>
+<span class="co">#&gt; [25] "AARS"      "KANK1"     "KPNA6"     "RAB15"     "STEAP1"    "EHMT2"    </span>
+<span class="co">#&gt; [31] "CNTN1"     "GPI"       "NFATC1"    "GOLGA3"    "DYNLL1"    "HOXD10"   </span>
+<span class="co">#&gt; [37] "SLC6A7"    "MYH3"      "IFT57"     "RIN3"      "MXD3"      "RALYL"    </span>
+<span class="co">#&gt; [43] "HIST1H4D"  "CD2BP2"    "LOC442421" "CDC14A"    "MLN"       "S100A6"   </span>
+<span class="co">#&gt; [49] "LHFP"      "ITSN2"     "INVS"      "AQR"       "LOC220077" "FAM172A"  </span>
+<span class="co">#&gt; [55] "UBTD1"     "TMEM147"   "LGI1"      "ZNF136"    "DTWD1"     "NFKBIE"   </span>
+<span class="co">#&gt; [61] "ATP6V1D"   "CSH2"      "C15orf63"  "PHLDA2"    "DLD"       "RAB23"    </span>
+<span class="co">#&gt; [67] "SCAMP2"    "ELL"       "LOC149501" "PLTP"      "R3HDM1"    "TSPAN15"  </span>
+<span class="co">#&gt; [73] "LIMS1"     "FGF14"     "COMT"      "NFIX"      "MSRB2"     "FAM125B"  </span>
+<span class="co">#&gt; [79] "BTBD2"     "SNUPN"    </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $k</span>
-<span class="co">#&gt; [1] 10</span>
+<span class="co">#&gt; [1] 2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $SC.Fit</span>
-<span class="co">#&gt; [1] 0.01980652</span>
+<span class="co">#&gt; [1] 0.1685461</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Surv.Fit</span>
-<span class="co">#&gt; [1] 972.2138</span>
+<span class="co">#&gt; [1] 495.2226</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $rank</span>
 <span class="co">#&gt; [1] 1</span>
@@ -439,13 +435,13 @@
 </ul>
 <div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">outputDF</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/to_dataframe.html">to_dataframe</a></span>(<span class="no">output</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">outputDF</span>)
-<span class="co">#&gt;                    Genes  k     SC.Fit Surv.Fit Rank     CrowD</span>
-<span class="co">#&gt; Solutions.1 PHGDH, R.... 10 0.01980652 972.2138    1       Inf</span>
-<span class="co">#&gt; Solutions.2 PHGDH, R....  2 0.20439557 478.2689    1       Inf</span>
-<span class="co">#&gt; Solutions.3 RRM2, SF....  5 0.04714805 787.8071    1 0.4648797</span>
-<span class="co">#&gt; Solutions.4 KRT5, RR....  2 0.15234654 558.8042    1 0.4372632</span>
-<span class="co">#&gt; Solutions.5 RRM2, SF....  3 0.09421594 594.0070    1 0.3918252</span>
-<span class="co">#&gt; Solutions.6 PHGDH, R....  2 0.16576258 526.0975    1 0.3511340</span></pre></body></html></div>
+<span class="co">#&gt;                    Genes k     SC.Fit Surv.Fit Rank     CrowD</span>
+<span class="co">#&gt; Solutions.1 MYBL2, B.... 2 0.16854615 495.2226    1       Inf</span>
+<span class="co">#&gt; Solutions.2 SFRP1, S.... 9 0.01985633 849.4859    1       Inf</span>
+<span class="co">#&gt; Solutions.3 BIRC5, C.... 2 0.13264754 645.5481    1 0.5014115</span>
+<span class="co">#&gt; Solutions.4 KRT5, RR.... 3 0.07635340 678.2297    1 0.4140825</span>
+<span class="co">#&gt; Solutions.5 RRM2, SL.... 9 0.04047874 796.2207    1 0.4080185</span>
+<span class="co">#&gt; Solutions.6 RRM2, SF.... 4 0.07437800 710.7993    1 0.3469133</span></pre></body></html></div>
 </div>
 <div id="plot_pareto" class="section level2">
 <h2 class="hasAnchor">
@@ -506,7 +502,8 @@
 <span class="co"># Classify samples using genefu</span>
 <span class="co">#annot&lt;- fData(Train)</span>
 <span class="co">#colnames(annot)[3]="Gene.Symbol"</span>
-<span class="co">#PAM50_train&lt;- molecular.subtyping(sbt.model = "pam50",data = t(train_expression), annot = annot,do.mapping = TRUE)</span></pre></body></html></div>
+<span class="co">#PAM50_train&lt;- molecular.subtyping(sbt.model = "pam50",</span>
+<span class="co">#         data = t(train_expression), annot = annot,do.mapping = TRUE)</span></pre></body></html></div>
 <p>Once the patients are classified according to their closest centroids, we can now evaluate the survival curves for the different types in each of the datasets</p>
 <div id="survival-of-upp-patients" class="section level3">
 <h3 class="hasAnchor">
@@ -578,14 +575,12 @@
 <span class="no">nCV</span> <span class="kw">&lt;-</span> <span class="fl">5</span>
 <span class="no">distancetype</span> <span class="kw">&lt;-</span> <span class="st">"pearson"</span>
 <span class="no">TournamentSize</span> <span class="kw">&lt;-</span> <span class="fl">2</span>
-<span class="no">period</span> <span class="kw">&lt;-</span> <span class="fl">3650</span>
-<span class="no">usegpu</span> <span class="kw">&lt;-</span> <span class="fl">FALSE</span></pre></body></html></div>
+<span class="no">period</span> <span class="kw">&lt;-</span> <span class="fl">3650</span></pre></body></html></div>
 <p>Run Galgo on the training set</p>
 <div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">output</span><span class="kw">=</span> <span class="kw pkg">GSgalgoR</span><span class="kw ns">::</span><span class="fu"><a href="../reference/galgo.html">galgo</a></span>(<span class="kw">generations</span> <span class="kw">=</span> <span class="no">generations</span>,
                     <span class="kw">population</span> <span class="kw">=</span> <span class="no">population</span>,
                     <span class="kw">prob_matrix</span> <span class="kw">=</span> <span class="no">train_expression</span>,
                     <span class="kw">OS</span><span class="kw">=</span><span class="no">train_surv</span>,
-                    <span class="kw">usegpu</span><span class="kw">=</span><span class="no">usegpu</span>,
                     <span class="kw">nCV</span><span class="kw">=</span> <span class="no">nCV</span>,
                     <span class="kw">distancetype</span><span class="kw">=</span><span class="no">distancetype</span>,
                     <span class="kw">TournamentSize</span><span class="kw">=</span><span class="no">TournamentSize</span>,
@@ -611,33 +606,33 @@
 
 <span class="co"># N of non-dominated solutions </span>
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">NonDom_solutions</span>)
-<span class="co">#&gt; [1] 4</span>
+<span class="co">#&gt; [1] 6</span>
 
 <span class="co"># N of partitions found</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">NonDom_solutions</span>$<span class="no">k</span>)
 <span class="co">#&gt; </span>
-<span class="co">#&gt; 2 4 8 </span>
-<span class="co">#&gt; 2 1 1</span>
+<span class="co">#&gt;  2  5  6 10 </span>
+<span class="co">#&gt;  3  1  1  1</span>
 
 <span class="co">#Average N of genes per signature</span>
 <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="no">NonDom_solutions</span>$<span class="no">Genes</span>,<span class="no">length</span>)))
-<span class="co">#&gt; [1] 106.75</span>
+<span class="co">#&gt; [1] 111.6667</span>
 
 <span class="co">#SC range</span>
 <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="no">NonDom_solutions</span>$<span class="no">SC.Fit</span>)
-<span class="co">#&gt; [1] 0.04222107 0.13127140</span>
+<span class="co">#&gt; [1] 0.01869717 0.12800532</span>
 
 <span class="co"># Survival fitnesss range</span>
 <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="no">NonDom_solutions</span>$<span class="no">Surv.Fit</span>)
-<span class="co">#&gt; [1] 447.6142 843.3939</span></pre></body></html></div>
+<span class="co">#&gt; [1] 322.4727 795.0688</span></pre></body></html></div>
 <p>###Select best performing solutions</p>
 <p>Now we select the best performing solutions for each number of partitions (k) according to C.Index</p>
 <div class="sourceCode" id="cb26"><html><body><pre class="r">
 <span class="no">RESULT</span><span class="kw">&lt;-</span> <span class="fu"><a href="../reference/non_dominated_summary.html">non_dominated_summary</a></span>(<span class="kw">output</span><span class="kw">=</span><span class="no">output</span>,
                             <span class="kw">OS</span><span class="kw">=</span><span class="no">train_surv</span>,
                             <span class="kw">prob_matrix</span><span class="kw">=</span> <span class="no">train_expression</span>,
-                            <span class="kw">distancetype</span> <span class="kw">=</span><span class="no">distancetype</span>,
-                            <span class="kw">usegpu</span><span class="kw">=</span> <span class="no">usegpu</span> )
+                            <span class="kw">distancetype</span> <span class="kw">=</span><span class="no">distancetype</span>
+                            )
 
 <span class="no">best_sol</span><span class="kw">=</span><span class="kw">NULL</span>
 <span class="kw">for</span>(<span class="no">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">RESULT</span>$<span class="no">k</span>)){
@@ -647,7 +642,7 @@
 }
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">best_sol</span>)
-<span class="co">#&gt; [1] "Solutions.1" "Solutions.2" "Solutions.3"</span></pre></body></html></div>
+<span class="co">#&gt; [1] "Solutions.1" "Solutions.5" "Solutions.3" "Solutions.4"</span></pre></body></html></div>
 </div>
 <div id="create-prototypic-centroids" class="section level3">
 <h3 class="hasAnchor">
@@ -725,14 +720,15 @@
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">C.indexes</span>)
 <span class="co">#&gt;              train_CI   test_CI</span>
-<span class="co">#&gt; Solutions.1 0.6501663 0.5605523</span>
-<span class="co">#&gt; Solutions.2 0.5937090 0.5322682</span>
-<span class="co">#&gt; Solutions.3 0.6006150 0.5352268</span>
+<span class="co">#&gt; Solutions.1 0.6606009 0.5464300</span>
+<span class="co">#&gt; Solutions.5 0.6107471 0.5572387</span>
+<span class="co">#&gt; Solutions.3 0.6268777 0.5654043</span>
+<span class="co">#&gt; Solutions.4 0.6321202 0.4979487</span>
 
 <span class="no">best_signature</span><span class="kw">&lt;-</span> <span class="no">best_sol</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span>(<span class="no">C.indexes</span>$<span class="no">test_CI</span>)]
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">best_signature</span>)
-<span class="co">#&gt; [1] "Solutions.1"</span></pre></body></html></div>
+<span class="co">#&gt; [1] "Solutions.3"</span></pre></body></html></div>
 </div>
 <div id="evaluate-prediction-survival-of-galgo-signatures" class="section level3">
 <h3 class="hasAnchor">
@@ -871,7 +867,7 @@
 <span class="co">#&gt; [13] limma_3.45.4                mclust_5.4.6               </span>
 <span class="co">#&gt; [15] survcomp_1.39.0             prodlim_2019.11.13         </span>
 <span class="co">#&gt; [17] survival_3.1-12             Biobase_2.49.0             </span>
-<span class="co">#&gt; [19] BiocGenerics_0.35.4         GSgalgoR_0.5.0             </span>
+<span class="co">#&gt; [19] BiocGenerics_0.35.4         GSgalgoR_0.99.0            </span>
 <span class="co">#&gt; [21] breastCancerUPP_1.27.0      breastCancerTRANSBIG_1.27.0</span>
 <span class="co">#&gt; [23] BiocStyle_2.17.0           </span>
 <span class="co">#&gt; </span>
