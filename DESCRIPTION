@@ -1,11 +1,10 @@
 Package: GSgalgoR
 Type: Package
 Title: An Evolutionary Framework for the Identification and Study of Prognostic Gene Expression Signatures in Cancer
-Version: 0.99.0
+Version: 0.99.1
 Authors@R: c(person("Martin", "Guerrero", role = c("aut"),
                      email = "mguerrero@conicet-mendoza.gob.ar"),
               person("Carlos", "Catania", role = "cre",email="harpomaxx@gmail.com"))
-Author: Martin Guerrero [aut], Carlos Catania [cre]
 Maintainer:  Carlos Catania <harpomaxx@gmail.com>
 Description: A multi-objective optimization algorithm for disease sub-type discovery based on a non-dominated sorting genetic algorithm. 
    The 'Galgo' framework combines the advantages of clustering algorithms for grouping heterogeneous 'omics' data and the searching properties of 
