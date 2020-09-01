@@ -1,3 +1,7 @@
+Changes in version 0.99.0 (2020-09-01)
+ - Remove gpuR support
+ - fix problem with small population
+
 Changes in version 0.5.0 (2020-08-02)
  - Rename to GSGalgoR
 
