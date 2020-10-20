@@ -13,7 +13,7 @@
 #'
 #' @return an object of class galgo
 #' @export 
-#' @usage  callback_base_return_pop (userdir = "",generation, pop_pool, 
+#' @usage  callback_base_return_pop (userdir = tempdir() ,generation, pop_pool, 
 #' pareto, prob_matrix, current_time)
 #' @examples
 #' # load example dataset
@@ -43,7 +43,7 @@
 #'
 #'
 callback_base_return_pop <-
-    function(userdir = "",
+    function(userdir = tempdir(),
             generation,
             pop_pool,
             pareto,
@@ -78,24 +78,20 @@ callback_base_return_pop <-
 #'
 #' @return an object of class galgo
 #' 
-#' @usage  callback_base_save_pop (userdir = "",generation, pop_pool, 
+#' @usage  callback_base_save_pop (userdir = tempdir(), generation, pop_pool, 
 #' pareto, prob_matrix, current_time)
 #'
 #' @examples
 #' @noRd
 callback_base_save_pop <-
-    function(userdir = "",
+    function(userdir = tempdir(),
             prefix,
             generation,
             pop_pool,
             pareto,
             prob_matrix,
             current_time) {
-        if (userdir == "") {
-            directory <- paste0(tempdir(), "/")
-        } else {
-            directory <- userdir
-        }
+        directory <- userdir
         if (!dir.exists(directory)) {
             dir.create(directory, recursive = TRUE)
         }
@@ -105,7 +101,7 @@ callback_base_save_pop <-
         output <-
             galgo.Obj(Solutions = output$Solutions,
                     ParetoFront = output$ParetoFront)
-        filename <- paste0(directory, prefix, ".rda")
+        filename <- file.path(directory, paste0(prefix, ".rda"))
         save(file = filename, output)
         return(output)
     }
@@ -125,23 +121,19 @@ callback_base_save_pop <-
 #'
 #' @return an object of class galgo
 #'
-#' @usage  callback_base_save_pop_partial (userdir = "",generation,
+#' @usage  callback_base_save_pop_partial (userdir = tempdir(), generation,
 #' pop_pool, pareto, prob_matrix, current_time)
 #'
 #' @examples
 #' @noRd
 callback_base_save_pop_partial <-
-    function(userdir = "",
+    function(userdir = tempdir(),
             generation,
             pop_pool,
             pareto,
             prob_matrix,
             current_time) {
-        if (userdir == "") {
-            directory <- paste0(tempdir(), "/")
-        } else {
-            directory <- userdir
-        }
+        directory <- userdir
         if (!dir.exists(directory)) {
             dir.create(directory, recursive = TRUE)
         }
@@ -164,7 +156,7 @@ callback_base_save_pop_partial <-
 #' galgo algorithm
 #' @param pop_pool a \code{data.frame} with the solution vectors, number of 
 #' clusters and their ranking.
-#' @param pareto the solutions found by Galgo accross all generations in the 
+#' @param pareto the solutions found by Galgo across all generations in the 
 #' solution space
 #' @param prob_matrix a \code{matrix} or \code{data.frame}. Must be an 
 #' expression matrix with features in rows and samples in columns
@@ -173,23 +165,19 @@ callback_base_save_pop_partial <-
 #'
 #' @return
 #'
-#' @usage  callback_base_save_pop_final <- function(userdir = "",generation, 
-#' pop_pool, pareto, prob_matrix, current_time)
+#' @usage  callback_base_save_pop_final <- function(userdir = tempdir(),
+#' generation, pop_pool, pareto, prob_matrix, current_time)
 #'
 #' @examples
 #' @noRd
 callback_base_save_pop_final <-
-    function(userdir = "",
+    function(userdir = tempdir(),
             generation,
             pop_pool,
             pareto,
             prob_matrix,
             current_time) {
-        if (userdir == "") {
-            directory <- paste0(tempdir(), "/")
-        } else {
-            directory <- userdir
-        }
+        directory <- userdir
         if (!dir.exists(directory)) {
             dir.create(directory, recursive = TRUE)
         }
@@ -203,7 +191,7 @@ callback_base_save_pop_final <-
                 prob_matrix,
                 current_time
             )
-        message(paste0("final population saved in final.rda in ", directory))
+        message("final population saved in final.rda in ", directory)
         return(output)
     }
 
@@ -224,7 +212,7 @@ callback_base_save_pop_final <-
 #' @return Nothing.
 #'
 #' @export
-#' @usage  callback_base_report (userdir, generation, pop_pool, 
+#' @usage  callback_base_report (userdir = tempdir(), generation, pop_pool, 
 #' pareto, prob_matrix, current_time)
 #' @examples
 #' # load example dataset
@@ -253,14 +241,14 @@ callback_base_save_pop_final <-
 
 
 callback_base_report <-
-    function(userdir = "",
+    function(userdir = tempdir(),
             generation,
             pop_pool,
             pareto,
             prob_matrix,
             current_time) {
         chrom_length <- nrow(prob_matrix)
-        message(paste0("Generation ", generation, " Non-dominated solutions:"))
+        message("Generation ", generation, " Non-dominated solutions:")
         print(pop_pool[pop_pool[, "rnkIndex"] == 1,
                     (chrom_length + 1):(chrom_length + 5)])
         # print(Sys.time()- start_time)
@@ -287,7 +275,7 @@ callback_base_report <-
 #'
 #' @export
 #' 
-#' @usage  callback_no_report (userdir = "",generation, pop_pool, 
+#' @usage  callback_no_report (userdir = tempdir(),generation, pop_pool, 
 #' pareto, prob_matrix, current_time)
 #' @examples
 #' # load example dataset
@@ -344,7 +332,7 @@ callback_no_report <-
 #'
 #' @return Nothing
 #' 
-#' @usage  callback_default (userdir = "",generation, pop_pool, 
+#' @usage  callback_default (userdir = tempdir(),generation, pop_pool, 
 #' pareto, prob_matrix, current_time)
 #' @export
 #' @examples
@@ -378,7 +366,7 @@ callback_no_report <-
 #'
 #'
 callback_default <-
-    function(userdir = "",
+    function(userdir = tempdir(),
             generation,
             pop_pool,
             pareto,

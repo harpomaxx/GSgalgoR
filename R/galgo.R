@@ -59,6 +59,11 @@ galgo.Obj <- setClass( # Set the name for the class
     )
 )
 
+setGeneric("Solutions", function(x) standardGeneric("Solutions"))
+setGeneric("ParetoFront", function(x) standardGeneric("ParetoFront"))
+setMethod("Solutions", "galgo.Obj", function(x) x@Solutions)
+setMethod("ParetoFront", "galgo.Obj", function(x) x@ParetoFront)
+
 #' Survival Mean
 #'
 #' @param x
@@ -70,7 +75,7 @@ galgo.Obj <- setClass( # Set the name for the class
 RMST <- function(ft, rmean) {
     nstrat <- length(ft$strata)
     stemp <- rep(seq_len(nstrat), ft$strata)
-    rmst <- NULL
+    rmst <- numeric(length(nstrat)) 
     for (i in seq_len(nstrat)) {
         who <- (stemp == i)
         idx <- ft$time[who] <= rmean
@@ -81,7 +86,8 @@ RMST <- function(ft, rmean) {
         time.diff <- diff(c(0, wk.time))
         areas <- time.diff * c(1, wk.surv)
         rmst_x <- sum(areas)
-        rmst <- c(rmst, rmst_x)
+        # rmst <- c(rmst, rmst_x)
+        rmst[i] <- rmst_x
     }
     return(rmst)
 }
@@ -199,9 +205,10 @@ consecutive_distance <- function(x) {
     d <- x[order(x)]
     l <- length(d) - 1
     c <- c(0, 1)
-    dif <- as.numeric()
+    dif <- numeric(length(l))
     for (i in seq_len(l)) {
-        dif <- c(dif, diff(d[c + i]))
+        #dif <- c(dif, diff(d[c + i]))
+        dif[i] <- diff(d[c + i])
     }
     return(hmean(dif) * l)
 }
@@ -662,9 +669,12 @@ galgo <- function(population = 30,# Number of individuals to evaluate
         # convention to leave 1 core for OS
         parallel::makeCluster(num_workers - 1)
     doParallel::registerDoParallel(cluster)
+    on.exit(parallel::stopCluster(cluster))
+    on.exit()
     calculate_distance <- select_distance(distancetype)
     # Empty list to save the solutions.
-    PARETO <- list()
+    #PARETO <- list()
+    PARETO <- vector("list",generations)
     chrom_length <- nrow(prob_matrix)
     # 1. Create random population of solutions.
 
@@ -888,13 +898,13 @@ galgo <- function(population = 30,# Number of individuals to evaluate
 
     parallel::stopCluster(cluster)
     if( end_OK == TRUE ){
-        end_galgo_callback(
+        return (end_galgo_callback(
             userdir = res_dir,
             generation = g,
             pop_pool = X1,
             pareto = PARETO,
             prob_matrix = prob_matrix,
             current_time = Sys.time()
-        )
+        ))
     }
 }

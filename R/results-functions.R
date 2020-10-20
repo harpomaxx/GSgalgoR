@@ -156,7 +156,8 @@ create_centroids <-
         calculate_distance <-
             select_distance(distancetype = distancetype)
 
-        CentroidsList <- list()
+        CentroidsList <- vector("list",length(solution_names)) 
+        names(CentroidsList) <- solution_names
         output_df <- to_dataframe(output)
         for (j in solution_names) {
             genes <- output_df[j, "Genes"][[1]]

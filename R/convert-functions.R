@@ -56,21 +56,21 @@ to_list <- function(output) {
     if (!methods::is(output, "galgo.Obj")) {
         stop("object must be of class 'galgo.Obj'")
     }
-    OUTPUT <- list()
+    OUTPUT <- vector("list", nrow(Solutions(output)))
     Genes <-
-        colnames(output@Solutions)[seq_len(ncol(output@Solutions) - 5)]
-    for (i in seq_len(nrow(output@Solutions))) {
+        colnames(Solutions(output))[seq_len(ncol(Solutions(output)) - 5)]
+    for (i in seq_len(nrow(Solutions(output)))) {
         Sol <- paste("Solution", i, sep = ".")
         OUTPUT[[Sol]] <- list()
         OUTPUT[[Sol]][["Genes"]] <-
-            Genes[as.logical(output@Solutions[i, seq_len(length(Genes))])]
-        OUTPUT[[Sol]]["k"] <- output@Solutions[i, "k"]
+            Genes[as.logical(Solutions(output)[i, seq_len(length(Genes))])]
+        OUTPUT[[Sol]]["k"] <- Solutions(output)[i, "k"]
         OUTPUT[[Sol]]["SC.Fit"] <-
-            output@Solutions[i, length(Genes) + 2]
+            Solutions(output)[i, length(Genes) + 2]
         OUTPUT[[Sol]]["Surv.Fit"] <-
-            output@Solutions[i, length(Genes) + 3]
-        OUTPUT[[Sol]]["rank"] <- output@Solutions[i, "rnkIndex"]
-        OUTPUT[[Sol]]["CrowD"] <- output@Solutions[i, "CrowD"]
+            Solutions(output)[i, length(Genes) + 3]
+        OUTPUT[[Sol]]["rank"] <- Solutions(output)[i, "rnkIndex"]
+        OUTPUT[[Sol]]["CrowD"] <- Solutions(output)[i, "CrowD"]
     }
     return(OUTPUT)
 }
@@ -128,24 +128,24 @@ to_dataframe <- function(output) {
         stop("object must be of class 'galgo.Obj'")
     }
     Genes <-
-        colnames(output@Solutions)[seq_len(ncol(output@Solutions) - 5)]
-    ListGenes <- list()
-    for (i in seq_len(nrow(output@Solutions))) {
+        colnames(Solutions(output))[seq_len(ncol(Solutions(output)) - 5)]
+    ListGenes <- vector("list", nrow(Solutions(output)))
+    for (i in seq_len(nrow(Solutions(output)))) {
         ListGenes[[i]] <- list()
         ListGenes[[i]] <-
-            Genes[as.logical(output@Solutions[i, seq_len(length(Genes))])]
+            Genes[as.logical(Solutions(output)[i, seq_len(length(Genes))])]
     }
 
     OUTPUT <-
         data.frame(
             Genes = I(ListGenes),
-            k = output@Solutions[, "k"],
-            SC.Fit = output@Solutions[, ncol(output@Solutions) - 3],
-            Surv.Fit = output@Solutions[, ncol(output@Solutions) - 2],
-            Rank = output@Solutions[, "rnkIndex"],
-            CrowD = output@Solutions[, "CrowD"]
+            k = Solutions(output)[, "k"],
+            SC.Fit = Solutions(output)[, ncol(Solutions(output)) - 3],
+            Surv.Fit = Solutions(output)[, ncol(Solutions(output)) - 2],
+            Rank = Solutions(output)[, "rnkIndex"],
+            CrowD = Solutions(output)[, "CrowD"]
         )
     rownames(OUTPUT) <-
-        paste("Solutions", seq_len(nrow(output@Solutions)), sep = ".")
+        paste("Solutions", seq_len(nrow(Solutions(output))), sep = ".")
     return(OUTPUT)
 }

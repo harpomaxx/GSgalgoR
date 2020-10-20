@@ -7,3 +7,5 @@ cran-comments.md
 ^pkgdown$
 ^codecov\.yml$
 ^\.travis\.yml$
+^doc$
+^Meta$

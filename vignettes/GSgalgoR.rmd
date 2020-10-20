@@ -92,12 +92,21 @@ process again.
 
 # Installation
 
-## galgoR library 
+## GSgalgoR library 
 
-To install galgoR package, start R and enter:
+To install GSgalgoR package, start R and enter:
 ```{r install, eval=FALSE}
-devtools::install_github("https://github.com/harpomaxx/GSgalgoR")
 
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("GSgalgoR")
+library(GSgalgoR)
+```
+
+Alternatively you can install GSgalgoR from github using the devtool package
+```{r install-github, eval=FALSE}
+devtools::install_github("https://github.com/harpomaxx/GSgalgoR")
 library(GSgalgoR)
 ```
 
@@ -124,15 +133,12 @@ sample classification. The datasets can be accessed from the following
 
 ```{r datasets, eval=FALSE}
 
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
 BiocManager::install("breastCancerUPP",version = "devel")
 BiocManager::install("breastCancerTRANSBIG",version = "devel")
 
 ```
 
-```{r load_data}
+```{r load_data, message=FALSE}
 
 library(breastCancerTRANSBIG)
 library(breastCancerUPP)
@@ -140,7 +146,7 @@ library(breastCancerUPP)
 ```
 
 Also, some basic packages are needed to run the example in this vignette 
-```{r libraries}
+```{r libraries, message=FALSE}
 library(GSgalgoR)
 library(Biobase)
 library(genefu)
@@ -219,7 +225,7 @@ DropDuplicates<- function(eset, map= "Gene.symbol"){
 ```
 
 
-###Expand probesets that map for multiple genes
+### Expand probesets that map for multiple genes
 
 ```{r expandprobesets}
 
@@ -659,7 +665,7 @@ range(NonDom_solutions$Surv.Fit)
 
 ```
 
-###Select best performing solutions
+### Select best performing solutions
 
 Now we select the best performing solutions for each number of partitions (k)
 according to C.Index

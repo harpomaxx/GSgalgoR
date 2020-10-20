@@ -75,6 +75,12 @@ current time  every two iterations
 
 ```{r}
 library(GSgalgoR)
+```
+
+
+
+```{r}
+
 
 my_callback <-
     function(userdir = "",
@@ -100,8 +106,12 @@ A reduced version of the
 dataset is used to setup the expression and clinical information 
 required for the `galgo()` function.
 
-```{r}
+```{r message=FALSE}
 library(breastCancerTRANSBIG)
+```
+
+
+```{r}
 data(transbig)
 train <- transbig
 rm(transbig)
@@ -116,6 +126,11 @@ expression <- t(scale(t(expression)))
 
 Then, the `galgo()` function is invoked and the recently defined function 
 `my_callback()` is assigned to the `report_callback` hook-point.
+
+```{r message=FALSE}
+library(GSgalgoR)
+```
+
 
 ```{r}
 # Running galgo
@@ -133,8 +148,7 @@ GSgalgoR::galgo(generations = 6,
 ```
 
 
-# Example 2: Saving the partial state of the population pool through a 
-custom callback function
+# Example 2: Saving  partial population pool using custom callback function
 
 The following callback function save in a temporary directory the solutions 
 obtained every five generation/iteration. A file the number of the generation 
@@ -203,9 +217,13 @@ In the the default definition of the `galgo()` function the hook-points are
 defined as follow:
 
 -`start_galgo_callback = callback_default`
+
 -`end_galgo_callback = callback_base_return_pop`
+
 -`report_callback = callback_base_report`
+
 -`start_gen_callback = callback_default`
+
 -`end_gen_callback = callback_default`
 
 
@@ -238,7 +256,6 @@ For preserving the return behavior of the `galgo()` function,
 An example of such situation is shown below:
 
 ```{r eval=FALSE}
-library(GSgalgoR)
 
 another_callback <-
     function(userdir = "",

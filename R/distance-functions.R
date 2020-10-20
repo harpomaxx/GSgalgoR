@@ -84,24 +84,23 @@ select_distance <- function(distancetype = "pearson") {
     distancetype <- match.arg(distancetype, c("pearson", "uncentered", 
                                                 "euclidean", "spearman"))
 
-        computingtype <- "Using CPU for computing"
-        # Centered pearson distance
-        if (distancetype == "pearson") {
-            calculate_distance <- calculate_distance_pearson_cpu
-        }
-        # Spearman distance
-        if (distancetype == "spearman") {
-            calculate_distance <- calculate_distance_spearman_cpu
-        }
-
-        if (distancetype == "uncentered") {
-            calculate_distance <- calculate_distance_uncentered_cpu
-        }
+    computingtype <- "Using CPU for computing "
+    # Centered pearson distance
+    if (distancetype == "pearson") {
+        calculate_distance <- calculate_distance_pearson_cpu
+    }
+    # Spearman distance
+    if (distancetype == "spearman") {
+        calculate_distance <- calculate_distance_spearman_cpu
+    }
+    if (distancetype == "uncentered") {
+        calculate_distance <- calculate_distance_uncentered_cpu
+    }
         if (distancetype == "euclidean") {
             calculate_distance <- calculate_distance_euclidean_cpu
-        }
+    }
     
-    message(paste(computingtype, distancetype, "distance"))
+    message(computingtype, distancetype, " distance")
     # assign("calculate_distance",calculate_distance,envir=.GlobalEnv)
     # return(invisible(calculate_distance))
     return(calculate_distance)

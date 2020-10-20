@@ -157,14 +157,16 @@ cosine_similarity <- function(a, b) {
 #' table(Pam$cluster)
 #' centroids <- k_centroids(train.Exp, Pam)
 k_centroids <- function(data, class) {
-    L <- list()
-    c <- unique(unlist(class))
+    class_ul<-unlist(class)
+    c <- unique(class_ul)
+    L <- vector("list",length(c))
+    
     for (i in c) {
-        if (sum(unlist(class) == i) > 1) {
-            x <- rowMeans(data[, unlist(class) == i])
+        if (sum(class_ul == i) > 1) {
+            x <- rowMeans(data[, class_ul == i])
             L[[i]] <- x
         } else {
-            L[[i]] <- data[, unlist(class) == i]
+            L[[i]] <- data[, class_ul == i]
         }
     }
     L <- t(do.call(rbind, L))
