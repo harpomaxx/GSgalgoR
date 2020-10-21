@@ -61,6 +61,7 @@ to_list <- function(output) {
         colnames(Solutions(output))[seq_len(ncol(Solutions(output)) - 5)]
     for (i in seq_len(nrow(Solutions(output)))) {
         Sol <- paste("Solution", i, sep = ".")
+        names(OUTPUT)[i]<-Sol
         OUTPUT[[Sol]] <- list()
         OUTPUT[[Sol]][["Genes"]] <-
             Genes[as.logical(Solutions(output)[i, seq_len(length(Genes))])]
